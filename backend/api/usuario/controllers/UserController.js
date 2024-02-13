@@ -53,7 +53,7 @@ module.exports = {
 
             // Crea el nuevo usuario con la contraseña cifrada
             let fechaActual = moment();
-            let newBody = { ...body, contrasena: passHash, fechaAlta: fechaActual.format(), vigenciaContrasena: fechaActual.add(3, 'months').format().toString(), estatus: true };
+            let newBody = { ...body, contrasena: passHash, fechaAlta: fechaActual.format(), vigenciaContrasena: fechaActual.add(3, 'months').format().toString(), estatus: true, rol:"2" };
             const nuevoUsuario = new User(newBody);
             await nuevoUsuario.save();
 

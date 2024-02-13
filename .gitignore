@@ -1,0 +1,7 @@
+backend/api/.env
+backend/backend/.env
+backend/api/node_modules
+backend/backend/node_modules
+frontend/.env
+frontend/node_modules/
+frontend/.gitignore

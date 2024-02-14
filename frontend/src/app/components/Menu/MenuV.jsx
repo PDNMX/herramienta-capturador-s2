@@ -23,7 +23,6 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { ConnectedCreateProvider } from "../Proveedores/CreateProvider";
 import { history } from "../../store/history";
 import Collapse from "@mui/material/Collapse";
-import Tooltip from "@mui/material/Tooltip";
 /* import { LoadFileV } from "../UploadFile/LoadFileV"; */
 import { connect } from "react-redux";
 import { ConnectedCreateUser } from "../Usuarios/createUser";
@@ -32,28 +31,12 @@ import { ListUser } from "../Usuarios/listUser";
 import { ListProvider } from "../Proveedores/ListProvider";
 
 import { ConnectedCreateRegv2 } from "../CargaDatos/createRegS2-v2";
-import { ConnectedCreateRegS3Sv2 } from "../CargaDatos/createRegS3S-v2";
-import { ConnectedCreateRegS3Pv2 } from "../CargaDatos/createRegS3P-v2";
 
-/* S3 - 11 Forms */
-import {CreateRegForm1} from "../CargaDatos/s3/form1";
-import {CreateRegForm2} from "../CargaDatos/s3/form2";
-import {CreateRegForm3} from "../CargaDatos/s3/form3";
-import {CreateRegForm4} from "../CargaDatos/s3/form4";
-import {CreateRegForm5} from "../CargaDatos/s3/form5";
-import {CreateRegForm6} from "../CargaDatos/s3/form6";
-import {CreateRegForm7} from "../CargaDatos/s3/form7";
-import {CreateRegForm8} from "../CargaDatos/s3/form8";
-import {CreateRegForm9} from "../CargaDatos/s3/form9";
-import {CreateRegForm10} from "../CargaDatos/s3/form10";
-import {CreateRegForm11} from "../CargaDatos/s3/form11";
 
 //import { useLocation } from "react-router-dom";
 import { userActions } from "../../_actions/user.action";
 
 import { ListS2Schemav2 } from "../CargaDatos/listSchemaS2-v2";
-import { ListS3SSchemav2 } from "../CargaDatos/listSchemaS3S-v2";
-import { ListS3PSchemav2 } from "../CargaDatos/listSchemaS3P-v2";
 
 import { useSelector } from "react-redux";
 
@@ -85,11 +68,8 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
     setCheckedBitacora((prev) => false);
     setCheckedDatos((prev) => false);
     setcheckedDatos2((prev) => false);
-    setcheckedDatosS3S((prev) => false);
-    setcheckedDatosS3P((prev) => false);
     setcheckedAdminDatos2((prev) => false);
-    setcheckedAdminDatosS3S((prev) => false);
-    setcheckedAdminDatosS3P((prev) => false);
+
   };
 
   const menuProveedor = (e) => {
@@ -102,11 +82,7 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
     setCheckedBitacora((prev) => false);
     setsubMenuBitacora(false);
     setcheckedDatos2((prev) => false);
-    setcheckedDatosS3S((prev) => false);
-    setcheckedDatosS3P((prev) => false);
     setcheckedAdminDatos2((prev) => false);
-    setcheckedAdminDatosS3S((prev) => false);
-    setcheckedAdminDatosS3P((prev) => false);
   };
 
   const menuDatos2 = (e) => {
@@ -119,11 +95,7 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
     setCheckedDatos(true);
     setCheckedProveedor((prev) => false);
     setcheckedDatos2((prev) => !prev);
-    setcheckedDatosS3S((prev) => !prev);
-    setcheckedDatosS3P((prev) => !prev);
     setcheckedAdminDatos2((prev) => false);
-    setcheckedAdminDatosS3S((prev) => false);
-    setcheckedAdminDatosS3P((prev) => false);
   };
 
   const menuAdminDatos2 = (e) => {
@@ -136,11 +108,7 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
     setCheckedDatos(true);
     setCheckedProveedor((prev) => false);
     setcheckedDatos2((prev) => false);
-    setcheckedDatosS3S((prev) => false);
-    setcheckedDatosS3P((prev) => false);
     setcheckedAdminDatos2((prev) => !prev);
-    setcheckedAdminDatosS3S((prev) => !prev);
-    setcheckedAdminDatosS3P((prev) => !prev);
   };
 
   const rol = localStorage.getItem("rol");
@@ -291,11 +259,11 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
   const [checkedDatos, setCheckedDatos] = useState(false);
   const [checkedProveedor, setCheckedProveedor] = useState(false);
   const [checkedDatos2, setcheckedDatos2] = useState(false);
-  const [checkedDatosS3S, setcheckedDatosS3S] = useState(false);
-  const [checkedDatosS3P, setcheckedDatosS3P] = useState(false);
+  //const [checkedDatosS3S, setcheckedDatosS3S] = useState(false);
+  //const [checkedDatosS3P, setcheckedDatosS3P] = useState(false);
   const [checkedAdminDatos2, setcheckedAdminDatos2] = useState(false);
-  const [checkedAdminDatosS3S, setcheckedAdminDatosS3S] = useState(false);
-  const [checkedAdminDatosS3P, setcheckedAdminDatosS3P] = useState(false);
+  //const [checkedAdminDatosS3S, setcheckedAdminDatosS3S] = useState(false);
+  //const [checkedAdminDatosS3P, setcheckedAdminDatosS3P] = useState(false);
 
   return (
     <div className={classes.root}>
@@ -349,199 +317,6 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
           <List>
             {rol == 2 && (
               <>
-                <ListItemButton disabled={true}>
-                  {/* <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon> */}
-                  <ListItemText primary="Faltas Administrativas de Servidores Públicos" />
-                  {/* {open ? <ExpandLess /> : <ExpandMore />} */}
-                </ListItemButton>
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/faltas-administrativas/graves")
-                      }
-                      key={"form1"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Graves" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/faltas-administrativas/no-graves")
-                      }
-                      key={"form2"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="No Graves" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-
-                <ListItemButton disabled={true}>
-                  {/* <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon> */}
-                  <ListItemText primary="Actos de Particulares vinculados con Faltas Graves" />
-                  {/* {open ? <ExpandLess /> : <ExpandMore />} */}
-                </ListItemButton>
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/actos-particulares/personas-fisicas")
-                      }
-                      key={"form3"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Personas Físicas" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/actos-particulares/personas-morales")
-                      }
-                      key={"form4"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Personas Morales" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-
-                <ListItemButton disabled={true}>
-                  {/* <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon> */}
-                  <ListItemText primary="Sanciones (Inhabilitaciones) por normas diversas a la LGRA" />
-                  {/* {open ? <ExpandLess /> : <ExpandMore />} */}
-                </ListItemButton>
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/inhabilitaciones/personas-fisicas")
-                      }
-                      key={"form5"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Personas Físicas" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/inhabilitaciones/personas-morales")
-                      }
-                      key={"form6"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Personas Morales" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-
-                <ListItemButton disabled={true}>
-                  {/* <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon> */}
-                  <ListItemText primary="Hechos de Corrupción" />
-                  {/* {open ? <ExpandLess /> : <ExpandMore />} */}
-                </ListItemButton>
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/hechos-corrupcion/servidores-publicos")
-                      }
-                      key={"form7"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Servidores Públicos" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/hechos-corrupcion/personas-fisicas")
-                      }
-                      key={"form8"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Personas Físicas" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/hechos-corrupcion/personas-morales")
-                      }
-                      key={"form9"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Personas Morales" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-
-                <ListItemButton disabled={true}>
-                  {/* <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon> */}
-                  <ListItemText primary="Abstenciones" />
-                  {/* {open ? <ExpandLess /> : <ExpandMore />} */}
-                </ListItemButton>
-                <Collapse in={true} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/abstenciones/graves")
-                      }
-                      key={"form10"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="Graves" />
-                    </ListItemButton>
-                  </List>
-                  <List component="div" disablePadding>
-                    <ListItemButton
-                      onClick={() =>
-                        redirectToRoute("/captura/s3/abstenciones/no-graves")
-                      }
-                      key={"form11"}
-                      sx={{ pl: 3.5 }}>
-                      <ListItemIcon>
-                        <CircleIcon sx={{ maxHeight: "8px" }} />
-                      </ListItemIcon>
-                      <ListItemText secondary="No Graves" />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-
                 <ListItem
                   onClick={(e) => menuAdminDatos2(e)}
                   key={"m1"}
@@ -574,43 +349,7 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
                   </Collapse>
                 ),
             )}
-            {permisos.map(
-              (item) =>
-                item === "S3S" && (
-                  <Collapse in={checkedAdminDatosS3S} key="S3S">
-                    <ListItem
-                      onClick={() => redirectToRoute("/consulta/S3Sv2")}
-                      key={"m1s3sv2"}
-                      disablePadding>
-                      <ListItemButton sx={{ pl: 3.5 }}>
-                        <ListItemIcon>
-                          <CircleIcon sx={{ maxHeight: "8px" }} />
-                        </ListItemIcon>
-                        <ListItemText secondary="Sistema 3: Servidores Públicos" />
-                      </ListItemButton>
-                    </ListItem>
-                  </Collapse>
-                ),
-            )}
-            {permisos.map(
-              (item) =>
-                item === "S3P" && (
-                  <Collapse in={checkedAdminDatosS3P} key="S3P">
-                    <Tooltip title="Particulares Sancionados" disablePadding>
-                      <ListItem
-                        onClick={() => redirectToRoute("/consulta/S3Pv2")}
-                        key={"m1s3pv2"}>
-                        <ListItemButton sx={{ pl: 3.5 }}>
-                          <ListItemIcon>
-                            <CircleIcon sx={{ maxHeight: "8px" }} />
-                          </ListItemIcon>
-                          <ListItemText secondary="Sistema 3: Particulares" />
-                        </ListItemButton>
-                      </ListItem>
-                    </Tooltip>
-                  </Collapse>
-                ),
-            )}
+            
 
             {rol == 2 && (
               <ListItem
@@ -639,42 +378,6 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
                           <CircleIcon sx={{ maxHeight: "8px" }} />
                         </ListItemIcon>
                         <ListItemText secondary="Sistema 2" />
-                      </ListItemButton>
-                    </ListItem>
-                  </Collapse>
-                ),
-            )}
-            {permisos.map(
-              (item) =>
-                item === "S3S" && (
-                  <Collapse in={checkedDatosS3S} key="S3S">
-                    <ListItem
-                      onClick={() => redirectToRoute("/captura/S3Sv2")}
-                      key={"m3s3sv2"}
-                      disablePadding>
-                      <ListItemButton sx={{ pl: 3.5 }}>
-                        <ListItemIcon>
-                          <CircleIcon sx={{ maxHeight: "8px" }} />
-                        </ListItemIcon>
-                        <ListItemText secondary="Sistema 3: Servidores Públicos" />
-                      </ListItemButton>
-                    </ListItem>
-                  </Collapse>
-                ),
-            )}
-            {permisos.map(
-              (item) =>
-                item === "S3P" && (
-                  <Collapse in={checkedDatosS3P} key="S3P">
-                    <ListItem
-                      onClick={() => redirectToRoute("/captura/S3Pv2")}
-                      key={"m3s3pv2"}
-                      disablePadding>
-                      <ListItemButton sx={{ pl: 3.5 }}>
-                        <ListItemIcon>
-                          <CircleIcon sx={{ maxHeight: "8px" }} />
-                        </ListItemIcon>
-                        <ListItemText secondary="Sistema 3: Particulares" />
                       </ListItemButton>
                     </ListItem>
                   </Collapse>
@@ -790,36 +493,13 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
           {vistaRender === "providers" && <ListProvider />}
 
           {/* ----------- NUEVAS VERSIONES - INICIO ----------- */}
-          {/* ----------- NUEVAS VERSIONES - s3: 11 Formatos ----------- */}
-
-          {/* Faltas Administrativas de Servidores Públicos */}
-          {vistaRender === "createReg-form1" && <CreateRegForm1 />}
-          {vistaRender === "createReg-form2" && <CreateRegForm2 />}
-          {/* Actos de Particulares vinculados con Faltas Graves */}
-          {vistaRender === "createReg-form3" && <CreateRegForm3 />}
-          {vistaRender === "createReg-form4" && <CreateRegForm4 />}
-          {/* Sanciones (Inhabilitaciones) por normas diversas a la LGRA */}
-          {vistaRender === "createReg-form5" && <CreateRegForm5 />}
-          {vistaRender === "createReg-form6" && <CreateRegForm6 />}
-          {/* Hechos de Corrupción */}
-          {vistaRender === "createReg-form7" && <CreateRegForm7 />}
-          {vistaRender === "createReg-form8" && <CreateRegForm8 />}
-          {vistaRender === "createReg-form9" && <CreateRegForm9 />}
-          {/* Abstenciones */}
-          {vistaRender === "createReg-form10" && <CreateRegForm10 />}
-          {vistaRender === "createReg-form11" && <CreateRegForm11 />}
-
 
           {vistaRender === "createRegv2" && <ConnectedCreateRegv2 />}
-          {vistaRender === "createRegS3Sv2" && <ConnectedCreateRegS3Sv2 />}
-          {vistaRender === "createRegS3Pv2" && <ConnectedCreateRegS3Pv2 />}
 
-          {vistaRender === "editRegS3Sv2" && ( <ConnectedCreateRegS3Sv2 match={match} /> )}
           {vistaRender === "editRegS2v2" && ( <ConnectedCreateRegv2 match={match} /> )}
 
           {vistaRender === "S2Schemav2" && <ListS2Schemav2 />}
-          {vistaRender === "S3SSchemav2" && <ListS3SSchemav2 />}
-          {vistaRender === "S3PSchemav2" && <ListS3PSchemav2 />}
+
 
           {/* ----------- NUEVAS VERSIONES - FIN ----------- */}
         </Grid>

@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     telefono: String,
     extension: String,
     usuario: { type: String, unique: true },
-    contrasena: String, // Cambié "constrasena" a "contrasena" para corregir un error de escritura
+    contrasena: String, // Cambié "contrasena" a "contrasena" para corregir un error de escritura
     sistemas: { type: [], default: void 0 },
     fechaAlta: String,
     fechaBaja: String,

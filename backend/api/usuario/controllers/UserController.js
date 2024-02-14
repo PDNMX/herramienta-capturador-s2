@@ -64,22 +64,28 @@ module.exports = {
                 subject: 'Bienvenido a la plataforma de administración de usuarios',
                 text: `Hola ${newBody.nombre}, tu usuario ha sido creado con éxito. Tu contraseña temporal es: ${pass}. Por favor ingresa a la plataforma y cambia tu contraseña.`
             };
-            transporter.sendMail(mailOptions, function (error, info) {
+
+            transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    console.log('Error al enviar el correo electrónico:', error);
+                  if (error.code === 'ETIMEDOUT') {
+                    console.error('Error de conexión: Tiempo de espera agotado. Reintentando...');
+                    // Intenta nuevamente después de un tiempo
+                  } else {
+                    console.error('Error al enviar el correo electrónico:', error);
+                    // Manejo de otros errores
+                  }
                 } else {
-                    console.log('Correo electrónico enviado:', info.response);
-                    console.log('Correo enviado a:', newBody.correoElectronico);
-                    console.log('Contraseña temporal:', pass);
+                  console.log('Correo electrónico enviado:', info.response);
                 }
-            });
-            
+              });
+              
             return res.status(200).json(newBody);
         } catch (error) {
             console.error('Error al crear usuario:', error);
             return res.status(500).json({ message: 'Error al crear usuario.', error: error.message });
         }
     },
+
     editUser: async (req, res) => {
         try {
             const { body } = req;
@@ -265,17 +271,17 @@ module.exports = {
     },
     changepassword: async (req, res) => {
         try {
-            let constrasena = encryptPassword(req.body.constrasena);
+            let contrasena = encryptPassword(req.body.contrasena);
             let passwordConfirmation = encryptPassword(req.body.passwordConfirmation);
             let id = req.body.user;
         
-            if (constrasena != passwordConfirmation) {
+            if (contrasena != passwordConfirmation) {
               res.status(200).json({ message: 'Las contraseñas no coinciden.', Status: 500 });
               return false;
             }
             let fechaActual = moment();
         
-            const result = await User.update({ _id: id }, { constrasena: constrasena, contrasenaNueva: false, vigenciaContrasena: fechaActual.add(3, 'months').format().toString() }).then();
+            const result = await User.update({ _id: id }, { contrasena: contrasena, contrasenaNueva: false, vigenciaContrasena: fechaActual.add(3, 'months').format().toString() }).then();
             res.status(200).json({ message: '¡Se ha actualizado tu contraseña!.', Status: 200 });
           } catch (e) {
             console.log(e);

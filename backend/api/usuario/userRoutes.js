@@ -63,11 +63,7 @@ router.post('/getUsersAll', [
 ], 
 UserController.getUsersAll);
 
-router.post('/validationpassword', [
-  isAuthenticatedMiddleware.check,
-  /* CheckPermissionMiddleware.has(roles.ADMIN), */
-  //SchemaValidationMiddleware.verify(createS2Payload),
-], UserController.validationpassword);
+router.post('/validationpassword',  UserController.validationpassword);
 
 router.post('/resetpassword', [
   isAuthenticatedMiddleware.check,

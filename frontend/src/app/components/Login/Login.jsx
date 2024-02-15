@@ -174,7 +174,7 @@ function MyForm(props) {
             paragraph
             className={classes.fontblack}
             style={{ fontWeight: 600 }}>
-            Sistema de Captura de Información
+            Herramienta de Captura de Información
           </Typography>
         </Grid>
       </Grid>

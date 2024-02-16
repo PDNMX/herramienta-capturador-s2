@@ -63,19 +63,11 @@ router.post('/getUsersAll', [
 ], 
 UserController.getUsersAll);
 
-router.post('/validationpassword',  UserController.validationpassword);
+router.post('/validationpassword', [isAuthenticatedMiddleware.check,],  UserController.validationpassword);
 
-router.post('/resetpassword', [
-  isAuthenticatedMiddleware.check,
-  /* CheckPermissionMiddleware.has(roles.ADMIN), */
-  //SchemaValidationMiddleware.verify(createS2Payload),
-], UserController.resetpassword);
+router.post('/resetpassword', UserController.resetpassword);
 
-router.post('/changepassword', [
-  isAuthenticatedMiddleware.check,
-  /* CheckPermissionMiddleware.has(roles.ADMIN), */
-  //SchemaValidationMiddleware.verify(createS2Payload),
-], UserController.changepassword);
+router.post('/changepassword', UserController.changepassword);
 
 module.exports = router;
 

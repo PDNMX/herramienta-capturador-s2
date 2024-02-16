@@ -53,7 +53,7 @@ const start = async () => {
 
     // Attaching the Authentication and User Routes to the app.
     //app.use("/", AuthorizationRoutes);
-    app.use("/s2", S2Routes);
+    app.use("/", S2Routes);
     app.use("/", providerRoutes);
     app.use("/", userRoutes);
 

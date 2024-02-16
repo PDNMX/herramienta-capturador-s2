@@ -19,13 +19,14 @@ router.get('/hola', [isAuthenticatedMiddleware.check], (_, res) => {
 
 
 router.post(
-  "/create",
+  "/insertS2v2",
   [
     isAuthenticatedMiddleware.check,
     /* CheckPermissionMiddleware.has(roles.ADMIN), */
     //SchemaValidationMiddleware.verify(createS2Payload),
   ],
-  S2Controller.createS2
+  //S2Controller.createS2
+  S2Controller.insertS2v2
 );
 
 router.post(

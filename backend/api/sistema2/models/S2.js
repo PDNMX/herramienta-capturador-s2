@@ -1,14 +1,4 @@
-/*const { Schema, model } = require('mongoose');
-const mongoosePaginate = require("mongoose-paginate-v2");
-
-
-// Definir un esquema de Mongoose para el modelo de producto
-/* const S2Schema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  }
-}); */
+const mongoosePaginate = require('mongoose-paginate-v2');
 const mongoose = require("mongoose");
 
 const S2Schema = new mongoose.Schema({
@@ -63,18 +53,22 @@ const S2Schema = new mongoose.Schema({
   
 });
 
+S2Schema.plugin(mongoosePaginate);
+//const s2Connection = mongoose.connection.useDb("administracionUsuarios");
 // Crear el modelo de producto utilizando el esquema
-const S2 = mongoose.connection.useDb("S2").model("spic", S2Schema, "spic");
+const spic = mongoose.connection.useDb("S2").model("spic", S2Schema, "spic");
+module.exports = {
+  spic
+}
 
 // Exportar las funciones del modelo de producto
-module.exports = {
+/* module.exports = {
   createS2: (data) => {
     const s2 = new S2(data);
     return s2.save();
   },
-/*   insertS2: (data) => {
-    const s2 = new s2(data);
-    return s2.create();
-    
-  }, */
-};
+//   insertS2: (data) => {
+//    const s2 = new s2(data);
+//    return s2.create();    
+//}, 
+}; */

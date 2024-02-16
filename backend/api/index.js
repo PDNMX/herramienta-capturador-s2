@@ -1,6 +1,7 @@
 const Express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const bodyParser = require('body-parser');
 const app = Express();
 const cors = require("cors");
 const morgan = require("morgan");
@@ -29,7 +30,8 @@ const providerRoutes = require("./proveedor/providerRoutes");
 const userRoutes = require("./usuario/userRoutes");
 
 app.use(morgan("tiny"));
-app.use(cors());
+//app.use(cors());
+app.use(cors(), bodyParser.urlencoded({ extended: true }), bodyParser.json());
 
 // Middleware that parses the body payloads as JSON to be consumed next set
 // of middlewares and controllers.

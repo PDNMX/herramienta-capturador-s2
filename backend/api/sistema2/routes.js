@@ -29,7 +29,35 @@ router.post(
   S2Controller.insertS2v2
 );
 
-router.post(
+router.post("/getAllS2v2",[isAuthenticatedMiddleware.check], S2Controller.getAllS2v2);
+  /* (_, res) => {
+    res.send(' Otro endpoint está para insertar está funcionando correctamente!')
+  } 
+  );*/
+
+  router.post("/listS2v2",[isAuthenticatedMiddleware.check], S2Controller.listS2v2);
+  /* (_, res) => {
+    res.send(' listS2v2 endpoint está para insertar está funcionando correctamente!')
+  }
+  ); */
+
+
+  router.put("/updateS2v2",[isAuthenticatedMiddleware.check], S2Controller.updateS2v2);
+  /* (_, res) => {
+    res.send(' Otro updateS2v2 endpoint está para insertar está funcionando correctamente!')
+  } 
+  );*/
+
+/*
+  router.post("/deleteS2v2",[isAuthenticatedMiddleware.check], //S2XCController.deleteS2v2);
+  (_, res) => {
+    res.send(' Otro endpoint está para insertar está funcionando correctamente!')
+  }
+  );
+
+
+
+/* router.post(
   "/insert",
   [
     isAuthenticatedMiddleware.check,
@@ -39,7 +67,7 @@ router.post(
     res.send(' Otro endpoint está para insertar está funcionando correctamente!')
   }
  
-  );
+  ); */
 
 
 /* router.get(

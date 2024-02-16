@@ -32,7 +32,6 @@ import { ListProvider } from "../Proveedores/ListProvider";
 
 import { ConnectedCreateRegv2 } from "../CargaDatos/createRegS2-v2";
 
-
 //import { useLocation } from "react-router-dom";
 import { userActions } from "../../_actions/user.action";
 
@@ -53,61 +52,70 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
   }));
 
   //MSubmenus
-  const [submenuAdmonDatos, setsubmenuAdmonDatos] = useState(false);
+  //const [submenuAdmonDatos, setsubmenuAdmonDatos] = useState(false);
   const [submenuUsuario, setsubMenuUsuario] = useState(false);
-  const [submenuBitacora, setsubMenuBitacora] = useState(false);
+  //const [submenuBitacora, setsubMenuBitacora] = useState(false);
   const [crearProovedor, setcrearProovedor] = useState(false);
   //const [submenuAdmonDatosS2, setsubmenuAdmonDatosS2] = useState(false);
+  //const [checkedBitacora, setCheckedBitacora] = useState(false);
+  const [checkedUser, setCheckedUser] = useState(false);
+  //const [checkedDatos, setCheckedDatos] = useState(false);
+  const [checkedProveedor, setCheckedProveedor] = useState(false);
+  const [checkedDatos2, setcheckedDatos2] = useState(false);
+  //const [checkedDatosS3S, setcheckedDatosS3S] = useState(false);
+  //const [checkedDatosS3P, setcheckedDatosS3P] = useState(false);
+  const [checkedAdminDatos2, setcheckedAdminDatos2] = useState(false);
+  //const [checkedAdminDatosS3S, setcheckedAdminDatosS3S] = useState(false);
+  //const [checkedAdminDatosS3P, setcheckedAdminDatosS3P] = useState(false);
 
-  const menuUser = (e) => {
-    setsubmenuAdmonDatos(false);
+  const menuUser = () => {
+    //setsubmenuAdmonDatos(false);
     setsubMenuUsuario(true);
-    setsubMenuBitacora(false);
+    //setsubMenuBitacora(false);
     setcrearProovedor(false);
     setCheckedUser((prev) => !prev);
-    setCheckedBitacora((prev) => false);
-    setCheckedDatos((prev) => false);
-    setcheckedDatos2((prev) => false);
-    setcheckedAdminDatos2((prev) => false);
-
+    //setCheckedBitacora((prev) => false);
+    //setCheckedDatos((prev) => false);
+    setcheckedDatos2(() => false);
+    setcheckedAdminDatos2(() => false);
   };
 
-  const menuProveedor = (e) => {
-    setsubmenuAdmonDatos(false);
+  const menuProveedor = () => {
+    //setsubmenuAdmonDatos(false);
     setsubMenuUsuario(false);
     setcrearProovedor(true);
     setCheckedProveedor((prev) => !prev);
-    setCheckedUser((prev) => false);
-    setCheckedDatos((prev) => false);
-    setCheckedBitacora((prev) => false);
-    setsubMenuBitacora(false);
-    setcheckedDatos2((prev) => false);
-    setcheckedAdminDatos2((prev) => false);
+    setCheckedUser(() => false);
+    //setCheckedDatos((prev) => false);
+    //setCheckedBitacora((prev) => false);
+    //setsubMenuBitacora(false);
+    setcheckedDatos2(() => false);
+    setcheckedAdminDatos2(() => false);
   };
 
-  const menuDatos2 = (e) => {
-    setsubmenuAdmonDatos(true);
-    setsubMenuBitacora(false);
+  const menuDatos2 = () => {
+    //setsubmenuAdmonDatos(true);
+    //setsubMenuBitacora(false);
     setsubMenuUsuario(false);
     setcrearProovedor(false);
-    setCheckedBitacora((prev) => false);
-    setCheckedUser((prev) => false);
-    setCheckedDatos(true);
-    setCheckedProveedor((prev) => false);
+    //setCheckedBitacora((prev) => false);
+    setCheckedUser(() => false);
+    //setCheckedDatos(true);
+    setCheckedProveedor(() => false);
     setcheckedDatos2((prev) => !prev);
-    setcheckedAdminDatos2((prev) => false);
+    setcheckedAdminDatos2(() => false);
   };
 
-  const menuAdminDatos2 = (e) => {
-    setsubmenuAdmonDatos(true);
-    setsubMenuBitacora(false);
+  const menuAdminDatos2 = () => {
+    //setsubmenuAdmonDatos(true);
+    //setsubMenuBitacora(false);
     setsubMenuUsuario(false);
     setcrearProovedor(false);
-    setCheckedBitacora((prev) => false);
-    setCheckedUser((prev) => false);
-    setCheckedDatos(true);
-    setCheckedProveedor((prev) => false);
-    setcheckedDatos2((prev) => false);
+    //setCheckedBitacora((prev) => false);
+    setCheckedUser(() => false);
+    //setCheckedDatos(true);
+    setCheckedProveedor(() => false);
+    setcheckedDatos2(() => false);
     setcheckedAdminDatos2((prev) => !prev);
   };
 
@@ -254,16 +262,6 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
   }));
 
   const classes = useStyles();
-  const [checkedBitacora, setCheckedBitacora] = useState(false);
-  const [checkedUser, setCheckedUser] = useState(false);
-  const [checkedDatos, setCheckedDatos] = useState(false);
-  const [checkedProveedor, setCheckedProveedor] = useState(false);
-  const [checkedDatos2, setcheckedDatos2] = useState(false);
-  //const [checkedDatosS3S, setcheckedDatosS3S] = useState(false);
-  //const [checkedDatosS3P, setcheckedDatosS3P] = useState(false);
-  const [checkedAdminDatos2, setcheckedAdminDatos2] = useState(false);
-  //const [checkedAdminDatosS3S, setcheckedAdminDatosS3S] = useState(false);
-  //const [checkedAdminDatosS3P, setcheckedAdminDatosS3P] = useState(false);
 
   return (
     <div className={classes.root}>
@@ -273,11 +271,10 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
         className={classes.appBar}
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Typography component="div" variant="h6" color="#fff" noWrap>
-            {"Sistema de Captura de Información"}
-            <br />
-          </Typography>
-          <div sx={{ justifyContent: "flex-end" }}>
+            <Typography variant="h5" color="#fff" noWrap>
+              Herramienta de Captura de Información de datos
+            </Typography>
+          <div>
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
@@ -349,7 +346,6 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
                   </Collapse>
                 ),
             )}
-            
 
             {rol == 2 && (
               <ListItem
@@ -496,10 +492,11 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
 
           {vistaRender === "createRegv2" && <ConnectedCreateRegv2 />}
 
-          {vistaRender === "editRegS2v2" && ( <ConnectedCreateRegv2 match={match} /> )}
+          {vistaRender === "editRegS2v2" && (
+            <ConnectedCreateRegv2 match={match} />
+          )}
 
           {vistaRender === "S2Schemav2" && <ListS2Schemav2 />}
-
 
           {/* ----------- NUEVAS VERSIONES - FIN ----------- */}
         </Grid>
@@ -514,7 +511,7 @@ function mapStateToProps(_, ownProps) {
   return { vistaRender, match };
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = (dispatch) => ({
   closeSession() {
     dispatch(userActions.removeSessionLogIn());
   },

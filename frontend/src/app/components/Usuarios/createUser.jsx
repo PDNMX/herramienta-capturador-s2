@@ -2,11 +2,10 @@ import { Form } from "react-final-form";
 import {
   TextField,
   makeValidate,
-  makeRequired,
   Select,
   Switches,
 } from "mui-rff";
-import { Grid, Button, Tooltip } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { requestCreationUser, requestEditUser } from "../../store/mutations";
@@ -198,12 +197,6 @@ function MyForm(props) {
   }
 
   const estatus = [{ label: "Vigente", value: true }];
-  const buttonSubmittProps = {
-    // make sure all required component's inputs/Props keys&types match
-    variant: "contained",
-    color: "primary",
-    type: "submit",
-  };
 
   return (
     <div>
@@ -212,7 +205,7 @@ function MyForm(props) {
           onSubmit={onSubmit}
           initialValues={initialValues}
           validate={validate}
-          render={({ handleSubmit, values, submitting }) => (
+          render={({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit} noValidate>
               {alerta2.status === undefined && (
                 <Card>
@@ -312,7 +305,7 @@ function MyForm(props) {
                               data={providers}
                               defaultValue={""}></Select>
                             <OnChange name="proveedorDatos">
-                              {(value, previous) => {
+                              {(value) => {
                                 const sistemasDataNew = [];
                                 let sistemasDisponibles = [];
                                 for (const prov of providers) {

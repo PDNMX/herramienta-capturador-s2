@@ -45,11 +45,11 @@ export const ListS2Schemav2 = () => {
     paginationSuper: state.pagination,
   }));
   const dispatch = useDispatch();
-  const [query, setQuery] = React.useState({});
+  //const [query, setQuery] = React.useState({});
   const [openModalUserInfo, setOpenModalUserInfo] = React.useState(false);
   const [selectedRegistro, setSelectedRegistro] = React.useState({});
 
-  const [maxWidth, _] = React.useState("md");
+  const [maxWidth] = React.useState("md");
 
   const handleOpenModalUserInfo = (user) => {
         
@@ -72,7 +72,7 @@ export const ListS2Schemav2 = () => {
   const handleChangePage = (_, newPage) => {
     dispatch(
       S2Actions.requestListS2({
-        query: query,
+        /* query: query, */
         page: newPage + 1,
         pageSize: paginationSuper.pageSize,
       }),
@@ -84,7 +84,7 @@ export const ListS2Schemav2 = () => {
     if (paginationSuper.page * newSize > paginationSuper.totalRows) {
       dispatch(
         S2Actions.requestListS2({
-          query: query,
+          /* query: query, */
           page: 1,
           pageSize: parseInt(event.target.value, 10),
         }),
@@ -92,7 +92,7 @@ export const ListS2Schemav2 = () => {
     } else {
       dispatch(
         S2Actions.requestListS2({
-          query: query,
+          /* query: query, */
           page: 1,
           pageSize: parseInt(event.target.value, 10),
         }),

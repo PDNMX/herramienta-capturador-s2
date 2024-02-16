@@ -1,4 +1,3 @@
-import React from "react";
 import { storeValidate } from "../store";
 import { Provider } from "react-redux";
 import { Router, Route } from "react-router-dom";
@@ -13,7 +12,7 @@ import { LoginV } from "./Login/Login";
 import { S2Actions } from "../_actions/s2.action";
 /* import { clearErrorsValidation } from "../store/mutations";
 import { bitacoraActions } from "../_actions/bitacora.action"; */
-import { S3SActions } from "../_actions/s3s.action";
+//import { S3SActions } from "../_actions/s3s.action";
 //import { S3PActions } from "../_actions/s3p.action";
 import { ResetPasswordV } from "./Login/ResetPassword";
 
@@ -23,7 +22,6 @@ const labelNoSeHaIniciado = "No se ha iniciado sesión";
 
 export const App = () => (
   <Router history={history}>
-    {" "}
     <Provider store={storeValidate}>
       <Route
         exact

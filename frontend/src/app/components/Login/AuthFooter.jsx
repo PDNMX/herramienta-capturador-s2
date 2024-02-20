@@ -8,6 +8,9 @@ const AuthFooter = () => (
     <Typography variant="subtitle2" component={Link} href="https://www.sna.org.mx" target="_blank" underline="hover">
     sna.org.mx
     </Typography>
+    {/* <Typography variant="subtitle2" component={Link} href="https://www.sesna.gob.mx" target="_blank" underline="hover">
+    sesna.gob.mx
+    </Typography> */}
   </Stack>
 );
 

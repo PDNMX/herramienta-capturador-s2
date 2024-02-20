@@ -136,7 +136,7 @@ function MyForm(props) {
                           <Typography
                             className={classes.fontblack}
                             variant="subtitle1">
-                            Introduce tus credenciales para continuar
+                            Introduce tus credenciales
                           </Typography>
                           <Form
                             onSubmit={onSubmit}

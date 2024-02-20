@@ -4,7 +4,7 @@ const moment = require('moment-timezone');
 require('dotenv').config();
 const {proveedorRegistros} = require("../../proveedor/models/proveedorRegistros");
 const {User} = require("../../usuario/models/User");
-const { error } = require("../../../backend/src/server/schemas/S2V2/model.joynew.s2");
+//const { error } = require("../../../backend/src/server/schemas/S2V2/model.joynew.s2");
 
 module.exports = {
   insertS2v2: async (req, res) => {

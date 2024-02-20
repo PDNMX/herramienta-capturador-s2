@@ -271,7 +271,7 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
             <Typography variant="h5" color="#fff" noWrap>
-              Herramienta de Captura de Información de datos
+              Herramienta de captura de información del Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas
             </Typography>
           <div>
             <Button

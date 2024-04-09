@@ -13,9 +13,10 @@ const SchemaValidationMiddleware = require("../common/middlewares/SchemaValidati
 /* const updateProductPayload = require("./schemas/updateProductPayload");
 const { roles } = require("../config"); */
 
-router.get('/hola', [isAuthenticatedMiddleware.check], (_, res) => {
+router.get('/hola',  (_, res) => {
   res.send('Hello from A!, el backend de S2 está funcionando correctamente desde insomnia 123!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 })
+//router.post("/validar",[isAuthenticatedMiddleware.check], S2Controller.validar);
 
 
 router.post(

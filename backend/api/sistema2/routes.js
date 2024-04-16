@@ -18,6 +18,7 @@ router.get('/hola',  (_, res) => {
 })
 //router.post("/validar",[isAuthenticatedMiddleware.check], S2Controller.validar);
 
+router.post("/validar",[isAuthenticatedMiddleware.check], S2Controller.validar);
 
 router.post(
   "/insertS2v2",

@@ -56,9 +56,22 @@ const S2Schema = new mongoose.Schema({
 S2Schema.plugin(mongoosePaginate);
 //const s2Connection = mongoose.connection.useDb("administracionUsuarios");
 // Crear el modelo de producto utilizando el esquema
+const s2Connection = mongoose.connection.useDb("administracionUsuarios");
 const spic = mongoose.connection.useDb("S2").model("spic", S2Schema, "spic");
+
+/*  Creamos el modelo para almacenar los metadatos para s2 */
+const S2SchemaMeta = new mongoose.Schema({
+  metadatos: {type: mongoose.Schema.Types.Mixed},
+  data: {type: mongoose.Schema.Types.Mixed}
+},{});
+
+S2SchemaMeta.plugin(mongoosePaginate);
+const spicMeta = mongoose.connection.useDb("S2").model("spic",S2SchemaMeta, "spic");
+
 module.exports = {
-  spic
+  s2Connection,
+  spic,
+  spicMeta
 }
 
 // Exportar las funciones del modelo de producto

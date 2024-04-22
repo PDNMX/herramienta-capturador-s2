@@ -50,8 +50,7 @@ const S2Schema = new mongoose.Schema({
     tipo: { type: String }
   },
   observaciones: { type: String }
-  
-});
+}, { versionKey: false }); 
 
 S2Schema.plugin(mongoosePaginate);
 //const s2Connection = mongoose.connection.useDb("administracionUsuarios");
@@ -63,7 +62,7 @@ const spic = mongoose.connection.useDb("S2").model("spic", S2Schema, "spic");
 const S2SchemaMeta = new mongoose.Schema({
   metadatos: {type: mongoose.Schema.Types.Mixed},
   data: {type: mongoose.Schema.Types.Mixed}
-},{});
+}, { versionKey: false }); 
 
 S2SchemaMeta.plugin(mongoosePaginate);
 const spicMeta = mongoose.connection.useDb("S2").model("spic",S2SchemaMeta, "spic");

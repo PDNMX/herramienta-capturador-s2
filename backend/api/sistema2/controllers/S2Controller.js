@@ -132,8 +132,6 @@ module.exports = {
         /* let SpicMeta = new spicMeta({metadatos,data});
         let resultMeta = await SpicMeta.save(); */
 
-        console.log("antes de buscar ");
-        
         // Suponiendo que 'nuevosValores' contiene los valores de spicMeta que deseas actualizar
         /* Busca pero no permite editar  */
           let documento = await spic.findOne({ _id: new ObjectId(_id) }).lean();
@@ -141,9 +139,7 @@ module.exports = {
           //console.log('Documento no encontrado.');
           return res.status(404).json({ message: 'Documento no encontrado.' });
         } 
-          /* Busca pero no permite editar  */
-
-    
+     
         // Elimina las propiedades que deseas antes de actualizar el documento
           
         //delete documento._id;  

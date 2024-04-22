@@ -5,6 +5,11 @@ const nodemailer = require('nodemailer');
 const generator = require('generate-password');
 require('dotenv').config();
 
+const emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,})$/;
+
+function validateEmail(email) {
+  return emailRegex.test(email);
+}
 const transporter = nodemailer.createTransport({
     host: process.env.HOST_EMAIL,
     port: process.env.PORT_EMAIL,
@@ -214,13 +219,14 @@ module.exports = {
     },
     resetpassword: async (req, res) => {
         try {
-            console.log('hola desde resetpassword');
+            //console.log('hola desde resetpassword');
             const { correo } = req.body;
             console.log(correo);
-            if (!correo) {
-                return res.status(400).json({ message: 'Correo electrónico requerido.', Status: 500 });
-            }
 
+            // **Validar correo electrónico antes de continuar**
+            if (!validateEmail(correo)) {
+                return res.status(400).json({ message: 'Correo electrónico inválido.', Status: 500 });
+            }
 
             // Verificar si el usuario está dado de baja
             const usuarioDadoDeBaja = await User.findOne({ correoElectronico: correo, estatus: false });

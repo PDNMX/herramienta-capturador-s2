@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     contrasena: String, // Cambié "contrasena" a "contrasena" para corregir un error de escritura
     sistemas: { type: [], default: void 0 },
     fechaAlta: String,
-    fechaBaja: String,
+    fechaActualizacion: String,
     estatus: Boolean,
     vigenciaContrasena: String,
     proveedorDatos: String,

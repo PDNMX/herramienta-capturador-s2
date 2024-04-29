@@ -11,6 +11,11 @@ const Ajv = require('ajv');
 module.exports = {
   createProvider: async (req, res) => {
     try {
+      console.log(typeof(req.body));
+      console.log(req.body);
+      
+     /*  if (req.body.usuario)
+          delete req.body.usuario; */
       const ajv = new Ajv();
       const validate = ajv.compile(providerSchemaJSON);
       let dataToValidate = req.body;

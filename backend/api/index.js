@@ -36,6 +36,7 @@ app.use(cors(), bodyParser.urlencoded({ extended: true }), bodyParser.json());
 // Middleware that parses the body payloads as JSON to be consumed next set
 // of middlewares and controllers.
 app.use(Express.json());
+app.use(Express.urlencoded({ extended: true }));
 
 const start = async () => {
   try {

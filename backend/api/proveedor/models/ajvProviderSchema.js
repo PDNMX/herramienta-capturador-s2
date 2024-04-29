@@ -32,7 +32,7 @@ const providerSchemaJSON = {
       },
   },
   required: ["dependencia", "sistemas", "estatus"],
-  additionalProperties: false,
+  additionalProperties: true,
 };
 
 module.exports = { providerSchemaJSON };

@@ -15,10 +15,10 @@
 const providerSchemaJSON = {
   type: "object",
   properties: {
-      dependencia: {
+      /* dependencia: {
           type: "string",
           pattern: "^[ñaéíóúÁÉÍÓÚa-zA-Z ]*$",
-      },
+      }, */
       fechaAlta: {
           type: "string", // Cambia a "string" para representar la fecha
       },

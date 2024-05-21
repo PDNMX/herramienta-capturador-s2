@@ -76,14 +76,14 @@ module.exports = {
                 let passHash = encryptPassword(pass);
                 let fecha = moment().tz("America/Mexico_City").format('YYYY-MM-DD'); 
                 let fechaActual = moment();
-                let newBody = { ...body, contrasena: passHash, fechaAlta: fecha, vigenciaContrasena: fechaActual.add(3, 'months').format().toString(), estatus: true, rol:"2" };
+                let newBody = { ...body, contrasena: passHash, fechaAlta: fecha, vigenciaContrasena: fechaActual.add(3, 'months').format().toString(), estatus: true, rol:"2", contrasenaNueva:true };
                 newBody["fechaActualizacion"] = fecha;
                 // se inserta el usuario en la base de datos
                 const nuevoUsuario = new User(newBody);
                 await nuevoUsuario.save();
 
                 // Envía el correo electrónico con la contraseña generada
-            let mailOptions = {
+               let mailOptions = {
                 from: process.env.EMAIL,
                 to: newBody.correoElectronico,
                 subject: 'Bienvenido a la plataforma de administración de usuarios',

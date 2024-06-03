@@ -2,46 +2,65 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Table,
-  TableBody,
-  TableContainer,
-  TableRow,
-  TableCell,
-  TablePagination,
-  TableFooter,
-  Tooltip,
+  Alert,
   Button,
-  TableHead,
-  Grid,
-  IconButton,
-  Typography,
-  Toolbar,
-  useTheme,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
-  CardActions,
   Divider,
+  Grid,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Toolbar,
+  Tooltip,
+  Typography,
+  Snackbar
 } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { userActions } from "../../_actions/user.action";
+//import { userActions } from "../../_actions/user.action";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import createStyles from "@mui/styles/createStyles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { history } from "../../store/history";
 import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
 import { requestResetPassword } from "../../store/mutations";
+import { alertActions } from "../../_actions/alert.actions";
 import CloseIcon from "@mui/icons-material/Close";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Nota from "../Common/Nota";
-import CheckIcon from "@mui/icons-material/Check";
-import NotInterestedIcon from "@mui/icons-material/NotInterested";
 import TablePaginationActions from "../Common/TablePaginationActionsProps";
+
+const listaFormatos = {
+  "faltas-administrativas.graves":
+    "Faltas Administrativas de Servidores Públicos: GRAVES",
+  "faltas-administrativas.no-graves":
+    "Faltas Administrativas de Servidores Públicos: NO GRAVES",
+  "actos-particulares.personas-fisicas":
+    "Actos de Particulares vinculados con Faltas Graves: PERSONAS FÍSICAS",
+  "actos-particulares.personas-morales":
+    "Actos de Particulares vinculados con Faltas Graves: PERSONAS MORALES",
+  "inhabilitaciones.personas-fisicas":
+    "Sanciones (Inhabilitaciones) por normas diversas a la LGRA: PERSONAS FÍSICAS",
+  "inhabilitaciones.personas-morales":
+    "Sanciones (Inhabilitaciones) por normas diversas a la LGRA: PERSONAS MORALES",
+  "hechos-corrupcion.servidores-publicos":
+    "Hechos de Corrupción: SERVIDORES PÚBLICOS",
+  "hechos-corrupcion.personas-fisicas":
+    "Hechos de Corrupción: PERSONAS FÍSICAS",
+  "hechos-corrupcion.personas-morales":
+    "Hechos de Corrupción: PERSONAS MORALES",
+  "abstenciones.graves": "Abstenciones: GRAVES",
+  "abstenciones.no-graves": "Abstenciones: NO GRAVES",
+};
 
 export const ListUser = () => {
   const { users, alerta, providerSelect } = useSelector((state) => ({
@@ -52,7 +71,7 @@ export const ListUser = () => {
 
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  const [usuarioId, setUsuarioId] = React.useState("");
+  /* const [usuarioId, setUsuarioId] = React.useState(""); */
   const [nombreUsuario, setNombreUsuario] = React.useState("");
   const [pagination, setPagination] = React.useState({ page: 0, pageSize: 10 });
   const [openModalUserInfo, setOpenModalUserInfo] = React.useState(false);
@@ -74,14 +93,6 @@ export const ListUser = () => {
 
   const [openPassword, setOpenPassword] = React.useState(false);
   const [usuarioCorreo, setUsuarioCorreo] = React.useState("");
-  const [maxWidth, setMaxWidth] = React.useState("md");
-  const optionsDate = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
 
   const renderSelect = (user) => {
     let c1 = false;
@@ -134,28 +145,13 @@ export const ListUser = () => {
     //dispatch(userActions.requestPerPage({pageSize: parseInt(event.target.value, 10) }));
   };
 
-  const confirmAction = (id) => {
-    dispatch(userActions.deleteUser(id));
-    const initialRange = pagination.page * pagination.pageSize;
-    const endRange =
-      pagination.page * pagination.pageSize + pagination.pageSize;
-    const totalUsers = users.length - 1;
-    if (totalUsers <= initialRange) {
-      setPagination({
-        page: pagination.page - 1,
-        pageSize: pagination.pageSize,
-      });
-    }
-    handleClose();
-  };
-
   const confirmActionPassword = (correoElectronico) => {
-    alerta.estatus = false;
     const data = [];
     data["correo"] = correoElectronico;
     data["sistema"] = true;
     dispatch(requestResetPassword(data));
     handleClose();
+    //setOpen(true);
   };
   const redirectToRoute = (path) => {
     history.push(path);
@@ -173,314 +169,129 @@ export const ListUser = () => {
     setUsuarioCorreo(correoElectronico);
   };
 
-  const useStyles = makeStyles((theme) =>
-    createStyles({
-      titlegridModal: {
-        color: "#666666",
-      },
-      body2: {
-        color: "#666666",
-      },
-      fontblack: {
-        color: "#666666",
-      },
-      titleDialogDetail: {
-        flex: 1,
-        color: "#ffff",
-      },
-
-      tableHead: {
-        backgroundColor: "#34b3eb",
-      },
-      tableHeaderColumn: {
-        color: "#ffff",
-      },
-      toolBarModal: {
-        backgroundColor: "#34b3eb",
-      },
-      whiteStyle: {
-        color: "#ffff",
-      },
-      tableGrantsHead: {
-        backgroundColor: "#ffe01b",
-      },
-    }),
-  );
-
-  const classes = useStyles();
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const handleCloseSnackbar = () => {
+    dispatch(alertActions.clear());
+  };
 
   return (
     <>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={alerta.status}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={alerta.type}>
+          {alerta.message}
+        </Alert>
+      </Snackbar>
       {/* Modal Detalle de Usuario */}
       <Dialog
-        fullWidth={true}
-        maxWidth={maxWidth}
-        fullScreen={fullScreen}
+        maxWidth={"md"}
         onClose={handleCloseModalUserInfo}
         aria-labelledby="customized-dialog-title"
         open={openModalUserInfo}>
-        <Toolbar className={classes.toolBarModal}>
-          <Typography variant="h6" className={classes.titleDialogDetail}>
+        <Toolbar>
+          <Typography variant="h6">
             <b>Detalle del usuario</b>
-            <Typography className={classes.whiteStyle}>
-              *(DNC) = Dato No Capturado
-            </Typography>
           </Typography>
           <IconButton
-            className={classes.fontblack}
             edge="end"
             color="inherit"
             onClick={handleCloseModalUserInfo}
             aria-label="close"
-            size="large">
-            <CloseIcon className={classes.whiteStyle} />
+            size="large"
+            sx={{
+              position: "absolute",
+              right: 20,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}>
+            <CloseIcon />
           </IconButton>
         </Toolbar>
         <DialogContent dividers>
-          <Grid container item md={12} lg={12}>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Fecha alta</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {new Date(selectedUser.fechaAlta).toLocaleDateString(
-                  "es-ES",
-                  optionsDate,
-                )}
+          <Grid container>
+            <Grid item mb={1} md={12} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Fecha alta: </b>{" "}
+                {new Date(selectedUser.fechaAlta).toLocaleDateString("es-MX")}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Nombre</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {selectedUser.nombre + " " + selectedUser.apellidoUno}
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Nombre:</b> {selectedUser.nombre}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Apellido uno</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {selectedUser.apellidoUno ? selectedUser.apellidoUno : <Nota />}
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Primer Apellido:</b> {selectedUser.apellidoUno}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Apellido dos</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {selectedUser.apellidoDos ? selectedUser.apellidoDos : <Nota />}
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Segundo Apellido:</b> {selectedUser.apellidoDos}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Usuario</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
+
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Usuario: </b>
                 {selectedUser.usuario}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Estatus</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Estatus:</b>{" "}
                 {selectedUser.estatus.toString() == "true"
                   ? "Vigente"
                   : "No vigente"}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Vigencia de contraseña</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Vigencia de contraseña:</b>{" "}
                 {new Date(selectedUser.vigenciaContrasena).toLocaleDateString(
-                  "es-ES",
-                  optionsDate,
+                  "es-MX",
                 )}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Cargo</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {selectedUser.cargo}
+
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Cargo:</b> {selectedUser.cargo}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Correo electrónico</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {selectedUser.correoElectronico}
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Teléfono:</b> {selectedUser.telefono}
               </Typography>
             </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Teléfono</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {selectedUser.telefono}
-              </Typography>
-            </Grid>
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Extensión</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {selectedUser.extension ? selectedUser.extension : <Nota />}
+            <Grid item mb={1} md={4} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Extensión:</b> {selectedUser.extension}
               </Typography>
             </Grid>
 
-            <Grid item md={3} sm={12}>
-              <Typography
-                className={classes.titlegridModal}
-                align="left"
-                variant="subtitle2">
-                <b>Proveedor</b>
-              </Typography>
-              <Typography
-                className={classes.body2}
-                align="left"
-                variant="body2">
-                {renderSelect(selectedUser)}
+            <Grid item mb={1} md={12} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Correo electrónico:</b> {selectedUser.correoElectronico}
               </Typography>
             </Grid>
-            <Grid item xs={12}>
-              <Typography align={"center"}>Permisos</Typography>
+
+            <Grid item mb={1} md={12} xs={12}>
+              <Typography align="left" variant="body">
+                <b>Proveedor:</b> {renderSelect(selectedUser)}
+              </Typography>
             </Grid>
-            <Grid item md={12} sm={12}>
-              <TableContainer component={Paper}>
-                <Table aria-label="customized table">
-                  <TableHead className={classes.tableGrantsHead}>
-                    <TableRow>
-                      <TableCell>
-                        <b>Sistema</b>
-                      </TableCell>
-                      <TableCell align="center">
-                        <b>Permiso</b>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow key={"S2"}>
-                      <TableCell component="th" scope="row">
-                        {
-                          "Sistema de los Servidores que Intervienen en Procedimientos de Contratación"
-                        }
-                      </TableCell>
-                      <TableCell align="center">
-                        {selectedUser.sistemas.find(
-                          (element) => element === "S2",
-                        ) ? (
-                          <CheckIcon style={{ color: "#34b3eb" }} />
-                        ) : (
-                          <NotInterestedIcon style={{ color: "red" }} />
-                        )}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow key={"S3S"}>
-                      <TableCell component="th" scope="row">
-                        {"Sistema de los Servidores Públicos Sancionados"}
-                      </TableCell>
-                      <TableCell align="center">
-                        {selectedUser.sistemas.find(
-                          (element) => element === "S3S",
-                        ) ? (
-                          <CheckIcon style={{ color: "#34b3eb" }} />
-                        ) : (
-                          <NotInterestedIcon style={{ color: "red" }} />
-                        )}
-                      </TableCell>
-                    </TableRow>
-                    <TableRow key={"S3P"}>
-                      <TableCell component="th" scope="row">
-                        {"Sistema de los Particulares Sancionados"}
-                      </TableCell>
-                      <TableCell align="center">
-                        {selectedUser.sistemas.find(
-                          (element) => element === "S3P",
-                        ) ? (
-                          <CheckIcon style={{ color: "#34b3eb" }} />
-                        ) : (
-                          <NotInterestedIcon style={{ color: "red" }} />
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
+            <Grid item mb={1} md={12} xs={12}>
+              <Typography>
+                <b>Formatos disponibles:</b>
+              </Typography>
+              <ul>
+                {selectedUser.sistemas.map((item, index) => (
+                  <li key={index}>{listaFormatos[item] || item}</li> // Muestra el título o el valor original si no hay título
+                ))}
+              </ul>
             </Grid>
           </Grid>
         </DialogContent>
@@ -502,7 +313,11 @@ export const ListUser = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            variant="contained"
+            onClick={handleClose}
+            color="primary"
+            autoFocus>
             Cancelar
           </Button>
           <Button
@@ -510,7 +325,7 @@ export const ListUser = () => {
               confirmActionPassword(usuarioCorreo);
             }}
             color="primary"
-            autoFocus>
+            variant="contained">
             Aceptar
           </Button>
         </DialogActions>
@@ -519,41 +334,34 @@ export const ListUser = () => {
       {/* Tabla de Usuarios */}
       <Grid item xs={12}>
         <Card>
-          <CardHeader title="Lista de Usuarios" />
+          <CardHeader
+            title="Lista de Usuarios"
+            subheader="Información Registrada"
+          />
           <Divider />
           <CardContent>
-            <TableContainer component={Paper}>
-              {users.length > 0 && (
+            {users.length === 0 ? (
+              <Typography variant="h4" align="left" mb={2}>
+                No hay registros aún. Agrega un registro para comenzar.
+              </Typography>
+            ) : (
+              <TableContainer component={Paper}>
                 <Table aria-label="custom pagination table">
-                  <TableHead className={classes.tableHead}>
+                  <TableHead>
                     <TableRow>
-                      <TableCell
-                        align="left"
-                        style={{ width: "20%" }}
-                        className={classes.tableHeaderColumn}>
+                      <TableCell align="left" style={{ width: "20%" }}>
                         <b>Nombre completo</b>
                       </TableCell>
-                      <TableCell
-                        align="left"
-                        style={{ width: "20%" }}
-                        className={classes.tableHeaderColumn}>
+                      <TableCell align="left" style={{ width: "20%" }}>
                         <b>Usuario</b>
                       </TableCell>
-                      <TableCell
-                        align="left"
-                        className={classes.tableHeaderColumn}>
+                      <TableCell align="left">
                         <b>Correo</b>
                       </TableCell>
-                      <TableCell
-                        align="left"
-                        style={{ width: "20%" }}
-                        className={classes.tableHeaderColumn}>
+                      <TableCell align="left" style={{ width: "20%" }}>
                         <b>Proveedor</b>
                       </TableCell>
-                      <TableCell
-                        align="center"
-                        style={{ width: "20%" }}
-                        className={classes.tableHeaderColumn}>
+                      <TableCell align="center" style={{ width: "20%" }}>
                         <b>Acciones</b>
                       </TableCell>
                     </TableRow>
@@ -567,51 +375,55 @@ export const ListUser = () => {
                       )
                       .map((user) => (
                         <TableRow key={user._id}>
-                          <TableCell className={classes.fontblack} align="left">
+                          <TableCell align="left">
                             {user.nombre + " " + user.apellidoUno}
                             {user.apellidoDos ? " " + user.apellidoDos : ""}
                           </TableCell>
-                          <TableCell className={classes.fontblack} align="left">
-                            {user.usuario}
-                          </TableCell>
-                          <TableCell className={classes.fontblack} align="left">
+                          <TableCell align="left">{user.usuario}</TableCell>
+                          <TableCell align="left">
                             {user.correoElectronico}
                           </TableCell>
-                          <TableCell className={classes.fontblack} align="left">
+                          <TableCell align="left">
                             {renderSelect(user)}
                           </TableCell>
-                          <TableCell
-                            className={classes.fontblack}
-                            style={{ width: 430 }}
-                            align="center">
-                            
-                              <Tooltip title="Más información" placement="top">
-                                <IconButton
+                          <TableCell style={{ width: 430 }} align="center">
+                            <Tooltip title="Más información" placement="top">
+                              <IconButton
                                 onClick={() => handleOpenModalUserInfo(user)}
-                                  style={{ color: "#34b3eb" }}
-                                  aria-label="expand row"
-                                  size="small">
-                                  <VisibilityIcon />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="Editar usuario" placement="top">
-                                <IconButton
-                                onClick={() => redirectToRoute(`/usuario/editar/${user._id}`) }
+                                style={{ color: "#34b3eb" }}
+                                aria-label="expand row"
+                                size="small">
+                                <VisibilityIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Editar usuario" placement="top">
+                              <IconButton
+                                onClick={() =>
+                                  redirectToRoute(`/usuario/editar/${user._id}`)
+                                }
                                 style={{ color: "#ffe01b" }}>
-                                  <EditOutlinedIcon />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip
-                                title="Reestablecer contraseña"
-                                placement="top">
-                                <IconButton
-                                  onClick={() => handleOpenModalUserPassword( user._id, user.nombre, user.apellidoUno, user.apellidoDos, user.correoElectronico, ) }
-                                  style={{ color: "#67BFB7" }}
-                                  aria-label="expand row"
-                                  size="small">
-                                  <EnhancedEncryptionIcon />
-                                </IconButton>
-                              </Tooltip>
+                                <EditOutlinedIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip
+                              title="Reestablecer contraseña"
+                              placement="top">
+                              <IconButton
+                                onClick={() =>
+                                  handleOpenModalUserPassword(
+                                    user._id,
+                                    user.nombre,
+                                    user.apellidoUno,
+                                    user.apellidoDos,
+                                    user.correoElectronico,
+                                  )
+                                }
+                                style={{ color: "#67BFB7" }}
+                                aria-label="expand row"
+                                size="small">
+                                <EnhancedEncryptionIcon />
+                              </IconButton>
+                            </Tooltip>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -644,8 +456,8 @@ export const ListUser = () => {
                     </TableRow>
                   </TableFooter>
                 </Table>
-              )}
-            </TableContainer>
+              </TableContainer>
+            )}
           </CardContent>
           <Divider />
           <CardActions>
@@ -654,7 +466,7 @@ export const ListUser = () => {
               direction="row"
               justifyContent="flex-start"
               alignItems="center">
-              <Grid item sx={{ margin: 2 }}>
+              <Grid item mb={1} sx={{ margin: 2 }}>
                 <Button
                   onClick={() => redirectToRoute(`/usuario/crear`)}
                   variant="contained">

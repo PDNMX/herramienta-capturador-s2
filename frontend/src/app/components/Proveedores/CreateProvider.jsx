@@ -21,19 +21,13 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 
-const CreateProvider = ({
-  id,
-  provider,
-  alert,
-}) => {
+const CreateProvider = ({ id, provider, alert }) => {
   return <Proveedor initialValues={provider} id={id} alerta={alert} />;
 };
 
 function Proveedor(props) {
   const { initialValues, id, alerta } = props;
   const alert = alerta;
-  //alert.status = false;
-  //const [loaderDisplay, setLoaderDisplay] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const schema = {
     type: "object",
@@ -42,20 +36,28 @@ function Proveedor(props) {
       dependencia: {
         type: "string",
         title: "Nombre del proveedor",
+        pattern: "^[ñaéíóúÁÉÍÓÚa-zA-Z ]*$",
       },
       sistemas: {
         type: "array",
-        title: "Sistemas del proveedor",
-        description:
-          "Selecciona los sistemas que se podrán usar con el proveedor",
+        title: "Formatos",
+        description: "Selecciona los formatos que se podrá usar el proveedor",
         uniqueItems: true,
+        default: [{
+          label:
+            "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
+          value: "faltas-administrativas.graves",
+        }],
         items: {
-          type: "string",
-          enum: ["S2", "S3S", "S3P"],
           enumNames: [
-            "Servidores Públicos que Intervienen en Procedimientos de Contratación (S2)",
-            "Servidores Públicos Sancionados (S3)",
-            "Particulares Sancionados (S3)",
+            "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
+          ],
+          enum: [
+            {
+              label:
+                "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
+              value: "faltas-administrativas.graves",
+            },
           ],
         },
       },
@@ -77,6 +79,7 @@ function Proveedor(props) {
       },
     },
     sistemas: {
+      "ui:readonly": true,
       "ui:widget": "checkboxes",
     },
   };
@@ -92,8 +95,7 @@ function Proveedor(props) {
     } else {
       dispatch(requestCreationProvider(formData));
     }
-    setOpen(true)
-    //setLoaderDisplay(true);
+    setOpen(true);
   };
 
   return (

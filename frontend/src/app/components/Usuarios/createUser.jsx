@@ -1,11 +1,7 @@
+import React from "react";
 import { Form } from "react-final-form";
-import {
-  TextField,
-  makeValidate,
-  Select,
-  Switches,
-} from "mui-rff";
-import { Grid, Button } from "@mui/material";
+import { TextField, makeValidate, Select, Switches, Checkboxes } from "mui-rff";
+import { Grid, Button, Tooltip } from "@mui/material";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { requestCreationUser, requestEditUser } from "../../store/mutations";
@@ -14,7 +10,6 @@ import { requestCreationUser, requestEditUser } from "../../store/mutations";
 import Typography from "@mui/material/Typography";
 import { connect } from "react-redux";
 //import {alertActions} from "../../_actions/alert.actions";
-import makeStyles from "@mui/styles/makeStyles";
 import { history } from "../../store/history";
 import { OnChange } from "react-final-form-listeners";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -34,15 +29,17 @@ const CreateUser = ({ id, user, alert, providers }) => {
   );
 };
 
-
 function MyForm(props) {
   const { initialValues, id, alerta, providers } = props;
   const alert = alerta;
   const dispatch = useDispatch();
 
+  const [openModal, setOpenModal] = React.useState(false);
+
   // yes, this can even be async!
   async function onSubmit(values) {
-    alert.status = false;
+    //alert.status = false;
+    setOpenModal(true);
     if (id != undefined) {
       /*let arrsistemas: string[] = [];
 
@@ -55,6 +52,7 @@ function MyForm(props) {
     } else {
       dispatch(requestCreationUser(values));
     }
+    setOpenModal(true);
   }
   const schema = Yup.object().shape({
     nombre: Yup.string()
@@ -118,42 +116,10 @@ function MyForm(props) {
   const validate = makeValidate(schema);
   //const required = makeRequired(schema)
 
-  const styles = makeStyles({
-    boton: {
-      marginTop: "16px",
-      marginLeft: "16px",
-      marginRight: "16px",
-      backgroundColor: "#ffe01b",
-      color: "#666666",
-    },
-    boton2: {
-      marginTop: "16px",
-      marginLeft: "16px",
-      marginRight: "10px",
-      backgroundColor: "#ffe01b",
-      color: "#666666",
-    },
-    gridpadding: {
-      padding: "0px",
-    },
-    primary: {
-      main: "#D8ACD8",
-      light: "#bdffff",
-      dark: "#34b3eb",
-    },
-    secondary: {
-      main: "#ffe01b",
-      light: "#ffff5c",
-      dark: "#c8af00",
-    },
-    fontblack: {
-      color: "#666666",
-    },
-  });
-
   const { alerta2 } = useSelector((state) => ({
     alerta2: state.alert,
   }));
+  //console.log(alerta2);
 
   /* const handleCloseSnackbar = () => {
         dispatch(alertActions.clear());
@@ -163,15 +129,13 @@ function MyForm(props) {
     history.push(path);
   };
 
-  const cla = styles();
-
   let sistemasData = [];
   let sistemaspro = [];
   for (const pro of providers) {
     if (initialValues != undefined) {
       if (pro["value"] == initialValues.proveedorDatos) {
         sistemaspro = pro["sistemas"];
-        const sistemasNew = [];
+        /* const sistemasNew = [];
         for (const sistema of sistemaspro) {
           if (sistema === "S2") {
             sistemasNew.push({
@@ -190,13 +154,11 @@ function MyForm(props) {
               value: "S3P",
             });
           }
-        }
-        sistemasData = sistemasNew;
+        } */
+        sistemasData = sistemaspro;
       }
     }
   }
-
-  const estatus = [{ label: "Vigente", value: true }];
 
   return (
     <div>
@@ -205,7 +167,7 @@ function MyForm(props) {
           onSubmit={onSubmit}
           initialValues={initialValues}
           validate={validate}
-          render={({ handleSubmit, submitting }) => (
+          render={({ handleSubmit, values, submitting }) => (
             <form onSubmit={handleSubmit} noValidate>
               {alerta2.status === undefined && (
                 <Card>
@@ -277,7 +239,8 @@ function MyForm(props) {
                                 label="Nombre de usuario"
                                 name="usuario"
                                 required={true}
-                                InputProps={{ readOnly: true }}
+                                disabled
+                                /* InputProps={{ readOnly: true }} */
                               />
                             ) : (
                               <TextField
@@ -287,7 +250,7 @@ function MyForm(props) {
                               />
                             )}
                           </Grid>
-                          {id != null && (
+                          {/* {id != null && (
                             <Grid item xs={12} md={6}>
                               <Switches
                                 label="Estatus"
@@ -296,79 +259,50 @@ function MyForm(props) {
                                 data={estatus}
                               />
                             </Grid>
-                          )}
-                          <Grid item xs={12} md={6}>
+                          )} */}
+                          <Grid item xs={12} md={12}>
                             <Select
                               name="proveedorDatos"
                               label="Proveedor de datos"
                               required={true}
-                              data={providers}
-                              defaultValue={""}></Select>
+                              data={providers}></Select>
                             <OnChange name="proveedorDatos">
                               {(value) => {
-                                const sistemasDataNew = [];
                                 let sistemasDisponibles = [];
                                 for (const prov of providers) {
-                                  const obj =
-                                    prov;
+                                  const obj = prov;
                                   if (value == obj.value) {
                                     sistemasDisponibles = obj.sistemas;
                                   }
                                 }
-
-                                for (const sistema of sistemasDisponibles) {
-                                  if (sistema === "S2") {
-                                    sistemasDataNew.push({
-                                      label:
-                                        "Sistema de Servidores Públicos que Intervienen en Procedimientos de Contratación",
-                                      value: "S2",
-                                    });
-                                  } else if (sistema === "S3S") {
-                                    sistemasDataNew.push({
-                                      label:
-                                        "Sistema de los Servidores Públicos Sancionados",
-                                      value: "S3S",
-                                    });
-                                  } else if (sistema === "S3P") {
-                                    sistemasDataNew.push({
-                                      label:
-                                        "Sistema de los Particulares Sancionados",
-                                      value: "S3P",
-                                    });
-                                  }
-                                }
-                                sistemasData = sistemasDataNew;
+                                sistemasData = sistemasDisponibles;
                               }}
                             </OnChange>
-                          </Grid>
-                          <Grid item xs={12} md={6}>
-                            <Select
+                          </Grid>ñ
+                          <Grid item xs={12} md={12}>
+                            <Checkboxes
                               name="sistemas"
-                              label="Selecciona los sistemas aplicables"
+                              label="Selecciona los formatos correspondientes al proveedor"
                               required={true}
                               data={sistemasData}
-                              multiple={true}></Select>
+                              multiple={true}></Checkboxes>
                           </Grid>
-                          
                         </Grid>
-                        
-                        
                       </Grid>
                     </Grid>
                   </CardContent>
                   <CardActions>
                     <Grid spacing={3} container justifyContent="flex-start">
-                        
-                        <Grid item sx={{ margin: 1 }}>
-                            <Button
-                              variant="contained"
-                              type="submit"
-                              disabled={submitting}>
-                              Guardar
-                            </Button>
-                        </Grid>
-                    </Grid> 
-                </CardActions>
+                      <Grid item sx={{ margin: 1 }}>
+                        <Button
+                          variant="contained"
+                          type="submit"
+                          disabled={submitting}>
+                          Guardar
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </CardActions>
                 </Card>
               )}
               <div className="sweet-loading">
@@ -399,15 +333,13 @@ function MyForm(props) {
       </Grid>
       <Dialog
         disableEscapeKeyDown
-        open={alerta2.status}
+        open={openModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title" className={cla.fontblack}>
-          {"Resultado"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Resultado"}</DialogTitle>
         <DialogContent>
           <DialogContent id="alert-dialog-description">
-            <Typography noWrap variant="h6" className={cla.fontblack}>
+            <Typography noWrap variant="h6">
               {alerta2.message}
             </Typography>
           </DialogContent>

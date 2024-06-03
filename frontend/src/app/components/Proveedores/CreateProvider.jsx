@@ -46,7 +46,7 @@ function Proveedor(props) {
         default: [{
           label:
             "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
-          value: "faltas-administrativas.graves",
+          value: "servidores-publicos-intervienen-contrataciones",
         }],
         items: {
           enumNames: [
@@ -56,7 +56,7 @@ function Proveedor(props) {
             {
               label:
                 "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
-              value: "faltas-administrativas.graves",
+              value: "servidores-publicos-intervienen-contrataciones",
             },
           ],
         },

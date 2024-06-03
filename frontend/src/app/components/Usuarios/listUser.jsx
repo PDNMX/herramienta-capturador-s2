@@ -40,26 +40,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import TablePaginationActions from "../Common/TablePaginationActionsProps";
 
 const listaFormatos = {
-  "faltas-administrativas.graves":
-    "Faltas Administrativas de Servidores Públicos: GRAVES",
-  "faltas-administrativas.no-graves":
-    "Faltas Administrativas de Servidores Públicos: NO GRAVES",
-  "actos-particulares.personas-fisicas":
-    "Actos de Particulares vinculados con Faltas Graves: PERSONAS FÍSICAS",
-  "actos-particulares.personas-morales":
-    "Actos de Particulares vinculados con Faltas Graves: PERSONAS MORALES",
-  "inhabilitaciones.personas-fisicas":
-    "Sanciones (Inhabilitaciones) por normas diversas a la LGRA: PERSONAS FÍSICAS",
-  "inhabilitaciones.personas-morales":
-    "Sanciones (Inhabilitaciones) por normas diversas a la LGRA: PERSONAS MORALES",
-  "hechos-corrupcion.servidores-publicos":
-    "Hechos de Corrupción: SERVIDORES PÚBLICOS",
-  "hechos-corrupcion.personas-fisicas":
-    "Hechos de Corrupción: PERSONAS FÍSICAS",
-  "hechos-corrupcion.personas-morales":
-    "Hechos de Corrupción: PERSONAS MORALES",
-  "abstenciones.graves": "Abstenciones: GRAVES",
-  "abstenciones.no-graves": "Abstenciones: NO GRAVES",
+  "servidores-publicos-intervienen-contrataciones":
+    "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
 };
 
 export const ListUser = () => {

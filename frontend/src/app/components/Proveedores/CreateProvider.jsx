@@ -28,6 +28,8 @@ const CreateProvider = ({ id, provider, alert }) => {
 function Proveedor(props) {
   const { initialValues, id, alerta } = props;
   const alert = alerta;
+  //alert.status = false;
+  //const [loaderDisplay, setLoaderDisplay] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const schema = {
     type: "object",
@@ -96,6 +98,7 @@ function Proveedor(props) {
       dispatch(requestCreationProvider(formData));
     }
     setOpen(true);
+    //setLoaderDisplay(true);
   };
 
   return (

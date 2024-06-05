@@ -20,7 +20,7 @@ import Card from "@mui/material/Card";
 import AuthFooter from "./AuthFooter";
 import { useTheme } from "@mui/material/styles";
 
-import logoS2 from "../../../../public/ico_s2_color.svg";
+import logoS2 from '../../../assets/img/ico_s2.svg'
 
 export const ResetPasswordV = () => {
   return <MyForm initialValues={{ correo: "" }} />;
@@ -106,7 +106,7 @@ function MyForm(props) {
                     flexBasis: "50%",
                   },
                   textAlign: "center",
-                  borderBottom: "0.3rem solid #b25fac",
+                  borderBottom: "0.3rem solid #B25FAC",
                 }}>
                 <Grid
                   container
@@ -133,9 +133,7 @@ function MyForm(props) {
                           <Typography
                             variant="h4"
                             className={classes.fontblack}>
-                            Herramienta de captura de información del <br />
-                            Sistema de los servidores públicos que intervengan
-                            en procedimientos de contrataciones públicas
+                            Herramienta de captura de información del<br/> Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas
                           </Typography>
                           <Typography
                             className={classes.fontblack}
@@ -172,6 +170,7 @@ function MyForm(props) {
                                       Restablecer
                                     </Button>
                                   </Grid>
+                                  
                                 </Grid>
                               </form>
                             )}
@@ -195,7 +194,9 @@ function MyForm(props) {
                         underline="hover"
                         component="button"
                         variant="body2"
-                        onClick={() => redirectToRoute("/ingresar")}>
+                        onClick={() =>
+                          redirectToRoute("/ingresar")
+                        }>
                         Regresar
                       </Link>
                     </Grid>

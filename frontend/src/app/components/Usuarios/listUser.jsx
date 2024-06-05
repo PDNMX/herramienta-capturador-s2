@@ -41,7 +41,7 @@ import TablePaginationActions from "../Common/TablePaginationActionsProps";
 
 const listaFormatos = {
   "servidores-publicos-intervienen-contrataciones":
-    "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
+    "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas"
 };
 
 export const ListUser = () => {

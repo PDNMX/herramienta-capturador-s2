@@ -233,7 +233,7 @@ module.exports = {
   },
   listS2v2: async (req, res) => {
     try {
-      let idUser = req.body.idUser;
+      let idUser = req.body.usuario;
       //let usuario = await User.findById(req.body.usuario);
       let usuario = await User.findById(idUser);
       let proveedorDatos = usuario.proveedorDatos;

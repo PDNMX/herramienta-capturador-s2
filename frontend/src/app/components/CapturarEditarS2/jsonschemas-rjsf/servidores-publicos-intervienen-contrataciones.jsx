@@ -1,4 +1,5 @@
-let data = {
+// servidores-publicos-intervienen-contrataciones
+let schema = {
   definitions: {
     responsabilidadTipo1: {
       enumNames: [ "Elaborar", "Revisar", "Firmar, Autorizar o Dictaminar", "Supervisar", "Emitir o Suscribir" ],
@@ -832,4 +833,4 @@ let data = {
   },
 };
 
-export default data;
+export default schema;

@@ -17,7 +17,8 @@ import { useTheme } from "@mui/material/styles";
 import { Divider, Stack, useMediaQuery } from "@mui/material";
 import Card from "@mui/material/Card";
 
-import logoS2 from "../../../../public/ico_s2_color.svg";
+//import logoS3 from "../../../../public/ico_s3.svg";
+import logoS2 from '../../../assets/img/ico_s2.svg'
 import AuthFooter from "./AuthFooter";
 
 export const LoginV = () => {
@@ -106,7 +107,7 @@ function MyForm(props) {
                     flexBasis: "50%",
                   },
                   textAlign: "center",
-                  borderBottom: "0.3rem solid #b25fac",
+                  borderBottom: "0.3rem solid #B25FAC",
                 }}>
                 <Grid
                   container
@@ -132,10 +133,9 @@ function MyForm(props) {
                           <img src={logoS2} alt="logo-s2" height={120} />
                           <Typography
                             variant="h4"
-                            className={classes.fontblack}>
-                            Herramienta de captura de información del <br />
-                            Sistema de los servidores públicos que intervengan
-                            en procedimientos de contrataciones públicas
+                            className={classes.fontblack}
+                          >
+                          Herramienta de captura de información del<br/> Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas
                           </Typography>
                           <Typography
                             className={classes.fontblack}

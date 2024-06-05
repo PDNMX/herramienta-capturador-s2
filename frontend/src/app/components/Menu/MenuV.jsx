@@ -20,30 +20,43 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MenuItem from "@mui/material/MenuItem";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import Tooltip from '@mui/material/Tooltip';
 import { ConnectedCreateProvider } from "../Proveedores/CreateProvider";
 import { history } from "../../store/history";
 import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 /* import { LoadFileV } from "../UploadFile/LoadFileV"; */
 import { connect } from "react-redux";
 import { ConnectedCreateUser } from "../Usuarios/createUser";
 import { ConnectedChangePassword } from "../Usuarios/changePassword";
 import { ListUser } from "../Usuarios/listUser";
 import { ListProvider } from "../Proveedores/ListProvider";
+import { useLocation } from "react-router-dom";
 
-import { ConnectedCreateRegv2 } from "../CargaDatos/createRegS2-v2";
+/* S2 */
+import { CreateEditForm } from "../CapturarEditarS2/CreateEditForm";
+
+/* S2 Schemas */
+import schemaFaltasAdministrativasGraves from "../CapturarEditarS2/jsonschemas-rjsf/servidores-publicos-intervienen-contrataciones";
+
+/* S2 UI */
+import uiFaltasAdministrativasGraves from "../CapturarEditarS2/uiSchemas/servidores-publicos-intervienen-contrataciones";
+
+/* S2 - Consultar */
+import { ListForm1 } from "../ConsultarS2/servidores-publicos-intervienen-contrataciones";
 
 //import { useLocation } from "react-router-dom";
 import { userActions } from "../../_actions/user.action";
 
-import { ListS2Schemav2 } from "../CargaDatos/listSchemaS2-v2";
+import { Inicio } from "../Inicio";
 
 import { useSelector } from "react-redux";
 
-import FolderIcon from "@mui/icons-material/Folder";
-import KeyboardIcon from "@mui/icons-material/Keyboard";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import CircleIcon from "@mui/icons-material/Circle";
+
+import logoS2 from "../../../assets/img/ico_s2_light.svg";
 
 const MenuV = ({ vistaRender, match, closeSession }) => {
   const { vigencia, permisos } = useSelector((state) => ({
@@ -52,72 +65,8 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
   }));
 
   //MSubmenus
-  //const [submenuAdmonDatos, setsubmenuAdmonDatos] = useState(false);
-  const [submenuUsuario, setsubMenuUsuario] = useState(false);
-  //const [submenuBitacora, setsubMenuBitacora] = useState(false);
-  const [crearProovedor, setcrearProovedor] = useState(false);
-  //const [submenuAdmonDatosS2, setsubmenuAdmonDatosS2] = useState(false);
-  //const [checkedBitacora, setCheckedBitacora] = useState(false);
   const [checkedUser, setCheckedUser] = useState(false);
-  //const [checkedDatos, setCheckedDatos] = useState(false);
   const [checkedProveedor, setCheckedProveedor] = useState(false);
-  const [checkedDatos2, setcheckedDatos2] = useState(false);
-  //const [checkedDatosS3S, setcheckedDatosS3S] = useState(false);
-  //const [checkedDatosS3P, setcheckedDatosS3P] = useState(false);
-  const [checkedAdminDatos2, setcheckedAdminDatos2] = useState(false);
-  //const [checkedAdminDatosS3S, setcheckedAdminDatosS3S] = useState(false);
-  //const [checkedAdminDatosS3P, setcheckedAdminDatosS3P] = useState(false);
-
-  const menuUser = () => {
-    //setsubmenuAdmonDatos(false);
-    setsubMenuUsuario(true);
-    //setsubMenuBitacora(false);
-    setcrearProovedor(false);
-    setCheckedUser((prev) => !prev);
-    //setCheckedBitacora((prev) => false);
-    //setCheckedDatos((prev) => false);
-    setcheckedDatos2(() => false);
-    setcheckedAdminDatos2(() => false);
-  };
-
-  const menuProveedor = () => {
-    //setsubmenuAdmonDatos(false);
-    setsubMenuUsuario(false);
-    setcrearProovedor(true);
-    setCheckedProveedor((prev) => !prev);
-    setCheckedUser(() => false);
-    //setCheckedDatos((prev) => false);
-    //setCheckedBitacora((prev) => false);
-    //setsubMenuBitacora(false);
-    setcheckedDatos2(() => false);
-    setcheckedAdminDatos2(() => false);
-  };
-
-  const menuDatos2 = () => {
-    //setsubmenuAdmonDatos(true);
-    //setsubMenuBitacora(false);
-    setsubMenuUsuario(false);
-    setcrearProovedor(false);
-    //setCheckedBitacora((prev) => false);
-    setCheckedUser(() => false);
-    //setCheckedDatos(true);
-    setCheckedProveedor(() => false);
-    setcheckedDatos2((prev) => !prev);
-    setcheckedAdminDatos2(() => false);
-  };
-
-  const menuAdminDatos2 = () => {
-    //setsubmenuAdmonDatos(true);
-    //setsubMenuBitacora(false);
-    setsubMenuUsuario(false);
-    setcrearProovedor(false);
-    //setCheckedBitacora((prev) => false);
-    setCheckedUser(() => false);
-    //setCheckedDatos(true);
-    setCheckedProveedor(() => false);
-    setcheckedDatos2(() => false);
-    setcheckedAdminDatos2((prev) => !prev);
-  };
 
   const rol = localStorage.getItem("rol");
 
@@ -151,116 +100,21 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
     root: {
       display: "flex",
     },
-    toolbar: {
-      paddingRight: 24, // keep right padding when drawer closed
-    },
-    toolbarIcon: {
-      /* backgroundImage: `url(${LOGO})`, */
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center center",
-      backgroundSize: "contain",
-
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "flex-end",
-      padding: "0 8px",
-      ...theme.mixins.toolbar,
-      marginTop: "5px",
-      marginBottom: "5px",
-    },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-      background: "#B25FAC",
-    },
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(["width", "margin"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    menuButton: {
-      marginRight: 36,
-    },
-    menuButtonHidden: {
-      display: "none",
-    },
-    title: {
-      flexGrow: 1,
-      textAlign: "center",
-    },
-    drawerPaper: {
-      position: "relative",
-      whiteSpace: "nowrap",
-      width: drawerWidth,
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    },
-    drawerPaperClose: {
-      overflowX: "hidden",
-      transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9),
-      },
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-      flexGrow: 1,
-      height: "100vh",
-      overflow: "auto",
-    },
-    container: {
-      paddingTop: theme.spacing(4),
-      paddingBottom: theme.spacing(4),
-    },
-    paper: {
-      padding: theme.spacing(2),
-      display: "flex",
-      overflow: "auto",
-      flexDirection: "column",
-    },
-    paperPadding: {
-      padding: theme.spacing(2),
-    },
-    fixedHeight: {
-      height: 240,
-    },
-    fontblack: {
-      color: "#666666",
-    },
-
-    submenuicono: {
-      paddingLeft: "15px",
-      backgroundColor: "#ffff",
-    },
-    submenuicono2: {
-      backgroundColor: "#eee",
-    },
-    itemOne: {
-      color: "#34b3eb",
-    },
-    itemTwo: {
-      color: "#9ACA83",
-    },
-    itemThree: {
-      color: "#67BFB7",
-    },
-    itemIcon: {
-      minWidth: "35px",
-    },
-    colorico: {
-      color: "#fff",
+      background: "primary",
     },
   }));
 
   const classes = useStyles();
+
+  const location = useLocation(); // Usamos useLocation para obtener la ruta actual
+
+  // Función para determinar si un elemento está activo
+  const isItemActive = (route) => {
+    return location.pathname.includes(route);
+    //return location.pathname === route;
+  };
 
   return (
     <div className={classes.root}>
@@ -270,18 +124,20 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
         className={classes.appBar}
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
-            <Typography variant="h5" color="#fff" noWrap>
-              Herramienta de captura de información del Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas
-            </Typography>
+          <Button disabled>
+            <img src={logoS2} alt="logo-s3" height={35} />
+          </Button>
+
+          <Typography component="div" variant="h6" color="#fff" noWrap>
+          Herramienta de captura de información del Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas
+          </Typography>
+
           <div>
             <Button
               aria-controls="simple-menu"
               aria-haspopup="true"
               onClick={handleClick}>
-              <ManageAccountsIcon
-                className={classes.colorico}
-                fontSize="large"
-              />
+              <ManageAccountsIcon style={{ color: "#fff" }} fontSize="large" />
             </Button>
             <Menu
               id="simple-menu"
@@ -310,89 +166,47 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
         }}>
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
-          <List>
-            {rol == 2 && (
-              <>
-                <ListItem
-                  onClick={(e) => menuAdminDatos2(e)}
-                  key={"m1"}
-                  disablePadding>
-                  <ListItemButton sx={{ p: 2 }}>
-                    <ListItemIcon>
-                      <FolderIcon className={classes.itemOne} />
-                    </ListItemIcon>
-                    <ListItemText primary="Administrar Información" />
-                    {checkedAdminDatos2 ? <ExpandLess /> : <ExpandMore />}
-                  </ListItemButton>
-                </ListItem>
-              </>
-            )}
-            {permisos.map(
-              (item) =>
-                item === "S2" && (
-                  <Collapse in={checkedAdminDatos2} key="S2">
-                    <ListItem
-                      onClick={() => redirectToRoute("/consulta/S2v2")}
-                      key={"m1s2v2"}
-                      disablePadding>
-                      <ListItemButton sx={{ pl: 3.5 }}>
-                        <ListItemIcon>
-                          <CircleIcon sx={{ maxHeight: "8px" }} />
-                        </ListItemIcon>
-                        <ListItemText secondary="Sistema 2" />
+          {rol == 2 && (
+            <>
+              {/* Servidores públicos que intervengan en procedimientos de contrataciones públicas */}
+              {(permisos.includes("servidores-publicos-intervienen-contrataciones"))&& (
+                <>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        selected={isItemActive(
+                          "/s2/servidores-publicos-intervienen-contrataciones",
+                        )}
+                        onClick={() =>
+                          redirectToRoute(
+                            "/consultar/s2/servidores-publicos-intervienen-contrataciones",
+                          )
+                        }>
+                        <ChevronRightIcon/>
+                        <ListItemText primary="Servidores Públicos que Intervienen en Contrataciones" />
                       </ListItemButton>
                     </ListItem>
-                  </Collapse>
-                ),
-            )}
+                  <Divider/>
+                </>
+              )}
+            </>
+          )}
 
-            {rol == 2 && (
+          {/* ADMINiSTRACIÓN */}
+          {rol == 1 && (
+            <>
               <ListItem
-                onClick={(e) => menuDatos2(e)}
-                key={"m3"}
+                onClick={() => setCheckedUser((prev) => !prev)}
+                key={"mu"}
                 disablePadding>
                 <ListItemButton sx={{ p: 2 }}>
                   <ListItemIcon>
-                    <KeyboardIcon className={classes.itemThree} />
-                  </ListItemIcon>
-                  <ListItemText primary="Capturar Información" />
-                  {checkedDatos2 ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
-              </ListItem>
-            )}
-            {permisos.map(
-              (item) =>
-                item === "S2" && (
-                  <Collapse in={checkedDatos2} key="S2">
-                    <ListItem
-                      onClick={() => redirectToRoute("/captura/S2v2")}
-                      key={"m3s2v2"}
-                      disablePadding>
-                      <ListItemButton sx={{ pl: 3.5 }}>
-                        <ListItemIcon>
-                          <CircleIcon sx={{ maxHeight: "8px" }} />
-                        </ListItemIcon>
-                        <ListItemText secondary="Sistema 2" />
-                      </ListItemButton>
-                    </ListItem>
-                  </Collapse>
-                ),
-            )}
-
-            {/* ADMINiSTRACIÓN */}
-            {rol == 1 && (
-              <ListItem onClick={(e) => menuUser(e)} key={"mu"} disablePadding>
-                <ListItemButton sx={{ p: 2 }}>
-                  <ListItemIcon>
-                    <PeopleIcon style={{ color: "#34b3eb" }} />
+                    <PeopleIcon style={{ color: "primary" }} />
                   </ListItemIcon>
                   <ListItemText primary="Usuarios" />
                   {checkedUser ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
               </ListItem>
-            )}
-            {submenuUsuario && (
-              <Collapse in={checkedUser}>
+              <Collapse in={!checkedUser}>
                 <ListItem
                   onClick={() => redirectToRoute("/usuario/crear")}
                   key={"mu1"}
@@ -416,23 +230,19 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
                   </ListItemButton>
                 </ListItem>
               </Collapse>
-            )}
-            {rol == "1" && (
               <ListItem
-                onClick={(e) => menuProveedor(e)}
+                onClick={() => setCheckedProveedor((prev) => !prev)}
                 key={"mp"}
                 disablePadding>
                 <ListItemButton sx={{ p: 2 }}>
                   <ListItemIcon>
-                    <AssignmentIcon className={classes.itemTwo} />
+                    <AssignmentIcon style={{ color: "primary" }} />
                   </ListItemIcon>
                   <ListItemText primary="Proveedores" />
                   {checkedProveedor ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
               </ListItem>
-            )}
-            {crearProovedor && (
-              <Collapse in={checkedProveedor}>
+              <Collapse in={!checkedProveedor}>
                 <ListItem
                   onClick={() => redirectToRoute("/proveedor/crear")}
                   key={"mp1"}
@@ -457,8 +267,8 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
                   </ListItemButton>
                 </ListItem>
               </Collapse>
-            )}
-          </List>
+            </>
+          )}
         </Box>
       </Drawer>
       <Box
@@ -486,18 +296,30 @@ const MenuV = ({ vistaRender, match, closeSession }) => {
             <ConnectedCreateProvider match={match} />
           )}
           {vistaRender === "providers" && <ListProvider />}
+          {vistaRender === "inicio" && <Inicio />}
 
-          {/* ----------- NUEVAS VERSIONES - INICIO ----------- */}
+          {/* ----------- S2v2 - INICIO ----------- */}
 
-          {vistaRender === "createRegv2" && <ConnectedCreateRegv2 />}
-
-          {vistaRender === "editRegS2v2" && (
-            <ConnectedCreateRegv2 match={match} />
+          {/* Faltas Administrativas de Servidores Públicos */}
+          {vistaRender === "capturar.servidores-publicos-intervienen-contrataciones" && (
+            <CreateEditForm
+              tipoForm={vistaRender}
+              schema={schemaFaltasAdministrativasGraves}
+              uiSchema={uiFaltasAdministrativasGraves}
+            />
           )}
-
-          {vistaRender === "S2Schemav2" && <ListS2Schemav2 />}
-
-          {/* ----------- NUEVAS VERSIONES - FIN ----------- */}
+          {vistaRender === "consultar.servidores-publicos-intervienen-contrataciones" && (
+            <ListForm1 />
+          )}
+          {vistaRender === "editar.servidores-publicos-intervienen-contrataciones" && (
+            <CreateEditForm
+              match={match}
+              tipoForm={vistaRender}
+              schema={schemaFaltasAdministrativasGraves}
+              uiSchema={uiFaltasAdministrativasGraves}
+            />
+          )}
+          {/* ----------- S2V2 - FIN ----------- */}
         </Grid>
       </Box>
     </div>

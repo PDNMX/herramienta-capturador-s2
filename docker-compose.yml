@@ -1,0 +1,55 @@
+version: "3"
+services:
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3060:3000
+
+  api:
+    image: directus/directus:10
+    restart: always
+    ports:
+      - 8055:8055
+    depends_on:
+      - db
+    environment:
+      KEY: ${DIRECTUS_KEY}
+      SECRET: ${DIRECTUS_SECRET}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD}
+      PUBLIC_URL: ${NEXT_PUBLIC_BACKEND_URL}
+      DB_CLIENT: "postgres"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_DATABASE: "directus"
+      DB_USER: ${DATABASE_USERNAME}
+      DB_PASSWORD: ${DATABASE_PASSWORD}
+      DB_VERSION: "14"
+      WEBSOCKETS_ENABLED: 0
+      TELEMETRY: 0
+      GRAPHQL_INTROSPECTION: 0
+      CACHE_ENABLED: 0
+      WEBSOCKETS_GRAPHQL_ENABLED: 0
+      CORS_CREDENTIALS: 1
+      CORS_ENABLED: 1
+
+  db:
+    image: postgres:14-alpine
+    
+    restart: always
+    environment:
+      POSTGRES_DB: "directus"
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - ./init-directus.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres:/var/lib/postgresql/data
+    #ports:
+      #- 5432:5432
+      
+volumes:
+  postgres: {}

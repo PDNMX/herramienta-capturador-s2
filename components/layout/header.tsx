@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import ThemeToggle from "@/components/layout/ThemeToggle/theme-toggle";

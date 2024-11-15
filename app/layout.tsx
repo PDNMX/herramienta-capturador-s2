@@ -19,7 +19,7 @@ export default async function RootLayout({
   const session = await getServerSession();
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${montserrat.className} overflow-hidden`}>
+      <body className={`${montserrat.className}`}>
         <Providers session={session}>
           <Toaster />
           {children}

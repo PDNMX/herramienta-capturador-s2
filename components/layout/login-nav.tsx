@@ -13,9 +13,6 @@ export function LoginNav() {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="secondary" className="relative text-xs md:text-sm rounded-full">
-            Ingresar
-          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-100" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">

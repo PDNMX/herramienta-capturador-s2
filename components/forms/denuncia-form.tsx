@@ -30,15 +30,16 @@ const formSchema = z.object({
 });
 
 const entidadesFederativas = [
+  "Federal",
   "Aguascalientes",
   "Baja California",
   "Baja California Sur",
   "Campeche",
+  "Coahuila",
+  "Colima",
   "Chiapas",
   "Chihuahua",
   "Ciudad de México",
-  "Coahuila",
-  "Colima",
   "Durango",
   "Estado de México",
   "Guanajuato",

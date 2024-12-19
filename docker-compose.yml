@@ -1,6 +1,5 @@
 version: "3"
 services:
-
   # frontend:
   #   build:
   #     context: ./
@@ -34,6 +33,13 @@ services:
       WEBSOCKETS_GRAPHQL_ENABLED: 0
       CORS_CREDENTIALS: 1
       CORS_ENABLED: 1
+      EMAIL_FROM: "${EMAIL_FROM}"
+      EMAIL_TRANSPORT: "${EMAIL_TRANSPORT}"
+      EMAIL_SMTP_HOST: "${EMAIL_SMTP_HOST}"
+      EMAIL_SMTP_PORT: "${EMAIL_SMTP_PORT}"
+      EMAIL_SMTP_USER: "${EMAIL_SMTP_USER}"
+      EMAIL_SMTP_PASSWORD: "${EMAIL_SMTP_PASSWORD}"
+      EMAIL_VERIFY_SETUP: "${EMAIL_VERIFY_SETUP}"
 
   db:
     image: postgres:14-alpine
@@ -47,7 +53,7 @@ services:
       - ./init-directus.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres:/var/lib/postgresql/data
     #ports:
-      #- 5432:5432
+    #- 5432:5432
 
 volumes:
   postgres: {}

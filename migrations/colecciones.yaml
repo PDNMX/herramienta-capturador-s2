@@ -1,0 +1,2167 @@
+version: 1
+directus: 10.13.4
+vendor: postgres
+collections:
+  - collection: datos_generales
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: datos_generales
+      color: null
+      display_template: null
+      group: servidores_intervengan_procedientos_contrataciones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: datos_generales
+  - collection: empleos_cargos_comisiones
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: empleos_cargos_comisiones
+      color: null
+      display_template: null
+      group: servidores_intervengan_procedientos_contrataciones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 2
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: empleos_cargos_comisiones
+  - collection: entes_publicos
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: entes_publicos
+      color: null
+      display_template: null
+      group: null
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: entes_publicos
+  - collection: niveles_jerarquicos
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: niveles_jerarquicos
+      color: null
+      display_template: null
+      group: empleos_cargos_comisiones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: niveles_jerarquicos
+  - collection: procedimientos
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: procedimientos
+      color: null
+      display_template: null
+      group: servidores_intervengan_procedientos_contrataciones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 3
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: procedimientos
+  - collection: servidores_intervengan_procedientos_contrataciones
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: servidores_intervengan_procedientos_contrataciones
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: []
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 2
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: servidores_intervengan_procedientos_contrataciones
+fields:
+  - collection: datos_generales
+    field: id
+    type: integer
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: datos_generales
+      data_type: integer
+      default_value: nextval('datos_generales_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_generales
+    field: primerApellido
+    type: string
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: primerApellido
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 4
+      special: null
+      translations:
+        - language: es-MX
+          translation: Primer apellido
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: primerApellido
+      table: datos_generales
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_generales
+    field: segundoApellido
+    type: string
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: segundoApellido
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations:
+        - language: es-MX
+          translation: Segundo apellido
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: segundoApellido
+      table: datos_generales
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_generales
+    field: curp
+    type: string
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: curp
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Escribir los dieciocho caracteres alfanuméricos como aparece en el
+        documento que emite la Secretaría de Gobernación.  En caso de no contar
+        con ese dato, podrá consultarlo en la siguiente página:
+        https://www.gob.mx/curp/
+      options: null
+      readonly: false
+      required: true
+      sort: 6
+      special: null
+      translations:
+        - language: es-MX
+          translation: CURP
+      validation:
+        _and:
+          - curp:
+              _regex: >-
+                ^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$
+      validation_message: Formato no valido, revisa el CURP dentro de los datos personales
+      width: full
+    schema:
+      name: curp
+      table: datos_generales
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_generales
+    field: rfc
+    type: string
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: rfc
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Escribir los primeros diez caracteres básicos y los tres
+        correspondientes a la homoclave
+      options: null
+      readonly: false
+      required: true
+      sort: 7
+      special: null
+      translations:
+        - language: es-MX
+          translation: RFC con homoclave
+      validation:
+        _and:
+          - rfc:
+              _regex: ^([A-ZÑ&]{3,4})([0-9]{6})([A-Z0-9]{3})$
+      validation_message: Formato no valido, revisa el RFC dentro de los datos personales
+      width: full
+    schema:
+      name: rfc
+      table: datos_generales
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_generales
+    field: sexo
+    type: string
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: sexo
+      group: null
+      hidden: false
+      interface: select-radio
+      note: Seleccionar la opción que corresponda
+      options:
+        choices:
+          - text: Mujer
+            value: MUJER
+          - text: Hombre
+            value: HOMBRE
+      readonly: false
+      required: true
+      sort: 8
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sexo
+      table: datos_generales
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_generales
+    field: entePublico
+    type: integer
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: false
+      sort: 9
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: datos_generales
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: datos_generales
+    field: nombre
+    type: string
+    meta:
+      collection: datos_generales
+      conditions: null
+      display: null
+      display_options: null
+      field: nombre
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Se deberá escribir el o los nombres, así como los apellidos, sin
+        abreviaturas, sin acentos, ni signos especiales. En caso de tener sólo
+        un apellido, deberá colocarse en el espacio del primer apellido y dejar
+        el espacio del segundo apellido en blanco
+      options: null
+      readonly: false
+      required: true
+      sort: 3
+      special: null
+      translations:
+        - language: es-MX
+          translation: Nombre (s)
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nombre
+      table: datos_generales
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: directus_users
+    field: rol_enlace
+    type: string
+    meta:
+      collection: directus_users
+      conditions: null
+      display: null
+      display_options: null
+      field: rol_enlace
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: 'Enlace '
+            value: enlace
+          - text: Aprobador
+            value: aprobador
+          - text: Secretario
+            value: secretario
+      readonly: false
+      required: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: rol_enlace
+      table: directus_users
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: id
+    type: integer
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: empleos_cargos_comisiones
+      data_type: integer
+      default_value: nextval('empleos_cargos_comisiones_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: entidadFederativa
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: entidadFederativa
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: >-
+        Seleccionar la entidad federativa donde se ubica el Ente público donde
+        labora la persona servidora pública
+      options:
+        choices:
+          - text: Aguascalientes
+            value: '01'
+          - text: Baja California
+            value: '02'
+          - text: Baja California Sur
+            value: '03'
+          - text: Campeche
+            value: '04'
+          - text: Coahuila de Zaragoza
+            value: '05'
+          - text: Colima
+            value: '06'
+          - text: Chiapas
+            value: '07'
+          - text: Chihuahua
+            value: '08'
+          - text: Ciudad de México
+            value: '09'
+          - text: Durango
+            value: '10'
+          - text: Guanajuato
+            value: '11'
+          - text: Guerrero
+            value: '12'
+          - text: Hidalgo
+            value: '13'
+          - text: Jalisco
+            value: '14'
+          - text: Estado de México
+            value: '15'
+          - text: Michoacán de Ocampo
+            value: '16'
+          - text: Morelos
+            value: '17'
+          - text: Nayarit
+            value: '18'
+          - text: Nuevo León
+            value: '19'
+          - text: Oaxaca
+            value: '20'
+          - text: Puebla
+            value: '21'
+          - text: Querétaro
+            value: '22'
+          - text: Quintana Roo
+            value: '23'
+          - text: San Luis Potosí
+            value: '24'
+          - text: Sinaloa
+            value: '25'
+          - text: Sonora
+            value: '26'
+          - text: Tabasco
+            value: '27'
+          - text: Tamaulipas
+            value: '28'
+          - text: Tlaxcala
+            value: '29'
+          - text: Veracruz de Ignacio de la Llave
+            value: '30'
+          - text: Yucatán
+            value: '31'
+          - text: Zacatecas
+            value: '32'
+      readonly: false
+      required: true
+      sort: 2
+      special: null
+      translations:
+        - language: es-MX
+          translation: Entidad federativa
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entidadFederativa
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: nivelOrdenGobierno
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: nivelOrdenGobierno
+      group: null
+      hidden: false
+      interface: select-radio
+      note: Seleccionar el nivel u orden de gobierno
+      options:
+        choices:
+          - text: Federal
+            value: FEDERAL
+          - text: Estatal
+            value: ESTATAL
+          - text: Municipal / Alcaldía
+            value: MUNICIPAL_ALCALDIA
+      readonly: false
+      required: true
+      sort: 3
+      special: null
+      translations:
+        - language: es-MX
+          translation: Nivel / Orden de gobierno
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nivelOrdenGobierno
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: ambitoPublico
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: ambitoPublico
+      group: null
+      hidden: false
+      interface: select-radio
+      note: Seleccionar el ámbito público
+      options:
+        choices:
+          - text: Ejecutivo
+            value: EJECUTIVO
+          - text: Legislativo
+            value: LEGISLATIVO
+          - text: Judicial
+            value: JUDICIAL
+          - text: Órgano autónomo
+            value: ORGANO_AUTONOMO
+      readonly: false
+      required: true
+      sort: 4
+      special: null
+      translations:
+        - language: es-MX
+          translation: Ambito público
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: ambitoPublico
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: nombreEntePublico
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: nombreEntePublico
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Indicar el nombre completo del Ente público, sin abreviaturas, sin
+        acentos, ni signos especiales
+      options: null
+      readonly: false
+      required: true
+      sort: 5
+      special: null
+      translations:
+        - language: es-MX
+          translation: Nombre del Ente público
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nombreEntePublico
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: siglasEntePublico
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: siglasEntePublico
+      group: null
+      hidden: false
+      interface: input
+      note: Indicar las siglas del Ente público
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations:
+        - language: es-MX
+          translation: Siglas del Ente público
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: siglasEntePublico
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: nivelJerarquico
+    type: integer
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: nivelJerarquico
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+        template: '{{clave}}'
+      readonly: false
+      required: true
+      sort: 7
+      special:
+        - m2o
+      translations:
+        - language: es-MX
+          translation: Nivel jerárquico del empleo, cargo o comisión
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nivelJerarquico
+      table: empleos_cargos_comisiones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_jerarquicos
+      foreign_key_column: id
+  - collection: empleos_cargos_comisiones
+    field: denominacion
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: denominacion
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Escribir la denominación completa del empleo, cargo o comisión que
+        aparece en el recibo de nómina, nombramiento, contrato u oficio de
+        comisión, sin abreviaturas, sin acentos, ni signos especiales
+      options: null
+      readonly: false
+      required: true
+      sort: 8
+      special: null
+      translations:
+        - language: es-MX
+          translation: Denominación del empleo, cargo o comisión
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: denominacion
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: areaAdscripcion
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: areaAdscripcion
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Especificar el nombre de la Unidad Administrativa del Ente público a la
+        que está adscrita la persona servidora pública, sin abreviaturas, sin
+        acentos, ni signos especiales
+      options: null
+      readonly: false
+      required: true
+      sort: 9
+      special: null
+      translations:
+        - language: es-MX
+          translation: Área de adscripción
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: areaAdscripcion
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: empleos_cargos_comisiones
+    field: entePublico
+    type: integer
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: false
+      sort: 11
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: empleos_cargos_comisiones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: empleos_cargos_comisiones
+    field: participacion
+    type: string
+    meta:
+      collection: empleos_cargos_comisiones
+      conditions: null
+      display: null
+      display_options: null
+      field: participacion
+      group: null
+      hidden: false
+      interface: select-radio
+      note: >-
+        Seleccionar si la participación de la persona servidora pública en
+        contrataciones públicas y otros procedimientos es una
+      options:
+        choices:
+          - text: Actividad inherente o recurrente en su empleo, cargo o comisión
+            value: ACTIVIDAD_INHERENTE
+          - text: Actividad ocasional vinculada al empleo, cargo o comisión
+            value: ACTIVIDAD_OCASIONAL
+      readonly: false
+      required: true
+      sort: 10
+      special: null
+      translations:
+        - language: es-MX
+          translation: Participación de la persona servidora pública en los procedimientos
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: participacion
+      table: empleos_cargos_comisiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: entes_publicos
+    field: id
+    type: integer
+    meta:
+      collection: entes_publicos
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: entes_publicos
+      data_type: integer
+      default_value: nextval('entes_publicos_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: entes_publicos
+    field: nombre
+    type: string
+    meta:
+      collection: entes_publicos
+      conditions: null
+      display: null
+      display_options: null
+      field: nombre
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nombre
+      table: entes_publicos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_jerarquicos
+    field: id
+    type: integer
+    meta:
+      collection: niveles_jerarquicos
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: niveles_jerarquicos
+      data_type: integer
+      default_value: nextval('niveles_jerarquicos_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_jerarquicos
+    field: clave
+    type: string
+    meta:
+      collection: niveles_jerarquicos
+      conditions: null
+      display: null
+      display_options: null
+      field: clave
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Operativo u homólogo
+            value: OPERATIVO_HOMOLOGO
+          - text: Enlace u homólogo
+            value: ENLACE_HOMOLOGO
+          - text: Jefatura de departamento u homólogo
+            value: JEFATURA_DEPTO_HOMOLOGO
+          - text: Subdirección de área u homólogo
+            value: SUBDIRECCION_HOMOLOGO
+          - text: Dirección de área u homólogo
+            value: DIRECCION_HOMOLOGO
+          - text: Dirección general u homólogo
+            value: DG_HOMOLOGO
+          - text: Jefatura de unidad u homólogo
+            value: JEFATURA_UNIDAD_HOMOLOGO
+          - text: Subsecretaría de estado oficialía mayor u homólogo
+            value: SUBSECRETARIA_HOMOLOGO
+          - text: Secretaría de estado u homólogo
+            value: SECRETARIA_HOMOLOGO
+          - text: 'Otro (especifique):'
+            value: OTRO
+      readonly: false
+      required: true
+      sort: 2
+      special: null
+      translations:
+        - language: es-MX
+          translation: Señalar el nivel jerárquico del empleo, cargo o comisión
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: clave
+      table: niveles_jerarquicos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_jerarquicos
+    field: valor
+    type: string
+    meta:
+      collection: niveles_jerarquicos
+      conditions:
+        - name: Mostrar
+          rule:
+            _and:
+              - clave:
+                  _eq: OTRO
+          hidden: false
+          required: true
+          options:
+            font: sans-serif
+            trim: false
+            masked: false
+            clear: false
+            slug: false
+      display: null
+      display_options: null
+      field: valor
+      group: null
+      hidden: true
+      interface: input
+      note: >-
+        En caso de seleccionar la opción "OTRO", se deberá especificar el tipo
+        de nivel jerárquico del empleo, cargo o comisión que desempeña la
+        persona servidora pública sancionada.
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: valor
+      table: niveles_jerarquicos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_jerarquicos
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_jerarquicos
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_jerarquicos
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: procedimientos
+    field: id
+    type: integer
+    meta:
+      collection: procedimientos
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: procedimientos
+      data_type: integer
+      default_value: nextval('procedimientos_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: procedimientos
+    field: Auto
+    type: json
+    meta:
+      collection: procedimientos
+      conditions: null
+      display: null
+      display_options: null
+      field: Auto
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: Elaborar
+            value: A
+          - text: Revisar
+            value: B
+          - text: Firmar,Autorizar o Dictaminar
+            value: C
+          - text: Supervisar
+            value: D
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - cast-json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: Auto
+      table: procedimientos
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: id
+    type: uuid
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special:
+        - uuid
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: user_created
+    type: uuid
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: user
+      display_options: null
+      field: user_created
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
+      required: false
+      sort: 2
+      special:
+        - user-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_created
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: date_created
+    type: timestamp
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 3
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: user_updated
+    type: uuid
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: user
+      display_options: null
+      field: user_updated
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
+      required: false
+      sort: 4
+      special:
+        - user-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_updated
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 5
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: entePublico
+    type: integer
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        template: '{{nombre}}'
+      readonly: false
+      required: false
+      sort: 6
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: divider-zcmgvb
+    type: alias
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: divider-zcmgvb
+      group: null
+      hidden: false
+      interface: presentation-divider
+      note: null
+      options:
+        inlineTitle: true
+        title: >-
+          Formato que indica los datos que se inscribirán en el Sistema de
+          Servidores Públicos que Intervengan en Procedimientos de
+          Contrataciones Públicas de la Plataforma Digital Nacional previsto en
+          el artículo 49, fracción II de la Ley General del Sistema Nacional
+          Anticorrupción.
+      readonly: false
+      required: false
+      sort: 7
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: notice-tyldqk
+    type: alias
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: notice-tyldqk
+      group: null
+      hidden: false
+      interface: presentation-notice
+      note: null
+      options:
+        color: info
+        text: >-
+          Todos los campos señalados con un asterisco (*) son de carácter
+          obligatorio.
+      readonly: false
+      required: false
+      sort: 8
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: links-glaglb
+    type: alias
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: links-glaglb
+      group: null
+      hidden: false
+      interface: presentation-links
+      note: null
+      options:
+        links:
+          - label: Consulta aquí el instructivo para el registro de información
+            icon: menu_book
+            type: info
+            url: >-
+              https://docs.google.com/document/d/1opPJxgWek0vHYsNoI1Xh-zqYepTjU6px/edit?usp=sharing&ouid=114879368646852403050&rtpof=true&sd=true
+      readonly: false
+      required: false
+      sort: 9
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: fecha
+    type: date
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options:
+        format: short
+        round: floor
+        strict: true
+      field: fecha
+      group: null
+      hidden: false
+      interface: datetime
+      note: Indicar la fecha en la que se registra la información
+      options: null
+      readonly: false
+      required: true
+      sort: 10
+      special: null
+      translations:
+        - language: es-MX
+          translation: 1. Fecha  (DD-MM-AAAA)
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: fecha
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: datosGenerales
+    type: integer
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: datosGenerales
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: >-
+        En el presente apartado se establecen los datos concernientes a la
+        persona servidora pública que intervenga en procedimientos de
+        contratación pública
+      options:
+        enableSelect: false
+        template: '{{nombres}} {{primerApellido}} {{segundoApellido}}'
+      readonly: false
+      required: true
+      sort: 12
+      special:
+        - m2o
+      translations:
+        - language: es-MX
+          translation: 3. Datos generales de la persona servidora pública
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: datosGenerales
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: datos_generales
+      foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: empleoCargoComision
+    type: integer
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: empleoCargoComision
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: >-
+        En el presente apartado se establecen los datos concernientes al empleo,
+        cargo o comisión que ostenta la persona servidora pública al intervenir
+        en actos públicos
+      options:
+        enableSelect: false
+        template: '{{nombreEntePublico}}'
+      readonly: false
+      required: true
+      sort: 13
+      special:
+        - m2o
+      translations:
+        - language: es-MX
+          translation: >-
+            4. Datos del empleo, cargo o comisión de la persona servidora
+            pública sancionada
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: empleoCargoComision
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: empleos_cargos_comisiones
+      foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: observaciones
+    type: text
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: observaciones
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: >-
+        En este espacio se podrán realizar las aclaraciones u observaciones que
+        se consideren pertinentes respecto de alguno o algunos de los apartados
+        del Formato.
+      options:
+        placeholder: null
+      readonly: false
+      required: false
+      sort: 14
+      special: null
+      translations:
+        - language: es-MX
+          translation: 6. Observaciones
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: observaciones
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: ejercicio
+    type: string
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: ejercicio
+      group: null
+      hidden: false
+      interface: input
+      note: Registrar el ejercicio presupuestal en que se realizó el acto público
+      options:
+        placeholder: null
+      readonly: false
+      required: true
+      sort: 11
+      special: null
+      translations:
+        - language: es-MX
+          translation: 2. Ejercicio
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: ejercicio
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+relations:
+  - collection: datos_generales
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: datos_generales
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: datos_generales
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: datos_generales_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: empleos_cargos_comisiones
+    field: nivelJerarquico
+    related_collection: niveles_jerarquicos
+    meta:
+      junction_field: null
+      many_collection: empleos_cargos_comisiones
+      many_field: nivelJerarquico
+      one_allowed_collections: null
+      one_collection: niveles_jerarquicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: empleos_cargos_comisiones
+      column: nivelJerarquico
+      foreign_key_table: niveles_jerarquicos
+      foreign_key_column: id
+      constraint_name: empleos_cargos_comisiones_niveljerarquico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: empleos_cargos_comisiones
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: empleos_cargos_comisiones
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: empleos_cargos_comisiones
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: empleos_cargos_comisiones_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_jerarquicos
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_jerarquicos
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_jerarquicos
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_jerarquicos_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: user_created
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: user_created
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: user_created
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contrat__9c4666e_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: user_updated
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: user_updated
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: user_updated
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contra__570cbabf_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contra__78b06464_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: datosGenerales
+    related_collection: datos_generales
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: datosGenerales
+      one_allowed_collections: null
+      one_collection: datos_generales
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: datosGenerales
+      foreign_key_table: datos_generales
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contra__1ed2f60b_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: empleoCargoComision
+    related_collection: empleos_cargos_comisiones
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: empleoCargoComision
+      one_allowed_collections: null
+      one_collection: empleos_cargos_comisiones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: empleoCargoComision
+      foreign_key_table: empleos_cargos_comisiones
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contra__6c23847b_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL

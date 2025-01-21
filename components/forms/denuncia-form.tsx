@@ -1,120 +1,201 @@
-// @ts-nocheck
-"use client";
-
-import React from 'react';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+//@ts-nocheck
+//@ts-nocheck
+"use client"
+import React, { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { Form } from "@/components/ui/form"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
+import { DenuncianteStep } from "./steps/denunciante-step"
+import { UbicacionHechoStep } from "./steps/ubicacion-hecho-step"
+import { PersonaDenunciadaStep } from "./steps/persona-denunciada-step"
+import { FaltaCometidaStep } from "./steps/falta-cometida-step"
+import { NarracionYEvidenciaStep } from "./steps/narracion-evidencia-step"
 
 const formSchema = z.object({
-  entidadFederativa: z.string({
-    required_error: "Por favor selecciona una entidad federativa.",
+  denunciante: z.object({
+    anonimo: z.boolean().default(false),
+    datosDenunciante: z
+      .object({
+        nombre: z.string().min(1, "El nombre es requerido"),
+        telefono: z.string().min(1, "El teléfono es requerido"),
+        email: z.string().email("Email inválido"),
+        proteccion: z.boolean().default(false),
+        domicilioDenunciante: z.object({
+          codigoPostal: z.string().min(1, "El código postal es requerido"),
+          calle: z.string().min(1, "La calle es requerida"),
+          numeroExterior: z.string().min(1, "El número exterior es requerido"),
+          numeroInterior: z.string().optional(),
+          municipioAlcaldia: z.string().min(1, "El municipio es requerido"),
+        }),
+      })
+      .optional(),
   }),
-});
+  ubicacionHecho: z.object({
+    lugarHecho: z.object({
+      entidad: z.string().min(1, "La entidad es requerida"),
+      entePublico: z.string().min(1, "El ente público es requerido"),
+      calle: z.string().min(1, "La calle es requerida"),
+      numeroExterior: z.string().min(1, "El número exterior es requerido"),
+      numeroInterior: z.string().optional(),
+      codigoPostal: z.string().min(1, "El código postal es requerido"),
+      fechaHecho: z.string().min(1, "La fecha es requerida"),
+      horaHecho: z.string().min(1, "La hora es requerida"),
+    }),
+  }),
+  personaDenunciada: z.object({
+    tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"]),
+    nombre: z.string().min(1, "El nombre es requerido"),
+    apellidoPaterno: z.string().min(1, "El apellido paterno es requerido"),
+    apellidoMaterno: z.string().min(1, "El apellido materno es requerido"),
+    descripcion: z.string().min(1, "La descripción es requerida"),
+  }),
+  faltaCometida: z.object({
+    faltaGrave: z.array(z.number()).default([]),
+    faltaNoGrave: z.array(z.number()).default([]),
+    hechosCorrupcion: z.array(z.number()).default([]),
+  }),
+  narracionHechos: z.string().min(1, "La narración de hechos es requerida"),
+  archivosEvidencia: z.array(z.any()).default([]),
+})
 
-const entidadesFederativas = [
-  "Federal",
-  "Aguascalientes",
-  "Baja California",
-  "Baja California Sur",
-  "Campeche",
-  "Coahuila",
-  "Colima",
-  "Chiapas",
-  "Chihuahua",
-  "Ciudad de México",
-  "Durango",
-  "Estado de México",
-  "Guanajuato",
-  "Guerrero",
-  "Hidalgo",
-  "Jalisco",
-  "Michoacán",
-  "Morelos",
-  "Nayarit",
-  "Nuevo León",
-  "Oaxaca",
-  "Puebla",
-  "Querétaro",
-  "Quintana Roo",
-  "San Luis Potosí",
-  "Sinaloa",
-  "Sonora",
-  "Tabasco",
-  "Tamaulipas",
-  "Tlaxcala",
-  "Veracruz",
-  "Yucatán",
-  "Zacatecas"
-];
+const steps = [
+  { title: "Datos del Denunciante", component: DenuncianteStep },
+  { title: "Ubicación del Hecho", component: UbicacionHechoStep },
+  { title: "Persona Denunciada", component: PersonaDenunciadaStep },
+  { title: "Faltas Cometidas", component: FaltaCometidaStep },
+  { title: "Narración de Hechos", component: NarracionYEvidenciaStep },
+]
 
-export function DenunciaForm({ initialData = null }) {
+export function MultiStepDenunciaForm() {
+  const [currentStep, setCurrentStep] = useState(0)
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      entidadFederativa: ""
+      denunciante: {
+        anonimo: true,
+        datosDenunciante: {
+          nombre: null,
+          telefono: null,
+          email: null,
+          proteccion: false,
+          domicilioDenunciante: {
+            codigoPostal: null,
+            calle: null,
+            numeroExterior: null,
+            numeroInterior: null,
+            municipioAlcaldia: null,
+          },
+        },
+      },
+      ubicacionHecho: {
+        lugarHecho: {
+          entidad: null,
+          entePublico: null,
+          codigoPostal: null,
+          calle: null,
+          numeroExterior: null,
+          numeroInterior: null,
+          fechaHecho: null,
+          horaHecho: null,
+        },
+      },
+      personaDenunciada: {
+        tipoPersona: "SERVIDOR_PUBLICO",
+        nombre: null,
+        apellidoPaterno: null,
+        apellidoMaterno: null,
+        descripcion: null,
+      },
+      faltaCometida: {
+        faltaGrave: [],
+        faltaNoGrave: [],
+        hechosCorrupcion: [],
+      },
+      narracionHechos: null,
+      archivosEvidencia: [],
     },
-  });
+  })
 
   function onSubmit(values) {
-    console.log(values);
-    // Aquí manejaremos la lógica de envío del formulario
+    console.log(values)
   }
 
+  const CurrentStepComponent = steps[currentStep].component
+
+  const progress = ((currentStep + 1) / steps.length) * 100
+
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-2xl">Presentar Denuncia</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="entidadFederativa"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Entidad Federativa</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecciona tu entidad federativa" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {entidadesFederativas.map((entidad) => (
-                        <SelectItem key={entidad} value={entidad}>
-                          {entidad}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
-  );
+    <div className="container mx-auto px-4 py-8">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <Card className="w-full max-w-4xl mx-auto shadow-lg">
+            <CardHeader className="bg-primary text-primary-foreground py-4">
+              <CardTitle className="text-2xl font-bold">Quiero presentar una denuncia</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="mb-8">
+                <div className="relative pt-1">
+                  <div className="flex mb-2 items-center justify-between">
+                    <div>
+                      <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-primary-foreground bg-primary">
+                        Progreso
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-semibold inline-block text-primary">{Math.round(progress)}%</span>
+                    </div>
+                  </div>
+                  <Progress value={progress} className="h-2 w-full" />
+                </div>
+              </div>
+              <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
+                {steps.map((step, index) => (
+                  <Button
+                    key={index}
+                    variant={currentStep === index ? "default" : "outline"}
+                    className={`px-2 py-1 text-xs sm:text-sm w-full h-auto min-h-[2.5rem] whitespace-normal ${
+                      index > currentStep ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    onClick={() => index <= currentStep && setCurrentStep(index)}
+                    disabled={index > currentStep}
+                  >
+                    <span className="line-clamp-2">
+                      {index + 1}. {step.title}
+                    </span>
+                  </Button>
+                ))}
+              </div>
+              <div className="bg-background p-4 rounded-lg">
+                <CurrentStepComponent form={form} />
+              </div>
+              <div className="mt-6 flex justify-between">
+                <Button
+                  type="button"
+                  onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
+                  disabled={currentStep === 0}
+                  variant="outline"
+                >
+                  Anterior
+                </Button>
+                {currentStep < steps.length - 1 ? (
+                  <Button type="button" onClick={() => setCurrentStep((prev) => Math.min(steps.length - 1, prev + 1))}>
+                    Siguiente
+                  </Button>
+                ) : (
+                  <Button type="submit">Enviar Denuncia</Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </form>
+      </Form>
+    </div>
+  )
 }
 
-export default DenunciaForm;
+export default MultiStepDenunciaForm

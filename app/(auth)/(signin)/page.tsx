@@ -56,7 +56,7 @@ export default function PaginaInicio() {
                   </div>
                 </div>
                 <div className="flex justify-end mt-6">
-                  <Button className="bg-custom-primary hover:bg-custom-primary/90 text-white text-base md:text-lg px-6 py-3 md:py-4 h-auto transition-colors duration-300">
+                  <Button className="bg-custom-primary hover:bg-custom-primary/90 text-white text-base md:text-lg px-6 py-3 md:py-4 h-auto transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg">
                     <span>Inicia tu denuncia ahora</span>
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>

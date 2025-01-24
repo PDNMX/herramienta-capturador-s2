@@ -1,20 +1,19 @@
 version: "3"
 services:
-
   app:
-    build: 
+    build:
       context: ./
     volumes:
       - ./extensions:/directus/extensions
       - ./migrations:/directus/migrations
       - ./templates:/directus/templates
     command: >
-        sh -c "node cli.js bootstrap &&
-              node cli.js schema apply --yes /directus/migrations/colecciones.yaml &&
-              pm2-runtime start ecosystem.config.cjs"
+      sh -c "node cli.js bootstrap &&
+            node cli.js schema apply --yes /directus/migrations/colecciones.yaml &&
+            pm2-runtime start ecosystem.config.cjs"
     restart: always
     ports:
-      - 8056:8055
+      - 8057:8055
     depends_on:
       - db
     environment:
@@ -23,7 +22,7 @@ services:
       PUBLIC_URL: ${PUBLIC_URL}
       DB_CLIENT: "postgres"
       DB_HOST: "db"
-      DB_PORT: "5432"
+      DB_PORT: "5432" #${DB_PORT}
       DB_DATABASE: "directus"
       DB_USER: ${DATABASE_USERNAME}
       DB_PASSWORD: ${DATABASE_PASSWORD}
@@ -52,7 +51,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     #ports:
-      #- 5432:5432
-      
+    #- 5432:5432
+
 volumes:
   postgres: {}

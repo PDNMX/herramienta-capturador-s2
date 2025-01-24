@@ -1,4 +1,4 @@
-version: "3"
+#version: "3"
 services:
   # frontend:
   #   build:
@@ -33,25 +33,26 @@ services:
       WEBSOCKETS_GRAPHQL_ENABLED: 0
       CORS_CREDENTIALS: 1
       CORS_ENABLED: 1
-      EMAIL_FROM: "${EMAIL_FROM}"
-      EMAIL_TRANSPORT: "${EMAIL_TRANSPORT}"
-      EMAIL_SMTP_HOST: "${EMAIL_SMTP_HOST}"
-      EMAIL_SMTP_PORT: "${EMAIL_SMTP_PORT}"
-      EMAIL_SMTP_USER: "${EMAIL_SMTP_USER}"
-      EMAIL_SMTP_PASSWORD: "${EMAIL_SMTP_PASSWORD}"
-      EMAIL_VERIFY_SETUP: "${EMAIL_VERIFY_SETUP}"
+      SECRET: ${DIRECTUS_SECRET}
+      #EMAIL_FROM: "${EMAIL_FROM}"
+      #EMAIL_TRANSPORT: "${EMAIL_TRANSPORT}"
+      #EMAIL_SMTP_HOST: "${EMAIL_SMTP_HOST}"
+      #EMAIL_SMTP_PORT: "${EMAIL_SMTP_PORT}"
+      #EMAIL_SMTP_USER: "${EMAIL_SMTP_USER}"
+      #EMAIL_SMTP_PASSWORD: "${EMAIL_SMTP_PASSWORD}"
+      #EMAIL_VERIFY_SETUP: "${EMAIL_VERIFY_SETUP}"
 
   db:
     image: postgres:14-alpine
-
     restart: always
     environment:
       POSTGRES_DB: "directus"
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
-      - ./init-directus.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres:/var/lib/postgresql/data
+      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
     #ports:
     #- 5432:5432
 

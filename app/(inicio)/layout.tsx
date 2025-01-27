@@ -3,8 +3,8 @@ import Sidebar from "@/components/layout/sidebar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_APP_NAME || "s3 Capturador",
-  description: "Herramienta de Captura del s3",
+  title: process.env.NEXT_PUBLIC_APP_NAME || "s5 Capturador",
+  description: "Herramienta de Captura del s5",
 };
 
 export default function DashboardLayout({

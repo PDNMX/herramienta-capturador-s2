@@ -158,7 +158,7 @@ export function DenunciaForm({
             );
           })}
         </div>
-        <div className="mt-8 bg-card p-6 rounded-lg border border-border">
+        <div className="mt-8 rounded-lg border border-border">
           <CurrentStepComponent form={form} />
         </div>
         <div className="mt-6 flex justify-between">

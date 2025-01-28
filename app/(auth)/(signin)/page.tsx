@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { MultiStepDenunciaForm } from "@/components/forms/denuncia-form";
+import { MultiStepDenunciaForm } from "@/components/forms/denuncia/multi-step-denuncia-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import React from "react";
 

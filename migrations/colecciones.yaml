@@ -2,17 +2,17 @@ version: 1
 directus: 10.13.4
 vendor: postgres
 collections:
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: archived
       collapse: open
-      collection: contratacionPublica
+      collection: contrataciones_publicas
       color: null
       display_template: >-
-        {{contratacionAdquisisciones}}{{contratacionObra}}{{datosContratacionesPublicas}}
+        {{contratacionAdquisisciones}}{{contratacionObra}}{{datos_contrataciones_publicas}}
       group: servidores_intervengan_procedientos_contrataciones
       hidden: true
       icon: null
@@ -26,18 +26,18 @@ collections:
       unarchive_value: draft
       versioning: false
     schema:
-      name: contratacionPublica
-  - collection: datosContratacionesPublicas
+      name: contrataciones_publicas
+  - collection: datos_contrataciones_publicas
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: datosContratacionesPublicas
+      collection: datos_contrataciones_publicas
       color: null
       display_template: null
-      group: contratacionPublica
+      group: contrataciones_publicas
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -50,7 +50,7 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: datosContratacionesPublicas
+      name: datos_contrataciones_publicas
   - collection: datos_generales
     meta:
       accountability: all
@@ -157,7 +157,7 @@ collections:
       collection: nivel_responsabilidad
       color: null
       display_template: null
-      group: contratacionPublica
+      group: contrataciones_publicas
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -316,11 +316,11 @@ collections:
     schema:
       name: servidores_intervengan_procedientos_contrataciones
 fields:
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     field: id
     type: integer
     meta:
-      collection: contratacionPublica
+      collection: contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -340,9 +340,9 @@ fields:
       width: full
     schema:
       name: id
-      table: contratacionPublica
+      table: contrataciones_publicas
       data_type: integer
-      default_value: nextval('"contratacionPublica_id_seq"'::regclass)
+      default_value: nextval('"contrataciones_publicas_id_seq"'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -354,11 +354,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     field: nivelesResponsabilidades
     type: integer
     meta:
-      collection: contratacionPublica
+      collection: contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -382,7 +382,7 @@ fields:
       width: full
     schema:
       name: nivelesResponsabilidades
-      table: contratacionPublica
+      table: contrataciones_publicas
       data_type: integer
       default_value: null
       max_length: null
@@ -396,15 +396,15 @@ fields:
       has_auto_increment: false
       foreign_key_table: nivel_responsabilidad
       foreign_key_column: id
-  - collection: contratacionPublica
-    field: datosContratacionesPublicas
+  - collection: contrataciones_publicas
+    field: datos_contrataciones_publicas
     type: integer
     meta:
-      collection: contratacionPublica
+      collection: contrataciones_publicas
       conditions: null
       display: null
       display_options: null
-      field: datosContratacionesPublicas
+      field: datos_contrataciones_publicas
       group: null
       hidden: false
       interface: select-dropdown-m2o
@@ -424,8 +424,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: datosContratacionesPublicas
-      table: contratacionPublica
+      name: datos_contrataciones_publicas
+      table: contrataciones_publicas
       data_type: integer
       default_value: null
       max_length: null
@@ -437,13 +437,13 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: datosContratacionesPublicas
+      foreign_key_table: datos_contrataciones_publicas
       foreign_key_column: id
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     field: entePublico
     type: integer
     meta:
-      collection: contratacionPublica
+      collection: contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -465,7 +465,7 @@ fields:
       width: full
     schema:
       name: entePublico
-      table: contratacionPublica
+      table: contrataciones_publicas
       data_type: integer
       default_value: null
       max_length: null
@@ -479,11 +479,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     field: contratacionesAdquisiciones
     type: string
     meta:
-      collection: contratacionPublica
+      collection: contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -516,7 +516,7 @@ fields:
       width: full
     schema:
       name: contratacionesAdquisiciones
-      table: contratacionPublica
+      table: contrataciones_publicas
       data_type: character varying
       default_value: null
       max_length: 255
@@ -530,11 +530,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     field: contratacionesObras
     type: string
     meta:
-      collection: contratacionPublica
+      collection: contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -567,7 +567,7 @@ fields:
       width: full
     schema:
       name: contratacionesObras
-      table: contratacionPublica
+      table: contrataciones_publicas
       data_type: character varying
       default_value: null
       max_length: 255
@@ -581,11 +581,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datosContratacionesPublicas
+  - collection: datos_contrataciones_publicas
     field: id
     type: integer
     meta:
-      collection: datosContratacionesPublicas
+      collection: datos_contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -605,9 +605,9 @@ fields:
       width: full
     schema:
       name: id
-      table: datosContratacionesPublicas
+      table: datos_contrataciones_publicas
       data_type: integer
-      default_value: nextval('"datosContratacionesPublicas_id_seq"'::regclass)
+      default_value: nextval('"datos_contrataciones_publicas_id_seq"'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -619,11 +619,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datosContratacionesPublicas
+  - collection: datos_contrataciones_publicas
     field: OCID
     type: string
     meta:
-      collection: datosContratacionesPublicas
+      collection: datos_contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -646,7 +646,7 @@ fields:
       width: full
     schema:
       name: OCID
-      table: datosContratacionesPublicas
+      table: datos_contrataciones_publicas
       data_type: character varying
       default_value: null
       max_length: 255
@@ -660,11 +660,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datosContratacionesPublicas
+  - collection: datos_contrataciones_publicas
     field: NOMBRE_DEL_PROCEDIMIENTO
     type: string
     meta:
-      collection: datosContratacionesPublicas
+      collection: datos_contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -687,7 +687,7 @@ fields:
       width: full
     schema:
       name: NOMBRE_DEL_PROCEDIMIENTO
-      table: datosContratacionesPublicas
+      table: datos_contrataciones_publicas
       data_type: character varying
       default_value: null
       max_length: 255
@@ -701,11 +701,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datosContratacionesPublicas
+  - collection: datos_contrataciones_publicas
     field: entePublico
     type: integer
     meta:
-      collection: datosContratacionesPublicas
+      collection: datos_contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -726,7 +726,7 @@ fields:
       width: full
     schema:
       name: entePublico
-      table: datosContratacionesPublicas
+      table: datos_contrataciones_publicas
       data_type: integer
       default_value: null
       max_length: null
@@ -740,11 +740,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: datosContratacionesPublicas
+  - collection: datos_contrataciones_publicas
     field: Clasificaciones
     type: string
     meta:
-      collection: datosContratacionesPublicas
+      collection: datos_contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -766,7 +766,7 @@ fields:
       width: full
     schema:
       name: Clasificaciones
-      table: datosContratacionesPublicas
+      table: datos_contrataciones_publicas
       data_type: character varying
       default_value: null
       max_length: 255
@@ -780,11 +780,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datosContratacionesPublicas
+  - collection: datos_contrataciones_publicas
     field: fechaInicioProcedimiento
     type: date
     meta:
-      collection: datosContratacionesPublicas
+      collection: datos_contrataciones_publicas
       conditions: null
       display: null
       display_options: null
@@ -804,7 +804,7 @@ fields:
       width: full
     schema:
       name: fechaInicioProcedimiento
-      table: datosContratacionesPublicas
+      table: datos_contrataciones_publicas
       data_type: date
       default_value: null
       max_length: null
@@ -4164,7 +4164,7 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: contratacionPublica
+    field: contrataciones_publicas
     type: integer
     meta:
       collection: servidores_intervengan_procedientos_contrataciones
@@ -4181,7 +4181,7 @@ fields:
             template: "{{contratacionAdquisisciones.clave}}"
       display: null
       display_options: null
-      field: contratacionPublica
+      field: contrataciones_publicas
       group: null
       hidden: true
       interface: select-dropdown-m2o
@@ -4201,7 +4201,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: contratacionPublica
+      name: contrataciones_publicas
       table: servidores_intervengan_procedientos_contrataciones
       data_type: integer
       default_value: null
@@ -4214,7 +4214,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: contratacionPublica
+      foreign_key_table: contrataciones_publicas
       foreign_key_column: id
   - collection: servidores_intervengan_procedientos_contrataciones
     field: otorgamientoConcesion
@@ -4414,12 +4414,12 @@ fields:
       foreign_key_table: nivel_responsabilidad_avaluo
       foreign_key_column: id
 relations:
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     field: nivelesResponsabilidades
     related_collection: nivel_responsabilidad
     meta:
       junction_field: null
-      many_collection: contratacionPublica
+      many_collection: contrataciones_publicas
       many_field: nivelesResponsabilidades
       one_allowed_collections: null
       one_collection: nivel_responsabilidad
@@ -4428,40 +4428,40 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: contratacionPublica
+      table: contrataciones_publicas
       column: nivelesResponsabilidades
       foreign_key_table: nivel_responsabilidad
       foreign_key_column: id
-      constraint_name: contratacionpublica_nivelesresponsabilidades_foreign
+      constraint_name: contrataciones_publicas_nivelesresponsabilidades_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: contratacionPublica
-    field: datosContratacionesPublicas
-    related_collection: datosContratacionesPublicas
+  - collection: contrataciones_publicas
+    field: datos_contrataciones_publicas
+    related_collection: datos_contrataciones_publicas
     meta:
       junction_field: null
-      many_collection: contratacionPublica
-      many_field: datosContratacionesPublicas
+      many_collection: contrataciones_publicas
+      many_field: datos_contrataciones_publicas
       one_allowed_collections: null
-      one_collection: datosContratacionesPublicas
+      one_collection: datos_contrataciones_publicas
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
       sort_field: null
     schema:
-      table: contratacionPublica
-      column: datosContratacionesPublicas
-      foreign_key_table: datosContratacionesPublicas
+      table: contrataciones_publicas
+      column: datos_contrataciones_publicas
+      foreign_key_table: datos_contrataciones_publicas
       foreign_key_column: id
-      constraint_name: contratacionpublica_datoscontratacionespublicas_foreign
+      constraint_name: contrataciones_publicas_datos_contrataciones_publicas_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: contratacionPublica
+  - collection: contrataciones_publicas
     field: entePublico
     related_collection: entes_publicos
     meta:
       junction_field: null
-      many_collection: contratacionPublica
+      many_collection: contrataciones_publicas
       many_field: entePublico
       one_allowed_collections: null
       one_collection: entes_publicos
@@ -4470,19 +4470,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: contratacionPublica
+      table: contrataciones_publicas
       column: entePublico
       foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: contratacionpublica_entepublico_foreign
+      constraint_name: contrataciones_publicas_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: datosContratacionesPublicas
+  - collection: datos_contrataciones_publicas
     field: entePublico
     related_collection: entes_publicos
     meta:
       junction_field: null
-      many_collection: datosContratacionesPublicas
+      many_collection: datos_contrataciones_publicas
       many_field: entePublico
       one_allowed_collections: null
       one_collection: entes_publicos
@@ -4491,11 +4491,11 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: datosContratacionesPublicas
+      table: datos_contrataciones_publicas
       column: entePublico
       foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: datoscontratacionespublicas_entepublico_foreign
+      constraint_name: datos_contrataciones_publicas_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: datos_generales
@@ -4793,22 +4793,22 @@ relations:
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: contratacionPublica
-    related_collection: contratacionPublica
+    field: contrataciones_publicas
+    related_collection: contrataciones_publicas
     meta:
       junction_field: null
       many_collection: servidores_intervengan_procedientos_contrataciones
-      many_field: contratacionPublica
+      many_field: contrataciones_publicas
       one_allowed_collections: null
-      one_collection: contratacionPublica
+      one_collection: contrataciones_publicas
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
       sort_field: null
     schema:
       table: servidores_intervengan_procedientos_contrataciones
-      column: contratacionPublica
-      foreign_key_table: contratacionPublica
+      column: contrataciones_publicas
+      foreign_key_table: contrataciones_publicas
       foreign_key_column: id
       constraint_name: servidores_intervengan_procedientos_contrat__be8928b_foreign
       on_update: NO ACTION

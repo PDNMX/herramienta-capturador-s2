@@ -1998,6 +1998,7 @@ fields:
             value: D
           - text: Emitir o suscribir  (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 2
@@ -2052,6 +2053,7 @@ fields:
             value: D
           - text: Emitir o suscribir  (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 3
@@ -2104,6 +2106,7 @@ fields:
             value: D
           - text: Emitir o suscribir  (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 4
@@ -2158,6 +2161,7 @@ fields:
             value: D
           - text: Emitir o suscribir  (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 5
@@ -2206,8 +2210,10 @@ fields:
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
+            disabled: true
           - text: Supervisar (D)
             value: D
+            disabled: true
           - text: Emitir o suscribir  (E)
             value: E
       readonly: false
@@ -2258,8 +2264,10 @@ fields:
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
+            disabled: true
           - text: Supervisar (D)
             value: D
+            disabled: true
           - text: Emitir o suscribir  (E)
             value: E
       readonly: false

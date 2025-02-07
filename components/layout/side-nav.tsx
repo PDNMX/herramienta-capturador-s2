@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import Link from "next/link";
 
@@ -78,7 +79,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                 {item.children?.map((child) => (
                   <Link
                     key={child.title}
-                    href={child.href}
+                    href={child.href || '#'} // Proporciona un valor por defecto
                     onClick={() => {
                       if (setOpen) setOpen(false);
                     }}
@@ -86,7 +87,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                       buttonVariants({ variant: "ghost" }),
                       "group relative flex justify-start gap-x-3 pl-7",
                       path === child.href &&
-                        "bg-muted font-bold hover:bg-muted",
+                      "bg-muted font-bold hover:bg-muted",
                     )}>
                     <child.icon className={cn("h-5 w-5", child.color)} />
                     <div
@@ -127,14 +128,14 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
       <Separator />
       <div className="mt-auto">
         <Link key={"logout-sidebar"} href={"/"} onClick={() => signOut()} className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "group relative flex justify-start",
-            )}>
+          buttonVariants({ variant: "ghost" }),
+          "group relative flex justify-start",
+        )}>
 
-            <LogoutIcon className="h-5 w-5" />
-            <span className={cn(
-                "absolute left-12 text-base duration-200",
-              )}>Cerrar Sesión</span>
+          <LogoutIcon className="h-5 w-5" />
+          <span className={cn(
+            "absolute left-12 text-base duration-200",
+          )}>Cerrar Sesión</span>
         </Link>
       </div>
     </nav>

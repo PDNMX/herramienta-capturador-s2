@@ -1,14 +1,13 @@
-#version: "3"
+version: "3"
 
 services:
-
   frontend:
      build:
        context: ./
        dockerfile: Dockerfile
      restart: always
      ports:
-       - 3060:3000
+       - 3061:3000
 
   api:
     image: directus/directus:10

@@ -147,14 +147,14 @@ collections:
       versioning: false
     schema:
       name: entes_publicos
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_jerarquicos
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_jerarquicos
       color: null
       display_template: null
       group: empleos_cargos_comisiones
@@ -170,15 +170,15 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: niveles_responsabilidades_contrataciones
-  - collection: niveles_responsabilidades_avaluos
+      name: niveles_jerarquicos
+  - collection: niveles_responsabilidad_concesiones
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: niveles_responsabilidades_avaluos
+      collection: niveles_responsabilidad_concesiones
       color: null
       display_template: null
       group: otorgamientos_concesiones
@@ -194,15 +194,15 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: niveles_responsabilidades_avaluos
-  - collection: niveles_responsabilidades_enajenaciones
+      name: niveles_responsabilidad_concesiones
+  - collection: niveles_responsabilidades_avaluos
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_avaluos
       color: null
       display_template: null
       group: servidores_intervengan_procedientos_contrataciones
@@ -218,8 +218,8 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: niveles_responsabilidades_enajenaciones
-  - collection: niveles_jerarquicos
+      name: niveles_responsabilidades_avaluos
+  - collection: niveles_responsabilidades_contrataciones
     meta:
       accountability: all
       archive_app_filter: true
@@ -394,7 +394,6 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_contrataciones
       foreign_key_table: niveles_responsabilidades_contrataciones
       foreign_key_column: id
   - collection: contrataciones_publicas
@@ -1239,7 +1238,6 @@ fields:
       generation_expression: null
       has_auto_increment: false
       foreign_key_table: niveles_responsabilidades_avaluos
-      foreign_key_table: niveles_responsabilidades_avaluos
       foreign_key_column: id
   - collection: dictaminaciones_avaluos
     field: entePublico
@@ -1282,50 +1280,45 @@ fields:
       foreign_key_table: entes_publicos
       foreign_key_column: id
   - collection: directus_users
-    field: rol_enlace
-    type: string
+    field: entePublico
+    type: integer
     meta:
       collection: directus_users
       conditions: null
       display: null
       display_options: null
-      field: rol_enlace
+      field: entePublico
       group: null
       hidden: false
-      interface: select-dropdown
+      interface: select-dropdown-m2o
       note: null
       options:
-        choices:
-          - text: "Enlace "
-            value: enlace
-          - text: Aprobador
-            value: aprobador
-          - text: Secretario
-            value: secretario
+        template: "{{nombre}}"
       readonly: false
-      required: true
+      required: false
       sort: 1
-      special: null
+      special:
+        - m2o
       translations: null
       validation: null
       validation_message: null
       width: full
     schema:
-      name: rol_enlace
+      name: entePublico
       table: directus_users
-      data_type: character varying
+      data_type: integer
       default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
   - collection: empleos_cargos_comisiones
     field: id
     type: integer
@@ -1941,11 +1934,49 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: entes_publicos
+    field: fk_ente_publico
+    type: uuid
+    meta:
+      collection: entes_publicos
+      conditions: null
+      display: null
+      display_options: null
+      field: fk_ente_publico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fk_ente_publico
+      table: entes_publicos
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: niveles_jerarquicos
     field: id
     type: integer
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_jerarquicos
       conditions: null
       display: null
       display_options: null
@@ -1965,9 +1996,9 @@ fields:
       width: full
     schema:
       name: id
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_jerarquicos
       data_type: integer
-      default_value: nextval('niveles_responsabilidades_contrataciones_id_seq'::regclass)
+      default_value: nextval('niveles_jerarquicos_id_seq'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -1979,11 +2010,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
-    field: autorizacion
-    type: json
+  - collection: niveles_jerarquicos
+    field: clave
+    type: string
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_jerarquicos
       conditions: null
       display: null
       display_options: null
@@ -1994,17 +2025,26 @@ fields:
       note: null
       options:
         choices:
-          - text: Elaborar (A)
-            value: A
-          - text: Revisar (B)
-            value: B
-          - text: Firmar, autorizar o dictaminar (C)
-            value: C
-          - text: Supervisar ( D )
-            value: D
-          - text: Emitir o suscribir  (E)
-            value: E
-            disabled: true
+          - text: Operativo u homólogo
+            value: OPERATIVO_HOMOLOGO
+          - text: Enlace u homólogo
+            value: ENLACE_HOMOLOGO
+          - text: Jefatura de departamento u homólogo
+            value: JEFATURA_DEPTO_HOMOLOGO
+          - text: Subdirección de área u homólogo
+            value: SUBDIRECCION_HOMOLOGO
+          - text: Dirección de área u homólogo
+            value: DIRECCION_HOMOLOGO
+          - text: Dirección general u homólogo
+            value: DG_HOMOLOGO
+          - text: Jefatura de unidad u homólogo
+            value: JEFATURA_UNIDAD_HOMOLOGO
+          - text: Subsecretaría de estado oficialía mayor u homólogo
+            value: SUBSECRETARIA_HOMOLOGO
+          - text: Secretaría de estado u homólogo
+            value: SECRETARIA_HOMOLOGO
+          - text: "Otro (especifique):"
+            value: OTRO
       readonly: false
       required: true
       sort: 2
@@ -2016,9 +2056,9 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: autorizacion
-      table: niveles_responsabilidades_contrataciones
-      data_type: json
+      name: clave
+      table: niveles_jerarquicos
+      data_type: character varying
       default_value: null
       max_length: 255
       numeric_precision: null
@@ -2031,11 +2071,65 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
-    field: justificacion
-    type: json
+  - collection: niveles_jerarquicos
+    field: valor
+    type: string
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_jerarquicos
+      conditions:
+        - name: Mostrar
+          rule:
+            _and:
+              - clave:
+                  _eq: OTRO
+          hidden: false
+          required: true
+          options:
+            font: sans-serif
+            trim: false
+            masked: false
+            clear: false
+            slug: false
+      display: null
+      display_options: null
+      field: valor
+      group: null
+      hidden: true
+      interface: input
+      note: >-
+        En caso de seleccionar la opción "OTRO", se deberá especificar el tipo
+        de nivel jerárquico del empleo, cargo o comisión que desempeña la
+        persona servidora pública sancionada.
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: valor
+      table: niveles_jerarquicos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_jerarquicos
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_jerarquicos
       conditions: null
       display: null
       display_options: null
@@ -2045,18 +2139,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        choices:
-          - text: Elaborar (A)
-            value: A
-          - text: Revisar (B)
-            value: B
-          - text: Firmar, autorizar o dictaminar (C)
-            value: C
-          - text: Supervisar (D)
-            value: D
-          - text: Emitir o suscribir  (E)
-            value: E
-            disabled: true
+        enableCreate: false
       readonly: false
       required: false
       sort: 4
@@ -2067,9 +2150,9 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: justificacion
-      table: niveles_responsabilidades_contrataciones
-      data_type: json
+      name: entePublico
+      table: niveles_jerarquicos
+      data_type: integer
       default_value: null
       max_length: null
       numeric_precision: 32
@@ -2120,11 +2203,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidad_concesiones
     field: convocatoria
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidad_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2145,7 +2228,6 @@ fields:
             value: D
           - text: Emitir o suscribir  (E)
             value: E
-            disabled: true
       readonly: false
       required: false
       sort: 2
@@ -2161,7 +2243,7 @@ fields:
       width: full
     schema:
       name: convocatoria
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidad_concesiones
       data_type: json
       default_value: null
       max_length: null
@@ -2175,11 +2257,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
-    field: evaluacion
+  - collection: niveles_responsabilidad_concesiones
+    field: dictamenes
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidad_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2200,7 +2282,6 @@ fields:
             value: D
           - text: Emitir o suscribir  ( E )
             value: E
-            disabled: true
       readonly: false
       required: false
       sort: 3
@@ -2213,8 +2294,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: evaluacion
-      table: niveles_responsabilidades_contrataciones
+      name: dictamenes
+      table: niveles_responsabilidad_concesiones
       data_type: json
       default_value: null
       max_length: null
@@ -2228,11 +2309,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
-    field: adjudicacion
+  - collection: niveles_responsabilidad_concesiones
+    field: visitas
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidad_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2249,11 +2330,9 @@ fields:
             value: B
           - text: Firmar, autorizar o dictaminar ( C )
             value: C
-            disabled: true
-          - text: Supervisar (D)
+          - text: Supervisar ( D )
             value: D
-            disabled: true
-          - text: Emitir o suscribir  (E)
+          - text: Emitir o suscribir ( E )
             value: E
       readonly: false
       required: false
@@ -2267,8 +2346,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: adjudicacion
-      table: niveles_responsabilidades_contrataciones
+      name: visitas
+      table: niveles_responsabilidad_concesiones
       data_type: json
       default_value: null
       max_length: null
@@ -2282,11 +2361,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
-    field: formalizacion
+  - collection: niveles_responsabilidad_concesiones
+    field: evaluacion
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidad_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2303,11 +2382,9 @@ fields:
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
-            disabled: true
-          - text: Supervisar (D)
+          - text: " Supervisar (D) "
             value: D
-            disabled: true
-          - text: Emitir o suscribir  (E)
+          - text: Emitir o suscribir (E)
             value: E
       readonly: false
       required: false
@@ -2323,8 +2400,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: formalizacion
-      table: niveles_responsabilidades_contrataciones
+      name: evaluacion
+      table: niveles_responsabilidad_concesiones
       data_type: json
       default_value: null
       max_length: null
@@ -2338,11 +2415,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
-    field: entePublico
-    type: integer
+  - collection: niveles_responsabilidad_concesiones
+    field: determinacion
+    type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidad_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2377,9 +2454,9 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: entePublico
-      table: niveles_responsabilidades_contrataciones
-      data_type: integer
+      name: determinacion
+      table: niveles_responsabilidad_concesiones
+      data_type: json
       default_value: null
       max_length: null
       numeric_precision: null
@@ -2390,13 +2467,12 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
-      foreign_key_column: id
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: niveles_responsabilidades_avaluos
     field: id
     type: integer
     meta:
-      collection: niveles_responsabilidades_avaluos
       collection: niveles_responsabilidades_avaluos
       conditions: null
       display: null
@@ -2418,9 +2494,7 @@ fields:
     schema:
       name: id
       table: niveles_responsabilidades_avaluos
-      table: niveles_responsabilidades_avaluos
       data_type: integer
-      default_value: nextval('niveles_responsabilidades_avaluos_id_seq'::regclass)
       default_value: nextval('niveles_responsabilidades_avaluos_id_seq'::regclass)
       max_length: null
       numeric_precision: 32
@@ -2434,11 +2508,9 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: niveles_responsabilidades_avaluos
-  - collection: niveles_responsabilidades_avaluos
     field: propuestas
     type: json
     meta:
-      collection: niveles_responsabilidades_avaluos
       collection: niveles_responsabilidades_avaluos
       conditions: null
       display: null
@@ -2477,7 +2549,6 @@ fields:
     schema:
       name: propuestas
       table: niveles_responsabilidades_avaluos
-      table: niveles_responsabilidades_avaluos
       data_type: json
       default_value: null
       max_length: null
@@ -2492,11 +2563,9 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: niveles_responsabilidades_avaluos
-  - collection: niveles_responsabilidades_avaluos
     field: asignacion
     type: json
     meta:
-      collection: niveles_responsabilidades_avaluos
       collection: niveles_responsabilidades_avaluos
       conditions: null
       display: null
@@ -2534,7 +2603,6 @@ fields:
     schema:
       name: asignacion
       table: niveles_responsabilidades_avaluos
-      table: niveles_responsabilidades_avaluos
       data_type: json
       default_value: null
       max_length: null
@@ -2549,11 +2617,9 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: niveles_responsabilidades_avaluos
-  - collection: niveles_responsabilidades_avaluos
     field: emision
     type: json
     meta:
-      collection: niveles_responsabilidades_avaluos
       collection: niveles_responsabilidades_avaluos
       conditions: null
       display: null
@@ -2591,7 +2657,6 @@ fields:
     schema:
       name: emision
       table: niveles_responsabilidades_avaluos
-      table: niveles_responsabilidades_avaluos
       data_type: json
       default_value: null
       max_length: null
@@ -2605,11 +2670,50 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
+  - collection: niveles_responsabilidades_avaluos
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_avaluos
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_contrataciones
     field: id
     type: integer
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2629,9 +2733,9 @@ fields:
       width: full
     schema:
       name: id
-      table: niveles_responsabilidades_enajenaciones
+      table: niveles_responsabilidades_contrataciones
       data_type: integer
-      default_value: nextval('niveles_responsabilidades_enajenaciones_id_seq'::regclass)
+      default_value: nextval('niveles_responsabilidades_contrataciones_id_seq'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -2643,11 +2747,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
-    field: autorizaciones
+  - collection: niveles_responsabilidades_contrataciones
+    field: autorizacion
     type: json
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2683,8 +2787,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: autorizaciones
-      table: niveles_responsabilidades_enajenaciones
+      name: autorizacion
+      table: niveles_responsabilidades_contrataciones
       data_type: json
       default_value: null
       max_length: null
@@ -2698,11 +2802,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
-    field: analisis
+  - collection: niveles_responsabilidades_contrataciones
+    field: justificacion
     type: json
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2736,8 +2840,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: analisis
-      table: niveles_responsabilidades_enajenaciones
+      name: justificacion
+      table: niveles_responsabilidades_contrataciones
       data_type: json
       default_value: null
       max_length: null
@@ -2751,11 +2855,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
-    field: modificaciones
+  - collection: niveles_responsabilidades_contrataciones
+    field: convocatoria
     type: json
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2791,8 +2895,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: modificaciones
-      table: niveles_responsabilidades_enajenaciones
+      name: convocatoria
+      table: niveles_responsabilidades_contrataciones
       data_type: json
       default_value: null
       max_length: null
@@ -2806,11 +2910,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
-    field: presentacion
+  - collection: niveles_responsabilidades_contrataciones
+    field: evaluacion
     type: json
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2844,8 +2948,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: presentacion
-      table: niveles_responsabilidades_enajenaciones
+      name: evaluacion
+      table: niveles_responsabilidades_contrataciones
       data_type: json
       default_value: null
       max_length: null
@@ -2859,11 +2963,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
-    field: evaluacion
+  - collection: niveles_responsabilidades_contrataciones
+    field: adjudicacion
     type: json
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2898,8 +3002,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: evaluacion
-      table: niveles_responsabilidades_enajenaciones
+      name: adjudicacion
+      table: niveles_responsabilidades_contrataciones
       data_type: json
       default_value: null
       max_length: null
@@ -2913,11 +3017,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
-    field: adjudicacion
+  - collection: niveles_responsabilidades_contrataciones
+    field: formalizacion
     type: json
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2952,8 +3056,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: adjudicacion
-      table: niveles_responsabilidades_enajenaciones
+      name: formalizacion
+      table: niveles_responsabilidades_contrataciones
       data_type: json
       default_value: null
       max_length: null
@@ -2967,11 +3071,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_enajenaciones
-    field: formalizacoin
-    type: json
+  - collection: niveles_responsabilidades_contrataciones
+    field: entePublico
+    type: integer
     meta:
-      collection: niveles_responsabilidades_enajenaciones
+      collection: niveles_responsabilidades_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -2991,9 +3095,9 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: formalizacoin
-      table: niveles_responsabilidades_enajenaciones
-      data_type: json
+      name: entePublico
+      table: niveles_responsabilidades_contrataciones
+      data_type: integer
       default_value: null
       max_length: null
       numeric_precision: 32
@@ -3412,6 +3516,46 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: niveles_responsabilidades_enajenaciones
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_enajenaciones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: false
+      sort: 9
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_enajenaciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
   - collection: otorgamientos_concesiones
     field: id
     type: integer
@@ -4341,7 +4485,6 @@ fields:
       generation_expression: null
       has_auto_increment: false
       foreign_key_table: niveles_responsabilidades_enajenaciones
-      foreign_key_table: niveles_responsabilidades_enajenaciones
       foreign_key_column: id
   - collection: servidores_intervengan_procedientos_contrataciones
     field: avaluosJustipreciacion
@@ -4394,19 +4537,16 @@ fields:
       generation_expression: null
       has_auto_increment: false
       foreign_key_table: niveles_responsabilidades_avaluos
-      foreign_key_table: niveles_responsabilidades_avaluos
       foreign_key_column: id
 relations:
   - collection: contrataciones_publicas
     field: nivelesResponsabilidades
-    related_collection: niveles_responsabilidades_contrataciones
     related_collection: niveles_responsabilidades_contrataciones
     meta:
       junction_field: null
       many_collection: contrataciones_publicas
       many_field: nivelesResponsabilidades
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_contrataciones
       one_collection: niveles_responsabilidades_contrataciones
       one_collection_field: null
       one_deselect_action: nullify
@@ -4415,7 +4555,6 @@ relations:
     schema:
       table: contrataciones_publicas
       column: nivelesResponsabilidades
-      foreign_key_table: niveles_responsabilidades_contrataciones
       foreign_key_table: niveles_responsabilidades_contrataciones
       foreign_key_column: id
       constraint_name: contrataciones_publicas_nivelesresponsabilidades_foreign
@@ -4508,13 +4647,11 @@ relations:
   - collection: dictaminaciones_avaluos
     field: niveles_responsabilidad_avaluos
     related_collection: niveles_responsabilidades_avaluos
-    related_collection: niveles_responsabilidades_avaluos
     meta:
       junction_field: null
       many_collection: dictaminaciones_avaluos
       many_field: niveles_responsabilidad_avaluos
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_avaluos
       one_collection: niveles_responsabilidades_avaluos
       one_collection_field: null
       one_deselect_action: nullify
@@ -4523,7 +4660,6 @@ relations:
     schema:
       table: dictaminaciones_avaluos
       column: niveles_responsabilidad_avaluos
-      foreign_key_table: niveles_responsabilidades_avaluos
       foreign_key_table: niveles_responsabilidades_avaluos
       foreign_key_column: id
       constraint_name: dictaminaciones_avaluos_niveles_responsabil__36ad132_foreign
@@ -4548,6 +4684,27 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: dictaminaciones_avaluos_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: directus_users
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: directus_users
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: directus_users
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: directus_users_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: empleos_cargos_comisiones
@@ -4592,12 +4749,33 @@ relations:
       constraint_name: empleos_cargos_comisiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: entes_publicos
+    field: fk_ente_publico
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: entes_publicos
+      many_field: fk_ente_publico
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: delete
+      one_field: null
+      sort_field: null
+    schema:
+      table: entes_publicos
+      column: fk_ente_publico
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: entes_publicos_fk_ente_publico_foreign
+      on_update: NO ACTION
+      on_delete: CASCADE
+  - collection: niveles_jerarquicos
     field: entePublico
     related_collection: entes_publicos
     meta:
       junction_field: null
-      many_collection: niveles_responsabilidades_contrataciones
+      many_collection: niveles_jerarquicos
       many_field: entePublico
       one_allowed_collections: null
       one_collection: entes_publicos
@@ -4606,11 +4784,32 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_jerarquicos
       column: entePublico
       foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: niveles_responsabilidades_contrataciones_entepublico_foreign
+      constraint_name: niveles_jerarquicos_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_avaluos
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_avaluos
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_avaluos
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_avaluos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_contrataciones
@@ -4632,6 +4831,27 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_contrataciones_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_enajenaciones
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_enajenaciones
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_enajenaciones
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_enajenaciones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: otorgamientos_concesiones
@@ -4826,13 +5046,11 @@ relations:
   - collection: servidores_intervengan_procedientos_contrataciones
     field: enajenacionesBienes
     related_collection: niveles_responsabilidades_enajenaciones
-    related_collection: niveles_responsabilidades_enajenaciones
     meta:
       junction_field: null
       many_collection: servidores_intervengan_procedientos_contrataciones
       many_field: enajenacionesBienes
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_enajenaciones
       one_collection: niveles_responsabilidades_enajenaciones
       one_collection_field: null
       one_deselect_action: nullify
@@ -4842,7 +5060,6 @@ relations:
       table: servidores_intervengan_procedientos_contrataciones
       column: enajenacionesBienes
       foreign_key_table: niveles_responsabilidades_enajenaciones
-      foreign_key_table: niveles_responsabilidades_enajenaciones
       foreign_key_column: id
       constraint_name: servidores_intervengan_procedientos_contra__33251199_foreign
       on_update: NO ACTION
@@ -4850,13 +5067,11 @@ relations:
   - collection: servidores_intervengan_procedientos_contrataciones
     field: avaluosJustipreciacion
     related_collection: niveles_responsabilidades_avaluos
-    related_collection: niveles_responsabilidades_avaluos
     meta:
       junction_field: null
       many_collection: servidores_intervengan_procedientos_contrataciones
       many_field: avaluosJustipreciacion
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_avaluos
       one_collection: niveles_responsabilidades_avaluos
       one_collection_field: null
       one_deselect_action: nullify
@@ -4865,7 +5080,6 @@ relations:
     schema:
       table: servidores_intervengan_procedientos_contrataciones
       column: avaluosJustipreciacion
-      foreign_key_table: niveles_responsabilidades_avaluos
       foreign_key_table: niveles_responsabilidades_avaluos
       foreign_key_column: id
       constraint_name: servidores_intervengan_procedientos_contra__443ed5a5_foreign

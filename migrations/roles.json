@@ -1,0 +1,993 @@
+{
+  "roles": [
+    {
+      "id": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "name": "Administrator",
+      "icon": "verified",
+      "description": "$t:admin_description",
+      "ip_access": null,
+      "enforce_tfa": false,
+      "admin_access": true,
+      "app_access": true,
+      "users": []
+    },
+    {
+      "id": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "name": "Api-interconexion",
+      "icon": "supervised_user_circle",
+      "description": null,
+      "ip_access": null,
+      "enforce_tfa": false,
+      "admin_access": false,
+      "app_access": true,
+      "users": []
+    },
+    {
+      "id": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "name": "Usuario-Capturador",
+      "icon": "supervised_user_circle",
+      "description": null,
+      "ip_access": null,
+      "enforce_tfa": false,
+      "admin_access": false,
+      "app_access": true,
+      "users": []
+    }
+  ],
+  "permissions": [
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "datos_contrataciones_publicas",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "datos_generales",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_jerarquicos",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "empleos_cargos_comisiones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "contrataciones_publicas",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_contrataciones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "otorgamientos_concesiones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "dictaminaciones_avaluos",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "datos_contrataciones_publicas",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": [
+        "OCID",
+        "NOMBRE_DEL_PROCEDIMIENTO",
+        "Clasificaciones",
+        "fechaInicioProcedimiento",
+        "entePublico",
+        "id"
+      ]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "datos_generales",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "entes_publicos",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "id": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_jerarquicos",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "read",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "empleos_cargos_comisiones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "contrataciones_publicas",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_contrataciones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "otorgamientos_concesiones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": [
+        "autorizaciones",
+        "analisis",
+        "modificaciones",
+        "presentacion",
+        "evaluacion",
+        "adjudicacion",
+        "formalizacoin",
+        "entePublico"
+      ]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "dictaminaciones_avaluos",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "datos_contrataciones_publicas",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "datos_generales",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_jerarquicos",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "empleos_cargos_comisiones",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "contrataciones_publicas",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_contrataciones",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "otorgamientos_concesiones",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "dictaminaciones_avaluos",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "ac74dc74-8815-4da1-9106-4b308e3de468",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "update",
+      "permissions": {},
+      "validation": {},
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "directus_users",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "email_notifications",
+        "theming_divider",
+        "theme_light_overrides",
+        "theme_dark_overrides",
+        "admin_divider",
+        "token",
+        "last_access",
+        "provider",
+        "external_identifier",
+        "auth_data"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "directus_roles",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "directus_shares",
+      "action": "read",
+      "permissions": {
+        "_or": [
+          {
+            "role": {
+              "_eq": "$CURRENT_ROLE"
+            }
+          },
+          {
+            "role": {
+              "_null": true
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "datos_generales",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": ["nombre", "primerApellido", "segundoApellido", "sexo"]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "datos_contrataciones_publicas",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "OCID",
+        "Clasificaciones",
+        "NOMBRE_DEL_PROCEDIMIENTO",
+        "fechaInicioProcedimiento"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "niveles_jerarquicos",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": ["clave", "valor"]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "visitas",
+        "evaluacion",
+        "convocatoria",
+        "dictamenes",
+        "determinacion"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "empleos_cargos_comisiones",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "entidadFederativa",
+        "ambitoPublico",
+        "nivelOrdenGobierno",
+        "nombreEntePublico",
+        "siglasEntePublico",
+        "denominacion",
+        "nivelJerarquico",
+        "areaAdscripcion",
+        "participacion"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "ejercicio",
+        "fecha",
+        "datosGenerales",
+        "tipoProcedimiento",
+        "empleoCargoComision",
+        "contrataciones_publicas",
+        "otorgamientoConcesion",
+        "avaluosJustipreciacion",
+        "enajenacionesBienes",
+        "Observaciones"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "contrataciones_publicas",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "contratacionesAdquisiciones",
+        "contratacionesObras",
+        "nivelesResponsabilidades",
+        "datos_contrataciones_publicas"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "niveles_responsabilidades_contrataciones",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "convocatoria",
+        "formalizacion",
+        "evaluacion",
+        "autorizacion",
+        "justificacion",
+        "adjudicacion"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "otorgamientos_concesiones",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": ["tipoOtorgamiento", "nivelResponsabilidadConcesiones"]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "autorizaciones",
+        "analisis",
+        "evaluacion",
+        "presentacion",
+        "modificaciones",
+        "adjudicacion",
+        "formalizacoin"
+      ]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "dictaminaciones_avaluos",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": ["niveles_responsabilidad_avaluos"]
+    },
+    {
+      "role": "49d3fe86-3a4d-434f-85ca-5c041ee645a7",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": ["propuestas", "asignacion", "emision"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_collections",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_fields",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "role": {
+          "_eq": "$CURRENT_ROLE"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_permissions",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_relations",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_activity",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {},
+      "validation": {
+        "comment": {
+          "_nnull": true
+        }
+      },
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_activity",
+      "action": "create"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "_or": [
+          {
+            "user": {
+              "_eq": "$CURRENT_USER"
+            }
+          },
+          {
+            "_and": [
+              {
+                "user": {
+                  "_null": true
+                }
+              },
+              {
+                "role": {
+                  "_eq": "$CURRENT_ROLE"
+                }
+              }
+            ]
+          },
+          {
+            "_and": [
+              {
+                "user": {
+                  "_null": true
+                }
+              },
+              {
+                "role": {
+                  "_null": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_presets",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {},
+      "validation": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_presets",
+      "action": "create"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_presets",
+      "action": "update"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_presets",
+      "action": "delete"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "id": {
+          "_eq": "$CURRENT_ROLE"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_roles",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_settings",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_translations",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "recipient": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_notifications",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "recipient": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["status"],
+      "system": true,
+      "collection": "directus_notifications",
+      "action": "update"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "user_created": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"],
+      "system": true,
+      "collection": "directus_shares",
+      "action": "read"
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "permissions": {
+        "id": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "id",
+        "first_name",
+        "last_name",
+        "last_page",
+        "email",
+        "password",
+        "location",
+        "title",
+        "description",
+        "tags",
+        "preferences_divider",
+        "avatar",
+        "language",
+        "appearance",
+        "theme_light",
+        "theme_dark",
+        "tfa_secret",
+        "status",
+        "role"
+      ],
+      "system": true,
+      "collection": "directus_users",
+      "action": "read"
+    }
+  ]
+}

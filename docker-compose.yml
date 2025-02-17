@@ -12,6 +12,12 @@ services:
   api:
     image: directus/directus:10
     restart: always
+    volumes:
+      - ./colecciones.yaml:/directus/migrations/colecciones.yaml
+    command: >
+        sh -c "node cli.js bootstrap &&
+              node cli.js schema apply --yes /directus/migrations/colecciones.yaml &&
+              pm2-runtime start ecosystem.config.cjs"
     ports:
       - 8056:8055
     depends_on:

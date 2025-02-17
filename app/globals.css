@@ -23,6 +23,12 @@
   --input: 171 30% 18%;
   --ring: 171 58.9% 49.6%;
   --radius: 0.5rem;
+
+  --gradient-background: 
+    linear-gradient(135deg, hsl(var(--primary) / 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, hsl(var(--secondary) / 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, hsl(var(--accent) / 0.3) 0%, transparent 40%),
+    linear-gradient(45deg, hsl(var(--muted) / 0.2) 0%, transparent 70%);
 }
 
 .dark {
@@ -46,29 +52,12 @@
   --input: 171 30% 18%;
   --ring: 171 58.9% 49.6%;
   --radius: 0.5rem;
-}
 
-@theme inline {
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
-  --radius: var(--radius);
+  --gradient-background: 
+    linear-gradient(135deg, hsl(var(--primary) / 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, hsl(var(--secondary) / 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, hsl(var(--accent) / 0.2) 0%, transparent 40%),
+    linear-gradient(45deg, hsl(var(--muted) / 0.1) 0%, transparent 70%);
 }
 
 @layer base {
@@ -85,9 +74,10 @@
     @apply backdrop-blur-xl backdrop-saturate-150 bg-background/75;
   }
   .gradient-background {
-    @apply before:fixed before:inset-0 before:content-[''] before:-z-10
-    before:bg-[radial-gradient(circle_at_47%_33%,hsl(var(--primary))_0%,transparent_59%),radial-gradient(circle_at_82%_65%,hsl(var(--secondary))_0%,transparent_55%)]
-    dark:before:bg-[radial-gradient(circle_at_47%_33%,hsl(var(--primary)/0.4)_0%,transparent_59%),radial-gradient(circle_at_82%_65%,hsl(var(--secondary)/0.3)_0%,transparent_55%)];
+    @apply before:fixed before:inset-0 before:content-[''] before:-z-10;
+  }
+  .gradient-background::before {
+    background-image: var(--gradient-background);
   }
   .bg-custom-primary {
     @apply bg-primary;
@@ -101,5 +91,17 @@
   .header-gradient {
     @apply bg-gradient-to-r from-primary via-primary/80 to-primary/60;
   }
+  .modern-card {
+    @apply bg-gradient-to-br from-card to-card/80 shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+  .glow-effect {
+    @apply relative overflow-hidden;
+  }
+  .glow-effect::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 transition-opacity duration-300;
+  }
+  .glow-effect:hover::before {
+    @apply opacity-20;
+  }
 }
-

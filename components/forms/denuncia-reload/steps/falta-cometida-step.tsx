@@ -3,7 +3,6 @@
 import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { UseFormReturn } from "react-hook-form"
 
@@ -90,25 +89,22 @@ export function FaltaCometidaStep({ form }: FaltaCometidaStepProps) {
   }
 
   return (
-    <Card className="w-full shadow-lg">
-      <CardContent className="p-6">
-        <div className="space-y-6">
-          <h2 className="text-lg font-semibold text-primary">Faltas y Hechos de Corrupción</h2>
-          <CheckboxGroup title="Faltas Graves" name="faltasCometidas.faltasGraves" items={faltasGraves} form={form} />
-          <CheckboxGroup
-            title="Faltas No Graves"
-            name="faltasCometidas.faltasNoGraves"
-            items={faltasNoGraves}
-            form={form}
-          />
-          <CheckboxGroup
-            title="Hechos de Corrupción"
-            name="faltasCometidas.hechosCorrupcion"
-            items={hechosCorrupcion}
-            form={form}
-          />
-        </div>
-      </CardContent>
-    </Card>
+    <div className="space-y-6 gradient-background p-6 rounded-lg shadow-sm">
+      <h2 className="text-lg font-semibold text-primary">Faltas y Hechos de Corrupción</h2>
+      <CheckboxGroup title="Faltas Graves" name="faltasCometidas.faltasGraves" items={faltasGraves} form={form} />
+      <CheckboxGroup
+        title="Faltas No Graves"
+        name="faltasCometidas.faltasNoGraves"
+        items={faltasNoGraves}
+        form={form}
+      />
+      <CheckboxGroup
+        title="Hechos de Corrupción"
+        name="faltasCometidas.hechosCorrupcion"
+        items={hechosCorrupcion}
+        form={form}
+      />
+    </div>
   )
 }
+

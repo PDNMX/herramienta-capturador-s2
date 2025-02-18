@@ -4,7 +4,7 @@ import { MultiStepForm } from "@/components/forms/denuncia-reload/multi-step-for
 
 export default function PresentarDenunciaPage() {
   return (
-    <div className="h-full overflow-hidden">
+    <div className="h-full">
       <MultiStepForm />
     </div>
   )

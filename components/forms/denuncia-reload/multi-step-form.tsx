@@ -174,7 +174,7 @@ export function MultiStepForm() {
               <StepContent step={step} form={form} />
             </form>
           </div>
-          <div className="border-t gradient-background">
+          <div className="border-t">
             <div className="container mx-auto px-4 py-3">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <Button

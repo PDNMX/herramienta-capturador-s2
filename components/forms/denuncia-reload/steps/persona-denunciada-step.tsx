@@ -16,7 +16,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   }
 
   return (
-    <div className="space-y-6 gradient-background p-6 rounded-lg shadow-sm">
+    <div className="space-y-6 p-6">
       <div className="space-y-6">
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-primary">Tipo de Persona</h3>

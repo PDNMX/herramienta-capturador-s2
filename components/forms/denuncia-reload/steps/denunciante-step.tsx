@@ -18,7 +18,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
   const isAnonymous = form.watch("denunciante.anonimo")
 
   return (
-    <div className="space-y-6 gradient-background p-6 rounded-lg shadow-sm">
+    <div className="space-y-6 p-6">
       <div className="space-y-6">
         <FormField
           control={form.control}

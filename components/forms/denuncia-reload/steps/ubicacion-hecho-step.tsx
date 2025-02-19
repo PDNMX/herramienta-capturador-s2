@@ -1,105 +1,285 @@
-//@ts-nocheck
 "use client"
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+
+import { useState, useEffect } from "react"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Combobox } from "@/components/ui/combobox"
+import { Loader2 } from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
+import Image from "next/image"
+import LogoFederal from "@/components/orden-federal.svg"
+import LogoEstatal from "@/components/orden-estatal.svg"
 
 interface UbicacionHechoStepProps {
   form: UseFormReturn<any> | null
 }
 
+interface EntePublico {
+  id: string
+  nombre: string
+}
+
+const entidadesFederativas = [
+  { nombre: "Aguascalientes", clave: "01" },
+  { nombre: "Baja California", clave: "02" },
+  { nombre: "Baja California Sur", clave: "03" },
+  { nombre: "Campeche", clave: "04" },
+  { nombre: "Coahuila", clave: "05" },
+  { nombre: "Colima", clave: "06" },
+  { nombre: "Chiapas", clave: "07" },
+  { nombre: "Chihuahua", clave: "08" },
+  { nombre: "Ciudad de México", clave: "09" },
+  { nombre: "Durango", clave: "10" },
+  { nombre: "Guanajuato", clave: "11" },
+  { nombre: "Guerrero", clave: "12" },
+  { nombre: "Hidalgo", clave: "13" },
+  { nombre: "Jalisco", clave: "14" },
+  { nombre: "México", clave: "15" },
+  { nombre: "Michoacán", clave: "16" },
+  { nombre: "Morelos", clave: "17" },
+  { nombre: "Nayarit", clave: "18" },
+  { nombre: "Nuevo León", clave: "19" },
+  { nombre: "Oaxaca", clave: "20" },
+  { nombre: "Puebla", clave: "21" },
+  { nombre: "Querétaro", clave: "22" },
+  { nombre: "Quintana Roo", clave: "23" },
+  { nombre: "San Luis Potosí", clave: "24" },
+  { nombre: "Sinaloa", clave: "25" },
+  { nombre: "Sonora", clave: "26" },
+  { nombre: "Tabasco", clave: "27" },
+  { nombre: "Tamaulipas", clave: "28" },
+  { nombre: "Tlaxcala", clave: "29" },
+  { nombre: "Veracruz", clave: "30" },
+  { nombre: "Yucatán", clave: "31" },
+  { nombre: "Zacatecas", clave: "32" },
+]
+
 export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
-  if (!form) {
-    return <div>Loading...</div>
+  const [step, setStep] = useState(0)
+  const [selectedOption, setSelectedOption] = useState<"estatal" | "federal" | null>(null)
+  const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const resetEntesPublicos = () => {
+    setEntesPublicos([])
+    form?.setValue("ubicacionHecho.lugarHecho.entePublico", "")
   }
 
-  return (
-    <div className="space-y-6 p-6">
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.entidad"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">Entidad Federativa</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Ej. Ciudad de México" className="text-sm" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+  useEffect(() => {
+    if (selectedOption === "federal") {
+      form?.setValue("ubicacionHecho.lugarHecho.entidad", "FEDERACION")
+      fetchEntesPublicos("00")
+    }
+  }, [selectedOption, form])
+
+  const fetchEntesPublicos = async (clave: string) => {
+    setLoading(true)
+    try {
+      const response = await fetch(
+        `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=${clave}&limit=-1`,
+      )
+      const data = await response.json()
+      setEntesPublicos(data.data)
+    } catch (error) {
+      console.error("Error fetching entes públicos:", error)
+    }
+    setLoading(false)
+  }
+
+  const handleEntidadChange = (value: string) => {
+    resetEntesPublicos()
+    const entidad = entidadesFederativas.find((e) => e.nombre === value)
+    if (entidad) {
+      fetchEntesPublicos(entidad.clave)
+    }
+    form?.setValue("ubicacionHecho.lugarHecho.entidad", value)
+  }
+
+  if (!form) {
+    return <div>Cargando...</div>
+  }
+
+  const renderOptionSelection = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <Card
+        className="cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center"
+        onClick={() => {
+          setSelectedOption("estatal")
+          setStep(1)
+          resetEntesPublicos()
+        }}
+      >
+        <CardContent className="p-6 text-center">
+          <h3 className="text-2xl font-semibold mb-4">Estatal</h3>
+          <Image
+            src={LogoEstatal || "/placeholder.svg"}
+            alt="Mapa de México"
+            height={200}
+            className="rounded-md mx-auto"
+            style={{
+              filter: "invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)",
+            }}
           />
+        </CardContent>
+      </Card>
+      <Card
+        className="cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center"
+        onClick={() => {
+          setSelectedOption("federal")
+          setStep(1)
+          resetEntesPublicos()
+          fetchEntesPublicos("00")
+        }}
+      >
+        <CardContent className="p-6 text-center">
+          <h3 className="text-2xl font-semibold mb-4">Federal</h3>
+          <Image
+            src={LogoFederal || "/placeholder.svg"}
+            alt="Escudo de México"
+            height={200}
+            className="rounded-md mx-auto"
+            style={{
+              filter: "invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)",
+            }}
+          />
+        </CardContent>
+      </Card>
+    </div>
+  )
+
+  const renderForm = () => (
+    <div className="space-y-6">
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4">
+          {selectedOption === "estatal" && (
+            <FormField
+              control={form.control}
+              name="ubicacionHecho.lugarHecho.entidad"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs font-medium">Entidad Federativa</FormLabel>
+                  <FormDescription>
+                    Selecciona la entidad federativa donde ocurrió el hecho o falta administrativa.
+                  </FormDescription>
+                  <Select onValueChange={handleEntidadChange}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona una entidad" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {entidadesFederativas.map((entidad) => (
+                        <SelectItem key={entidad.clave} value={entidad.nombre}>
+                          {entidad.nombre}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           <FormField
             control={form.control}
             name="ubicacionHecho.lugarHecho.entePublico"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Ente Público</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Ej. Secretaría de Educación" className="text-sm" />
-                </FormControl>
+                <FormDescription>
+                  {selectedOption === "estatal"
+                    ? "Primero selecciona una entidad federativa para ver los entes públicos disponibles. El ente público es la institución donde ocurrió el hecho denunciado."
+                    : "Selecciona la institución federal donde ocurrió el hecho denunciado."}
+                </FormDescription>
+                <div className="w-full">
+                  <Combobox
+                    options={entesPublicos.map((ente) => ({ label: ente.nombre, value: ente.id }))}
+                    value={field.value}
+                    onChange={field.onChange}
+                    placeholder="Selecciona un ente público"
+                    disabled={selectedOption === "estatal" && !form.getValues("ubicacionHecho.lugarHecho.entidad")}
+                  />
+                </div>
+                {loading && (
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Cargando entes públicos...</span>
+                  </div>
+                )}
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.codigoPostal"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Ej. 03100" className="text-sm" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.calle"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">Calle</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Ej. Av. Insurgentes Sur" className="text-sm" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.numeroExterior"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Ej. 1735" className="text-sm" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.numeroInterior"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">Número Interior (opcional)</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder="Ej. Piso 10, Oficina 3" className="text-sm" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="ubicacionHecho.lugarHecho.codigoPostal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
+                  <FormDescription>Ingresa el código postal de la ubicación donde ocurrió el hecho.</FormDescription>
+                  <FormControl>
+                    <Input {...field} placeholder="Ej. 03100" className="text-sm" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ubicacionHecho.lugarHecho.calle"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs font-medium">Calle</FormLabel>
+                  <FormDescription>
+                    Proporciona el nombre de la calle donde se ubica la institución o lugar del hecho.
+                  </FormDescription>
+                  <FormControl>
+                    <Input {...field} placeholder="Ej. Av. Insurgentes Sur" className="text-sm" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ubicacionHecho.lugarHecho.numeroExterior"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
+                  <FormDescription>Indica el número exterior del inmueble donde ocurrió el hecho.</FormDescription>
+                  <FormControl>
+                    <Input {...field} placeholder="Ej. 1735" className="text-sm" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="ubicacionHecho.lugarHecho.numeroInterior"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-xs font-medium">Número Interior (opcional)</FormLabel>
+                  <FormDescription>
+                    Si aplica, proporciona el número interior, piso u oficina donde ocurrió el hecho.
+                  </FormDescription>
+                  <FormControl>
+                    <Input {...field} placeholder="Ej. Piso 10, Oficina 3" className="text-sm" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
       </div>
 
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-primary">Fecha y Hora del Hecho</h3>
+        <h3 className="text-lg font-semibold text-primary">Fecha y Hora del Hecho Denunciado</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -107,6 +287,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Fecha del Hecho</FormLabel>
+                <FormDescription>Selecciona la fecha en que ocurrió el hecho o falta administrativa.</FormDescription>
                 <FormControl>
                   <Input {...field} type="date" className="text-sm" />
                 </FormControl>
@@ -120,6 +301,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Hora del Hecho</FormLabel>
+                <FormDescription>Indica la hora aproximada en que ocurrió el hecho denunciado.</FormDescription>
                 <FormControl>
                   <Input {...field} type="time" className="text-sm" />
                 </FormControl>
@@ -131,5 +313,28 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
       </div>
     </div>
   )
-}
 
+  return (
+    <div className="space-y-6 p-6">
+      {step === 0 && renderOptionSelection()}
+      {step === 1 && (
+        <>
+          <h2 className="text-xl font-semibold mb-4">
+            {selectedOption === "estatal" ? "Ubicación Estatal" : "Ubicación Federal"}
+          </h2>
+          {renderForm()}
+          <Button
+            onClick={() => {
+              setStep(0)
+              resetEntesPublicos()
+            }}
+            variant="outline"
+            className="mt-4"
+          >
+            Volver a selección
+          </Button>
+        </>
+      )}
+    </div>
+  )
+}

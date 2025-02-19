@@ -24,7 +24,7 @@ const formSchema = z.object({
       .object({
         nombre: z.string().optional(),
         telefono: z.string().optional(),
-        email: z.string().email().optional(),
+        email: z.string().optional(), 
         proteccion: z.boolean().default(false),
         domicilioDenunciante: z.object({
           codigoPostal: z.string().optional(),
@@ -32,35 +32,39 @@ const formSchema = z.object({
           numeroExterior: z.string().optional(),
           numeroInterior: z.string().optional(),
           municipioAlcaldia: z.string().optional(),
-        }),
+        }).optional(),
       })
       .optional(),
-  }),
+  }).optional(), 
+
   ubicacionHecho: z.object({
     lugarHecho: z.object({
-      entidad: z.string(),
-      entePublico: z.string(),
-      calle: z.string(),
-      numeroExterior: z.string(),
+      entidad: z.string().optional(),
+      entePublico: z.string().optional(),
+      calle: z.string().optional(),
+      numeroExterior: z.string().optional(),
       numeroInterior: z.string().optional(),
-      codigoPostal: z.string(),
-      fechaHecho: z.string(),
-      horaHecho: z.string(),
-    }),
-  }),
+      codigoPostal: z.string().optional(),
+      fechaHecho: z.string().optional(),
+      horaHecho: z.string().optional(),
+    }).optional(),
+  }).optional(),
+
   personaDenunciada: z.object({
-    tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"]),
-    nombre: z.string(),
-    apellidoPaterno: z.string(),
-    apellidoMaterno: z.string(),
-    descripcion: z.string(),
-  }),
+    tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"]).optional(),
+    nombre: z.string().optional(),
+    apellidoPaterno: z.string().optional(),
+    apellidoMaterno: z.string().optional(),
+    descripcion: z.string().optional(),
+  }).optional(),
+
   faltaCometida: z.object({
     faltaGrave: z.array(z.number()).default([]),
     faltaNoGrave: z.array(z.number()).default([]),
     hechosCorrupcion: z.array(z.number()).default([]),
-  }),
-  narracionHechos: z.string().min(1, "La narración de hechos es requerida"),
+  }).optional(), 
+
+  narracionHechos: z.string().optional(),
   archivosEvidencia: z.array(z.any()).default([]),
 })
 

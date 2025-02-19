@@ -1,5 +1,5 @@
 "use client"
-import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { FormControl, FormField, FormItem, FormLabel, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
@@ -25,12 +25,12 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
           name="denunciante.anonimo"
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center justify-between rounded-lg border p-4 shadow-sm">
+              <div className="flex items-center border border-primary/20 justify-between rounded-lg border p-4 shadow-sm">
                 <div className="space-y-0.5">
                   <FormLabel className="text-base">¿Desea hacer una denuncia anónima?</FormLabel>
-                  <p className="text-sm text-muted-foreground">
-                    {field.value ? "Su identidad se mantendrá privada" : "Su identidad será visible"}
-                  </p>
+                  <FormDescription>
+                    Elija 'Sí' si prefiere no revelar su identidad. Esto puede afectar cómo se procesa su denuncia.
+                  </FormDescription>
                 </div>
                 <FormControl>
                   <div className="flex space-x-2">
@@ -75,6 +75,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormControl>
                       <Input {...field} placeholder="Nombre completo" className="text-sm" />
                     </FormControl>
+                    <FormDescription>
+                      Ingrese su nombre y apellidos tal como aparecen en su identificación oficial.
+                    </FormDescription>
                   </FormItem>
                 )}
               />
@@ -87,6 +90,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormControl>
                       <Input {...field} type="tel" placeholder="Número telefónico" className="text-sm" />
                     </FormControl>
+                    <FormDescription>
+                      Proporcione un número de teléfono donde podamos contactarle si es necesario.
+                    </FormDescription>
                   </FormItem>
                 )}
               />
@@ -99,6 +105,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormControl>
                       <Input {...field} type="email" placeholder="correo@ejemplo.com" className="text-sm" />
                     </FormControl>
+                    <FormDescription>
+                      Ingrese una dirección de correo electrónico válida para recibir actualizaciones sobre su denuncia.
+                    </FormDescription>
                   </FormItem>
                 )}
               />
@@ -111,6 +120,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormControl>
                       <Input {...field} placeholder="Código Postal" className="text-sm" />
                     </FormControl>
+                    <FormDescription>El código postal nos ayuda a identificar su ubicación general.</FormDescription>
                   </FormItem>
                 )}
               />
@@ -126,6 +136,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormControl>
                       <Input {...field} placeholder="Nombre de la calle" className="text-sm" />
                     </FormControl>
+                    <FormDescription>Indique el nombre completo de la calle de su domicilio.</FormDescription>
                   </FormItem>
                 )}
               />
@@ -138,6 +149,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormControl>
                       <Input {...field} placeholder="Número exterior" className="text-sm" />
                     </FormControl>
+                    <FormDescription>El número visible desde la calle.</FormDescription>
                   </FormItem>
                 )}
               />
@@ -150,6 +162,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormControl>
                       <Input {...field} placeholder="Número interior (opcional)" className="text-sm" />
                     </FormControl>
+                    <FormDescription>Si aplica, indique el número de apartamento o interior.</FormDescription>
                   </FormItem>
                 )}
               />
@@ -164,6 +177,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormControl>
                     <Input {...field} placeholder="Municipio o Alcaldía" className="text-sm" />
                   </FormControl>
+                  <FormDescription>
+                    Especifique el municipio o alcaldía donde se encuentra su domicilio.
+                  </FormDescription>
                 </FormItem>
               )}
             />
@@ -173,8 +189,12 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
               name="denunciante.datosDenunciante.proteccion"
               render={({ field }) => (
                 <FormItem>
-                  <div className="rounded-lg border p-4 shadow-sm">
+                  <div className="rounded-lg border border-primary/20 p-4 shadow-sm">
                     <FormLabel className="text-base mb-2 block">¿Desea solicitar medidas de protección?</FormLabel>
+                    <FormDescription className="mb-2">
+                      Las medidas de protección son acciones para garantizar su seguridad durante el proceso de
+                      denuncia.
+                    </FormDescription>
                     <FormControl>
                       <RadioGroup
                         onValueChange={(value) => field.onChange(value === "si")}

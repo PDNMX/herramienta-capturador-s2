@@ -15,6 +15,7 @@ import { stepIcons } from "./step-icons"
 import { Form } from "@/components/ui/form"
 import { denunciasPublicService } from "@/lib/directus"
 import { HelpContent } from "./help-content"
+import { DenunciaModal } from "@/components/modal/denuncia-modal"
 
 const formSchema = z.object({
   denunciante: z.object({
@@ -76,6 +77,9 @@ export function MultiStepForm() {
   const [step, setStep] = React.useState(0)
   const totalSteps = steps.length
   const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [modalMode, setModalMode] = React.useState<"confirm" | "success">("confirm")
+  const [denunciaId, setDenunciaId] = React.useState<string | undefined>(undefined)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -128,17 +132,63 @@ export function MultiStepForm() {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps - 1))
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
 
+  const handleNextStep = async () => {
+    const fields = Object.keys(form.getValues())
+    const currentStepFields = fields.filter((field) => {
+      const fieldStep = getFieldStep(field)
+      return fieldStep === step
+    })
+
+    const isStepValid = await form.trigger(currentStepFields as any)
+
+    if (isStepValid) {
+      if (step === totalSteps - 1) {
+        setIsModalOpen(true)
+        setModalMode("confirm")
+      } else {
+        nextStep()
+      }
+    }
+  }
+
+  const getFieldStep = (field: string) => {
+    // Implementa la lógica para determinar a qué paso pertenece cada campo
+    // Esto es un ejemplo, ajústalo según la estructura de tu formulario
+    if (field.startsWith("denunciante")) return 0
+    if (field.startsWith("ubicacionHecho")) return 1
+    if (field.startsWith("personaDenunciada")) return 2
+    if (field.startsWith("faltaCometida")) return 3
+    if (field.startsWith("narracionHechos") || field.startsWith("archivosEvidencia")) return 4
+    return -1
+  }
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    if (step === totalSteps - 1) {
+      setIsModalOpen(true)
+      setModalMode("confirm")
+    }
+  }
+
+  const handleConfirmSubmit = async () => {
     setIsSubmitting(true)
     try {
-      await denunciasPublicService.createDenuncia(data)
-      router.push("/denuncia-recibida")
+      const result = await denunciasPublicService.createDenuncia(form.getValues())
+      setDenunciaId(result.id)
+      setModalMode("success")
     } catch (error) {
       console.error("Error submitting form:", error)
-      // Handle the error appropriately, e.g., show an error message
+      setIsModalOpen(false)
+      // Maneja el error apropiadamente, por ejemplo, muestra un mensaje de error
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  const handleModalClose = () => {
+    if (modalMode === "success") {
+      router.push("/denuncia-recibida")
+    }
+    setIsModalOpen(false)
   }
 
   const progress = ((step + 1) / totalSteps) * 100
@@ -199,12 +249,7 @@ export function MultiStepForm() {
                     )
                   })}
                 </div>
-                <Button
-                  type="button"
-                  onClick={step === totalSteps - 1 ? form.handleSubmit(onSubmit) : nextStep}
-                  disabled={isSubmitting}
-                  className="w-full sm:w-auto"
-                >
+                <Button type="button" onClick={handleNextStep} disabled={isSubmitting} className="w-full sm:w-auto">
                   {step === totalSteps - 1 ? (isSubmitting ? "Enviando..." : "Enviar") : "Siguiente"}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -213,6 +258,16 @@ export function MultiStepForm() {
           </div>
         </div>
       </div>
+      <DenunciaModal
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        mode={modalMode}
+        denunciaId={denunciaId}
+        onConfirm={handleConfirmSubmit}
+        onCancel={() => setIsModalOpen(false)}
+        onClose={handleModalClose}
+      />
     </Form>
   )
 }
+

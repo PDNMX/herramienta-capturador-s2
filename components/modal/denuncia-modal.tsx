@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 "use client"
 
 import { useState, useEffect } from "react"
@@ -21,9 +21,18 @@ interface DenunciaModalProps {
   denunciaId?: string
   onConfirm?: () => void
   onCancel?: () => void
+  onClose?: () => void
 }
 
-export function DenunciaModal({ isOpen, onOpenChange, mode, denunciaId, onConfirm, onCancel }: DenunciaModalProps) {
+export function DenunciaModal({
+  isOpen,
+  onOpenChange,
+  mode,
+  denunciaId,
+  onConfirm,
+  onCancel,
+  onClose,
+}: DenunciaModalProps) {
   const [downloadReady, setDownloadReady] = useState(false)
 
   useEffect(() => {
@@ -112,7 +121,7 @@ Fecha de generación: ${new Date().toLocaleString()}
                 className="w-full"
                 onClick={() => {
                   onOpenChange(false)
-                  onCancel?.()
+                  onClose?.()
                 }}
               >
                 Cerrar

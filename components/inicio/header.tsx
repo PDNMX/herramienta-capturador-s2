@@ -1,15 +1,16 @@
 // @ts-nocheck
-"use client"
+'use client';
 
-import Image from "next/image"
-import Link from "next/link"
-import { useTheme } from "next-themes"
-import ThemeToggle from "@/components/layout/ThemeToggle/theme-toggle"
-import logoPDNd from "@/components/layout/logo-dark.svg"
-import logoPDNw from "@/components/layout/logo-white.svg"
+import Image from 'next/image';
+import Link from 'next/link';
+import { useTheme } from 'next-themes';
+import ThemeToggle from '@/components/layout/ThemeToggle/theme-toggle';
+import AccessibilityMenu from '@/components/layout/AccessibilityMenu/accessibillty-menu';
+import logoPDNd from '@/components/layout/logo-dark.svg';
+import logoPDNw from '@/components/layout/logo-white.svg';
 
 export default function Header() {
-  const { theme } = useTheme()
+  const { theme } = useTheme();
 
   return (
     <header className="absolute w-full h-16">
@@ -17,7 +18,7 @@ export default function Header() {
         <div className="flex h-full items-center justify-between">
           <Link href="https://www.plataformadigitalnacional.org" target="_blank" className="flex items-center">
             <Image
-              src={theme === "dark" ? logoPDNw : logoPDNd}
+              src={theme === 'dark' ? logoPDNw : logoPDNd}
               alt="Logo PDN"
               width={60}
               height={24}
@@ -25,9 +26,12 @@ export default function Header() {
             />
             <span className="ml-2 text-sm font-semibold text-dark hidden sm:inline">Plataforma Digital Nacional</span>
           </Link>
-          <ThemeToggle />
+          <div className="flex items-center space-x-2">
+            <AccessibilityMenu />
+            <ThemeToggle />
+          </div>
         </div>
       </nav>
     </header>
-  )
+  );
 }

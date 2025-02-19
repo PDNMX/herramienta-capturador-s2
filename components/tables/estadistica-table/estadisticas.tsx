@@ -16,7 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { ArrowUpRight, TrendingUp, Users, Building, CheckCircle, Clock, AlertTriangle, MapPin } from 'lucide-react';
+import { TrendingUp, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 
 import { AvanceMapa } from './avance-mapa';
 

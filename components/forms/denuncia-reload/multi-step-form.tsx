@@ -18,51 +18,63 @@ import { HelpContent } from "./help-content"
 import { DenunciaModal } from "@/components/modal/denuncia-modal"
 
 const formSchema = z.object({
-  denunciante: z.object({
-    anonimo: z.boolean().default(false),
-    datosDenunciante: z
-      .object({
-        nombre: z.string().optional(),
-        telefono: z.string().optional(),
-        email: z.string().optional(), 
-        proteccion: z.boolean().default(false),
-        domicilioDenunciante: z.object({
-          codigoPostal: z.string().optional(),
+  denunciante: z
+    .object({
+      anonimo: z.boolean().default(false),
+      datosDenunciante: z
+        .object({
+          nombre: z.string().optional(),
+          telefono: z.string().optional(),
+          email: z.string().optional(),
+          proteccion: z.boolean().default(false),
+          domicilioDenunciante: z
+            .object({
+              codigoPostal: z.string().optional(),
+              calle: z.string().optional(),
+              numeroExterior: z.string().optional(),
+              numeroInterior: z.string().optional(),
+              municipioAlcaldia: z.string().optional(),
+            })
+            .optional(),
+        })
+        .optional(),
+    })
+    .optional(),
+
+  ubicacionHecho: z
+    .object({
+      lugarHecho: z
+        .object({
+          entidad: z.string().optional(),
+          entePublico: z.string().optional(),
           calle: z.string().optional(),
           numeroExterior: z.string().optional(),
           numeroInterior: z.string().optional(),
-          municipioAlcaldia: z.string().optional(),
-        }).optional(),
-      })
-      .optional(),
-  }).optional(), 
+          codigoPostal: z.string().optional(),
+          fechaHecho: z.string().optional(),
+          horaHecho: z.string().optional(),
+        })
+        .optional(),
+    })
+    .optional(),
 
-  ubicacionHecho: z.object({
-    lugarHecho: z.object({
-      entidad: z.string().optional(),
-      entePublico: z.string().optional(),
-      calle: z.string().optional(),
-      numeroExterior: z.string().optional(),
-      numeroInterior: z.string().optional(),
-      codigoPostal: z.string().optional(),
-      fechaHecho: z.string().optional(),
-      horaHecho: z.string().optional(),
-    }).optional(),
-  }).optional(),
+  personaDenunciada: z
+    .object({
+      tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"]).optional(),
+      nombre: z.string().optional(),
+      apellidoPaterno: z.string().optional(),
+      apellidoMaterno: z.string().optional(),
+      descripcion: z.string().optional(),
+    })
+    .optional(),
 
-  personaDenunciada: z.object({
-    tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"]).optional(),
-    nombre: z.string().optional(),
-    apellidoPaterno: z.string().optional(),
-    apellidoMaterno: z.string().optional(),
-    descripcion: z.string().optional(),
-  }).optional(),
-
-  faltaCometida: z.object({
-    faltaGrave: z.array(z.number()).default([]),
-    faltaNoGrave: z.array(z.number()).default([]),
-    hechosCorrupcion: z.array(z.number()).default([]),
-  }).optional(), 
+  faltaCometida: z
+    .object({
+      faltaGrave: z.array(z.number()).default([]),
+      faltaNoGrave: z.array(z.number()).default([]),
+      hechosCorrupcion: z.array(z.number()).default([]),
+    })
+    .optional(),
 
   narracionHechos: z.string().optional(),
   archivosEvidencia: z.array(z.any()).default([]),
@@ -189,10 +201,10 @@ export function MultiStepForm() {
   }
 
   const handleModalClose = () => {
-    if (modalMode === "success") {
-      router.push("/denuncia-recibida")
-    }
     setIsModalOpen(false)
+    if (modalMode === "success") {
+      router.push("/")
+    }
   }
 
   const progress = ((step + 1) / totalSteps) * 100

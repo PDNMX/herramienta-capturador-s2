@@ -2,6 +2,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,7 @@ export function DenunciaModal({
   onClose,
 }: DenunciaModalProps) {
   const [downloadReady, setDownloadReady] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (mode === "success" && denunciaId) {
@@ -65,6 +67,14 @@ Fecha de generación: ${new Date().toLocaleString()}
     a.click()
     document.body.removeChild(a)
     window.URL.revokeObjectURL(url)
+  }
+
+  const handleClose = () => {
+    onOpenChange(false)
+    onClose?.()
+    if (mode === "success") {
+      router.push("/")
+    }
   }
 
   return (
@@ -116,14 +126,7 @@ Fecha de generación: ${new Date().toLocaleString()}
                 <Download className="mr-2 h-4 w-4" />
                 Descargar Folio
               </Button>
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  onOpenChange(false)
-                  onClose?.()
-                }}
-              >
+              <Button variant="outline" className="w-full" onClick={handleClose}>
                 Cerrar
               </Button>
             </DialogFooter>

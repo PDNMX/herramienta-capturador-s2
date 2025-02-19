@@ -10,12 +10,12 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft, ArrowRight, HelpCircle } from "lucide-react"
 import { StepContent } from "./step-content"
 import { Progress } from "@/components/ui/progress"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetTrigger } from "@/components/ui/sheet"
 import { stepIcons } from "./step-icons"
 import { Form } from "@/components/ui/form"
 import { denunciasPublicService } from "@/lib/directus"
+import { HelpContent } from "./help-content"
 
-// Asumiendo que este es el esquema correcto basado en tu implementación anterior
 const formSchema = z.object({
   denunciante: z.object({
     anonimo: z.boolean().default(false),
@@ -131,12 +131,11 @@ export function MultiStepForm() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true)
     try {
-      // Cambiado de 'create' a 'createDenuncia'
       await denunciasPublicService.createDenuncia(data)
       router.push("/denuncia-recibida")
     } catch (error) {
       console.error("Error submitting form:", error)
-      // Manejar el error apropiadamente, por ejemplo, mostrar un mensaje de error
+      // Handle the error appropriately, e.g., show an error message
     } finally {
       setIsSubmitting(false)
     }
@@ -157,12 +156,7 @@ export function MultiStepForm() {
                     <HelpCircle className="h-5 w-5" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle>{steps[step].title}</SheetTitle>
-                    <SheetDescription>Instrucciones para este paso...</SheetDescription>
-                  </SheetHeader>
-                </SheetContent>
+                <HelpContent step={step} />
               </Sheet>
             </div>
             <Progress value={progress} className="h-2" />

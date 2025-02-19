@@ -1,8 +1,9 @@
 "use client"
 import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { cn } from "@/lib/utils"
 import type { UseFormReturn } from "react-hook-form"
 
 interface DenuncianteStepProps {
@@ -32,7 +33,30 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   </p>
                 </div>
                 <FormControl>
-                  <Switch checked={field.value} onCheckedChange={field.onChange} aria-label="Denuncia anónima" />
+                  <div className="flex space-x-2">
+                    <Button
+                      type="button"
+                      variant={field.value ? "default" : "outline"}
+                      onClick={() => field.onChange(true)}
+                      className={cn(
+                        "w-[80px] h-[40px] text-sm",
+                        field.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                      )}
+                    >
+                      Sí
+                    </Button>
+                    <Button
+                      type="button"
+                      variant={!field.value ? "default" : "outline"}
+                      onClick={() => field.onChange(false)}
+                      className={cn(
+                        "w-[80px] h-[40px] text-sm",
+                        !field.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                      )}
+                    >
+                      No
+                    </Button>
+                  </div>
                 </FormControl>
               </div>
             </FormItem>
@@ -153,7 +177,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormLabel className="text-base mb-2 block">¿Desea solicitar medidas de protección?</FormLabel>
                     <FormControl>
                       <RadioGroup
-                        onValueChange={field.onChange}
+                        onValueChange={(value) => field.onChange(value === "si")}
                         defaultValue={field.value ? "si" : "no"}
                         className="flex flex-col space-y-1"
                       >
@@ -181,4 +205,3 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
     </div>
   )
 }
-

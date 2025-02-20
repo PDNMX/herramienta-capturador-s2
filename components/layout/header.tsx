@@ -7,8 +7,8 @@ import { MobileSidebar } from "./mobile-sidebar";
 import { UserNav } from "./user-nav";
 import { LoginNav } from "./login-nav";
 import Link from "next/link";
-import Image from "next/image"; 
-import logo from "./logo.svg";
+import Image from "next/image";
+import LogoPDN from "./logo-white.svg";
 import { useCurrentSession } from "@/hooks/useCurrentSession";
 
 export default function Header() {
@@ -21,7 +21,7 @@ export default function Header() {
           href="https://www.plataformadigitalnacional.org"
           target="_blank">
           <Image
-            src={logo}
+            src={LogoPDN}
             alt="Logo PDN"
             width={60} // Ajusta el ancho según tu logo
             className="mr-3" // Agrega margen derecho para separar del texto

@@ -45,8 +45,8 @@ const formSchema = z.object({
     .object({
       lugarHecho: z
         .object({
-          entidad: z.string().optional(),
-          entePublico: z.string().optional(),
+          entidad: z.number().optional(),
+          entePublico: z.number().optional(),
           calle: z.string().optional(),
           numeroExterior: z.string().optional(),
           numeroInterior: z.string().optional(),

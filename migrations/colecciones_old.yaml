@@ -1,3 +1,4 @@
+# Antes de aprobar campos nuevos
 version: 1
 directus: 10.13.4
 vendor: postgres
@@ -1280,50 +1281,45 @@ fields:
       foreign_key_table: entes_publicos
       foreign_key_column: id
   - collection: directus_users
-    field: rol_enlace
-    type: string
+    field: entePublico
+    type: integer
     meta:
       collection: directus_users
       conditions: null
       display: null
       display_options: null
-      field: rol_enlace
+      field: entePublico
       group: null
       hidden: false
-      interface: select-dropdown
+      interface: select-dropdown-m2o
       note: null
       options:
-        choices:
-          - text: "Enlace "
-            value: enlace
-          - text: Aprobador
-            value: aprobador
-          - text: Secretario
-            value: secretario
+        template: "{{nombre}}"
       readonly: false
-      required: true
+      required: false
       sort: 1
-      special: null
+      special:
+        - m2o
       translations: null
       validation: null
       validation_message: null
       width: full
     schema:
-      name: rol_enlace
+      name: entePublico
       table: directus_users
-      data_type: character varying
+      data_type: integer
       default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
   - collection: empleos_cargos_comisiones
     field: id
     type: integer
@@ -1939,6 +1935,44 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: entes_publicos
+    field: fk_ente_publico
+    type: uuid
+    meta:
+      collection: entes_publicos
+      conditions: null
+      display: null
+      display_options: null
+      field: fk_ente_publico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fk_ente_publico
+      table: entes_publicos
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
   - collection: niveles_jerarquicos
     field: id
     type: integer
@@ -2637,6 +2671,45 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: niveles_responsabilidades_avaluos
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_avaluos
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
   - collection: niveles_responsabilidades_contrataciones
     field: id
     type: integer
@@ -3444,6 +3517,46 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: niveles_responsabilidades_enajenaciones
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_enajenaciones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: false
+      sort: 9
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_enajenaciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
   - collection: otorgamientos_concesiones
     field: id
     type: integer
@@ -4574,6 +4687,27 @@ relations:
       constraint_name: dictaminaciones_avaluos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
+  - collection: directus_users
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: directus_users
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: directus_users
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: directus_users_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
   - collection: empleos_cargos_comisiones
     field: nivelJerarquico
     related_collection: niveles_jerarquicos
@@ -4616,6 +4750,27 @@ relations:
       constraint_name: empleos_cargos_comisiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
+  - collection: entes_publicos
+    field: fk_ente_publico
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: entes_publicos
+      many_field: fk_ente_publico
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: delete
+      one_field: null
+      sort_field: null
+    schema:
+      table: entes_publicos
+      column: fk_ente_publico
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: entes_publicos_fk_ente_publico_foreign
+      on_update: NO ACTION
+      on_delete: CASCADE
   - collection: niveles_jerarquicos
     field: entePublico
     related_collection: entes_publicos
@@ -4637,6 +4792,27 @@ relations:
       constraint_name: niveles_jerarquicos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
+  - collection: niveles_responsabilidades_avaluos
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_avaluos
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_avaluos
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_avaluos_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
   - collection: niveles_responsabilidades_contrataciones
     field: entePublico
     related_collection: entes_publicos
@@ -4656,6 +4832,27 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_contrataciones_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_enajenaciones
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_enajenaciones
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_enajenaciones
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_enajenaciones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: otorgamientos_concesiones

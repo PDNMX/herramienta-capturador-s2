@@ -97,6 +97,7 @@ export function MultiStepForm() {
   const [modalMode, setModalMode] = React.useState<"confirm" | "success">("confirm")
   const [denunciaId, setDenunciaId] = React.useState<string | undefined>(undefined)
 
+  // Corrección para los defaultValues en el formulario
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -118,8 +119,8 @@ export function MultiStepForm() {
       },
       ubicacionHecho: {
         lugarHecho: {
-          entidad: "",
-          entePublico: "",
+          entidad: undefined, // Cambiado de "" a undefined para campos numéricos
+          entePublico: undefined, // Cambiado de "" a undefined para campos numéricos
           calle: "",
           numeroExterior: "",
           numeroInterior: "",
@@ -143,7 +144,7 @@ export function MultiStepForm() {
       narracionHechos: "",
       archivosEvidencia: [],
     },
-  })
+  });
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps - 1))
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
@@ -252,13 +253,12 @@ export function MultiStepForm() {
                     return (
                       <div
                         key={index}
-                        className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 ${
-                          index === step
+                        className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 ${index === step
                             ? "bg-primary text-primary-foreground"
                             : index < step
                               ? "bg-primary/50 text-primary-foreground"
                               : "bg-muted text-muted-foreground"
-                        }`}
+                          }`}
                       >
                         <Icon className="h-5 w-5" />
                       </div>

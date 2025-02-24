@@ -102,7 +102,24 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
   const handleEntidadChange = (value: string) => {
     const entidad = entidadesFederativas.find((e) => e.nombre === value);
     if (entidad) {
-      form?.setValue("ubicacionHecho.lugarHecho.entidad", entidad.valor);
+      // Asegurarse de que se está estableciendo un número, no una cadena
+      form?.setValue("ubicacionHecho.lugarHecho.entidad", entidad.valor, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      });
+
+      // Resetear el ente público al cambiar la entidad
+      form?.setValue("ubicacionHecho.lugarHecho.entePublico", undefined, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      });
+
+      // Registrar la acción para debugging
+      console.log(`Entidad seleccionada: ${entidad.nombre}, valor: ${entidad.valor}, clave: ${entidad.clave}`);
+
+      // Fetch entes públicos para la entidad seleccionada
       fetchEntesPublicos(entidad.clave);
     }
   };
@@ -110,8 +127,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
   const handleEntePublicoChange = (value: string) => {
     const selectedEnte = entesPublicos.find(ente => ente.id.toString() === value);
     if (selectedEnte) {
-      form?.setValue("ubicacionHecho.lugarHecho.entePublico", selectedEnte.id);
+      // Asegurar que se establece como número, no cadena
+      form?.setValue("ubicacionHecho.lugarHecho.entePublico", selectedEnte.id, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+      });
+
       setSelectedEnteName(selectedEnte.nombre);
+
+      // Registrar la acción para debugging
+      console.log(`Ente público seleccionado: ${selectedEnte.nombre}, id: ${selectedEnte.id}`);
     }
   };
 
@@ -182,7 +208,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                     Selecciona la entidad federativa donde ocurrió el hecho o
                     falta administrativa.
                   </FormDescription>
-                  <Select 
+                  <Select
                     onValueChange={handleEntidadChange}
                     value={field.value ? entidadesFederativas.find(e => e.valor === field.value)?.nombre : ""}
                   >

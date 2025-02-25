@@ -84,8 +84,7 @@ const steps = [
   { title: "Datos del Denunciante", icon: "denunciante" },
   { title: "Ubicación del Hecho", icon: "ubicacion" },
   { title: "Persona Denunciada", icon: "persona" },
-  { title: "Faltas Cometidas", icon: "faltas" },
-  { title: "Narración y Evidencia", icon: "narracion" },
+  { title: "Hechos y Faltas Cometidas", icon: "faltas" },
 ]
 
 export function MultiStepForm() {
@@ -286,4 +285,3 @@ export function MultiStepForm() {
     </Form>
   )
 }
-

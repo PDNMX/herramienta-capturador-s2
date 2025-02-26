@@ -92,8 +92,8 @@ export function MultiStepForm() {
   const [step, setStep] = React.useState(0)
   const totalSteps = steps.length
   const [isSubmitting, setIsSubmitting] = React.useState(false)
-  const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [modalMode, setModalMode] = React.useState<"confirm" | "success">("confirm")
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [denunciaId, setDenunciaId] = React.useState<string | undefined>(undefined)
 
   // Corrección para los defaultValues en el formulario
@@ -143,7 +143,7 @@ export function MultiStepForm() {
       narracionHechos: "",
       archivosEvidencia: [],
     },
-  });
+  })
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps - 1))
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
@@ -240,27 +240,32 @@ export function MultiStepForm() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={prevStep}
-                  disabled={step === 0 || isSubmitting}
+                  onClick={step === 0 ? () => router.push("/") : prevStep}
+                  disabled={isSubmitting}
                   className="w-full sm:w-auto"
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Anterior
+                  <ArrowLeft className="mr-2 h-4 w-4" /> {step === 0 ? "Regresar" : "Anterior"}
                 </Button>
                 <div className="flex space-x-2 order-first sm:order-none mb-2 sm:mb-0">
                   {steps.map((s, index) => {
                     const Icon = stepIcons[s.icon as keyof typeof stepIcons]
                     return (
-                      <div
+                      <Button
                         key={index}
-                        className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 ${index === step
+                        type="button"
+                        variant="ghost"
+                        className={`w-10 h-10 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
+                          index === step
                             ? "bg-primary text-primary-foreground"
                             : index < step
-                              ? "bg-primary/50 text-primary-foreground"
-                              : "bg-muted text-muted-foreground"
-                          }`}
+                              ? "bg-primary/80 text-primary-foreground hover:bg-primary"
+                              : "bg-muted/90 text-muted-foreground pointer-events-none"
+                        }`}
+                        onClick={() => index < step && setStep(index)}
+                        disabled={index >= step}
                       >
                         <Icon className="h-5 w-5" />
-                      </div>
+                      </Button>
                     )
                   })}
                 </div>
@@ -285,3 +290,4 @@ export function MultiStepForm() {
     </Form>
   )
 }
+

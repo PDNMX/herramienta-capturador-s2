@@ -4,7 +4,6 @@ import { DenuncianteStep } from "./steps/denunciante-step"
 import { UbicacionHechoStep } from "./steps/ubicacion-hecho-step"
 import { PersonaDenunciadaStep } from "./steps/persona-denunciada-step"
 import { NarracionYFaltaStep } from "./steps/narracion-faltas"
-import { NarracionYEvidenciaStep } from "./steps/narracion-evidencia-step"
 
 interface StepContentProps {
   step: number

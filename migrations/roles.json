@@ -32,6 +32,17 @@
       "admin_access": false,
       "app_access": true,
       "users": []
+    },
+    {
+      "id": "fcf40685-783e-4850-8140-b3187cde0d83",
+      "name": "Administrator",
+      "icon": "verified",
+      "description": "$t:admin_description",
+      "ip_access": null,
+      "enforce_tfa": false,
+      "admin_access": true,
+      "app_access": true,
+      "users": []
     }
   ],
   "permissions": [
@@ -575,7 +586,13 @@
         "OCID",
         "Clasificaciones",
         "NOMBRE_DEL_PROCEDIMIENTO",
-        "fechaInicioProcedimiento"
+        "fechaInicioProcedimiento",
+        "numeroExpedienteFolio",
+        "tipoProcedimiento",
+        "otroTipoProcedimiento",
+        "materia",
+        "otroMateria",
+        "fechaConclusionProcedimiento"
       ]
     },
     {
@@ -638,7 +655,12 @@
         "otorgamientoConcesion",
         "avaluosJustipreciacion",
         "enajenacionesBienes",
-        "Observaciones"
+        "Observaciones",
+        "date_created",
+        "id",
+        "user_created",
+        "user_updated",
+        "date_updated"
       ]
     },
     {
@@ -652,7 +674,9 @@
         "contratacionesAdquisiciones",
         "contratacionesObras",
         "nivelesResponsabilidades",
-        "datos_contrataciones_publicas"
+        "datos_contrataciones_publicas",
+        "valor_contrataciones",
+        "valor_obras"
       ]
     },
     {
@@ -717,6 +741,263 @@
     },
     {
       "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_collections",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_fields",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_permissions",
+      "action": "read",
+      "permissions": {
+        "role": {
+          "_eq": "$CURRENT_ROLE"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_relations",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_activity",
+      "action": "read",
+      "permissions": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_activity",
+      "action": "create",
+      "permissions": {},
+      "validation": {
+        "comment": {
+          "_nnull": true
+        }
+      },
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_presets",
+      "action": "read",
+      "permissions": {
+        "_or": [
+          {
+            "user": {
+              "_eq": "$CURRENT_USER"
+            }
+          },
+          {
+            "_and": [
+              {
+                "user": {
+                  "_null": true
+                }
+              },
+              {
+                "role": {
+                  "_eq": "$CURRENT_ROLE"
+                }
+              }
+            ]
+          },
+          {
+            "_and": [
+              {
+                "user": {
+                  "_null": true
+                }
+              },
+              {
+                "role": {
+                  "_null": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_presets",
+      "action": "create",
+      "permissions": {},
+      "validation": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_presets",
+      "action": "update",
+      "permissions": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_presets",
+      "action": "delete",
+      "permissions": {
+        "user": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_roles",
+      "action": "read",
+      "permissions": {
+        "id": {
+          "_eq": "$CURRENT_ROLE"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_settings",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_translations",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_notifications",
+      "action": "read",
+      "permissions": {
+        "recipient": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_notifications",
+      "action": "update",
+      "permissions": {
+        "recipient": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["status"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_shares",
+      "action": "read",
+      "permissions": {
+        "user_created": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": ["*"]
+    },
+    {
+      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "collection": "directus_users",
+      "action": "read",
+      "permissions": {
+        "id": {
+          "_eq": "$CURRENT_USER"
+        }
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "id",
+        "first_name",
+        "last_name",
+        "last_page",
+        "email",
+        "password",
+        "location",
+        "title",
+        "description",
+        "tags",
+        "preferences_divider",
+        "avatar",
+        "language",
+        "appearance",
+        "theme_light",
+        "theme_dark",
+        "tfa_secret",
+        "status",
+        "role"
+      ]
+    },
+    {
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {},
       "validation": null,
       "presets": null,
@@ -726,7 +1007,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {},
       "validation": null,
       "presets": null,
@@ -736,7 +1017,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "role": {
           "_eq": "$CURRENT_ROLE"
@@ -750,7 +1031,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {},
       "validation": null,
       "presets": null,
@@ -760,7 +1041,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "user": {
           "_eq": "$CURRENT_USER"
@@ -774,7 +1055,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {},
       "validation": {
         "comment": {
@@ -788,7 +1069,7 @@
       "action": "create"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "_or": [
           {
@@ -834,7 +1115,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {},
       "validation": {
         "user": {
@@ -848,7 +1129,7 @@
       "action": "create"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "user": {
           "_eq": "$CURRENT_USER"
@@ -866,7 +1147,7 @@
       "action": "update"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "user": {
           "_eq": "$CURRENT_USER"
@@ -880,7 +1161,7 @@
       "action": "delete"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "id": {
           "_eq": "$CURRENT_ROLE"
@@ -894,7 +1175,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {},
       "validation": null,
       "presets": null,
@@ -904,7 +1185,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {},
       "validation": null,
       "presets": null,
@@ -914,7 +1195,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "recipient": {
           "_eq": "$CURRENT_USER"
@@ -928,7 +1209,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "recipient": {
           "_eq": "$CURRENT_USER"
@@ -942,7 +1223,7 @@
       "action": "update"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "user_created": {
           "_eq": "$CURRENT_USER"
@@ -956,7 +1237,7 @@
       "action": "read"
     },
     {
-      "role": "1e61005c-0a4e-4f63-b47b-c97d1850722e",
+      "role": "fcf40685-783e-4850-8140-b3187cde0d83",
       "permissions": {
         "id": {
           "_eq": "$CURRENT_USER"

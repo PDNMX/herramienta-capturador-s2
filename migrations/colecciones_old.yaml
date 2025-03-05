@@ -1,4 +1,3 @@
-# Antes de aprobar campos nuevos
 version: 1
 directus: 10.13.4
 vendor: postgres
@@ -372,7 +371,7 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 5
+      sort: 6
       special:
         - m2o
       translations:
@@ -415,7 +414,7 @@ fields:
         template: null
       readonly: false
       required: false
-      sort: 6
+      sort: 7
       special:
         - m2o
       translations:
@@ -459,7 +458,7 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 7
+      sort: 8
       special:
         - m2o
       translations: null
@@ -558,7 +557,7 @@ fields:
             value: OTRO
       readonly: false
       required: true
-      sort: 3
+      sort: 4
       special: null
       translations:
         - language: es-MX
@@ -570,6 +569,108 @@ fields:
       width: full
     schema:
       name: contratacionesObras
+      table: contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: contrataciones_publicas
+    field: valor_contrataciones
+    type: string
+    meta:
+      collection: contrataciones_publicas
+      conditions:
+        - name: mostrar_al_seleccionar
+          rule:
+            _and:
+              - contratacionesAdquisiciones:
+                  _eq: OTRO
+          hidden: false
+          required: false
+          options:
+            font: sans-serif
+            trim: false
+            masked: false
+            clear: false
+            slug: false
+      display: null
+      display_options: null
+      field: valor_contrataciones
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: valor_contrataciones
+      table: contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: contrataciones_publicas
+    field: valor_obras
+    type: string
+    meta:
+      collection: contrataciones_publicas
+      conditions:
+        - name: mostrar_obras
+          rule:
+            _and:
+              - contratacionesObras:
+                  _eq: OTRO
+          hidden: false
+          required: false
+          options:
+            font: sans-serif
+            trim: false
+            masked: false
+            clear: false
+            slug: false
+      display: null
+      display_options: null
+      field: valor_obras
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: valor_obras
       table: contrataciones_publicas
       data_type: character varying
       default_value: null
@@ -623,88 +724,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: datos_contrataciones_publicas
-    field: OCID
-    type: string
-    meta:
-      collection: datos_contrataciones_publicas
-      conditions: null
-      display: null
-      display_options: null
-      field: OCID
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options:
-        placeholder: null
-      readonly: false
-      required: false
-      sort: 2
-      special: null
-      translations:
-        - language: es-MX
-          translation: 1. Número de contrato
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: OCID
-      table: datos_contrataciones_publicas
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: datos_contrataciones_publicas
-    field: NOMBRE_DEL_PROCEDIMIENTO
-    type: string
-    meta:
-      collection: datos_contrataciones_publicas
-      conditions: null
-      display: null
-      display_options: null
-      field: NOMBRE_DEL_PROCEDIMIENTO
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options:
-        placeholder: null
-      readonly: false
-      required: false
-      sort: 3
-      special: null
-      translations:
-        - language: es-MX
-          translation: 2. Título
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: NOMBRE_DEL_PROCEDIMIENTO
-      table: datos_contrataciones_publicas
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: datos_contrataciones_publicas
     field: entePublico
     type: integer
     meta:
@@ -720,7 +739,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 6
+      sort: 9
       special:
         - m2o
       translations: null
@@ -744,46 +763,6 @@ fields:
       foreign_key_table: entes_publicos
       foreign_key_column: id
   - collection: datos_contrataciones_publicas
-    field: Clasificaciones
-    type: string
-    meta:
-      collection: datos_contrataciones_publicas
-      conditions: null
-      display: null
-      display_options: null
-      field: Clasificaciones
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 4
-      special: null
-      translations:
-        - language: es-MX
-          translation: 3. Clasificación
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: Clasificaciones
-      table: datos_contrataciones_publicas
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: datos_contrataciones_publicas
     field: fechaInicioProcedimiento
     type: date
     meta:
@@ -799,7 +778,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 5
+      sort: 7
       special: null
       translations:
         - language: es-MX
@@ -809,6 +788,282 @@ fields:
       width: full
     schema:
       name: fechaInicioProcedimiento
+      table: datos_contrataciones_publicas
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: numeroExpedienteFolio
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: numeroExpedienteFolio
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: numeroExpedienteFolio
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: tipoProcedimiento
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: tipoProcedimiento
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Licitación pública
+            value: LICITACION
+          - text: Invitación a cuando menos tres personas
+            value: INVITACION
+          - text: Adjudicación directa
+            value: ADJUDICACION
+          - text: Otro (Especifique)
+            value: OTRO
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: tipoProcedimiento
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: otroTipoProcedimiento
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions:
+        - name: mostrar_otro_procedimiento
+          rule:
+            _and:
+              - tipoProcedimiento:
+                  _eq: OTRO
+          hidden: false
+          required: false
+          options:
+            font: sans-serif
+            trim: false
+            masked: false
+            clear: false
+            slug: false
+      display: null
+      display_options: null
+      field: otroTipoProcedimiento
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: otroTipoProcedimiento
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: materia
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: materia
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Obra pública
+            value: OBRA
+          - text: Servicios relacionados con obra pública
+            value: SERVICIOS
+          - text: Arrendamiento
+            value: ARRENDAMIENTO
+          - text: Adquisición
+            value: ADQUISICION
+          - text: Servicios
+            value: SERVICIOS
+          - text: Otro (Especifique)
+            value: OTRO
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: materia
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: otroMateria
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions:
+        - name: mostrar valor otro de materia
+          rule:
+            _and:
+              - materia:
+                  _eq: OTRO
+          hidden: false
+          required: false
+          options:
+            font: sans-serif
+            trim: false
+            masked: false
+            clear: false
+            slug: false
+      display: null
+      display_options: null
+      field: otroMateria
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: otroMateria
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: fechaConclusionProcedimiento
+    type: date
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaConclusionProcedimiento
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 8
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fechaConclusionProcedimiento
       table: datos_contrataciones_publicas
       data_type: date
       default_value: null
@@ -1829,17 +2084,19 @@ fields:
         contrataciones públicas y otros procedimientos es una
       options:
         choices:
-          - text: Actividad inherente o recurrente en su empleo, cargo o comisión
-            value: ACTIVIDAD_INHERENTE
-          - text: Actividad ocasional vinculada al empleo, cargo o comisión
-            value: ACTIVIDAD_OCASIONAL
+          - text: Sí
+            value: SI
+          - text: "No"
+            value: "NO"
       readonly: false
       required: true
       sort: 10
       special: null
       translations:
         - language: es-MX
-          translation: Participación de la persona servidora pública en los procedimientos
+          translation: >-
+            ¿La persona servidora pública continúa participando en el
+            procedimiento?
       validation: null
       validation_message: null
       width: full
@@ -2229,6 +2486,7 @@ fields:
             value: D
           - text: Emitir o suscribir  (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 2
@@ -2283,6 +2541,7 @@ fields:
             value: D
           - text: Emitir o suscribir  ( E )
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 3
@@ -2335,6 +2594,7 @@ fields:
             value: D
           - text: Emitir o suscribir ( E )
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 4
@@ -2387,6 +2647,7 @@ fields:
             value: D
           - text: Emitir o suscribir (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 5
@@ -2437,8 +2698,10 @@ fields:
             value: B
           - text: "Firmar, autorizar o dictaminar (C) "
             value: C
+            disabled: true
           - text: Supervisar (D)
             value: D
+            disabled: true
           - text: " Emitir o suscribir (E)"
             value: E
       readonly: false
@@ -2533,6 +2796,7 @@ fields:
             value: D
           - text: Emitir o suscribir (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 2
@@ -3174,6 +3438,7 @@ fields:
             value: D
           - text: Emitir o suscribir (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 2
@@ -3228,6 +3493,7 @@ fields:
             value: D
           - text: Emitir o suscribir (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 3
@@ -3282,6 +3548,7 @@ fields:
             value: D
           - text: Emitir o suscribir (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 4
@@ -3334,6 +3601,7 @@ fields:
             value: D
           - text: Emitir o suscribir (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 5
@@ -3386,6 +3654,7 @@ fields:
             value: D
           - text: Emitir o suscribir (E)
             value: E
+            disabled: true
       readonly: false
       required: false
       sort: 6
@@ -3434,8 +3703,10 @@ fields:
             value: B
           - text: " Firmar, autorizar o dictaminar (C) "
             value: C
+            disabled: true
           - text: Supervisar (D)
             value: D
+            disabled: true
           - text: " Emitir o suscribir (E)"
             value: E
       readonly: false
@@ -3486,8 +3757,10 @@ fields:
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
+            disabled: true
           - text: " Supervisar (D) "
             value: D
+            disabled: true
           - text: Emitir o suscribir (E)
             value: E
       readonly: false

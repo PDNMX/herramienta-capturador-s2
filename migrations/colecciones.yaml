@@ -51,6 +51,54 @@ collections:
       versioning: false
     schema:
       name: datos_contrataciones_publicas
+  - collection: datos_dictaminaciones_avaluos
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: datos_dictaminaciones_avaluos
+      color: null
+      display_template: null
+      group: dictaminaciones_avaluos
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: datos_dictaminaciones_avaluos
+  - collection: datos_enajenaciones_bienes
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: datos_enajenaciones_bienes
+      color: null
+      display_template: null
+      group: enajenaciones_bienes
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: datos_enajenaciones_bienes
   - collection: datos_generales
     meta:
       accountability: all
@@ -75,6 +123,30 @@ collections:
       versioning: false
     schema:
       name: datos_generales
+  - collection: datos_otorgamientos_concesiones
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: datos_otorgamientos_concesiones
+      color: null
+      display_template: null
+      group: otorgamientos_concesiones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: datos_otorgamientos_concesiones
   - collection: dictaminaciones_avaluos
     meta:
       accountability: all
@@ -123,6 +195,30 @@ collections:
       versioning: false
     schema:
       name: empleos_cargos_comisiones
+  - collection: enajenaciones_bienes
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: enajenaciones_bienes
+      color: null
+      display_template: null
+      group: servidores_intervengan_procedientos_contrataciones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 5
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: enajenaciones_bienes
   - collection: entes_publicos
     meta:
       accountability: all
@@ -376,7 +472,7 @@ fields:
         - m2o
       translations:
         - language: es-MX
-          translation: 5.1.3 Niveles de responsabilidad
+          translation: Niveles de responsabilidad
       validation: null
       validation_message: null
       width: full
@@ -419,9 +515,7 @@ fields:
         - m2o
       translations:
         - language: es-MX
-          translation: >-
-            5.1.4 Datos generales de los procedimientos de contrataciones
-            públicas
+          translation: Datos generales de los procedimientos de contrataciones públicas
       validation: null
       validation_message: null
       width: full
@@ -502,6 +596,8 @@ fields:
             value: CONTRATANTE
           - text: Técnica
             value: TECNICA
+          - text: Integrante del comité de adquisiciones, arrendamientos y servicios
+            value: INTEGRANTE_COMITE
           - text: Otro (Especifique)
             value: OTRO
       readonly: false
@@ -511,8 +607,8 @@ fields:
       translations:
         - language: es-MX
           translation: >-
-            5.1.1 Contratación de adquisiciones y arrendamientos de bienes
-            muebles y servicios
+            Contratación de adquisiciones y arrendamientos de bienes muebles y
+            servicios
       validation: null
       validation_message: null
       width: full
@@ -547,12 +643,16 @@ fields:
       note: null
       options:
         choices:
-          - text: Responsable de la ejecución de los trabajos
+          - text: Área responsable de la ejecución de los trabajos
             value: EJECUCION
-          - text: Responsable de la contratación
+          - text: Área responsable de la contratación
             value: CONTRATACION
-          - text: Requirente
+          - text: Área técnica
+            value: AREA_TECNICA
+          - text: Área requirente
             value: REQUIRENTE
+          - text: Integrante del comité de adquisiciones, arrendamientos y servicios
+            value: INTEGRANTE_COMITE
           - text: Otro (Especifique)
             value: OTRO
       readonly: false
@@ -562,8 +662,8 @@ fields:
       translations:
         - language: es-MX
           translation: >-
-            5.1.2 Contratación de obra pública y los servicios relacionados con
-            la misma
+            Contratación de obra pública y los servicios relacionados con la
+            misma
       validation: null
       validation_message: null
       width: full
@@ -782,7 +882,7 @@ fields:
       special: null
       translations:
         - language: es-MX
-          translation: 4. Fecha de inicio de procedimiento
+          translation: Fecha de inicio del procedimiento
       validation: null
       validation_message: null
       width: full
@@ -820,7 +920,9 @@ fields:
       required: false
       sort: 2
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Número de expediente, folio o nomenclatura
       validation: null
       validation_message: null
       width: full
@@ -867,7 +969,9 @@ fields:
       required: false
       sort: 3
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Tipo de procedimiento
       validation: null
       validation_message: null
       width: full
@@ -918,7 +1022,9 @@ fields:
       required: false
       sort: 4
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: "Otro (Especifique) "
       validation: null
       validation_message: null
       width: full
@@ -1020,7 +1126,9 @@ fields:
       required: false
       sort: 6
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: "Otro (Especifique) "
       validation: null
       validation_message: null
       width: full
@@ -1058,13 +1166,395 @@ fields:
       required: false
       sort: 8
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de conclusión del procedimiento
       validation: null
       validation_message: null
       width: full
     schema:
       name: fechaConclusionProcedimiento
       table: datos_contrataciones_publicas
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_dictaminaciones_avaluos
+    field: id
+    type: integer
+    meta:
+      collection: datos_dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: datos_dictaminaciones_avaluos
+      data_type: integer
+      default_value: nextval('datos_dictaminaciones_avaluos_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_dictaminaciones_avaluos
+    field: numeroExpedienteFolio
+    type: string
+    meta:
+      collection: datos_dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: numeroExpedienteFolio
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: numeroExpedienteFolio
+      table: datos_dictaminaciones_avaluos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_dictaminaciones_avaluos
+    field: tipoProcedimiento
+    type: string
+    meta:
+      collection: datos_dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: tipoProcedimiento
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: tipoProcedimiento
+      table: datos_dictaminaciones_avaluos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_dictaminaciones_avaluos
+    field: fechaInicioProcedimiento
+    type: date
+    meta:
+      collection: datos_dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaInicioProcedimiento
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fechaInicioProcedimiento
+      table: datos_dictaminaciones_avaluos
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_dictaminaciones_avaluos
+    field: fechaConclusionProcedimiento
+    type: date
+    meta:
+      collection: datos_dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaConclusionProcedimiento
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fechaConclusionProcedimiento
+      table: datos_dictaminaciones_avaluos
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_enajenaciones_bienes
+    field: id
+    type: integer
+    meta:
+      collection: datos_enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: datos_enajenaciones_bienes
+      data_type: integer
+      default_value: nextval('datos_enajenaciones_bienes_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_enajenaciones_bienes
+    field: numeroExpedienteFolio
+    type: string
+    meta:
+      collection: datos_enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: numeroExpedienteFolio
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: numeroExpedienteFolio
+      table: datos_enajenaciones_bienes
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_enajenaciones_bienes
+    field: tipoProcedimiento
+    type: string
+    meta:
+      collection: datos_enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: tipoProcedimiento
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: tipoProcedimiento
+      table: datos_enajenaciones_bienes
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_enajenaciones_bienes
+    field: fechaInicioProcedimiento
+    type: date
+    meta:
+      collection: datos_enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaInicioProcedimiento
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fechaInicioProcedimiento
+      table: datos_enajenaciones_bienes
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_enajenaciones_bienes
+    field: fechaConclusionProcedimiento
+    type: date
+    meta:
+      collection: datos_enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaConclusionProcedimiento
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fechaConclusionProcedimiento
+      table: datos_enajenaciones_bienes
       data_type: date
       default_value: null
       max_length: null
@@ -1416,6 +1906,196 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: datos_otorgamientos_concesiones
+    field: id
+    type: integer
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: datos_otorgamientos_concesiones
+      data_type: integer
+      default_value: nextval('datos_otorgamientos_concesiones_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: numeroExpedienteFolio
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: numeroExpedienteFolio
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: numeroExpedienteFolio
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: tipoProcedimiento
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: tipoProcedimiento
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: tipoProcedimiento
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: fechaInicioProcedimiento
+    type: date
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaInicioProcedimiento
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fechaInicioProcedimiento
+      table: datos_otorgamientos_concesiones
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: fechaConclusionProcedimiento
+    type: date
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaConclusionProcedimiento
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fechaConclusionProcedimiento
+      table: datos_otorgamientos_concesiones
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: dictaminaciones_avaluos
     field: id
     type: integer
@@ -2116,6 +2796,125 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: enajenaciones_bienes
+    field: id
+    type: integer
+    meta:
+      collection: enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: enajenaciones_bienes
+      data_type: integer
+      default_value: nextval('enajenaciones_bienes_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: enajenaciones_bienes
+    field: niveles_responsabilidades_enajenaciones
+    type: integer
+    meta:
+      collection: enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: niveles_responsabilidades_enajenaciones
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: niveles_responsabilidades_enajenaciones
+      table: enajenaciones_bienes
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_enajenaciones
+      foreign_key_column: id
+  - collection: enajenaciones_bienes
+    field: datos_enajenaciones_bienes
+    type: integer
+    meta:
+      collection: enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: datos_enajenaciones_bienes
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+        template: "{{id}}"
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: datos_enajenaciones_bienes
+      table: enajenaciones_bienes
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: datos_enajenaciones_bienes
+      foreign_key_column: id
   - collection: entes_publicos
     field: id
     type: integer
@@ -3869,14 +4668,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: otorgamientos_concesiones
-    field: tipoOtorgamiento
+    field: tipoActo
     type: string
     meta:
       collection: otorgamientos_concesiones
       conditions: null
       display: null
       display_options: null
-      field: tipoOtorgamiento
+      field: tipoActo
       group: null
       hidden: false
       interface: select-radio
@@ -3902,7 +4701,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: tipoOtorgamiento
+      name: tipoActo
       table: otorgamientos_concesiones
       data_type: character varying
       default_value: null
@@ -4523,17 +5322,17 @@ fields:
       options:
         choices:
           - text: >-
-              5.1 Contratación pública, de tramitación, atención y resolución
-              para la adjudicación de un contrato
-            value: "1"
+              Contratación pública, de tramitación, atención y resolución para
+              la adjudicación de un contrato
+            value: CONTRATACION_PUBLICA
           - text: >-
-              5.2 Otorgamiento de concesiones, licencias, permisos,
-              autorizaciones y sus prórrogas
-            value: "2"
-          - text: 5.3 Enajenación de bienes muebles
-            value: "3"
-          - text: 5.4 Emisión de dictamen valuatorio y justipreciación de rentas
-            value: "4"
+              Otorgamiento de concesiones, licencias, permisos, autorizaciones y
+              sus prórrogas
+            value: OTORGAMIENTO_CONCECIONES
+          - text: Enajenación de bienes muebles
+            value: ENAJENACION_BIENES
+          - text: Emisión de dictamen valuatorio y justipreciación de rentas
+            value: DICTAMEN_VALUATORIO
       readonly: false
       required: true
       sort: 14
@@ -4571,7 +5370,7 @@ fields:
         - rule:
             _and:
               - tipoProcedimiento:
-                  _eq: "1"
+                  _eq: CONTRATACION_PUBLICA
           hidden: false
           required: true
           options:
@@ -4624,13 +5423,13 @@ fields:
         - rule:
             _and:
               - tipoProcedimiento:
-                  _eq: "2"
+                  _eq: OTORGAMIENTO_CONCECIONES
           hidden: false
           required: true
           options:
             enableCreate: true
             enableSelect: false
-            template: "{{tipoOtorgamiento}}"
+            template: "{{tipoActo}}"
       display: null
       display_options: null
       field: otorgamientoConcesion
@@ -4640,7 +5439,7 @@ fields:
       note: null
       options:
         enableSelect: false
-        template: "{{tipoOtorgamiento}}"
+        template: "{{tipoActo}}"
       readonly: false
       required: false
       sort: 16
@@ -4719,11 +5518,12 @@ fields:
         - rule:
             _and:
               - tipoProcedimiento:
-                  _eq: "3"
+                  _eq: ENAJENACION_BIENES
           hidden: false
           options:
             enableCreate: true
             enableSelect: false
+          required: true
       display: null
       display_options: null
       field: enajenacionesBienes
@@ -4769,11 +5569,12 @@ fields:
         - rule:
             _and:
               - tipoProcedimiento:
-                  _eq: "4"
+                  _eq: DICTAMEN_VALUATORIO
           hidden: false
           options:
             enableCreate: true
             enableSelect: false
+          required: true
       display: null
       display_options: null
       field: avaluosJustipreciacion
@@ -5021,6 +5822,48 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: empleos_cargos_comisiones_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: enajenaciones_bienes
+    field: niveles_responsabilidades_enajenaciones
+    related_collection: niveles_responsabilidades_enajenaciones
+    meta:
+      junction_field: null
+      many_collection: enajenaciones_bienes
+      many_field: niveles_responsabilidades_enajenaciones
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_enajenaciones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: enajenaciones_bienes
+      column: niveles_responsabilidades_enajenaciones
+      foreign_key_table: niveles_responsabilidades_enajenaciones
+      foreign_key_column: id
+      constraint_name: enajenaciones_bienes_niveles_responsabilid__3e6c8287_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: enajenaciones_bienes
+    field: datos_enajenaciones_bienes
+    related_collection: datos_enajenaciones_bienes
+    meta:
+      junction_field: null
+      many_collection: enajenaciones_bienes
+      many_field: datos_enajenaciones_bienes
+      one_allowed_collections: null
+      one_collection: datos_enajenaciones_bienes
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: enajenaciones_bienes
+      column: datos_enajenaciones_bienes
+      foreign_key_table: datos_enajenaciones_bienes
+      foreign_key_column: id
+      constraint_name: enajenaciones_bienes_datos_enajenaciones_bienes_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: entes_publicos

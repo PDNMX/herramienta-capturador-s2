@@ -17,8 +17,8 @@ const CustomCheckbox = React.forwardRef<
   <div
     ref={ref}
     onClick={onChange}
-    className={`relative w-full p-4 rounded-lg border-2 transition-all cursor-pointer ${
-      checked ? "border-primary bg-primary/10" : "border-input hover:border-primary/50"
+    className={`bg-card relative w-full p-4 rounded-lg border-2 transition-all cursor-pointer ${
+      checked ? " border-primary " : "border-input hover:border-primary/50"
     }`}
   >
     {children}
@@ -40,7 +40,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
     <div className="space-y-6 p-6">
       <div className="space-y-6">
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-primary">Tipo de Persona</h3>
+          <h2 className="font-semibold text-primary">Tipo de Persona</h2>
           <FormDescription>
             Selecciona si la persona denunciada es un servidor público o un particular involucrado en faltas
             administrativas o hechos de corrupción.
@@ -58,7 +58,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     >
                       <div className="flex flex-col items-center text-center">
                         <Users className="h-12 w-12 mb-4 text-primary" />
-                        <h4 className="font-semibold mb-2">Servidor Público</h4>
+                        <h3 className="font-semibold mb-2">Servidor Público</h3>
                         <p className="text-sm text-muted-foreground">
                           Persona que desempeña un empleo, cargo o comisión en alguna institución pública
                         </p>
@@ -70,7 +70,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     >
                       <div className="flex flex-col items-center text-center">
                         <User className="h-12 w-12 mb-4 text-primary" />
-                        <h4 className="font-semibold mb-2">Particular</h4>
+                        <h3 className="font-semibold mb-2">Particular</h3>
                         <p className="text-sm text-muted-foreground">
                           Persona física o moral del sector privado vinculada a faltas administrativas graves
                         </p>
@@ -85,7 +85,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-primary">Datos de la Persona Denunciada</h3>
+          <h2 className="font-semibold text-primary">Datos de la Persona Denunciada</h2>
           <FormDescription>
             Proporciona los datos de identificación de la persona involucrada en los hechos denunciados. Esta
             información es fundamental para la investigación.
@@ -137,7 +137,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         </div>
 
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-primary">Descripción Detallada</h3>
+          <h2 className="font-semibold text-primary">Descripción Detallada</h2>
           <FormField
             control={form.control}
             name="personaDenunciada.descripcion"

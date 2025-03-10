@@ -25,7 +25,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
           name="denunciante.anonimo"
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center border border-primary/20 justify-between rounded-lg border p-4 shadow-sm">
+              <div className="flex items-center border border-primary/20 justify-between rounded-lg border p-4 shadow-sm bg-card/95 backdrop-blur">
                 <div className="space-y-0.5">
                   <FormLabel className="text-base">¿Desea hacer una denuncia anónima?</FormLabel>
                   <FormDescription>
@@ -39,8 +39,10 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                       variant={field.value ? "default" : "outline"}
                       onClick={() => field.onChange(true)}
                       className={cn(
-                        "w-[80px] h-[40px] text-sm",
-                        field.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                        "w-[80px] h-[40px] text-base font-medium transition-all duration-300",
+                        field.value 
+                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
+                          : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
                       )}
                     >
                       Sí
@@ -50,8 +52,10 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                       variant={!field.value ? "default" : "outline"}
                       onClick={() => field.onChange(false)}
                       className={cn(
-                        "w-[80px] h-[40px] text-sm",
-                        !field.value ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                        "w-[80px] h-[40px] text-base font-medium transition-all duration-300",
+                        !field.value 
+                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
+                          : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
                       )}
                     >
                       No
@@ -189,17 +193,51 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
               name="denunciante.datosDenunciante.proteccion"
               render={({ field }) => (
                 <FormItem>
-                  <div className="rounded-lg border border-primary/20 p-4 shadow-sm">
-                    <FormLabel className="text-base mb-2 block">¿Desea solicitar medidas de protección?</FormLabel>
-                    <FormDescription className="mb-2">
-                      Las medidas de protección son acciones para garantizar su seguridad durante el proceso de
-                      denuncia.
-                    </FormDescription>
+                  <div className="rounded-lg border border-primary/20 p-4 shadow-sm bg-card/95 backdrop-blur">
+                    <div className="space-y-2">
+                      <FormLabel className="text-base block">¿Desea solicitar medidas de protección?</FormLabel>
+                      <FormDescription>
+                        Las medidas de protección son acciones para garantizar su seguridad durante el proceso de
+                        denuncia.
+                      </FormDescription>
+                      
+                      {/* Botones estilizados debajo del texto, uno al lado del otro */}
+                      <div className="flex space-x-2 mt-4 py-4">
+                        <Button
+                          type="button"
+                          variant={field.value ? "default" : "outline"}
+                          onClick={() => field.onChange(true)}
+                          className={cn(
+                            "flex-1 h-[40px] text-base font-medium transition-all duration-300",
+                            field.value 
+                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
+                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                          )}
+                        >
+                          Sí, deseo solicitar medidas de protección
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={!field.value ? "default" : "outline"}
+                          onClick={() => field.onChange(false)}
+                          className={cn(
+                            "flex-1 h-[40px] text-base font-medium transition-all duration-300",
+                            !field.value 
+                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
+                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                          )}
+                        >
+                          No, no deseo solicitar medidas de protección
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    {/* RadioGroup oculto para mantener la funcionalidad */}
                     <FormControl>
                       <RadioGroup
                         onValueChange={(value) => field.onChange(value === "si")}
-                        defaultValue={field.value ? "si" : "no"}
-                        className="flex flex-col space-y-1"
+                        value={field.value ? "si" : "no"}
+                        className="hidden"
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>

@@ -5,34 +5,61 @@
 :root {
   --background: 171 100% 95%;
   --foreground: 171 5% 0%;
-  --card: 171 50% 90%;
+  --card: 171 100% 98%;
   --card-foreground: 171 5% 10%;
   --popover: 171 100% 95%;
   --popover-foreground: 171 100% 0%;
-  --primary: 171 58.9% 49.6%;
+  --primary: 176 96% 20%;
   --primary-foreground: 0 0% 100%;
+  --contrast: 171 71% 36%;
   --secondary: 171 30% 70%;
   --secondary-foreground: 0 0% 0%;
   --muted: 133 30% 85%;
-  --muted-foreground: 171 5% 35%;
-  --accent: 133 30% 80%;
+  --muted-foreground: 176 8% 18%;
+  --accent: 171 64% 53%;
   --accent-foreground: 171 5% 10%;
   --destructive: 0 100% 30%;
   --destructive-foreground: 171 5% 90%;
   --border: 171 30% 50%;
   --input: 171 30% 18%;
   --ring: 171 58.9% 49.6%;
-  --radius: 0.5rem;
+  --radius: 1.5rem;
+  
 
   --gradient-background: 
     linear-gradient(135deg, hsl(var(--primary) / 0.2) 0%, transparent 50%),
     radial-gradient(circle at 20% 80%, hsl(var(--secondary) / 0.4) 0%, transparent 40%),
     radial-gradient(circle at 80% 20%, hsl(var(--accent) / 0.3) 0%, transparent 40%),
     linear-gradient(45deg, hsl(var(--muted) / 0.2) 0%, transparent 70%);
+
+  .rounded-lg {
+    border-radius: var(--radius);
+  }
+
+  .rounded-md {
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  .bg-card\/95 {
+    background-color: hsl(var(--card) / 0.75);
+  }
+
+  .border-2 {
+      border-width: 1px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+  h1 {
+    color: hsl(var(--contrast))
+  }
+    
+    
 }
 
 .dark {
-  --background: 171 50% 5%;
+  --background: 168 56% 7%;
   --foreground: 171 5% 90%;
   --card: 171 50% 0%;
   --card-foreground: 171 5% 90%;
@@ -51,7 +78,7 @@
   --border: 171 30% 18%;
   --input: 171 30% 18%;
   --ring: 171 58.9% 49.6%;
-  --radius: 0.5rem;
+  --radius: 1.5rem;
 
   --gradient-background: 
     linear-gradient(135deg, hsl(var(--primary) / 0.3) 0%, transparent 50%),

@@ -215,7 +215,7 @@ export function MultiStepForm() {
         <div className="border-b">
           <div className="container mx-auto px-4 py-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-3xl font-bold foregroundy">{steps[step].title}</h2>
+              <h1 className="text-3xl font-bold foregroundy">{steps[step].title}</h1>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon" className="rounded-full">

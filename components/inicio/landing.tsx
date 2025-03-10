@@ -22,8 +22,8 @@ export function Landing() {
   const { theme } = useTheme()
 
   return (
-    <main className="relative min-h-screen overflow-hidden gradient-background">
-      <div className="container relative mx-auto px-4 py-12">
+    <main className="relative  gradient-background">
+      <div className="container relative mx-auto px-4 pt-1">
         {/* Header - Updated layout */}
         <div className="mb-12 flex items-center justify-center gap-8">
           <Image
@@ -37,7 +37,7 @@ export function Landing() {
         </div>
 
         {/* Main Card: Submit a Complaint - Updated design */}
-        <Card className="mb-12 border-primary/10 bg-card/95 shadow-lg backdrop-blur">
+        <Card className="mb-12 border-primary/10 bg-card/95  backdrop-blur">
           <CardHeader className="flex flex-row items-center justify-between border-b pb-6">
             <div className="space-y-2">
               <CardTitle className="text-3xl font-bold tracking-tight text-primary">Presenta tu Caso</CardTitle>
@@ -139,10 +139,10 @@ export function Landing() {
           <CardFooter className="flex justify-center pt-6">
             <Button
               size="lg"
-              className="w-full max-w-md bg-primary text-primary-foreground hover:bg-primary/90 py-6 text-lg shadow-lg transition-all duration-300 hover:shadow-xl"
+              className="w-full max-w-md bg-primary text-primary-foreground hover:bg-accent py-6 text-lg shadow-lg transition-all duration-300 hover:shadow-xl"
               asChild
             >
-              <Link href="/presentar-denuncia" className="flex items-center justify-center gap-3">
+              <Link href="/presentar-denuncia" className="flex items-center justify-center gap-3 hover:text-accent-foreground">
                 Presentar Denuncia
                 <ArrowRight className="h-5 w-5" />
               </Link>
@@ -156,7 +156,7 @@ export function Landing() {
             size="lg"
             variant="outline"
             onClick={() => setIsModalOpen(true)}
-            className="bg-card hover:bg-accent hover:text-accent-foreground text-lg p-4 h-auto flex items-center justify-center gap-4 border-2 border-primary/20 shadow-md hover:shadow-lg transition-all duration-300"
+            className="bg-card hover:bg-accent hover:text-accent-foreground text-lg p-4 h-auto flex items-center justify-center gap-4 border-2 hover:shadow-lg transition-all duration-300"
           >
             <div className="rounded-full bg-primary/20 p-3">
               <Search className="w-6 h-6 text-primary" />
@@ -169,7 +169,7 @@ export function Landing() {
           <Button
             size="lg"
             variant="outline"
-            className="bg-card hover:bg-accent hover:text-accent-foreground text-lg p-4 h-auto flex items-center justify-center gap-4 border-2 border-primary/20 shadow-md hover:shadow-lg transition-all duration-300"
+            className="bg-card hover:bg-accent hover:text-accent-foreground text-lg p-4 h-auto flex items-center justify-center gap-4 border-2 hover:shadow-lg transition-all duration-300"
             asChild
           >
             <Link href="/estadisticas">

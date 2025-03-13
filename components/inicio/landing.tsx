@@ -10,7 +10,7 @@ import { Clock, BarChart3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 
-import { Search, ArrowRight, Shield, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Search, ArrowRight, Shield, AlertCircle, CheckCircle2, XCircle } from "lucide-react"
 
 import { SeguimientoModal } from "@/components/modal/seguimiento-modal"
 
@@ -54,17 +54,22 @@ export function Landing() {
 
             <div className="grid gap-8 md:grid-cols-2">
               {/* Podrás denunciar */}
-              <div>
-                <h3 className="mb-4 text-xl font-semibold text-primary">Podrás denunciar</h3>
-                <ul className="space-y-4">
+              <div className="p-2">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-full bg-primary/10 p-2">
+                    <CheckCircle2 className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-primary">Podrás denunciar</h3>
+                </div>
+                <ul className="space-y-4 pl-2">
                   <li className="flex items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-1">
+                    <div className="rounded-full bg-primary/5 p-1 mt-0.5">
                       <CheckCircle2 className="h-4 w-4 text-primary" />
                     </div>
                     <span>Conductas de personas servidoras públicas en el ejercicio de sus funciones.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-1">
+                    <div className="rounded-full bg-primary/5 p-1 mt-0.5">
                       <CheckCircle2 className="h-4 w-4 text-primary" />
                     </div>
                     <span>
@@ -73,7 +78,7 @@ export function Landing() {
                     </span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-1">
+                    <div className="rounded-full bg-primary/5 p-1 mt-0.5">
                       <CheckCircle2 className="h-4 w-4 text-primary" />
                     </div>
                     <span>
@@ -81,8 +86,8 @@ export function Landing() {
                       de transición, o líderes de sindicatos del sector público.
                     </span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-1">
+                  <li className="flex items-start gap-3 mt-6 pt-4 border-t border-primary/10">
+                    <div className="rounded-full bg-primary/5 p-1 mt-0.5">
                       <Shield className="h-4 w-4 text-primary" />
                     </div>
                     <span>
@@ -95,26 +100,49 @@ export function Landing() {
               </div>
 
               {/* No podrás denunciar */}
-              <div>
-                <h3 className="mb-4 text-xl font-semibold text-primary">No podrás denunciar</h3>
-                <ul className="space-y-4">
+              <div className="p-2">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="rounded-full bg-primary/10 p-2">
+                    <XCircle className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-primary">No podrás denunciar</h3>
+                </div>
+                <p className="text-muted-foreground mb-4">
+                  Este sistema no está diseñado para atender los siguientes casos:
+                </p>
+                <ul className="space-y-4 pl-2">
                   <li className="flex items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-1">
+                    <div className="rounded-full bg-primary/5 p-1 mt-0.5">
                       <AlertCircle className="h-4 w-4 text-primary" />
                     </div>
-                    <span>Trámites y/o servicios</span>
+                    <div>
+                      <span className="font-medium">Trámites y/o servicios</span>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Problemas con trámites administrativos o servicios públicos.
+                      </p>
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-1">
+                    <div className="rounded-full bg-primary/5 p-1 mt-0.5">
                       <AlertCircle className="h-4 w-4 text-primary" />
                     </div>
-                    <span>Conflictos laborales</span>
+                    <div>
+                      <span className="font-medium">Conflictos laborales</span>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Disputas entre empleadores y empleados o relacionadas con condiciones de trabajo.
+                      </p>
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-1">
+                    <div className="rounded-full bg-primary/5 p-1 mt-0.5">
                       <AlertCircle className="h-4 w-4 text-primary" />
                     </div>
-                    <span>Conflictos entre particulares</span>
+                    <div>
+                      <span className="font-medium">Conflictos entre particulares</span>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Disputas civiles o comerciales entre personas o entidades privadas.
+                      </p>
+                    </div>
                   </li>
                 </ul>
               </div>

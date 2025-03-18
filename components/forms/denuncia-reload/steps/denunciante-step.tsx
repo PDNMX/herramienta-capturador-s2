@@ -18,58 +18,58 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
   const isAnonymous = form.watch("denunciante.anonimo")
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+      <div className="space-y-4 sm:space-y-6">
         <FormField
           control={form.control}
           name="denunciante.anonimo"
           render={({ field }) => (
             <FormItem>
-              <div className="flex items-center border border-primary/20 justify-between rounded-lg border p-4 shadow-sm bg-card/95 backdrop-blur">
-                <div className="space-y-0.5">
-                  <FormLabel className="text-base">¿Desea hacer una denuncia anónima?</FormLabel>
-                  <FormDescription>
-                    Elija 'Sí' si prefiere no revelar su identidad. Esto puede afectar cómo se procesa su denuncia.
+              <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
+                <div className="space-y-2">
+                  <FormLabel className="text-base block">¿Deseas presentar una denuncia anónima?</FormLabel>
+                  <FormDescription className="text-xs sm:text-sm">
+                    En cualquier caso, tu identidad será de carácter confidencial.
                   </FormDescription>
-                </div>
-                <FormControl>
-                  <div className="flex space-x-2">
+
+                  {/* Botones estilizados debajo del texto, uno al lado del otro en desktop, apilados en móvil */}
+                  <div className="flex flex-col space-y-2 sm:space-y-3 md:space-y-0 md:flex-row md:space-x-3 mt-3 sm:mt-4 py-2 sm:py-4">
                     <Button
                       type="button"
                       variant={field.value ? "default" : "outline"}
                       onClick={() => field.onChange(true)}
                       className={cn(
-                        "w-[80px] h-[40px] text-base font-medium transition-all duration-300",
-                        field.value 
-                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
-                          : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                        "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
+                        field.value
+                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
+                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}
                     >
-                      Sí
+                      Sí, deseo presentar la denuncia sin dar mis datos.
                     </Button>
                     <Button
                       type="button"
                       variant={!field.value ? "default" : "outline"}
                       onClick={() => field.onChange(false)}
                       className={cn(
-                        "w-[80px] h-[40px] text-base font-medium transition-all duration-300",
-                        !field.value 
-                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
-                          : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                        "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
+                        !field.value
+                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
+                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}
                     >
-                      No
+                      No, deseo proporcionar mis datos de contacto.
                     </Button>
                   </div>
-                </FormControl>
+                </div>
               </div>
             </FormItem>
           )}
         />
 
         {!isAnonymous && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <FormField
                 control={form.control}
                 name="denunciante.datosDenunciante.nombre"
@@ -77,9 +77,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormItem>
                     <FormLabel className="text-xs font-medium">Nombre completo</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Nombre completo" className="text-sm" />
+                      <Input {...field} placeholder="Nombre completo" className="text-sm h-9 sm:h-10" />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">
                       Ingrese su nombre y apellidos tal como aparecen en su identificación oficial.
                     </FormDescription>
                   </FormItem>
@@ -92,9 +92,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormItem>
                     <FormLabel className="text-xs font-medium">Teléfono</FormLabel>
                     <FormControl>
-                      <Input {...field} type="tel" placeholder="Número telefónico" className="text-sm" />
+                      <Input {...field} type="tel" placeholder="Número telefónico" className="text-sm h-9 sm:h-10" />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">
                       Proporcione un número de teléfono donde podamos contactarle si es necesario.
                     </FormDescription>
                   </FormItem>
@@ -107,9 +107,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormItem>
                     <FormLabel className="text-xs font-medium">Correo electrónico</FormLabel>
                     <FormControl>
-                      <Input {...field} type="email" placeholder="correo@ejemplo.com" className="text-sm" />
+                      <Input {...field} type="email" placeholder="correo@ejemplo.com" className="text-sm h-9 sm:h-10" />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">
                       Ingrese una dirección de correo electrónico válida para recibir actualizaciones sobre su denuncia.
                     </FormDescription>
                   </FormItem>
@@ -122,15 +122,17 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormItem>
                     <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Código Postal" className="text-sm" />
+                      <Input {...field} placeholder="Código Postal" className="text-sm h-9 sm:h-10" />
                     </FormControl>
-                    <FormDescription>El código postal nos ayuda a identificar su ubicación general.</FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">
+                      El código postal nos ayuda a identificar su ubicación general.
+                    </FormDescription>
                   </FormItem>
                 )}
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
               <FormField
                 control={form.control}
                 name="denunciante.datosDenunciante.domicilioDenunciante.calle"
@@ -138,9 +140,11 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormItem>
                     <FormLabel className="text-xs font-medium">Calle</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Nombre de la calle" className="text-sm" />
+                      <Input {...field} placeholder="Nombre de la calle" className="text-sm h-9 sm:h-10" />
                     </FormControl>
-                    <FormDescription>Indique el nombre completo de la calle de su domicilio.</FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">
+                      Indique el nombre completo de la calle de su domicilio.
+                    </FormDescription>
                   </FormItem>
                 )}
               />
@@ -151,9 +155,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormItem>
                     <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Número exterior" className="text-sm" />
+                      <Input {...field} placeholder="Número exterior" className="text-sm h-9 sm:h-10" />
                     </FormControl>
-                    <FormDescription>El número visible desde la calle.</FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">El número visible desde la calle.</FormDescription>
                   </FormItem>
                 )}
               />
@@ -164,9 +168,11 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   <FormItem>
                     <FormLabel className="text-xs font-medium">Número Interior</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Número interior (opcional)" className="text-sm" />
+                      <Input {...field} placeholder="Número interior (opcional)" className="text-sm h-9 sm:h-10" />
                     </FormControl>
-                    <FormDescription>Si aplica, indique el número de apartamento o interior.</FormDescription>
+                    <FormDescription className="text-xs sm:text-sm">
+                      Si aplica, indique el número de apartamento o interior.
+                    </FormDescription>
                   </FormItem>
                 )}
               />
@@ -179,9 +185,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                 <FormItem>
                   <FormLabel className="text-xs font-medium">Municipio o Alcaldía</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Municipio o Alcaldía" className="text-sm" />
+                    <Input {...field} placeholder="Municipio o Alcaldía" className="text-sm h-9 sm:h-10" />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className="text-xs sm:text-sm">
                     Especifique el municipio o alcaldía donde se encuentra su domicilio.
                   </FormDescription>
                 </FormItem>
@@ -193,25 +199,25 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
               name="denunciante.datosDenunciante.proteccion"
               render={({ field }) => (
                 <FormItem>
-                  <div className="rounded-lg border border-primary/20 p-4 shadow-sm bg-card/95 backdrop-blur">
+                  <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
                     <div className="space-y-2">
                       <FormLabel className="text-base block">¿Desea solicitar medidas de protección?</FormLabel>
-                      <FormDescription>
+                      <FormDescription className="text-xs sm:text-sm">
                         Las medidas de protección son acciones para garantizar su seguridad durante el proceso de
                         denuncia.
                       </FormDescription>
-                      
-                      {/* Botones estilizados debajo del texto, uno al lado del otro */}
-                      <div className="flex space-x-2 mt-4 py-4">
+
+                      {/* Botones estilizados debajo del texto, uno al lado del otro en desktop, apilados en móvil */}
+                      <div className="flex flex-col space-y-2 sm:space-y-3 md:space-y-0 md:flex-row md:space-x-3 mt-3 sm:mt-4 py-2 sm:py-4">
                         <Button
                           type="button"
                           variant={field.value ? "default" : "outline"}
                           onClick={() => field.onChange(true)}
                           className={cn(
-                            "flex-1 h-[40px] text-base font-medium transition-all duration-300",
-                            field.value 
-                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
-                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                            "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
+                            field.value
+                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
+                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                           )}
                         >
                           Sí, deseo solicitar medidas de protección
@@ -221,17 +227,17 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                           variant={!field.value ? "default" : "outline"}
                           onClick={() => field.onChange(false)}
                           className={cn(
-                            "flex-1 h-[40px] text-base font-medium transition-all duration-300",
-                            !field.value 
-                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground" 
-                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                            "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
+                            !field.value
+                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
+                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                           )}
                         >
                           No, no deseo solicitar medidas de protección
                         </Button>
                       </div>
                     </div>
-                    
+
                     {/* RadioGroup oculto para mantener la funcionalidad */}
                     <FormControl>
                       <RadioGroup

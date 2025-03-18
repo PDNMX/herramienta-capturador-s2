@@ -213,45 +213,29 @@ export function MultiStepForm() {
     <Form {...form}>
       <div className="w-full gradient-background shadow-md rounded-lg overflow-hidden flex flex-col">
         <div className="border-b">
-          <div className="container mx-auto px-4 py-6">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-3xl font-bold foregroundy">{steps[step].title}</h1>
+          <div className="container mx-auto px-4 py-4 md:py-6">
+            {/* Header section with title and help button */}
+            <div className="flex justify-between items-center mb-4">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold foregroundy">{steps[step].title}</h1>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon" className="rounded-full">
-                    <HelpCircle className="h-5 w-5" />
+                    <HelpCircle className="h-4 w-4 md:h-5 md:w-5" />
                   </Button>
                 </SheetTrigger>
                 <HelpContent step={step} />
               </Sheet>
             </div>
-            <Progress value={progress} className="h-2" />
-          </div>
-        </div>
-        <div className="flex flex-col justify-between min-h-[calc(100vh-180px)]">
-          <div className="container mx-auto px-4 py-8 mb-4 overflow-y-auto">
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <StepContent step={step} form={form} />
-            </form>
-          </div>
-          <div className="border-t">
-            <div className="container mx-auto px-4 py-3">
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={step === 0 ? () => router.push("/") : prevStep}
-                  disabled={isSubmitting}
-                  className="w-full sm:w-auto"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" /> {step === 0 ? "Regresar" : "Anterior"}
-                </Button>
-                <div className="flex space-x-2 order-first sm:order-none mb-2 sm:mb-0">
-                  {steps.map((s, index) => {
-                    const Icon = stepIcons[s.icon as keyof typeof stepIcons]
-                    return (
+
+            {/* Navigation buttons and progress section */}
+            <div className="space-y-4">
+              {/* Step indicators for larger screens */}
+              <div className="hidden md:flex justify-center space-x-2 mb-2">
+                {steps.map((s, index) => {
+                  const Icon = stepIcons[s.icon as keyof typeof stepIcons]
+                  return (
+                    <div key={index} className="flex flex-col items-center group">
                       <Button
-                        key={index}
                         type="button"
                         variant="ghost"
                         className={`w-10 h-10 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
@@ -266,13 +250,82 @@ export function MultiStepForm() {
                       >
                         <Icon className="h-5 w-5" />
                       </Button>
-                    )
-                  })}
+                      <span className="text-xs mt-1 text-center hidden md:block max-w-[80px] truncate">{s.title}</span>
+                      {index < steps.length - 1 && (
+                        <div className="hidden md:block h-[2px] w-8 bg-muted absolute left-[calc(100%+0.5rem)] top-5" />
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Progress bar */}
+              <div className="relative">
+                <Progress value={progress} className="h-2" />
+
+                {/* Step indicators for mobile - dots only */}
+                <div className="flex md:hidden justify-center space-x-2 mt-2">
+                  {steps.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-2 h-2 rounded-full ${
+                        index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
+                      }`}
+                    />
+                  ))}
                 </div>
-                <Button type="button" onClick={handleNextStep} disabled={isSubmitting} className="w-full sm:w-auto">
-                  {step === totalSteps - 1 ? (isSubmitting ? "Enviando..." : "Enviar") : "Siguiente"}
-                  <ArrowRight className="ml-2 h-4 w-4" />
+              </div>
+
+              {/* Navigation buttons */}
+              <div className="flex justify-between items-center pt-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="h-9"
+                  onClick={step === 0 ? () => router.push("/") : prevStep}
+                  disabled={isSubmitting}
+                >
+                  <ArrowLeft className="mr-1 h-4 w-4" />
+                  <span className="hidden sm:inline">{step === 0 ? "Regresar" : "Anterior"}</span>
+                  <span className="sm:hidden">{step === 0 ? "Inicio" : "Atrás"}</span>
                 </Button>
+
+                {/* Current step indicator for mobile */}
+                <div className="text-sm font-medium">
+                  {step + 1}/{totalSteps}
+                </div>
+
+                <Button type="button" size="sm" className="h-9" onClick={handleNextStep} disabled={isSubmitting}>
+                  <span className="hidden sm:inline">
+                    {step === totalSteps - 1 ? (isSubmitting ? "Enviando..." : "Enviar") : "Siguiente"}
+                  </span>
+                  <span className="sm:hidden">
+                    {step === totalSteps - 1 ? (isSubmitting ? "..." : "Enviar") : "Sig."}
+                  </span>
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Form content */}
+        <div className="flex flex-col justify-between min-h-[calc(100vh-220px)]">
+          <div className="container mx-auto px-4 py-6 md:py-8 overflow-y-auto">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+              <StepContent step={step} form={form} />
+            </form>
+          </div>
+
+          {/* Footer with helpful text */}
+          <div className="border-t mt-auto">
+            <div className="container mx-auto px-4 py-3">
+              <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
+                <p>Complete todos los campos requeridos</p>
+                <p className="mt-1 sm:mt-0">
+                  Paso {step + 1} de {totalSteps}
+                </p>
               </div>
             </div>
           </div>

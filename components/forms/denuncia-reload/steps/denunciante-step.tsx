@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
+import { User, Phone, Mail, MapPin, Building, Hash } from "lucide-react"
 import type { UseFormReturn } from "react-hook-form"
 
 interface DenuncianteStepProps {
@@ -20,6 +21,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
       <div className="space-y-4 sm:space-y-6">
+        {/* Sección de denuncia anónima */}
         <FormField
           control={form.control}
           name="denunciante.anonimo"
@@ -45,7 +47,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}
                     >
-                      Sí, deseo presentar la denuncia sin dar mis datos.
+                      Sí – Deseo presentar la denuncia sin dar mis datos.
                     </Button>
                     <Button
                       type="button"
@@ -58,7 +60,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}
                     >
-                      No, deseo proporcionar mis datos de contacto.
+                      No – Deseo proporcionar mis datos de contacto.
                     </Button>
                   </div>
                 </div>
@@ -68,86 +70,107 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
         />
 
         {!isAnonymous && (
-          <div className="space-y-4 sm:space-y-6">
-            {/* Nombre completo en una sola fila */}
-            <FormField
-              control={form.control}
-              name="denunciante.datosDenunciante.nombre"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Nombre completo</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. Juan Pérez García" className="text-sm h-9 sm:h-10" />
-                  </FormControl>
-                  <FormDescription className="text-xs sm:text-sm">Ingresa nombre(s) y apellidos</FormDescription>
-                </FormItem>
-              )}
-            />
+          <div className="space-y-5 sm:space-y-7">
+            {/* Sección de datos personales */}
+            <div className="space-y-4">
+              <h3 className="text-base font-medium flex items-center">
+                <User className="h-4 w-4 mr-2 text-muted-foreground" />
+                Datos personales
+              </h3>
 
-            {/* Texto introductorio para los medios de contacto */}
-            <div className="text-sm font-medium text-muted-foreground mt-2 mb-4">
-              Podrás proporcionar cualquiera de los siguientes medios de contacto:
+              {/* Nombre completo en una sola fila */}
+              <FormField
+                control={form.control}
+                name="denunciante.datosDenunciante.nombre"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-xs font-medium">Nombre completo</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Ej. Juan Pérez García" className="text-sm h-9 sm:h-10" />
+                    </FormControl>
+                    <FormDescription className="text-xs sm:text-sm">Ingresa nombre(s) y apellidos</FormDescription>
+                  </FormItem>
+                )}
+              />
+
+              {/* Texto introductorio para los medios de contacto */}
+              <div className="text-sm font-medium text-muted-foreground mt-2 mb-1">
+                Podrás proporcionar cualquiera de los siguientes medios de contacto:
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="denunciante.datosDenunciante.telefono"
+                  render={({ field }) => (
+                    <FormItem className="relative">
+                      <FormLabel className="text-xs font-medium">Teléfono</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Phone className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            {...field}
+                            type="tel"
+                            placeholder="Ej. 55 1234 5678"
+                            className="text-sm h-9 sm:h-10 pl-8"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormDescription className="text-xs sm:text-sm">
+                        Proporciona un número telefónico de contacto
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="denunciante.datosDenunciante.email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">Correo electrónico</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Mail className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            {...field}
+                            type="email"
+                            placeholder="Ej. usuario@correo.com"
+                            className="text-sm h-9 sm:h-10 pl-8"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormDescription className="text-xs sm:text-sm">
+                        Ingresa una dirección de correo electrónico para recibir notificaciones
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-              <FormField
-                control={form.control}
-                name="denunciante.datosDenunciante.telefono"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs font-medium">Teléfono</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="tel" placeholder="Ej. 55 1234 5678" className="text-sm h-9 sm:h-10" />
-                    </FormControl>
-                    <FormDescription className="text-xs sm:text-sm">
-                      Proporciona un número telefónico de contacto
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="denunciante.datosDenunciante.email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs font-medium">Correo electrónico</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        placeholder="Ej. usuario@correo.com"
-                        className="text-sm h-9 sm:h-10"
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs sm:text-sm">
-                      Ingresa una dirección de correo electrónico para recibir notificaciones relacionadas con tu
-                      denuncia
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-            </div>
+            {/* Sección de domicilio */}
+            <div className="space-y-4 mt-6">
+              <h3 className="text-base font-medium flex items-center">
+                <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                Domicilio para recibir notificaciones
+              </h3>
 
-            {/* Título para la sección de domicilio */}
-            <div className="text-sm font-medium mt-2">Domicilio para recibir notificaciones</div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-              <FormField
-                control={form.control}
-                name="denunciante.datosDenunciante.domicilioDenunciante.calle"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs font-medium">Calle</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Ej. Av. Insurgentes" className="text-sm h-9 sm:h-10" />
-                    </FormControl>
-                    <FormDescription className="text-xs sm:text-sm">
-                      Ingresa el nombre completo de la calle
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="denunciante.datosDenunciante.domicilioDenunciante.calle"
+                  render={({ field }) => (
+                    <FormItem className="md:col-span-2">
+                      <FormLabel className="text-xs font-medium">Calle</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Ej. Av. Insurgentes" className="text-sm h-9 sm:h-10" />
+                      </FormControl>
+                      <FormDescription className="text-xs sm:text-sm">
+                        Ingresa el nombre completo de la calle
+                      </FormDescription>
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="denunciante.datosDenunciante.domicilioDenunciante.numeroExterior"
@@ -155,7 +178,10 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Ej. 123" className="text-sm h-9 sm:h-10" />
+                        <div className="relative">
+                          <Hash className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input {...field} placeholder="Ej. 123" className="text-sm h-9 sm:h-10 pl-8" />
+                        </div>
                       </FormControl>
                       <FormDescription className="text-xs sm:text-sm">No. exterior</FormDescription>
                     </FormItem>
@@ -168,46 +194,50 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     <FormItem>
                       <FormLabel className="text-xs font-medium">Número Interior</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Ej. 4B" className="text-sm h-9 sm:h-10" />
+                        <div className="relative">
+                          <Hash className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input {...field} placeholder="Ej. 4B" className="text-sm h-9 sm:h-10 pl-8" />
+                        </div>
                       </FormControl>
                       <FormDescription className="text-xs sm:text-sm">No. interior (opcional)</FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="denunciante.datosDenunciante.domicilioDenunciante.codigoPostal"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
+                      <FormControl>
+                        <Input {...field} placeholder="Ej. 06700" className="text-sm h-9 sm:h-10" />
+                      </FormControl>
+                      <FormDescription className="text-xs sm:text-sm">Código Postal de tu domicilio</FormDescription>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-medium">Municipio o Alcaldía</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Building className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                          <Input {...field} placeholder="Ej. Cuauhtémoc" className="text-sm h-9 sm:h-10 pl-8" />
+                        </div>
+                      </FormControl>
+                      <FormDescription className="text-xs sm:text-sm">
+                        Municipio o Alcaldía donde se encuentra tu domicilio
+                      </FormDescription>
                     </FormItem>
                   )}
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-              <FormField
-                control={form.control}
-                name="denunciante.datosDenunciante.domicilioDenunciante.codigoPostal"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Ej. 06700" className="text-sm h-9 sm:h-10" />
-                    </FormControl>
-                    <FormDescription className="text-xs sm:text-sm">Código Postal de tu domicilio</FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-xs font-medium">Municipio o Alcaldía</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Ej. Cuauhtémoc" className="text-sm h-9 sm:h-10" />
-                    </FormControl>
-                    <FormDescription className="text-xs sm:text-sm">
-                      Municipio o Alcaldía donde se encuentra tu domicilio
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-            </div>
-
+            {/* Sección de medidas de protección */}
             <FormField
               control={form.control}
               name="denunciante.datosDenunciante.proteccion"
@@ -283,3 +313,4 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
     </div>
   )
 }
+

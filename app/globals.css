@@ -87,6 +87,42 @@
     linear-gradient(45deg, hsl(var(--muted) / 0.1) 0%, transparent 70%);
 }
 
+.high-contrast {
+  --background: 0 0% 100%; /* Blanco puro */
+  --foreground: 0 0% 0%; /* Negro puro */
+  --card: 0 0% 100%; /* Blanco */
+  --card-foreground: 0 0% 0%; /* Negro puro */
+  --popover: 210 40% 90%; /* Azul claro */
+  --popover-foreground: 0 0% 0%; /* Negro puro */
+  --primary: 220 60% 10%; /* Azul más oscuro para acentos */
+  --primary-foreground: 0 0% 100%; /* Blanco puro */
+  --secondary: 45 100% 50%; /* Amarillo mostaza */
+  /*--secondary: 212 100% 83%;  Amarillo mostaza */
+  /*--secondary: 353 97% 85%;  Amarillo mostaza */
+  --secondary-foreground: 0 0% 0%; /* Negro */
+  --accent: 45 100% 50%; /* Amarillo mostaza */
+  --accent-foreground: 0 0% 0%; /* Negro */
+  --border: 0 0% 20%; /* Gris oscuro */
+  --input: 0 0% 90%; /* Blanco apagado */
+  --ring: 220 100% 40%; /* Azul brillante */
+  --contrast: 45 100% 50%;
+
+  --gradient-background: 
+    linear-gradient(135deg, hsl(220 100% 99% / 0.2)  0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, hsl(var(--secondary) / 0.3) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, hsl(var(--secondary) / 0.3) 0%, transparent 40%),
+    linear-gradient(45deg, hsl(0 0% 90% / 0.4) 0%, transparent 70%);
+
+    .bg-card\/95 {
+      background-color: hsl(var(--card) / 0.75);
+    }
+
+    h1 {
+      color: hsl(var(--primary))
+    }
+}
+
+
 @layer base {
   * {
     @apply border-border;

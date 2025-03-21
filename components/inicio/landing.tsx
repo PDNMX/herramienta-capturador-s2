@@ -16,6 +16,7 @@ import { SeguimientoModal } from "@/components/modal/seguimiento-modal"
 
 import logoS5w from "@/components/s5-logo-white.svg"
 import logoS5d from "@/components/s5-logo-color.svg"
+import logoS5h from "@/components/s5-logo-high-contrast.svg"
 
 export function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -26,7 +27,15 @@ export function Landing() {
       <div className="container relative mx-auto px-4 pt-1">
         {/* Header - Updated layout */}
         <div className="mb-12 flex items-center justify-center gap-8">
-          <Image src={theme === "dark" ? logoS5w : logoS5d} alt="Logo Sistema 5" className="h-24 w-auto" />
+          <Image  src={
+              theme === "dark" 
+                ? logoS5w 
+                : theme === "high-contrast" 
+                ? logoS5h 
+                : logoS5d
+              } 
+              alt="Logo Sistema 5" className="h-24 w-auto" 
+            />
           <h1 className="text-4xl font-bold tracking-tight text-foreground max-w-3xl">
             Sistema de Denuncias Públicas de Faltas Administrativas y Hechos de Corrupción
           </h1>

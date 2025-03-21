@@ -9,8 +9,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useTheme } from 'next-themes';
 
 export default function AccessibilityMenu() {
+  const { theme, setTheme } = useTheme(); // Accede al tema actual y la función para cambiarlo
   const [fontSize, setFontSize] = useState(16);
   const [highContrast, setHighContrast] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -19,13 +21,13 @@ export default function AccessibilityMenu() {
     document.documentElement.style.fontSize = `${fontSize}px`;
   }, [fontSize]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (highContrast) {
       document.body.classList.add('high-contrast');
     } else {
       document.body.classList.remove('high-contrast');
     }
-  }, [highContrast]);
+  }, [highContrast]); */
 
   useEffect(() => {
     if (reducedMotion) {
@@ -39,7 +41,15 @@ export default function AccessibilityMenu() {
   const decreaseFontSize = () => setFontSize(prev => Math.max(prev - 2, 12));
   const resetFontSize = () => setFontSize(16);
 
-  const toggleHighContrast = () => setHighContrast(prev => !prev);
+/*   const toggleHighContrast = () => setHighContrast(prev => !prev); */
+  // Cambiar entre temas con alto contraste
+  const toggleHighContrast = () => {
+    if (theme === 'high-contrast') {
+      setTheme('light'); // Cambia al tema claro por defecto al desactivar
+    } else {
+      setTheme('high-contrast'); // Activa el tema de alto contraste
+    }
+  };
   const toggleReducedMotion = () => setReducedMotion(prev => !prev);
 
   return (
@@ -68,7 +78,8 @@ export default function AccessibilityMenu() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={toggleHighContrast}>
           <Contrast className="mr-2 h-4 w-4" />
-          <span>{highContrast ? 'Desactivar' : 'Activar'} alto contraste</span>
+          {/* <span>{highContrast ? 'Desactivar' : 'Activar'} alto contraste</span> */}
+          <span>{theme === 'high-contrast' ? 'Desactivar' : 'Activar'} alto contraste</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={toggleReducedMotion}>
           <MousePointer2 className="mr-2 h-4 w-4" />

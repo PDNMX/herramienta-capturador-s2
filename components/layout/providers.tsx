@@ -13,7 +13,12 @@ export default function Providers({
 }) {
   return (
     <>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider 
+        attribute="class" 
+        defaultTheme="system" 
+        enableSystem
+        themes={['light', 'dark', 'high-contrast']} // Agrega 'high-contrast'
+        >
         <SessionProvider session={session}>{children}</SessionProvider>
       </ThemeProvider>
     </>

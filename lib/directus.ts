@@ -49,6 +49,7 @@ export const denunciasPublicService = {
             telefono: formData.denunciante.datosDenunciante.telefono?.trim() || null,
             email: formData.denunciante.datosDenunciante.email?.trim() || null,
             proteccion: Boolean(formData.denunciante.datosDenunciante.proteccion),
+            razonesProteccion: formData.denunciante.datosDenunciante.razonesProteccion?.trim() || null,
             ...(domicilioDenuncianteId && { domicilioDenunciante: domicilioDenuncianteId })
           };
 

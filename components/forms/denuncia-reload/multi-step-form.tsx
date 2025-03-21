@@ -27,6 +27,7 @@ const formSchema = z.object({
           telefono: z.string().optional(),
           email: z.string().optional(),
           proteccion: z.boolean().default(false),
+          razonesProteccion: z.string().optional(),
           domicilioDenunciante: z
             .object({
               codigoPostal: z.string().optional(),
@@ -107,6 +108,7 @@ export function MultiStepForm() {
           telefono: "",
           email: "",
           proteccion: false,
+          razonesProteccion: "", // Valor por defecto para el nuevo campo
           domicilioDenunciante: {
             codigoPostal: "",
             calle: "",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   BarChart,
@@ -40,6 +40,21 @@ const datosEntes = [
 const COLORS = ['#4CAF50', '#FFC107', '#F44336', '#9E9E9E'];
 
 export function Estadisticas() {
+
+  const [COLORS, setCOLORS] = useState(getGraphColors());
+  useEffect(() => {
+    function handleThemeChange() {
+      setCOLORS(getGraphColors());
+    }
+
+    // Escuchar cambios en el tema
+    const observer = new MutationObserver(handleThemeChange);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    // Limpieza al desmontar
+    return () => observer.disconnect();
+  }, []);
+
   const [periodoSeleccionado, setPeriodoSeleccionado] = useState('ultimo-mes');
   const totalDenuncias = datosEntidades.reduce((acc, curr) => acc + curr.denuncias, 0);
   const totalCompletadas = datosEntidades.reduce((acc, curr) => acc + curr.completadas, 0);
@@ -51,6 +66,19 @@ export function Estadisticas() {
     { nombre: 'En Proceso', valor: totalEnProceso, color: COLORS[1], icon: Clock },
     { nombre: 'Pendientes', valor: totalPendientes, color: COLORS[2], icon: AlertTriangle },
   ];
+
+  function getGraphColors() {
+    const styles = getComputedStyle(document.documentElement);
+    return [
+      `hsl(${styles.getPropertyValue('--color-graph-0').trim()})`,
+      `hsl(${styles.getPropertyValue('--color-graph-1').trim()})`,
+      `hsl(${styles.getPropertyValue('--color-graph-2').trim()})`,
+      `hsl(${styles.getPropertyValue('--color-graph-base').trim()})`,
+    ];
+  }
+
+
+  
 
   return (
     <main className="relative min-h-screen overflow-hidden gradient-background">
@@ -196,7 +224,7 @@ export function Estadisticas() {
         </TabsContent>
 
         <TabsContent value="mapas">
-          <AvanceMapa baseColor={'#34cbb4'} />
+          <AvanceMapa baseColor={COLORS[3]} />
         </TabsContent>
 
         <div className="flex justify-end mt-4">

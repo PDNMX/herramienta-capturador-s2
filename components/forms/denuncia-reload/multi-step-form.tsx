@@ -252,7 +252,7 @@ export function MultiStepForm() {
                       >
                         <Icon className="h-5 w-5" />
                       </Button>
-                      <span className="text-xs mt-1 text-center hidden md:block max-w-[80px] truncate">{s.title}</span>
+                      <span className="text-xs mt-1 text-center hidden md:block max-w-[120px] whitespace-normal min-h-[2.5em]">{s.title}</span>
                       {index < steps.length - 1 && (
                         <div className="hidden md:block h-[2px] w-8 bg-muted absolute left-[calc(100%+0.5rem)] top-5" />
                       )}

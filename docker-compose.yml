@@ -1,4 +1,3 @@
-version: "3"
 services:
   app:
     build:
@@ -13,7 +12,7 @@ services:
             pm2-runtime start ecosystem.config.cjs"
     restart: always
     ports:
-      - 8057:8055
+      - 8055:8055
     depends_on:
       - db
     environment:
@@ -27,6 +26,8 @@ services:
       DB_USER: ${DATABASE_USERNAME}
       DB_PASSWORD: ${DATABASE_PASSWORD}
       DB_VERSION: "14"
+      # Añadimos conexión personalizada para manejar colaciones
+      DB_CONNECTION_STRING: "postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@db:5432/directus?sslmode=disable&client_encoding=UTF8"
       WEBSOCKETS_ENABLED: 0
       TELEMETRY: 0
       GRAPHQL_INTROSPECTION: 0
@@ -40,18 +41,31 @@ services:
       EMAIL_SMTP_PORT: ${SMTP_PORT}
       EMAIL_SMTP_USER: ${SMTP_USER}
       EMAIL_SMTP_PASSWORD: ${SMTP_PASSWORD}
+      # Variables de locale
+      LANG: es_MX.UTF-8
+      LC_ALL: es-MX-x-icu
+      TZ: America/Mexico_City
 
   db:
     image: postgres:14-alpine
     restart: always
     environment:
-      POSTGRES_DB: "directus"
+      POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      LANG: es_MX.UTF-8
+      LC_COLLATE: es-MX-x-icu
+      LC_CTYPE: es_MX.UTF-8
+      # Modificamos los argumentos de inicialización
+      POSTGRES_INITDB_ARGS: "--data-checksums --encoding=UTF8 --locale=es_MX.UTF-8 --lc-collate=es-MX-x-icu --lc-ctype=es_MX.UTF-8" # Configuramos timezone
+      TZ: America/Mexico_City
     volumes:
       - postgres:/var/lib/postgresql/data
-    #ports:
-    #- 5432:5432
+      - ./init-locales.sh:/docker-entrypoint-initdb.d/init-locales.sh
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - 5432:5432
 
 volumes:
   postgres: {}

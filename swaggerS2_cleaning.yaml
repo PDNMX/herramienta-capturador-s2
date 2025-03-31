@@ -1,0 +1,3930 @@
+openapi: 3.0.1
+info:
+  title: Dynamic API Specification para el S2
+  description: >-
+    This is a dynamically generated API specification for all endpoints existing
+    on the current project.
+  version: 10.13.4
+servers:
+  - url: http://localhost:8058
+    description: Your current Directus instance.
+paths:
+  /items/niveles_responsabilidades_contrataciones:
+    post:
+      summary: Create an Item
+      description: Create a new niveles_responsabilidades_contrataciones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesContrataciones
+      operationId: createItemsNivelesResponsabilidadesContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+                - $ref: >-
+                    #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the niveles_responsabilidades_contrataciones items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesContrataciones
+      operationId: readItemsNivelesResponsabilidadesContrataciones
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: >-
+        Update multiple niveles_responsabilidades_contrataciones items at the
+        same time.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesContrataciones
+      operationId: updateItemsNivelesResponsabilidadesContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+                - $ref: >-
+                    #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing niveles_responsabilidades_contrataciones items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesContrataciones
+      operationId: deleteItemsNivelesResponsabilidadesContrataciones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/niveles_responsabilidades_contrataciones/{id}:
+    get:
+      summary: Retrieve an Item
+      description: >-
+        Retrieve a single niveles_responsabilidades_contrataciones item by
+        unique identifier.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesContrataciones
+      operationId: readSingleItemsNivelesResponsabilidadesContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing niveles_responsabilidades_contrataciones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesContrataciones
+      operationId: updateSingleItemsNivelesResponsabilidadesContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsNivelesResponsabilidadesContrataciones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesContrataciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing niveles_responsabilidades_contrataciones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesContrataciones
+      operationId: deleteSingleItemsNivelesResponsabilidadesContrataciones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/contrataciones_publicas:
+    post:
+      summary: Create an Item
+      description: Create a new contrataciones_publicas item.
+      tags:
+        - Items
+        - ItemsContratacionesPublicas
+      operationId: createItemsContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsContratacionesPublicas"
+                - $ref: "#/components/schemas/ItemsContratacionesPublicas"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsContratacionesPublicas"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the contrataciones_publicas items.
+      tags:
+        - Items
+        - ItemsContratacionesPublicas
+      operationId: readItemsContratacionesPublicas
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsContratacionesPublicas"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple contrataciones_publicas items at the same time.
+      tags:
+        - Items
+        - ItemsContratacionesPublicas
+      operationId: updateItemsContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsContratacionesPublicas"
+                - $ref: "#/components/schemas/ItemsContratacionesPublicas"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsContratacionesPublicas"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing contrataciones_publicas items.
+      tags:
+        - Items
+        - ItemsContratacionesPublicas
+      operationId: deleteItemsContratacionesPublicas
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/contrataciones_publicas/{id}:
+    get:
+      summary: Retrieve an Item
+      description: Retrieve a single contrataciones_publicas item by unique identifier.
+      tags:
+        - Items
+        - ItemsContratacionesPublicas
+      operationId: readSingleItemsContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsContratacionesPublicas"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing contrataciones_publicas item.
+      tags:
+        - Items
+        - ItemsContratacionesPublicas
+      operationId: updateSingleItemsContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsContratacionesPublicas"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsContratacionesPublicas"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing contrataciones_publicas item.
+      tags:
+        - Items
+        - ItemsContratacionesPublicas
+      operationId: deleteSingleItemsContratacionesPublicas
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/datos_contrataciones_publicas:
+    post:
+      summary: Create an Item
+      description: Create a new datos_contrataciones_publicas item.
+      tags:
+        - Items
+        - ItemsDatosContratacionesPublicas
+      operationId: createItemsDatosContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+                - $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the datos_contrataciones_publicas items.
+      tags:
+        - Items
+        - ItemsDatosContratacionesPublicas
+      operationId: readItemsDatosContratacionesPublicas
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple datos_contrataciones_publicas items at the same time.
+      tags:
+        - Items
+        - ItemsDatosContratacionesPublicas
+      operationId: updateItemsDatosContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+                - $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing datos_contrataciones_publicas items.
+      tags:
+        - Items
+        - ItemsDatosContratacionesPublicas
+      operationId: deleteItemsDatosContratacionesPublicas
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/datos_contrataciones_publicas/{id}:
+    get:
+      summary: Retrieve an Item
+      description: >-
+        Retrieve a single datos_contrataciones_publicas item by unique
+        identifier.
+      tags:
+        - Items
+        - ItemsDatosContratacionesPublicas
+      operationId: readSingleItemsDatosContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing datos_contrataciones_publicas item.
+      tags:
+        - Items
+        - ItemsDatosContratacionesPublicas
+      operationId: updateSingleItemsDatosContratacionesPublicas
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing datos_contrataciones_publicas item.
+      tags:
+        - Items
+        - ItemsDatosContratacionesPublicas
+      operationId: deleteSingleItemsDatosContratacionesPublicas
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/entes_publicos:
+    post:
+      summary: Create an Item
+      description: Create a new entes_publicos item.
+      tags:
+        - Items
+        - ItemsEntesPublicos
+      operationId: createItemsEntesPublicos
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsEntesPublicos"
+                - $ref: "#/components/schemas/ItemsEntesPublicos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsEntesPublicos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the entes_publicos items.
+      tags:
+        - Items
+        - ItemsEntesPublicos
+      operationId: readItemsEntesPublicos
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsEntesPublicos"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple entes_publicos items at the same time.
+      tags:
+        - Items
+        - ItemsEntesPublicos
+      operationId: updateItemsEntesPublicos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsEntesPublicos"
+                - $ref: "#/components/schemas/ItemsEntesPublicos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsEntesPublicos"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing entes_publicos items.
+      tags:
+        - Items
+        - ItemsEntesPublicos
+      operationId: deleteItemsEntesPublicos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/entes_publicos/{id}:
+    get:
+      summary: Retrieve an Item
+      description: Retrieve a single entes_publicos item by unique identifier.
+      tags:
+        - Items
+        - ItemsEntesPublicos
+      operationId: readSingleItemsEntesPublicos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsEntesPublicos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing entes_publicos item.
+      tags:
+        - Items
+        - ItemsEntesPublicos
+      operationId: updateSingleItemsEntesPublicos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsEntesPublicos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsEntesPublicos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing entes_publicos item.
+      tags:
+        - Items
+        - ItemsEntesPublicos
+      operationId: deleteSingleItemsEntesPublicos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/datos_generales:
+    post:
+      summary: Create an Item
+      description: Create a new datos_generales item.
+      tags:
+        - Items
+        - ItemsDatosGenerales
+      operationId: createItemsDatosGenerales
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsDatosGenerales"
+                - $ref: "#/components/schemas/ItemsDatosGenerales"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsDatosGenerales"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the datos_generales items.
+      tags:
+        - Items
+        - ItemsDatosGenerales
+      operationId: readItemsDatosGenerales
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsDatosGenerales"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple datos_generales items at the same time.
+      tags:
+        - Items
+        - ItemsDatosGenerales
+      operationId: updateItemsDatosGenerales
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsDatosGenerales"
+                - $ref: "#/components/schemas/ItemsDatosGenerales"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsDatosGenerales"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing datos_generales items.
+      tags:
+        - Items
+        - ItemsDatosGenerales
+      operationId: deleteItemsDatosGenerales
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/datos_generales/{id}:
+    get:
+      summary: Retrieve an Item
+      description: Retrieve a single datos_generales item by unique identifier.
+      tags:
+        - Items
+        - ItemsDatosGenerales
+      operationId: readSingleItemsDatosGenerales
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsDatosGenerales"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing datos_generales item.
+      tags:
+        - Items
+        - ItemsDatosGenerales
+      operationId: updateSingleItemsDatosGenerales
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsDatosGenerales"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsDatosGenerales"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing datos_generales item.
+      tags:
+        - Items
+        - ItemsDatosGenerales
+      operationId: deleteSingleItemsDatosGenerales
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/niveles_jerarquicos:
+    post:
+      summary: Create an Item
+      description: Create a new niveles_jerarquicos item.
+      tags:
+        - Items
+        - ItemsNivelesJerarquicos
+      operationId: createItemsNivelesJerarquicos
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+                - $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the niveles_jerarquicos items.
+      tags:
+        - Items
+        - ItemsNivelesJerarquicos
+      operationId: readItemsNivelesJerarquicos
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple niveles_jerarquicos items at the same time.
+      tags:
+        - Items
+        - ItemsNivelesJerarquicos
+      operationId: updateItemsNivelesJerarquicos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+                - $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing niveles_jerarquicos items.
+      tags:
+        - Items
+        - ItemsNivelesJerarquicos
+      operationId: deleteItemsNivelesJerarquicos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/niveles_jerarquicos/{id}:
+    get:
+      summary: Retrieve an Item
+      description: Retrieve a single niveles_jerarquicos item by unique identifier.
+      tags:
+        - Items
+        - ItemsNivelesJerarquicos
+      operationId: readSingleItemsNivelesJerarquicos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing niveles_jerarquicos item.
+      tags:
+        - Items
+        - ItemsNivelesJerarquicos
+      operationId: updateSingleItemsNivelesJerarquicos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing niveles_jerarquicos item.
+      tags:
+        - Items
+        - ItemsNivelesJerarquicos
+      operationId: deleteSingleItemsNivelesJerarquicos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/empleos_cargos_comisiones:
+    post:
+      summary: Create an Item
+      description: Create a new empleos_cargos_comisiones item.
+      tags:
+        - Items
+        - ItemsEmpleosCargosComisiones
+      operationId: createItemsEmpleosCargosComisiones
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+                - $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the empleos_cargos_comisiones items.
+      tags:
+        - Items
+        - ItemsEmpleosCargosComisiones
+      operationId: readItemsEmpleosCargosComisiones
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple empleos_cargos_comisiones items at the same time.
+      tags:
+        - Items
+        - ItemsEmpleosCargosComisiones
+      operationId: updateItemsEmpleosCargosComisiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+                - $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing empleos_cargos_comisiones items.
+      tags:
+        - Items
+        - ItemsEmpleosCargosComisiones
+      operationId: deleteItemsEmpleosCargosComisiones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/empleos_cargos_comisiones/{id}:
+    get:
+      summary: Retrieve an Item
+      description: Retrieve a single empleos_cargos_comisiones item by unique identifier.
+      tags:
+        - Items
+        - ItemsEmpleosCargosComisiones
+      operationId: readSingleItemsEmpleosCargosComisiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing empleos_cargos_comisiones item.
+      tags:
+        - Items
+        - ItemsEmpleosCargosComisiones
+      operationId: updateSingleItemsEmpleosCargosComisiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing empleos_cargos_comisiones item.
+      tags:
+        - Items
+        - ItemsEmpleosCargosComisiones
+      operationId: deleteSingleItemsEmpleosCargosComisiones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/dictaminaciones_avaluos:
+    post:
+      summary: Create an Item
+      description: Create a new dictaminaciones_avaluos item.
+      tags:
+        - Items
+        - ItemsDictaminacionesAvaluos
+      operationId: createItemsDictaminacionesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+                - $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the dictaminaciones_avaluos items.
+      tags:
+        - Items
+        - ItemsDictaminacionesAvaluos
+      operationId: readItemsDictaminacionesAvaluos
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple dictaminaciones_avaluos items at the same time.
+      tags:
+        - Items
+        - ItemsDictaminacionesAvaluos
+      operationId: updateItemsDictaminacionesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+                - $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing dictaminaciones_avaluos items.
+      tags:
+        - Items
+        - ItemsDictaminacionesAvaluos
+      operationId: deleteItemsDictaminacionesAvaluos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/dictaminaciones_avaluos/{id}:
+    get:
+      summary: Retrieve an Item
+      description: Retrieve a single dictaminaciones_avaluos item by unique identifier.
+      tags:
+        - Items
+        - ItemsDictaminacionesAvaluos
+      operationId: readSingleItemsDictaminacionesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing dictaminaciones_avaluos item.
+      tags:
+        - Items
+        - ItemsDictaminacionesAvaluos
+      operationId: updateSingleItemsDictaminacionesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsDictaminacionesAvaluos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing dictaminaciones_avaluos item.
+      tags:
+        - Items
+        - ItemsDictaminacionesAvaluos
+      operationId: deleteSingleItemsDictaminacionesAvaluos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/niveles_responsabilidad_concesiones:
+    post:
+      summary: Create an Item
+      description: Create a new niveles_responsabilidad_concesiones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadConcesiones
+      operationId: createItemsNivelesResponsabilidadConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadConcesiones
+                - $ref: "#/components/schemas/ItemsNivelesResponsabilidadConcesiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadConcesiones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the niveles_responsabilidad_concesiones items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadConcesiones
+      operationId: readItemsNivelesResponsabilidadConcesiones
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadConcesiones
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: >-
+        Update multiple niveles_responsabilidad_concesiones items at the same
+        time.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadConcesiones
+      operationId: updateItemsNivelesResponsabilidadConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadConcesiones
+                - $ref: "#/components/schemas/ItemsNivelesResponsabilidadConcesiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadConcesiones
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing niveles_responsabilidad_concesiones items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadConcesiones
+      operationId: deleteItemsNivelesResponsabilidadConcesiones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/niveles_responsabilidad_concesiones/{id}:
+    get:
+      summary: Retrieve an Item
+      description: >-
+        Retrieve a single niveles_responsabilidad_concesiones item by unique
+        identifier.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadConcesiones
+      operationId: readSingleItemsNivelesResponsabilidadConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadConcesiones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing niveles_responsabilidad_concesiones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadConcesiones
+      operationId: updateSingleItemsNivelesResponsabilidadConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsNivelesResponsabilidadConcesiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadConcesiones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing niveles_responsabilidad_concesiones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadConcesiones
+      operationId: deleteSingleItemsNivelesResponsabilidadConcesiones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/servidores_intervengan_procedientos_contrataciones:
+    post:
+      summary: Create an Item
+      description: Create a new servidores_intervengan_procedientos_contrataciones item.
+      tags:
+        - Items
+        - ItemsServidoresIntervenganProcedientosContrataciones
+      operationId: createItemsServidoresIntervenganProcedientosContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+                - $ref: >-
+                    #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the servidores_intervengan_procedientos_contrataciones items.
+      tags:
+        - Items
+        - ItemsServidoresIntervenganProcedientosContrataciones
+      operationId: readItemsServidoresIntervenganProcedientosContrataciones
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: >-
+                        #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: >-
+        Update multiple servidores_intervengan_procedientos_contrataciones items
+        at the same time.
+      tags:
+        - Items
+        - ItemsServidoresIntervenganProcedientosContrataciones
+      operationId: updateItemsServidoresIntervenganProcedientosContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+                - $ref: >-
+                    #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+    delete:
+      summary: Delete Multiple Items
+      description: >-
+        Delete multiple existing
+        servidores_intervengan_procedientos_contrataciones items.
+      tags:
+        - Items
+        - ItemsServidoresIntervenganProcedientosContrataciones
+      operationId: deleteItemsServidoresIntervenganProcedientosContrataciones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/servidores_intervengan_procedientos_contrataciones/{id}:
+    get:
+      summary: Retrieve an Item
+      description: >-
+        Retrieve a single servidores_intervengan_procedientos_contrataciones
+        item by unique identifier.
+      tags:
+        - Items
+        - ItemsServidoresIntervenganProcedientosContrataciones
+      operationId: readSingleItemsServidoresIntervenganProcedientosContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: >-
+        Update an existing servidores_intervengan_procedientos_contrataciones
+        item.
+      tags:
+        - Items
+        - ItemsServidoresIntervenganProcedientosContrataciones
+      operationId: updateSingleItemsServidoresIntervenganProcedientosContrataciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: >-
+                #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsServidoresIntervenganProcedientosContrataciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: >-
+        Delete an existing servidores_intervengan_procedientos_contrataciones
+        item.
+      tags:
+        - Items
+        - ItemsServidoresIntervenganProcedientosContrataciones
+      operationId: deleteSingleItemsServidoresIntervenganProcedientosContrataciones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/niveles_responsabilidades_avaluos:
+    post:
+      summary: Create an Item
+      description: Create a new niveles_responsabilidades_avaluos item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesAvaluos
+      operationId: createItemsNivelesResponsabilidadesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+                - $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesAvaluos
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the niveles_responsabilidades_avaluos items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesAvaluos
+      operationId: readItemsNivelesResponsabilidadesAvaluos
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesAvaluos
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: >-
+        Update multiple niveles_responsabilidades_avaluos items at the same
+        time.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesAvaluos
+      operationId: updateItemsNivelesResponsabilidadesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+                - $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesAvaluos
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing niveles_responsabilidades_avaluos items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesAvaluos
+      operationId: deleteItemsNivelesResponsabilidadesAvaluos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/niveles_responsabilidades_avaluos/{id}:
+    get:
+      summary: Retrieve an Item
+      description: >-
+        Retrieve a single niveles_responsabilidades_avaluos item by unique
+        identifier.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesAvaluos
+      operationId: readSingleItemsNivelesResponsabilidadesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing niveles_responsabilidades_avaluos item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesAvaluos
+      operationId: updateSingleItemsNivelesResponsabilidadesAvaluos
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing niveles_responsabilidades_avaluos item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesAvaluos
+      operationId: deleteSingleItemsNivelesResponsabilidadesAvaluos
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/otorgamientos_concesiones:
+    post:
+      summary: Create an Item
+      description: Create a new otorgamientos_concesiones item.
+      tags:
+        - Items
+        - ItemsOtorgamientosConcesiones
+      operationId: createItemsOtorgamientosConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+                - $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the otorgamientos_concesiones items.
+      tags:
+        - Items
+        - ItemsOtorgamientosConcesiones
+      operationId: readItemsOtorgamientosConcesiones
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: Update multiple otorgamientos_concesiones items at the same time.
+      tags:
+        - Items
+        - ItemsOtorgamientosConcesiones
+      operationId: updateItemsOtorgamientosConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+                - $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing otorgamientos_concesiones items.
+      tags:
+        - Items
+        - ItemsOtorgamientosConcesiones
+      operationId: deleteItemsOtorgamientosConcesiones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/otorgamientos_concesiones/{id}:
+    get:
+      summary: Retrieve an Item
+      description: Retrieve a single otorgamientos_concesiones item by unique identifier.
+      tags:
+        - Items
+        - ItemsOtorgamientosConcesiones
+      operationId: readSingleItemsOtorgamientosConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing otorgamientos_concesiones item.
+      tags:
+        - Items
+        - ItemsOtorgamientosConcesiones
+      operationId: updateSingleItemsOtorgamientosConcesiones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing otorgamientos_concesiones item.
+      tags:
+        - Items
+        - ItemsOtorgamientosConcesiones
+      operationId: deleteSingleItemsOtorgamientosConcesiones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+  /items/niveles_responsabilidades_enajenaciones:
+    post:
+      summary: Create an Item
+      description: Create a new niveles_responsabilidades_enajenaciones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesEnajenaciones
+      operationId: createItemsNivelesResponsabilidadesEnajenaciones
+      parameters:
+        - $ref: "#/components/parameters/Meta"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+                - $ref: >-
+                    #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    get:
+      summary: List Items
+      description: List the niveles_responsabilidades_enajenaciones items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesEnajenaciones
+      operationId: readItemsNivelesResponsabilidadesEnajenaciones
+      security:
+        - Auth: []
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+                  meta:
+                    $ref: "#/components/schemas/x-metadata"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+    patch:
+      summary: Update Multiple Items
+      description: >-
+        Update multiple niveles_responsabilidades_enajenaciones items at the
+        same time.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesEnajenaciones
+      operationId: updateItemsNivelesResponsabilidadesEnajenaciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Offset"
+        - $ref: "#/components/parameters/Sort"
+        - $ref: "#/components/parameters/Filter"
+        - $ref: "#/components/parameters/Search"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: array
+                  items:
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+                - $ref: >-
+                    #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    items:
+                      $ref: >-
+                        #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+    delete:
+      summary: Delete Multiple Items
+      description: Delete multiple existing niveles_responsabilidades_enajenaciones items.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesEnajenaciones
+      operationId: deleteItemsNivelesResponsabilidadesEnajenaciones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      parameters: []
+  /items/niveles_responsabilidades_enajenaciones/{id}:
+    get:
+      summary: Retrieve an Item
+      description: >-
+        Retrieve a single niveles_responsabilidades_enajenaciones item by unique
+        identifier.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesEnajenaciones
+      operationId: readSingleItemsNivelesResponsabilidadesEnajenaciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - $ref: "#/components/parameters/Version"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    patch:
+      summary: Update an Item
+      description: Update an existing niveles_responsabilidades_enajenaciones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesEnajenaciones
+      operationId: updateSingleItemsNivelesResponsabilidadesEnajenaciones
+      parameters:
+        - $ref: "#/components/parameters/Fields"
+        - $ref: "#/components/parameters/Meta"
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones"
+      responses:
+        "200":
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    $ref: >-
+                      #/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+    delete:
+      summary: Delete an Item
+      description: Delete an existing niveles_responsabilidades_enajenaciones item.
+      tags:
+        - Items
+        - ItemsNivelesResponsabilidadesEnajenaciones
+      operationId: deleteSingleItemsNivelesResponsabilidadesEnajenaciones
+      responses:
+        "200":
+          description: Successful request
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+      parameters:
+        - name: id
+          description: Index of the item.
+          in: path
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                description: Incremental index of the item.
+                example: 1
+              - type: string
+                description: Unique identifier of the item.
+                example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+tags:
+  - name: ItemsNivelesResponsabilidadesContrataciones
+    x-collection: niveles_responsabilidades_contrataciones
+  - name: ItemsContratacionesPublicas
+    x-collection: contrataciones_publicas
+  - name: ItemsDatosContratacionesPublicas
+    x-collection: datos_contrataciones_publicas
+  - name: ItemsEntesPublicos
+    x-collection: entes_publicos
+  - name: ItemsDatosGenerales
+    x-collection: datos_generales
+  - name: ItemsNivelesJerarquicos
+    x-collection: niveles_jerarquicos
+  - name: ItemsEmpleosCargosComisiones
+    x-collection: empleos_cargos_comisiones
+  - name: ItemsDictaminacionesAvaluos
+    x-collection: dictaminaciones_avaluos
+  - name: ItemsNivelesResponsabilidadConcesiones
+    x-collection: niveles_responsabilidad_concesiones
+  - name: ItemsServidoresIntervenganProcedientosContrataciones
+    x-collection: servidores_intervengan_procedientos_contrataciones
+  - name: ItemsNivelesResponsabilidadesAvaluos
+    x-collection: niveles_responsabilidades_avaluos
+  - name: ItemsOtorgamientosConcesiones
+    x-collection: otorgamientos_concesiones
+  - name: ItemsNivelesResponsabilidadesEnajenaciones
+    x-collection: niveles_responsabilidades_enajenaciones
+components:
+  schemas:
+    x-metadata:
+      type: object
+      properties:
+        total_count:
+          description: Returns the total item count of the collection you're querying.
+          type: integer
+        filter_count:
+          description: >-
+            Returns the item count of the collection you're querying, taking the
+            current filter/search parameters into account.
+          type: integer
+    Fields:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        collection:
+          description: Unique name of the collection this field is in.
+          example: about_us
+          type: string
+        field:
+          description: >-
+            Unique name of the field. Field name is unique within the
+            collection.
+          example: id
+          type: string
+        special:
+          nullable: true
+          type: array
+          items:
+            type: string
+        interface:
+          nullable: true
+          type: string
+        options:
+          nullable: true
+        display:
+          nullable: true
+          type: string
+        display_options:
+          nullable: true
+        readonly:
+          nullable: false
+          type: boolean
+        hidden:
+          nullable: false
+          type: boolean
+        sort:
+          nullable: true
+          type: integer
+        width:
+          nullable: true
+          type: string
+        translations:
+          nullable: true
+        note:
+          nullable: true
+          type: string
+        conditions:
+          nullable: true
+        required:
+          nullable: true
+          type: boolean
+        group:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/Fields"
+        validation:
+          nullable: true
+        validation_message:
+          nullable: true
+          type: string
+      x-collection: directus_fields
+    Collections:
+      type: object
+      properties:
+        collection:
+          description: The collection key.
+          example: customers
+          type: string
+        icon:
+          nullable: true
+          type: string
+        note:
+          nullable: true
+          type: string
+        display_template:
+          nullable: true
+          type: string
+        hidden:
+          nullable: false
+          type: boolean
+        singleton:
+          nullable: false
+          type: boolean
+        translations:
+          nullable: true
+        archive_field:
+          nullable: true
+          type: string
+        archive_app_filter:
+          nullable: false
+          type: boolean
+        archive_value:
+          nullable: true
+          type: string
+        unarchive_value:
+          nullable: true
+          type: string
+        sort_field:
+          nullable: true
+          type: string
+        accountability:
+          nullable: true
+          type: string
+        color:
+          nullable: true
+          type: string
+        item_duplication_fields:
+          nullable: true
+        sort:
+          nullable: true
+          type: integer
+        group:
+          nullable: true
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Collections"
+        collapse:
+          nullable: false
+          type: string
+        preview_url:
+          nullable: true
+          type: string
+        versioning:
+          nullable: false
+          type: boolean
+      x-collection: directus_collections
+    Revisions:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the revision.
+          example: 1
+          type: integer
+        activity:
+          description: Unique identifier for the activity record.
+          example: 2
+          oneOf:
+            - type: integer
+        collection:
+          description: Collection of the updated item.
+          example: articles
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Collections"
+        item:
+          description: Primary key of updated item.
+          example: "168"
+          type: string
+        data:
+          description: Copy of item state at time of update.
+          example:
+            author: 1
+            body: This is my first post
+            featured_image: 15
+            id: "168"
+            title: Hello, World!
+          type: object
+          nullable: true
+        delta:
+          description: Changes between the previous and the current revision.
+          example:
+            title: Hello, World!
+          type: object
+        parent:
+          description: >-
+            If the current item was updated relationally, this is the id of the
+            parent revision record
+          example: null
+          type: integer
+          nullable: true
+        version:
+          description: Associated version of this revision.
+          example: draft
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Versions"
+      x-collection: directus_revisions
+    Operations:
+      type: object
+      properties:
+        id:
+          description: Unique identifier for the operation.
+          type: string
+          example: 2f24211d-d928-469a-aea3-3c8f53d4e426
+        name:
+          description: The name of the operation.
+          type: string
+          example: Log to Console
+        key:
+          description: Key for the operation. Must be unique within a given flow.
+          type: string
+          example: log_console
+        type:
+          description: >-
+            Type of operation. One of `log`, `mail`, `notification`, `create`,
+            `read`, `request`, `sleep`, `transform`, `trigger`, `condition`, or
+            any type of custom operation extensions.
+          type: string
+          example: log
+        position_x:
+          description: Position of the operation on the X axis within the flow workspace.
+          type: integer
+          example: 12
+        position_y:
+          description: Position of the operation on the Y axis within the flow workspace.
+          type: integer
+          example: 12
+        options:
+          description: Options depending on the type of the operation.
+          type: object
+          example: null
+          nullable: true
+        resolve:
+          description: >-
+            The operation triggered when the current operation succeeds (or
+            `then` logic of a condition operation).
+          example: 63716273-0f29-4648-8a2a-2af2948f6f78
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Operations"
+        reject:
+          description: >-
+            The operation triggered when the current operation fails (or
+            `otherwise` logic of a condition operation).
+          example: 63716273-0f29-4648-8a2a-2af2948f6f78
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Operations"
+        flow:
+          nullable: false
+          oneOf:
+            - type: string
+              format: uuid
+        date_created:
+          description: Timestamp in ISO8601 when the operation was created.
+          type: string
+          example: "2022-05-11T13:14:52Z"
+          format: date-time
+          nullable: true
+        user_created:
+          description: The user who created the operation.
+          example: 63716273-0f29-4648-8a2a-2af2948f6f78
+          oneOf:
+            - type: string
+      x-collection: directus_operations
+    Versions:
+      type: object
+      properties:
+        id:
+          description: Primary key of the Content Version.
+          example: 63716273-0f29-4648-8a2a-2af2948f6f78
+          type: string
+        key:
+          description: >-
+            Key of the Content Version, used as the value for the "version"
+            query parameter.
+          example: draft
+          type: string
+        name:
+          description: Descriptive name of the Content Version.
+          example: My Draft
+          type: string
+        collection:
+          description: Name of the collection the Content Version is created on.
+          example: articles
+          oneOf:
+            - type: string
+            - $ref: "#/components/schemas/Collections"
+        item:
+          description: The item the Content Version is created on.
+          example: "168"
+          type: string
+        hash:
+          nullable: true
+          type: string
+        date_created:
+          description: When the Content Version was created.
+          type: string
+          example: "2022-05-11T13:14:52Z"
+          format: date-time
+          nullable: true
+        date_updated:
+          description: When the Content Version was updated.
+          type: string
+          example: "2022-05-11T13:14:53Z"
+          format: date-time
+          nullable: true
+        user_created:
+          description: User that created the Content Version.
+          example: 63716273-0f29-4648-8a2a-2af2948f6f78
+          oneOf:
+            - type: string
+        user_updated:
+          description: User that updated the Content Version.
+          example: 63716273-0f29-4648-8a2a-2af2948f6f78
+          oneOf:
+            - type: string
+      x-collection: directus_versions
+    ItemsNivelesResponsabilidadesContrataciones:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        autorizacion:
+          nullable: true
+        justificacion:
+          nullable: true
+        convocatoria:
+          nullable: true
+        evaluacion:
+          nullable: true
+        adjudicacion:
+          nullable: true
+        formalizacion:
+          nullable: true
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+      x-collection: niveles_responsabilidades_contrataciones
+    ItemsContratacionesPublicas:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        nivelesResponsabilidades:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsNivelesResponsabilidadesContrataciones"
+        datos_contrataciones_publicas:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsDatosContratacionesPublicas"
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        contratacionesAdquisiciones:
+          nullable: true
+          type: string
+        contratacionesObras:
+          nullable: true
+          type: string
+        valor_contrataciones:
+          nullable: true
+          type: string
+        valor_obras:
+          nullable: true
+          type: string
+      x-collection: contrataciones_publicas
+    ItemsDatosContratacionesPublicas:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        fechaInicioProcedimiento:
+          nullable: true
+          type: string
+          format: date
+        numeroExpedienteFolio:
+          nullable: true
+          type: string
+        tipoProcedimiento:
+          nullable: true
+          type: string
+        otroTipoProcedimiento:
+          nullable: true
+          type: string
+        materia:
+          nullable: true
+          type: string
+        otroMateria:
+          nullable: true
+          type: string
+        fechaConclusionProcedimiento:
+          nullable: true
+          type: string
+          format: date
+      x-collection: datos_contrataciones_publicas
+    ItemsEntesPublicos:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        nombre:
+          nullable: true
+          type: string
+        fk_ente_publico:
+          nullable: true
+          oneOf:
+            - type: string
+              format: uuid
+      x-collection: entes_publicos
+    ItemsDatosGenerales:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        primerApellido:
+          nullable: true
+          type: string
+        segundoApellido:
+          nullable: true
+          type: string
+        curp:
+          nullable: true
+          description: >-
+            Escribir los dieciocho caracteres alfanuméricos como aparece en el
+            documento que emite la Secretaría de Gobernación.  En caso de no
+            contar con ese dato, podrá consultarlo en la siguiente página:
+            https://www.gob.mx/curp/
+          type: string
+        rfc:
+          nullable: true
+          description: >-
+            Escribir los primeros diez caracteres básicos y los tres
+            correspondientes a la homoclave
+          type: string
+        sexo:
+          nullable: true
+          description: Seleccionar la opción que corresponda
+          type: string
+        nombre:
+          nullable: true
+          description: >-
+            Se deberá escribir el o los nombres, así como los apellidos, sin
+            abreviaturas, sin acentos, ni signos especiales. En caso de tener
+            sólo un apellido, deberá colocarse en el espacio del primer apellido
+            y dejar el espacio del segundo apellido en blanco
+          type: string
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+      x-collection: datos_generales
+    ItemsNivelesJerarquicos:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        clave:
+          nullable: true
+          type: string
+        valor:
+          nullable: true
+          description: >-
+            En caso de seleccionar la opción "OTRO", se deberá especificar el
+            tipo de nivel jerárquico del empleo, cargo o comisión que desempeña
+            la persona servidora pública sancionada.
+          type: string
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+      x-collection: niveles_jerarquicos
+    ItemsEmpleosCargosComisiones:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        entidadFederativa:
+          nullable: true
+          description: >-
+            Seleccionar la entidad federativa donde se ubica el Ente público
+            donde labora la persona servidora pública
+          type: string
+        nivelOrdenGobierno:
+          nullable: true
+          description: Seleccionar el nivel u orden de gobierno
+          type: string
+        ambitoPublico:
+          nullable: true
+          description: Seleccionar el ámbito público
+          type: string
+        nombreEntePublico:
+          nullable: true
+          description: >-
+            Indicar el nombre completo del Ente público, sin abreviaturas, sin
+            acentos, ni signos especiales
+          type: string
+        siglasEntePublico:
+          nullable: true
+          description: Indicar las siglas del Ente público
+          type: string
+        nivelJerarquico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsNivelesJerarquicos"
+        denominacion:
+          nullable: true
+          description: >-
+            Escribir la denominación completa del empleo, cargo o comisión que
+            aparece en el recibo de nómina, nombramiento, contrato u oficio de
+            comisión, sin abreviaturas, sin acentos, ni signos especiales
+          type: string
+        areaAdscripcion:
+          nullable: true
+          description: >-
+            Especificar el nombre de la Unidad Administrativa del Ente público a
+            la que está adscrita la persona servidora pública, sin abreviaturas,
+            sin acentos, ni signos especiales
+          type: string
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        participacion:
+          nullable: true
+          description: >-
+            Seleccionar si la participación de la persona servidora pública en
+            contrataciones públicas y otros procedimientos es una
+          type: string
+      x-collection: empleos_cargos_comisiones
+    ItemsDictaminacionesAvaluos:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        niveles_responsabilidad_avaluos:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        numeroExpedienteFolio:
+          nullable: true
+          type: string
+        fechaInicioProcedimiento:
+          nullable: true
+          type: string
+          format: date
+        fechaConclusionProcedimiento:
+          nullable: true
+          type: string
+          format: date
+      x-collection: dictaminaciones_avaluos
+    ItemsNivelesResponsabilidadConcesiones:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        convocatoria:
+          nullable: true
+        dictamenes:
+          nullable: true
+        visitas:
+          nullable: true
+        evaluacion:
+          nullable: true
+        determinacion:
+          nullable: true
+      x-collection: niveles_responsabilidad_concesiones
+    ItemsServidoresIntervenganProcedientosContrataciones:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: string
+          format: uuid
+        user_created:
+          nullable: true
+          oneOf:
+            - type: string
+              format: uuid
+        date_created:
+          nullable: true
+          type: string
+          format: timestamp
+        user_updated:
+          nullable: true
+          oneOf:
+            - type: string
+              format: uuid
+        date_updated:
+          nullable: true
+          type: string
+          format: timestamp
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        fecha:
+          nullable: true
+          description: Indicar la fecha en la que se registra la información
+          type: string
+          format: date
+        datosGenerales:
+          nullable: true
+          description: >-
+            En el presente apartado se establecen los datos concernientes a la
+            persona servidora pública que intervenga en procedimientos de
+            contratación pública
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsDatosGenerales"
+        empleoCargoComision:
+          nullable: true
+          description: >-
+            En el presente apartado se establecen los datos concernientes al
+            empleo, cargo o comisión que ostenta la persona servidora pública al
+            intervenir en actos públicos
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEmpleosCargosComisiones"
+        ejercicio:
+          nullable: true
+          description: >-
+            Registrar el ejercicio presupuestal en que se realizó el acto
+            público
+          type: string
+        tipoProcedimiento:
+          nullable: true
+          type: string
+        contrataciones_publicas:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsContratacionesPublicas"
+        otorgamientoConcesion:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsOtorgamientosConcesiones"
+        Observaciones:
+          nullable: true
+          type: string
+        enajenacionesBienes:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsNivelesResponsabilidadesEnajenaciones"
+        avaluosJustipreciacion:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsNivelesResponsabilidadesAvaluos"
+      x-collection: servidores_intervengan_procedientos_contrataciones
+    ItemsNivelesResponsabilidadesAvaluos:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        propuestas:
+          nullable: true
+        asignacion:
+          nullable: true
+        emision:
+          nullable: true
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        numeroExpedienteFolio:
+          nullable: true
+          type: string
+        fechaInicioProcedimiento:
+          nullable: true
+          type: string
+          format: date
+        fechaConclusionProcedimiento:
+          nullable: true
+          type: string
+          format: date
+      x-collection: niveles_responsabilidades_avaluos
+    ItemsOtorgamientosConcesiones:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        tipoOtorgamiento:
+          nullable: true
+          type: string
+        nivelResponsabilidadConcesiones:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsNivelesResponsabilidadConcesiones"
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        numeroExpedienteFolio:
+          nullable: true
+          type: string
+        tipoProcedimiento:
+          nullable: true
+          type: string
+        fechaInicioProcedimiento:
+          nullable: true
+          type: string
+          format: date
+        fechaConclusionProcedimiento:
+          nullable: true
+          type: string
+          format: date
+      x-collection: otorgamientos_concesiones
+    ItemsNivelesResponsabilidadesEnajenaciones:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        autorizaciones:
+          nullable: true
+        analisis:
+          nullable: true
+        modificaciones:
+          nullable: true
+        presentacion:
+          nullable: true
+        evaluacion:
+          nullable: true
+        adjudicacion:
+          nullable: true
+        formalizacoin:
+          nullable: true
+        entePublico:
+          nullable: true
+          oneOf:
+            - type: integer
+            - $ref: "#/components/schemas/ItemsEntesPublicos"
+        numeroExpedienteFolio:
+          nullable: true
+          type: string
+        fechaInicioProcedimiento:
+          nullable: true
+          type: string
+          format: date
+        fechaConclusionProcedimiento:
+          nullable: true
+          type: string
+          format: date
+      x-collection: niveles_responsabilidades_enajenaciones
+  parameters:
+    Id:
+      description: Index
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    UUId:
+      description: Unique identifier for the object.
+      name: id
+      in: path
+      required: true
+      schema:
+        example: 8cbb43fe-4cdf-4991-8352-c461779cec02
+        type: string
+    Collection:
+      description: Collection of which you want to retrieve the items from.
+      name: collection
+      in: path
+      required: true
+      schema:
+        type: string
+    Search:
+      description: >-
+        Filter by items that contain the given search query in one of their
+        fields.
+      in: query
+      name: search
+      required: false
+      schema:
+        type: string
+    Page:
+      description: Cursor for use in pagination. Often used in combination with limit.
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+    Offset:
+      description: How many items to skip when fetching data.
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
+    Sort:
+      description: >
+        How to sort the returned items. `sort` is a CSV of fields used to sort
+        the fetched items. Sorting defaults to ascending (ASC) order but a minus
+        sign (` - `) can be used to reverse this to descending (DESC) order.
+        Fields are prioritized by their order in the CSV. You can also use a ` ?
+        ` to sort randomly.
+      in: query
+      name: sort
+      required: false
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    Meta:
+      description: What metadata to return in the response.
+      in: query
+      name: meta
+      required: false
+      schema:
+        type: string
+    Limit:
+      description: A limit on the number of objects that are returned.
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+    Filter:
+      description: Select items in collection by given conditions.
+      in: query
+      name: filter
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            example:
+              <field>:
+                <operator>: <value>
+    Fields:
+      description: Control what fields are being returned in the object.
+      in: query
+      name: fields
+      required: false
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+    Export:
+      name: export
+      description: >-
+        Saves the API response to a file. Accepts one of "csv", "json", "xml",
+        "yaml".
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - csv
+          - json
+          - xml
+          - yaml
+    Version:
+      name: version
+      description: >
+        Retrieve an item's state from a specific Content Version. The value
+        corresponds to the "key" of the Content Version.
+      in: query
+      required: false
+      schema:
+        type: string
+  responses:
+    NotFoundError:
+      description: "Error: Not found."
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int64
+                  message:
+                    type: string
+    UnauthorizedError:
+      description: "Error: Unauthorized request"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int64
+                  message:
+                    type: string
+  securitySchemes:
+    KeyAuth:
+      type: apiKey
+      in: query
+      name: access_token
+    Auth:
+      type: apiKey
+      in: header
+      name: Authorization

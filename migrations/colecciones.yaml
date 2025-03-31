@@ -68,7 +68,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 1
+      sort: 2
       sort_field: null
       translations: null
       unarchive_value: null
@@ -92,7 +92,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 1
+      sort: 2
       sort_field: null
       translations: null
       unarchive_value: null
@@ -301,14 +301,14 @@ collections:
       collection: niveles_responsabilidades_avaluos
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: dictaminaciones_avaluos
       hidden: true
       icon: null
       item_duplication_fields: null
       note: null
       preview_url: null
       singleton: false
-      sort: 7
+      sort: 1
       sort_field: null
       translations: null
       unarchive_value: null
@@ -349,14 +349,14 @@ collections:
       collection: niveles_responsabilidades_enajenaciones
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: enajenaciones_bienes
       hidden: true
       icon: null
       item_duplication_fields: null
       note: null
       preview_url: null
       singleton: false
-      sort: 5
+      sort: 1
       sort_field: null
       translations: null
       unarchive_value: null
@@ -451,91 +451,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: contrataciones_publicas
-    field: nivelesResponsabilidades
-    type: integer
-    meta:
-      collection: contrataciones_publicas
-      conditions: null
-      display: null
-      display_options: null
-      field: nivelesResponsabilidades
-      group: null
-      hidden: false
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableSelect: false
-      readonly: false
-      required: false
-      sort: 6
-      special:
-        - m2o
-      translations:
-        - language: es-MX
-          translation: Niveles de responsabilidad
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: nivelesResponsabilidades
-      table: contrataciones_publicas
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_contrataciones
-      foreign_key_column: id
-  - collection: contrataciones_publicas
-    field: datos_contrataciones_publicas
-    type: integer
-    meta:
-      collection: contrataciones_publicas
-      conditions: null
-      display: null
-      display_options: null
-      field: datos_contrataciones_publicas
-      group: null
-      hidden: false
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableSelect: false
-        template: null
-      readonly: false
-      required: false
-      sort: 7
-      special:
-        - m2o
-      translations:
-        - language: es-MX
-          translation: Datos generales de los procedimientos de contrataciones públicas
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: datos_contrataciones_publicas
-      table: contrataciones_publicas
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: datos_contrataciones_publicas
-      foreign_key_column: id
-  - collection: contrataciones_publicas
     field: entePublico
     type: integer
     meta:
@@ -552,7 +467,7 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 8
+      sort: 9
       special:
         - m2o
       translations: null
@@ -601,7 +516,7 @@ fields:
           - text: Otro (Especifique)
             value: OTRO
       readonly: false
-      required: true
+      required: false
       sort: 2
       special: null
       translations:
@@ -656,7 +571,7 @@ fields:
           - text: Otro (Especifique)
             value: OTRO
       readonly: false
-      required: true
+      required: false
       sort: 4
       special: null
       translations:
@@ -684,7 +599,7 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: contrataciones_publicas
-    field: valor_contrataciones
+    field: valorContrataciones
     type: string
     meta:
       collection: contrataciones_publicas
@@ -704,7 +619,7 @@ fields:
             slug: false
       display: null
       display_options: null
-      field: valor_contrataciones
+      field: valorContrataciones
       group: null
       hidden: true
       interface: input
@@ -719,7 +634,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: valor_contrataciones
+      name: valorContrataciones
       table: contrataciones_publicas
       data_type: character varying
       default_value: null
@@ -735,7 +650,7 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: contrataciones_publicas
-    field: valor_obras
+    field: valorObras
     type: string
     meta:
       collection: contrataciones_publicas
@@ -755,7 +670,7 @@ fields:
             slug: false
       display: null
       display_options: null
-      field: valor_obras
+      field: valorObras
       group: null
       hidden: true
       interface: input
@@ -770,7 +685,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: valor_obras
+      name: valorObras
       table: contrataciones_publicas
       data_type: character varying
       default_value: null
@@ -785,6 +700,88 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: contrataciones_publicas
+    field: datosContratacionesPublicas
+    type: integer
+    meta:
+      collection: contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: datosContratacionesPublicas
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 8
+      special:
+        - m2o
+      translations:
+        - language: en-US
+          translation: Datos generales de los procedimientos de contrataciones públicas
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: datosContratacionesPublicas
+      table: contrataciones_publicas
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: datos_contrataciones_publicas
+      foreign_key_column: id
+  - collection: contrataciones_publicas
+    field: nivelesResponsabilidadesContrataciones
+    type: integer
+    meta:
+      collection: contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: nivelesResponsabilidadesContrataciones
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 7
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nivelesResponsabilidadesContrataciones
+      table: contrataciones_publicas
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_column: id
   - collection: datos_contrataciones_publicas
     field: id
     type: integer
@@ -957,8 +954,10 @@ fields:
       note: null
       options:
         choices:
-          - text: Licitación pública
-            value: LICITACION
+          - text: Licitación pública (nacional)
+            value: LICITACION_NACIONAL
+          - text: 'Licitación pública (internacional) '
+            value: LICITACION_INTERNACIONAL
           - text: Invitación a cuando menos tres personas
             value: INVITACION
           - text: Adjudicación directa
@@ -1024,7 +1023,7 @@ fields:
       special: null
       translations:
         - language: es-MX
-          translation: "Otro (Especifique) "
+          translation: 'Otro (Especifique) '
       validation: null
       validation_message: null
       width: full
@@ -1128,7 +1127,7 @@ fields:
       special: null
       translations:
         - language: es-MX
-          translation: "Otro (Especifique) "
+          translation: 'Otro (Especifique) '
       validation: null
       validation_message: null
       width: full
@@ -1244,50 +1243,14 @@ fields:
       required: false
       sort: 2
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Número de expediente, folio o nomenclatura
       validation: null
       validation_message: null
       width: full
     schema:
       name: numeroExpedienteFolio
-      table: datos_dictaminaciones_avaluos
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: datos_dictaminaciones_avaluos
-    field: tipoProcedimiento
-    type: string
-    meta:
-      collection: datos_dictaminaciones_avaluos
-      conditions: null
-      display: null
-      display_options: null
-      field: tipoProcedimiento
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 3
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: tipoProcedimiento
       table: datos_dictaminaciones_avaluos
       data_type: character varying
       default_value: null
@@ -1318,9 +1281,11 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 4
+      sort: 5
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de inicio del procedimiento
       validation: null
       validation_message: null
       width: full
@@ -1356,9 +1321,11 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 5
+      sort: 6
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de conclusión del procedimiento
       validation: null
       validation_message: null
       width: full
@@ -1368,6 +1335,46 @@ fields:
       data_type: date
       default_value: null
       max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_dictaminaciones_avaluos
+    field: descripcion
+    type: string
+    meta:
+      collection: datos_dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: descripcion
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations:
+        - language: es-MX
+          translation: Descripción
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: descripcion
+      table: datos_dictaminaciones_avaluos
+      data_type: character varying
+      default_value: null
+      max_length: 255
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -1434,50 +1441,14 @@ fields:
       required: false
       sort: 2
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Número de expediente, folio o nomenclatura
       validation: null
       validation_message: null
       width: full
     schema:
       name: numeroExpedienteFolio
-      table: datos_enajenaciones_bienes
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: datos_enajenaciones_bienes
-    field: tipoProcedimiento
-    type: string
-    meta:
-      collection: datos_enajenaciones_bienes
-      conditions: null
-      display: null
-      display_options: null
-      field: tipoProcedimiento
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 3
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: tipoProcedimiento
       table: datos_enajenaciones_bienes
       data_type: character varying
       default_value: null
@@ -1510,7 +1481,9 @@ fields:
       required: false
       sort: 4
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de inicio de procedimiento
       validation: null
       validation_message: null
       width: full
@@ -1548,7 +1521,9 @@ fields:
       required: false
       sort: 5
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de conclusión del procedimiento
       validation: null
       validation_message: null
       width: full
@@ -1568,6 +1543,85 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: datos_enajenaciones_bienes
+    field: descripcion
+    type: string
+    meta:
+      collection: datos_enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: descripcion
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations:
+        - language: es-MX
+          translation: Descripción
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: descripcion
+      table: datos_enajenaciones_bienes
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_enajenaciones_bienes
+    field: entePublico
+    type: integer
+    meta:
+      collection: datos_enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: datos_enajenaciones_bienes
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
   - collection: datos_generales
     field: id
     type: integer
@@ -1962,7 +2016,9 @@ fields:
       required: false
       sort: 2
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Número de expediente, folio o nomenclatura
       validation: null
       validation_message: null
       width: full
@@ -1983,14 +2039,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: datos_otorgamientos_concesiones
-    field: tipoProcedimiento
+    field: denominacion
     type: string
     meta:
       collection: datos_otorgamientos_concesiones
       conditions: null
       display: null
       display_options: null
-      field: tipoProcedimiento
+      field: denominacion
       group: null
       hidden: false
       interface: input
@@ -2000,12 +2056,14 @@ fields:
       required: false
       sort: 3
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Denominación
       validation: null
       validation_message: null
       width: full
     schema:
-      name: tipoProcedimiento
+      name: denominacion
       table: datos_otorgamientos_concesiones
       data_type: character varying
       default_value: null
@@ -2021,14 +2079,260 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: datos_otorgamientos_concesiones
-    field: fechaInicioProcedimiento
+    field: objeto
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: objeto
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations:
+        - language: es-MX
+          translation: Objeto
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: objeto
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: fundamento
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: fundamento
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Motivos o fundamentos legales aplicados para realizar el
+            procedimiento
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fundamento
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: nombrePersonaSolicitaOtorga
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: nombrePersonaSolicitaOtorga
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Nombre de la persona fisica o moral que solicita o le otorga el acto
+            juridico
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nombrePersonaSolicitaOtorga
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: denominacionPersona
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: denominacionPersona
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Denominación de la persona moral que solicita o le otorga el acto
+            jurídico
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: denominacionPersona
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: sectorActo
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: sectorActo
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 8
+      special: null
+      translations:
+        - language: es-MX
+          translation: Sector al cual se otorgo el acto jurídico
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sectorActo
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: vigencia
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: vigencia
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 12
+      special: null
+      translations:
+        - language: es-MX
+          translation: Vigencia
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: vigencia
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: fechaInicioVigencia
     type: date
     meta:
       collection: datos_otorgamientos_concesiones
       conditions: null
       display: null
       display_options: null
-      field: fechaInicioProcedimiento
+      field: fechaInicioVigencia
       group: null
       hidden: false
       interface: datetime
@@ -2036,14 +2340,16 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 4
+      sort: 13
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de inicio de la vigencia
       validation: null
       validation_message: null
       width: full
     schema:
-      name: fechaInicioProcedimiento
+      name: fechaInicioVigencia
       table: datos_otorgamientos_concesiones
       data_type: date
       default_value: null
@@ -2059,14 +2365,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: datos_otorgamientos_concesiones
-    field: fechaConclusionProcedimiento
+    field: fechaConclusionVigencia
     type: date
     meta:
       collection: datos_otorgamientos_concesiones
       conditions: null
       display: null
       display_options: null
-      field: fechaConclusionProcedimiento
+      field: fechaConclusionVigencia
       group: null
       hidden: false
       interface: datetime
@@ -2074,14 +2380,16 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 5
+      sort: 14
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de conclusión de la vigencia
       validation: null
       validation_message: null
       width: full
     schema:
-      name: fechaConclusionProcedimiento
+      name: fechaConclusionVigencia
       table: datos_otorgamientos_concesiones
       data_type: date
       default_value: null
@@ -2096,6 +2404,167 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: monto
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: monto
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 15
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: monto
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: urlInformacionActo
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: urlInformacionActo
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 16
+      special: null
+      translations:
+        - language: es-MX
+          translation: Hipervínculo de la información del acto jurídico
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: urlInformacionActo
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: nombrePersonaBeneficiaria
+    type: string
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: nombrePersonaBeneficiaria
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 17
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Nombre completo (nombre(s), primer apellido y segundo apellido) de
+            la(s) persona(s) beneficiaria(s) final(es), es decir, de quien
+            controle, posea o se beneficie de los actos jurídicos celebrados por
+            la persona moral, en su caso.
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nombrePersonaBeneficiaria
+      table: datos_otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_otorgamientos_concesiones
+    field: entePublico
+    type: integer
+    meta:
+      collection: datos_otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 18
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: datos_otorgamientos_concesiones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
   - collection: dictaminaciones_avaluos
     field: id
     type: integer
@@ -2135,47 +2604,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: dictaminaciones_avaluos
-    field: niveles_responsabilidad_avaluos
-    type: integer
-    meta:
-      collection: dictaminaciones_avaluos
-      conditions: null
-      display: null
-      display_options: null
-      field: niveles_responsabilidad_avaluos
-      group: null
-      hidden: false
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableSelect: false
-        template: "{{propuestas}}{{asignacion}}{{emision}}"
-      readonly: false
-      required: false
-      sort: 2
-      special:
-        - m2o
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: niveles_responsabilidad_avaluos
-      table: dictaminaciones_avaluos
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_avaluos
-      foreign_key_column: id
-  - collection: dictaminaciones_avaluos
     field: entePublico
     type: integer
     meta:
@@ -2192,7 +2620,7 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 3
+      sort: 5
       special:
         - m2o
       translations: null
@@ -2215,6 +2643,86 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: dictaminaciones_avaluos
+    field: nivelesResponsabilidadesAvaluos
+    type: integer
+    meta:
+      collection: dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: nivelesResponsabilidadesAvaluos
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nivelesResponsabilidadesAvaluos
+      table: dictaminaciones_avaluos
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_avaluos
+      foreign_key_column: id
+  - collection: dictaminaciones_avaluos
+    field: datosDictaminacionesAvaluos
+    type: integer
+    meta:
+      collection: dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: datosDictaminacionesAvaluos
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: datosDictaminacionesAvaluos
+      table: dictaminaciones_avaluos
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: datos_dictaminaciones_avaluos
+      foreign_key_column: id
   - collection: directus_users
     field: entePublico
     type: integer
@@ -2229,7 +2737,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: "{{nombre}}"
+        template: '{{nombre}}'
       readonly: false
       required: false
       sort: 1
@@ -2311,69 +2819,69 @@ fields:
       options:
         choices:
           - text: Aguascalientes
-            value: "01"
+            value: '01'
           - text: Baja California
-            value: "02"
+            value: '02'
           - text: Baja California Sur
-            value: "03"
+            value: '03'
           - text: Campeche
-            value: "04"
+            value: '04'
           - text: Coahuila de Zaragoza
-            value: "05"
+            value: '05'
           - text: Colima
-            value: "06"
+            value: '06'
           - text: Chiapas
-            value: "07"
+            value: '07'
           - text: Chihuahua
-            value: "08"
+            value: '08'
           - text: Ciudad de México
-            value: "09"
+            value: '09'
           - text: Durango
-            value: "10"
+            value: '10'
           - text: Guanajuato
-            value: "11"
+            value: '11'
           - text: Guerrero
-            value: "12"
+            value: '12'
           - text: Hidalgo
-            value: "13"
+            value: '13'
           - text: Jalisco
-            value: "14"
+            value: '14'
           - text: Estado de México
-            value: "15"
+            value: '15'
           - text: Michoacán de Ocampo
-            value: "16"
+            value: '16'
           - text: Morelos
-            value: "17"
+            value: '17'
           - text: Nayarit
-            value: "18"
+            value: '18'
           - text: Nuevo León
-            value: "19"
+            value: '19'
           - text: Oaxaca
-            value: "20"
+            value: '20'
           - text: Puebla
-            value: "21"
+            value: '21'
           - text: Querétaro
-            value: "22"
+            value: '22'
           - text: Quintana Roo
-            value: "23"
+            value: '23'
           - text: San Luis Potosí
-            value: "24"
+            value: '24'
           - text: Sinaloa
-            value: "25"
+            value: '25'
           - text: Sonora
-            value: "26"
+            value: '26'
           - text: Tabasco
-            value: "27"
+            value: '27'
           - text: Tamaulipas
-            value: "28"
+            value: '28'
           - text: Tlaxcala
-            value: "29"
+            value: '29'
           - text: Veracruz de Ignacio de la Llave
-            value: "30"
+            value: '30'
           - text: Yucatán
-            value: "31"
+            value: '31'
           - text: Zacatecas
-            value: "32"
+            value: '32'
       readonly: false
       required: true
       sort: 2
@@ -2593,7 +3101,7 @@ fields:
       note: null
       options:
         enableSelect: false
-        template: "{{clave}}"
+        template: '{{clave}}'
       readonly: false
       required: true
       sort: 7
@@ -2766,8 +3274,8 @@ fields:
         choices:
           - text: Sí
             value: SI
-          - text: "No"
-            value: "NO"
+          - text: 'No'
+            value: 'NO'
       readonly: false
       required: true
       sort: 10
@@ -2835,14 +3343,14 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: enajenaciones_bienes
-    field: niveles_responsabilidades_enajenaciones
+    field: nivelesResponsabilidadesEnajenaciones
     type: integer
     meta:
       collection: enajenaciones_bienes
       conditions: null
       display: null
       display_options: null
-      field: niveles_responsabilidades_enajenaciones
+      field: nivelesResponsabilidadesEnajenaciones
       group: null
       hidden: false
       interface: select-dropdown-m2o
@@ -2859,7 +3367,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: niveles_responsabilidades_enajenaciones
+      name: nivelesResponsabilidadesEnajenaciones
       table: enajenaciones_bienes
       data_type: integer
       default_value: null
@@ -2875,24 +3383,23 @@ fields:
       foreign_key_table: niveles_responsabilidades_enajenaciones
       foreign_key_column: id
   - collection: enajenaciones_bienes
-    field: datos_enajenaciones_bienes
+    field: datosEnajenacionesBienes
     type: integer
     meta:
       collection: enajenaciones_bienes
       conditions: null
       display: null
       display_options: null
-      field: datos_enajenaciones_bienes
+      field: datosEnajenacionesBienes
       group: null
       hidden: false
       interface: select-dropdown-m2o
       note: null
       options:
         enableSelect: false
-        template: "{{id}}"
       readonly: false
       required: false
-      sort: 3
+      sort: 5
       special:
         - m2o
       translations: null
@@ -2900,7 +3407,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: datos_enajenaciones_bienes
+      name: datosEnajenacionesBienes
       table: enajenaciones_bienes
       data_type: integer
       default_value: null
@@ -3100,7 +3607,7 @@ fields:
             value: SUBSECRETARIA_HOMOLOGO
           - text: Secretaría de estado u homólogo
             value: SECRETARIA_HOMOLOGO
-          - text: "Otro (especifique):"
+          - text: 'Otro (especifique):'
             value: OTRO
       readonly: false
       required: true
@@ -3436,13 +3943,13 @@ fields:
       note: null
       options:
         choices:
-          - text: " Elaborar (A) "
+          - text: ' Elaborar (A) '
             value: A
-          - text: "Revisar (B) "
+          - text: 'Revisar (B) '
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
-          - text: " Supervisar (D) "
+          - text: ' Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -3491,17 +3998,17 @@ fields:
       note: null
       options:
         choices:
-          - text: " Elaborar (A) "
+          - text: ' Elaborar (A) '
             value: A
-          - text: "Revisar (B) "
+          - text: 'Revisar (B) '
             value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
+          - text: 'Firmar, autorizar o dictaminar (C) '
             value: C
             disabled: true
           - text: Supervisar (D)
             value: D
             disabled: true
-          - text: " Emitir o suscribir (E)"
+          - text: ' Emitir o suscribir (E)'
             value: E
       readonly: false
       required: false
@@ -3585,13 +4092,13 @@ fields:
       note: null
       options:
         choices:
-          - text: "Elaborar (A) "
+          - text: 'Elaborar (A) '
             value: A
-          - text: "Revisar (B) "
+          - text: 'Revisar (B) '
             value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
+          - text: 'Firmar, autorizar o dictaminar (C) '
             value: C
-          - text: "Supervisar (D) "
+          - text: 'Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -3641,13 +4148,13 @@ fields:
       note: null
       options:
         choices:
-          - text: "Elaborar (A) "
+          - text: 'Elaborar (A) '
             value: A
-          - text: "Revisar (B) "
+          - text: 'Revisar (B) '
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
-          - text: " Supervisar (D) "
+          - text: ' Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -3697,11 +4204,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: " Revisar (B) "
+          - text: ' Revisar (B) '
             value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
+          - text: 'Firmar, autorizar o dictaminar (C) '
             value: C
-          - text: "Supervisar (D) "
+          - text: 'Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4227,13 +4734,13 @@ fields:
       note: null
       options:
         choices:
-          - text: " Elaborar (A) "
+          - text: ' Elaborar (A) '
             value: A
-          - text: "Revisar (B) "
+          - text: 'Revisar (B) '
             value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
+          - text: 'Firmar, autorizar o dictaminar (C) '
             value: C
-          - text: "Supervisar (D) "
+          - text: 'Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4282,13 +4789,13 @@ fields:
       note: null
       options:
         choices:
-          - text: "Elaborar (A) "
+          - text: 'Elaborar (A) '
             value: A
           - text: Revisar (B)
             value: B
-          - text: " Firmar, autorizar o dictaminar (C) "
+          - text: ' Firmar, autorizar o dictaminar (C) '
             value: C
-          - text: "Supervisar (D) "
+          - text: 'Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4339,11 +4846,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: " Revisar (B) "
+          - text: ' Revisar (B) '
             value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
+          - text: 'Firmar, autorizar o dictaminar (C) '
             value: C
-          - text: "Supervisar (D) "
+          - text: 'Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4390,13 +4897,13 @@ fields:
       note: null
       options:
         choices:
-          - text: "Elaborar (A) "
+          - text: 'Elaborar (A) '
             value: A
-          - text: "Revisar (B) "
+          - text: 'Revisar (B) '
             value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
+          - text: 'Firmar, autorizar o dictaminar (C) '
             value: C
-          - text: "Supervisar (D) "
+          - text: 'Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4445,11 +4952,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: " Revisar (B) "
+          - text: ' Revisar (B) '
             value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
+          - text: 'Firmar, autorizar o dictaminar (C) '
             value: C
-          - text: "Supervisar (D) "
+          - text: 'Supervisar (D) '
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4496,17 +5003,17 @@ fields:
       note: null
       options:
         choices:
-          - text: "Elaborar (A) "
+          - text: 'Elaborar (A) '
             value: A
           - text: Revisar (B)
             value: B
-          - text: " Firmar, autorizar o dictaminar (C) "
+          - text: ' Firmar, autorizar o dictaminar (C) '
             value: C
             disabled: true
           - text: Supervisar (D)
             value: D
             disabled: true
-          - text: " Emitir o suscribir (E)"
+          - text: ' Emitir o suscribir (E)'
             value: E
       readonly: false
       required: false
@@ -4552,12 +5059,12 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: " Revisar (B) "
+          - text: ' Revisar (B) '
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
             disabled: true
-          - text: " Supervisar (D) "
+          - text: ' Supervisar (D) '
             value: D
             disabled: true
           - text: Emitir o suscribir (E)
@@ -4696,7 +5203,7 @@ fields:
       special: null
       translations:
         - language: es-MX
-          translation: "5.2.1 Tipo de otorgamiento:"
+          translation: 'Tipo de acto jurídico:'
       validation: null
       validation_message: null
       width: full
@@ -4740,7 +5247,7 @@ fields:
         - m2o
       translations:
         - language: es-MX
-          translation: 5.2.2 Niveles de responsabilidad
+          translation: Niveles de responsabilidad
       validation: null
       validation_message: null
       width: full
@@ -4776,7 +5283,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 5
+      sort: 6
       special:
         - m2o
       translations: null
@@ -4798,6 +5305,46 @@ fields:
       generation_expression: null
       has_auto_increment: false
       foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: otorgamientos_concesiones
+    field: datosOtorgamientoconseciones
+    type: integer
+    meta:
+      collection: otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: datosOtorgamientoconseciones
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: datosOtorgamientoconseciones
+      table: otorgamientos_concesiones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: datos_otorgamientos_concesiones
       foreign_key_column: id
   - collection: servidores_intervengan_procedientos_contrataciones
     field: id
@@ -4852,7 +5399,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
       sort: 2
@@ -4932,7 +5479,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
       readonly: true
       required: false
       sort: 4
@@ -5013,7 +5560,7 @@ fields:
       note: null
       options:
         enableCreate: false
-        template: "{{nombre}}"
+        template: '{{nombre}}'
       readonly: false
       required: false
       sort: 6
@@ -5189,7 +5736,7 @@ fields:
         contratación pública
       options:
         enableSelect: false
-        template: "{{nombres}} {{primerApellido}} {{segundoApellido}}"
+        template: '{{nombres}} {{primerApellido}} {{segundoApellido}}'
       readonly: false
       required: true
       sort: 12
@@ -5235,7 +5782,7 @@ fields:
         en actos públicos
       options:
         enableSelect: false
-        template: "{{nombreEntePublico}}"
+        template: '{{nombreEntePublico}}'
       readonly: false
       required: true
       sort: 13
@@ -5318,7 +5865,11 @@ fields:
       group: null
       hidden: false
       interface: select-radio
-      note: null
+      note: >-
+        Procesos que se refieren a la tramitación, atención y resolución para la
+        adjudicación de un contrato al amparo de la Ley de Adquisiciones,
+        Arrendamientos y Servicios, Ley de Obras Públicas y Servicios
+        Relacionados con las Mismas,
       options:
         choices:
           - text: >-
@@ -5362,59 +5913,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: contrataciones_publicas
-    type: integer
-    meta:
-      collection: servidores_intervengan_procedientos_contrataciones
-      conditions:
-        - rule:
-            _and:
-              - tipoProcedimiento:
-                  _eq: CONTRATACION_PUBLICA
-          hidden: false
-          required: true
-          options:
-            enableCreate: true
-            enableSelect: false
-            template: "{{contratacionAdquisisciones.clave}}"
-      display: null
-      display_options: null
-      field: contrataciones_publicas
-      group: null
-      hidden: true
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableSelect: false
-        template: "{{contratacionAdquisisciones}}"
-      readonly: false
-      required: false
-      sort: 15
-      special:
-        - m2o
-      translations:
-        - language: es-MX
-          translation: 5.1 Participación en procedimientos de contrataciones públicas
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: contrataciones_publicas
-      table: servidores_intervengan_procedientos_contrataciones
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: contrataciones_publicas
-      foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
     field: otorgamientoConcesion
     type: integer
     meta:
@@ -5429,7 +5927,7 @@ fields:
           options:
             enableCreate: true
             enableSelect: false
-            template: "{{tipoActo}}"
+            template: '{{tipoActo}}'
       display: null
       display_options: null
       field: otorgamientoConcesion
@@ -5439,10 +5937,10 @@ fields:
       note: null
       options:
         enableSelect: false
-        template: "{{tipoActo}}"
+        template: '{{tipoActo}}'
       readonly: false
       required: false
-      sort: 16
+      sort: 17
       special:
         - m2o
       translations:
@@ -5535,7 +6033,7 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 17
+      sort: 18
       special:
         - m2o
       translations:
@@ -5558,7 +6056,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_enajenaciones
+      foreign_key_table: enajenaciones_bienes
       foreign_key_column: id
   - collection: servidores_intervengan_procedientos_contrataciones
     field: avaluosJustipreciacion
@@ -5571,10 +6069,10 @@ fields:
               - tipoProcedimiento:
                   _eq: DICTAMEN_VALUATORIO
           hidden: false
+          required: true
           options:
             enableCreate: true
             enableSelect: false
-          required: true
       display: null
       display_options: null
       field: avaluosJustipreciacion
@@ -5611,51 +6109,59 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_avaluos
+      foreign_key_table: dictaminaciones_avaluos
+      foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: contratacionesPublicas
+    type: integer
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions:
+        - rule:
+            _and:
+              - tipoProcedimiento:
+                  _eq: CONTRATACION_PUBLICA
+          hidden: false
+          required: true
+          options:
+            enableCreate: true
+            enableSelect: false
+      display: null
+      display_options: null
+      field: contratacionesPublicas
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 16
+      special:
+        - m2o
+      translations:
+        - language: es-MX
+          translation: 5.1 Participación en procedimientos de contrataciones públicas
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: contratacionesPublicas
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: contrataciones_publicas
       foreign_key_column: id
 relations:
-  - collection: contrataciones_publicas
-    field: nivelesResponsabilidades
-    related_collection: niveles_responsabilidades_contrataciones
-    meta:
-      junction_field: null
-      many_collection: contrataciones_publicas
-      many_field: nivelesResponsabilidades
-      one_allowed_collections: null
-      one_collection: niveles_responsabilidades_contrataciones
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: contrataciones_publicas
-      column: nivelesResponsabilidades
-      foreign_key_table: niveles_responsabilidades_contrataciones
-      foreign_key_column: id
-      constraint_name: contrataciones_publicas_nivelesresponsabilidades_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
-  - collection: contrataciones_publicas
-    field: datos_contrataciones_publicas
-    related_collection: datos_contrataciones_publicas
-    meta:
-      junction_field: null
-      many_collection: contrataciones_publicas
-      many_field: datos_contrataciones_publicas
-      one_allowed_collections: null
-      one_collection: datos_contrataciones_publicas
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: contrataciones_publicas
-      column: datos_contrataciones_publicas
-      foreign_key_table: datos_contrataciones_publicas
-      foreign_key_column: id
-      constraint_name: contrataciones_publicas_datos_contratacion__66d6d97c_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
   - collection: contrataciones_publicas
     field: entePublico
     related_collection: entes_publicos
@@ -5675,6 +6181,48 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: contrataciones_publicas_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: contrataciones_publicas
+    field: datosContratacionesPublicas
+    related_collection: datos_contrataciones_publicas
+    meta:
+      junction_field: null
+      many_collection: contrataciones_publicas
+      many_field: datosContratacionesPublicas
+      one_allowed_collections: null
+      one_collection: datos_contrataciones_publicas
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: contrataciones_publicas
+      column: datosContratacionesPublicas
+      foreign_key_table: datos_contrataciones_publicas
+      foreign_key_column: id
+      constraint_name: contrataciones_publicas_datoscontratacionespublicas_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: contrataciones_publicas
+    field: nivelesResponsabilidadesContrataciones
+    related_collection: niveles_responsabilidades_contrataciones
+    meta:
+      junction_field: null
+      many_collection: contrataciones_publicas
+      many_field: nivelesResponsabilidadesContrataciones
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_contrataciones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: contrataciones_publicas
+      column: nivelesResponsabilidadesContrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_column: id
+      constraint_name: contrataciones_publicas_nivelesresponsabil__52737260_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: datos_contrataciones_publicas
@@ -5698,6 +6246,27 @@ relations:
       constraint_name: datos_contrataciones_publicas_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
+  - collection: datos_enajenaciones_bienes
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: datos_enajenaciones_bienes
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: datos_enajenaciones_bienes
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: datos_enajenaciones_bienes_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
   - collection: datos_generales
     field: entePublico
     related_collection: entes_publicos
@@ -5719,25 +6288,25 @@ relations:
       constraint_name: datos_generales_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: dictaminaciones_avaluos
-    field: niveles_responsabilidad_avaluos
-    related_collection: niveles_responsabilidades_avaluos
+  - collection: datos_otorgamientos_concesiones
+    field: entePublico
+    related_collection: entes_publicos
     meta:
       junction_field: null
-      many_collection: dictaminaciones_avaluos
-      many_field: niveles_responsabilidad_avaluos
+      many_collection: datos_otorgamientos_concesiones
+      many_field: entePublico
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_avaluos
+      one_collection: entes_publicos
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
       sort_field: null
     schema:
-      table: dictaminaciones_avaluos
-      column: niveles_responsabilidad_avaluos
-      foreign_key_table: niveles_responsabilidades_avaluos
+      table: datos_otorgamientos_concesiones
+      column: entePublico
+      foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: dictaminaciones_avaluos_niveles_responsabil__36ad132_foreign
+      constraint_name: datos_otorgamientos_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: dictaminaciones_avaluos
@@ -5759,6 +6328,48 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: dictaminaciones_avaluos_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: dictaminaciones_avaluos
+    field: nivelesResponsabilidadesAvaluos
+    related_collection: niveles_responsabilidades_avaluos
+    meta:
+      junction_field: null
+      many_collection: dictaminaciones_avaluos
+      many_field: nivelesResponsabilidadesAvaluos
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_avaluos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: dictaminaciones_avaluos
+      column: nivelesResponsabilidadesAvaluos
+      foreign_key_table: niveles_responsabilidades_avaluos
+      foreign_key_column: id
+      constraint_name: dictaminaciones_avaluos_nivelesresponsabil__16afd8ae_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: dictaminaciones_avaluos
+    field: datosDictaminacionesAvaluos
+    related_collection: datos_dictaminaciones_avaluos
+    meta:
+      junction_field: null
+      many_collection: dictaminaciones_avaluos
+      many_field: datosDictaminacionesAvaluos
+      one_allowed_collections: null
+      one_collection: datos_dictaminaciones_avaluos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: dictaminaciones_avaluos
+      column: datosDictaminacionesAvaluos
+      foreign_key_table: datos_dictaminaciones_avaluos
+      foreign_key_column: id
+      constraint_name: dictaminaciones_avaluos_datosdictaminacionesavaluos_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: directus_users
@@ -5825,12 +6436,12 @@ relations:
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: enajenaciones_bienes
-    field: niveles_responsabilidades_enajenaciones
+    field: nivelesResponsabilidadesEnajenaciones
     related_collection: niveles_responsabilidades_enajenaciones
     meta:
       junction_field: null
       many_collection: enajenaciones_bienes
-      many_field: niveles_responsabilidades_enajenaciones
+      many_field: nivelesResponsabilidadesEnajenaciones
       one_allowed_collections: null
       one_collection: niveles_responsabilidades_enajenaciones
       one_collection_field: null
@@ -5839,19 +6450,19 @@ relations:
       sort_field: null
     schema:
       table: enajenaciones_bienes
-      column: niveles_responsabilidades_enajenaciones
+      column: nivelesResponsabilidadesEnajenaciones
       foreign_key_table: niveles_responsabilidades_enajenaciones
       foreign_key_column: id
-      constraint_name: enajenaciones_bienes_niveles_responsabilid__3e6c8287_foreign
+      constraint_name: enajenaciones_bienes_nivelesresponsabilida__10d4a431_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: enajenaciones_bienes
-    field: datos_enajenaciones_bienes
+    field: datosEnajenacionesBienes
     related_collection: datos_enajenaciones_bienes
     meta:
       junction_field: null
       many_collection: enajenaciones_bienes
-      many_field: datos_enajenaciones_bienes
+      many_field: datosEnajenacionesBienes
       one_allowed_collections: null
       one_collection: datos_enajenaciones_bienes
       one_collection_field: null
@@ -5860,10 +6471,10 @@ relations:
       sort_field: null
     schema:
       table: enajenaciones_bienes
-      column: datos_enajenaciones_bienes
+      column: datosEnajenacionesBienes
       foreign_key_table: datos_enajenaciones_bienes
       foreign_key_column: id
-      constraint_name: enajenaciones_bienes_datos_enajenaciones_bienes_foreign
+      constraint_name: enajenaciones_bienes_datosenajenacionesbienes_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: entes_publicos
@@ -6013,6 +6624,27 @@ relations:
       constraint_name: otorgamientos_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
+  - collection: otorgamientos_concesiones
+    field: datosOtorgamientoconseciones
+    related_collection: datos_otorgamientos_concesiones
+    meta:
+      junction_field: null
+      many_collection: otorgamientos_concesiones
+      many_field: datosOtorgamientoconseciones
+      one_allowed_collections: null
+      one_collection: datos_otorgamientos_concesiones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: otorgamientos_concesiones
+      column: datosOtorgamientoconseciones
+      foreign_key_table: datos_otorgamientos_concesiones
+      foreign_key_column: id
+      constraint_name: otorgamientos_concesiones_datosotorgamient__1d090545_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
   - collection: servidores_intervengan_procedientos_contrataciones
     field: user_created
     related_collection: directus_users
@@ -6119,27 +6751,6 @@ relations:
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: contrataciones_publicas
-    related_collection: contrataciones_publicas
-    meta:
-      junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
-      many_field: contrataciones_publicas
-      one_allowed_collections: null
-      one_collection: contrataciones_publicas
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: servidores_intervengan_procedientos_contrataciones
-      column: contrataciones_publicas
-      foreign_key_table: contrataciones_publicas
-      foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__597e74d7_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
     field: otorgamientoConcesion
     related_collection: otorgamientos_concesiones
     meta:
@@ -6162,13 +6773,13 @@ relations:
       on_delete: SET NULL
   - collection: servidores_intervengan_procedientos_contrataciones
     field: enajenacionesBienes
-    related_collection: niveles_responsabilidades_enajenaciones
+    related_collection: enajenaciones_bienes
     meta:
       junction_field: null
       many_collection: servidores_intervengan_procedientos_contrataciones
       many_field: enajenacionesBienes
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_enajenaciones
+      one_collection: enajenaciones_bienes
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -6176,20 +6787,20 @@ relations:
     schema:
       table: servidores_intervengan_procedientos_contrataciones
       column: enajenacionesBienes
-      foreign_key_table: niveles_responsabilidades_enajenaciones
+      foreign_key_table: enajenaciones_bienes
       foreign_key_column: id
       constraint_name: servidores_intervengan_procedientos_contra__33251199_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedientos_contrataciones
     field: avaluosJustipreciacion
-    related_collection: niveles_responsabilidades_avaluos
+    related_collection: dictaminaciones_avaluos
     meta:
       junction_field: null
       many_collection: servidores_intervengan_procedientos_contrataciones
       many_field: avaluosJustipreciacion
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_avaluos
+      one_collection: dictaminaciones_avaluos
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -6197,8 +6808,29 @@ relations:
     schema:
       table: servidores_intervengan_procedientos_contrataciones
       column: avaluosJustipreciacion
-      foreign_key_table: niveles_responsabilidades_avaluos
+      foreign_key_table: dictaminaciones_avaluos
       foreign_key_column: id
       constraint_name: servidores_intervengan_procedientos_contra__443ed5a5_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: contratacionesPublicas
+    related_collection: contrataciones_publicas
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: contratacionesPublicas
+      one_allowed_collections: null
+      one_collection: contrataciones_publicas
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: contratacionesPublicas
+      foreign_key_table: contrataciones_publicas
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contra__79b5bdd6_foreign
       on_update: NO ACTION
       on_delete: SET NULL

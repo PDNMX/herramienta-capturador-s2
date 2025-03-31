@@ -131,4 +131,5 @@ dist
 .pnp.*
 respaldo_colecciones.yaml
 directus_openapi.json
-init-scripts
+objetos_ejemplo.json
+swaggerS2.yaml

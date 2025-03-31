@@ -15,6 +15,16 @@ RUN npm install -g pnpm
 # Limpiar la caché de pnpm solo si el directorio existe
 RUN [ ! -d /root/.local/share/pnpm/store/v3/files ] || pnpm store prune
 
+# Instalar soporte para locales y ICU
+RUN apk add --no-cache --update tzdata musl-locales icu-data-full icu-libs
+
+# Configurar las variables de entorno para usar es_MX.utf8
+ENV LANG=es_MX.UTF-8 \
+    LC_ALL=es_MX.UTF-8 \
+    LC_COLLATE=es-MX-x-icu \
+    LC_CTYPE=es_MX.UTF-8 \
+    TZ=America/Mexico_City
+
 # Cambiar de nuevo al usuario node
 USER node
 

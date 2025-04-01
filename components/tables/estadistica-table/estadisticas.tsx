@@ -68,6 +68,11 @@ export function Estadisticas() {
   ];
 
   function getGraphColors() {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      // Si no estamos en el navegador, devuelve colores por defecto
+      return ['hsl(0, 0%, 0%)', 'hsl(0, 0%, 50%)', 'hsl(0, 0%, 100%)', 'hsl(0, 0%, 100%)'];
+    }
+  
     const styles = getComputedStyle(document.documentElement);
     return [
       `hsl(${styles.getPropertyValue('--color-graph-0').trim()})`,
@@ -76,6 +81,7 @@ export function Estadisticas() {
       `hsl(${styles.getPropertyValue('--color-graph-base').trim()})`,
     ];
   }
+  
 
 
   

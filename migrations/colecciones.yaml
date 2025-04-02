@@ -2,6 +2,30 @@ version: 1
 directus: 10.13.4
 vendor: postgres
 collections:
+  - collection: contratacionAdquisiciones
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: contratacionAdquisiciones
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 3
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: contratacionAdquisiciones
   - collection: contrataciones_publicas
     meta:
       accountability: all
@@ -44,7 +68,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 1
+      sort: 2
       sort_field: null
       translations: null
       unarchive_value: null
@@ -332,7 +356,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 4
+      sort: 3
       sort_field: null
       translations: null
       unarchive_value: null
@@ -387,6 +411,30 @@ collections:
       versioning: false
     schema:
       name: otorgamientos_concesiones
+  - collection: prueba
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: prueba
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 4
+      sort_field: null
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: prueba
   - collection: servidores_intervengan_procedientos_contrataciones
     meta:
       accountability: all
@@ -411,7 +459,232 @@ collections:
       versioning: false
     schema:
       name: servidores_intervengan_procedientos_contrataciones
+  - collection: tipos_adquisiciones_obras
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: tipos_adquisiciones_obras
+      color: null
+      display_template: null
+      group: contrataciones_publicas
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: tipos_adquisiciones_obras
 fields:
+  - collection: contratacionAdquisiciones
+    field: id
+    type: integer
+    meta:
+      collection: contratacionAdquisiciones
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: contratacionAdquisiciones
+      data_type: integer
+      default_value: nextval('"contratacionAdquisiciones_id_seq"'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: contratacionAdquisiciones
+    field: divider-dyemfs
+    type: alias
+    meta:
+      collection: contratacionAdquisiciones
+      conditions: null
+      display: null
+      display_options: null
+      field: divider-dyemfs
+      group: null
+      hidden: false
+      interface: presentation-divider
+      note: null
+      options:
+        title: >-
+          5.1.1 Contratación de adquisiciones y arrendamientos de bienes muebles
+          y servicios de cualquier naturaleza
+      readonly: false
+      required: false
+      sort: 1
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: contratacionAdquisiciones
+    field: tipo_area
+    type: json
+    meta:
+      collection: contratacionAdquisiciones
+      conditions: null
+      display: null
+      display_options: null
+      field: tipo_area
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: Área requirente
+            value: AREA_REQUIRENTE
+          - text: Área supervisora
+            value: AREA_SUPERVISORA
+          - text: Área contratante
+            value: AREA_CONTRATANTE
+          - text: Área técnica
+            value: AREA_TECNICA
+          - text: Integrante del comité de adquisiciones, arrendamientos y servicios
+            value: INTEGRANTE_COMITE
+          - text: Órgano de revisión
+            value: ORGANO_REVISION
+          - text: Participante en junta de aclaraciones
+            value: PARTICIPANTE_ACLARACIONES
+          - text: Otro (Especifique)
+            value: OTRO
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - cast-json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: tipo_area
+      table: contratacionAdquisiciones
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: contratacionAdquisiciones
+    field: nivelResponsabilidadContratacion
+    type: integer
+    meta:
+      collection: contratacionAdquisiciones
+      conditions: null
+      display: null
+      display_options: null
+      field: nivelResponsabilidadContratacion
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nivelResponsabilidadContratacion
+      table: contratacionAdquisiciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_column: id
+  - collection: contratacionAdquisiciones
+    field: contratacionPublica
+    type: integer
+    meta:
+      collection: contratacionAdquisiciones
+      conditions: null
+      display: null
+      display_options: null
+      field: contratacionPublica
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 5
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: contratacionPublica
+      table: contratacionAdquisiciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: datos_contrataciones_publicas
+      foreign_key_column: id
   - collection: contrataciones_publicas
     field: id
     type: integer
@@ -798,7 +1071,7 @@ fields:
       options: null
       readonly: true
       required: false
-      sort: 1
+      sort: 2
       special: null
       translations: null
       validation: null
@@ -836,7 +1109,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 9
+      sort: 14
       special:
         - m2o
       translations: null
@@ -875,7 +1148,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 7
+      sort: 8
       special: null
       translations:
         - language: es-MX
@@ -915,7 +1188,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 2
+      sort: 3
       special: null
       translations:
         - language: es-MX
@@ -956,7 +1229,7 @@ fields:
         choices:
           - text: Licitación pública (nacional)
             value: LICITACION_NACIONAL
-          - text: 'Licitación pública (internacional) '
+          - text: "Licitación pública (internacional) "
             value: LICITACION_INTERNACIONAL
           - text: Invitación a cuando menos tres personas
             value: INVITACION
@@ -966,7 +1239,7 @@ fields:
             value: OTRO
       readonly: false
       required: false
-      sort: 3
+      sort: 4
       special: null
       translations:
         - language: es-MX
@@ -1019,11 +1292,11 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 4
+      sort: 5
       special: null
       translations:
         - language: es-MX
-          translation: 'Otro (Especifique) '
+          translation: "Otro (Especifique) "
       validation: null
       validation_message: null
       width: full
@@ -1058,10 +1331,6 @@ fields:
       note: null
       options:
         choices:
-          - text: Obra pública
-            value: OBRA
-          - text: Servicios relacionados con obra pública
-            value: SERVICIOS
           - text: Arrendamiento
             value: ARRENDAMIENTO
           - text: Adquisición
@@ -1072,7 +1341,7 @@ fields:
             value: OTRO
       readonly: false
       required: false
-      sort: 5
+      sort: 6
       special: null
       translations: null
       validation: null
@@ -1123,11 +1392,11 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 6
+      sort: 7
       special: null
       translations:
         - language: es-MX
-          translation: 'Otro (Especifique) '
+          translation: "Otro (Especifique) "
       validation: null
       validation_message: null
       width: full
@@ -1163,7 +1432,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 8
+      sort: 9
       special: null
       translations:
         - language: es-MX
@@ -1187,6 +1456,173 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: divider-tj9aul
+    type: alias
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: divider-tj9aul
+      group: null
+      hidden: false
+      interface: presentation-divider
+      note: null
+      options:
+        title: Datos de la(s) persona(s) beneficiaria(s) final(es)
+      readonly: false
+      required: false
+      sort: 10
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: datos_contrataciones_publicas
+    field: nombre
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: nombre
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 11
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nombre
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: primerApellido
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: primerApellido
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 12
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: primerApellido
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: segundoApellido
+    type: string
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: segundoApellido
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 13
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: segundoApellido
+      table: datos_contrataciones_publicas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_contrataciones_publicas
+    field: divider-kzfrfa
+    type: alias
+    meta:
+      collection: datos_contrataciones_publicas
+      conditions: null
+      display: null
+      display_options: null
+      field: divider-kzfrfa
+      group: null
+      hidden: false
+      interface: presentation-divider
+      note: null
+      options:
+        title: >-
+          Datos generales de los procedimientos de contrataciones públicas (Esa
+          sección se podrá actualizar quincenalmente agregando un nuevo
+          procedimiento)
+      readonly: false
+      required: false
+      sort: 1
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
   - collection: datos_dictaminaciones_avaluos
     field: id
     type: integer
@@ -2737,7 +3173,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: '{{nombre}}'
+        template: "{{nombre}}"
       readonly: false
       required: false
       sort: 1
@@ -2819,69 +3255,69 @@ fields:
       options:
         choices:
           - text: Aguascalientes
-            value: '01'
+            value: "01"
           - text: Baja California
-            value: '02'
+            value: "02"
           - text: Baja California Sur
-            value: '03'
+            value: "03"
           - text: Campeche
-            value: '04'
+            value: "04"
           - text: Coahuila de Zaragoza
-            value: '05'
+            value: "05"
           - text: Colima
-            value: '06'
+            value: "06"
           - text: Chiapas
-            value: '07'
+            value: "07"
           - text: Chihuahua
-            value: '08'
+            value: "08"
           - text: Ciudad de México
-            value: '09'
+            value: "09"
           - text: Durango
-            value: '10'
+            value: "10"
           - text: Guanajuato
-            value: '11'
+            value: "11"
           - text: Guerrero
-            value: '12'
+            value: "12"
           - text: Hidalgo
-            value: '13'
+            value: "13"
           - text: Jalisco
-            value: '14'
+            value: "14"
           - text: Estado de México
-            value: '15'
+            value: "15"
           - text: Michoacán de Ocampo
-            value: '16'
+            value: "16"
           - text: Morelos
-            value: '17'
+            value: "17"
           - text: Nayarit
-            value: '18'
+            value: "18"
           - text: Nuevo León
-            value: '19'
+            value: "19"
           - text: Oaxaca
-            value: '20'
+            value: "20"
           - text: Puebla
-            value: '21'
+            value: "21"
           - text: Querétaro
-            value: '22'
+            value: "22"
           - text: Quintana Roo
-            value: '23'
+            value: "23"
           - text: San Luis Potosí
-            value: '24'
+            value: "24"
           - text: Sinaloa
-            value: '25'
+            value: "25"
           - text: Sonora
-            value: '26'
+            value: "26"
           - text: Tabasco
-            value: '27'
+            value: "27"
           - text: Tamaulipas
-            value: '28'
+            value: "28"
           - text: Tlaxcala
-            value: '29'
+            value: "29"
           - text: Veracruz de Ignacio de la Llave
-            value: '30'
+            value: "30"
           - text: Yucatán
-            value: '31'
+            value: "31"
           - text: Zacatecas
-            value: '32'
+            value: "32"
       readonly: false
       required: true
       sort: 2
@@ -3101,7 +3537,7 @@ fields:
       note: null
       options:
         enableSelect: false
-        template: '{{clave}}'
+        template: "{{clave}}"
       readonly: false
       required: true
       sort: 7
@@ -3255,55 +3691,6 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: empleos_cargos_comisiones
-    field: participacion
-    type: string
-    meta:
-      collection: empleos_cargos_comisiones
-      conditions: null
-      display: null
-      display_options: null
-      field: participacion
-      group: null
-      hidden: false
-      interface: select-radio
-      note: >-
-        Seleccionar si la participación de la persona servidora pública en
-        contrataciones públicas y otros procedimientos es una
-      options:
-        choices:
-          - text: Sí
-            value: SI
-          - text: 'No'
-            value: 'NO'
-      readonly: false
-      required: true
-      sort: 10
-      special: null
-      translations:
-        - language: es-MX
-          translation: >-
-            ¿La persona servidora pública continúa participando en el
-            procedimiento?
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: participacion
-      table: empleos_cargos_comisiones
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
   - collection: enajenaciones_bienes
     field: id
     type: integer
@@ -3607,7 +3994,7 @@ fields:
             value: SUBSECRETARIA_HOMOLOGO
           - text: Secretaría de estado u homólogo
             value: SECRETARIA_HOMOLOGO
-          - text: 'Otro (especifique):'
+          - text: "Otro (especifique):"
             value: OTRO
       readonly: false
       required: true
@@ -3943,13 +4330,13 @@ fields:
       note: null
       options:
         choices:
-          - text: ' Elaborar (A) '
+          - text: " Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
-          - text: ' Supervisar (D) '
+          - text: " Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -3998,17 +4385,17 @@ fields:
       note: null
       options:
         choices:
-          - text: ' Elaborar (A) '
+          - text: " Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
             disabled: true
           - text: Supervisar (D)
             value: D
             disabled: true
-          - text: ' Emitir o suscribir (E)'
+          - text: " Emitir o suscribir (E)"
             value: E
       readonly: false
       required: false
@@ -4092,13 +4479,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4148,13 +4535,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
-          - text: ' Supervisar (D) '
+          - text: " Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4204,11 +4591,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4734,13 +5121,13 @@ fields:
       note: null
       options:
         choices:
-          - text: ' Elaborar (A) '
+          - text: " Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4789,13 +5176,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
           - text: Revisar (B)
             value: B
-          - text: ' Firmar, autorizar o dictaminar (C) '
+          - text: " Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4846,11 +5233,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4897,13 +5284,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -4952,11 +5339,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -5003,17 +5390,17 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
           - text: Revisar (B)
             value: B
-          - text: ' Firmar, autorizar o dictaminar (C) '
+          - text: " Firmar, autorizar o dictaminar (C) "
             value: C
             disabled: true
           - text: Supervisar (D)
             value: D
             disabled: true
-          - text: ' Emitir o suscribir (E)'
+          - text: " Emitir o suscribir (E)"
             value: E
       readonly: false
       required: false
@@ -5059,12 +5446,12 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
             disabled: true
-          - text: ' Supervisar (D) '
+          - text: " Supervisar (D) "
             value: D
             disabled: true
           - text: Emitir o suscribir (E)
@@ -5203,7 +5590,7 @@ fields:
       special: null
       translations:
         - language: es-MX
-          translation: 'Tipo de acto jurídico:'
+          translation: "Tipo de acto jurídico:"
       validation: null
       validation_message: null
       width: full
@@ -5346,6 +5733,232 @@ fields:
       has_auto_increment: false
       foreign_key_table: datos_otorgamientos_concesiones
       foreign_key_column: id
+  - collection: prueba
+    field: id
+    type: integer
+    meta:
+      collection: prueba
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: prueba
+      data_type: integer
+      default_value: nextval('prueba_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: prueba
+    field: status
+    type: string
+    meta:
+      collection: prueba
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - text: $t:published
+            value: published
+            color: var(--theme--primary)
+            foreground: var(--theme--primary)
+            background: var(--theme--primary-background)
+          - text: $t:draft
+            value: draft
+            color: var(--theme--foreground)
+            foreground: var(--theme--foreground)
+            background: var(--theme--background-normal)
+          - text: $t:archived
+            value: archived
+            color: var(--theme--warning)
+            foreground: var(--theme--warning)
+            background: var(--theme--warning-background)
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: $t:published
+            value: published
+            color: var(--theme--primary)
+          - text: $t:draft
+            value: draft
+            color: var(--theme--foreground)
+          - text: $t:archived
+            value: archived
+            color: var(--theme--warning)
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: prueba
+      data_type: character varying
+      default_value: draft
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: prueba
+    field: date_created
+    type: timestamp
+    meta:
+      collection: prueba
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 3
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: prueba
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: prueba
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: prueba
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 4
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: prueba
+      data_type: timestamp with time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: prueba
+    field: continuaParticipando
+    type: boolean
+    meta:
+      collection: prueba
+      conditions: null
+      display: boolean
+      display_options:
+        colorOff: "#EF0B0B"
+        colorOn: "#34DB06"
+        labelOff: "No"
+        labelOn: Sí
+      field: continuaParticipando
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 5
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: continuaParticipando
+      table: prueba
+      data_type: boolean
+      default_value: false
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: servidores_intervengan_procedientos_contrataciones
     field: id
     type: uuid
@@ -5399,7 +6012,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
       readonly: true
       required: false
       sort: 2
@@ -5479,7 +6092,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
       readonly: true
       required: false
       sort: 4
@@ -5560,7 +6173,7 @@ fields:
       note: null
       options:
         enableCreate: false
-        template: '{{nombre}}'
+        template: "{{nombre}}"
       readonly: false
       required: false
       sort: 6
@@ -5736,7 +6349,7 @@ fields:
         contratación pública
       options:
         enableSelect: false
-        template: '{{nombres}} {{primerApellido}} {{segundoApellido}}'
+        template: " {{primerApellido}} {{segundoApellido}}{{nombre}}"
       readonly: false
       required: true
       sort: 12
@@ -5782,7 +6395,7 @@ fields:
         en actos públicos
       options:
         enableSelect: false
-        template: '{{nombreEntePublico}}'
+        template: "{{nombreEntePublico}}"
       readonly: false
       required: true
       sort: 13
@@ -5927,7 +6540,7 @@ fields:
           options:
             enableCreate: true
             enableSelect: false
-            template: '{{tipoActo}}'
+            template: "{{tipoActo}}"
       display: null
       display_options: null
       field: otorgamientoConcesion
@@ -5937,10 +6550,10 @@ fields:
       note: null
       options:
         enableSelect: false
-        template: '{{tipoActo}}'
+        template: "{{tipoActo}}"
       readonly: false
       required: false
-      sort: 17
+      sort: 16
       special:
         - m2o
       translations:
@@ -6008,57 +6621,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: enajenacionesBienes
-    type: integer
-    meta:
-      collection: servidores_intervengan_procedientos_contrataciones
-      conditions:
-        - rule:
-            _and:
-              - tipoProcedimiento:
-                  _eq: ENAJENACION_BIENES
-          hidden: false
-          options:
-            enableCreate: true
-            enableSelect: false
-          required: true
-      display: null
-      display_options: null
-      field: enajenacionesBienes
-      group: null
-      hidden: true
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableSelect: false
-      readonly: false
-      required: false
-      sort: 18
-      special:
-        - m2o
-      translations:
-        - language: es-MX
-          translation: 5.3 Participación en la enajenación de bienes muebles
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: enajenacionesBienes
-      table: servidores_intervengan_procedientos_contrataciones
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: enajenaciones_bienes
-      foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
     field: avaluosJustipreciacion
     type: integer
     meta:
@@ -6112,7 +6674,48 @@ fields:
       foreign_key_table: dictaminaciones_avaluos
       foreign_key_column: id
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: contratacionesPublicas
+    field: continuaParticipando
+    type: integer
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: continuaParticipando
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+        template: "{{continuaParticipando}}"
+      readonly: false
+      required: false
+      sort: 21
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: continuaParticipando
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: prueba
+      foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: tipoContratacion
     type: integer
     meta:
       collection: servidores_intervengan_procedientos_contrataciones
@@ -6128,7 +6731,7 @@ fields:
             enableSelect: false
       display: null
       display_options: null
-      field: contratacionesPublicas
+      field: tipoContratacion
       group: null
       hidden: true
       interface: select-dropdown-m2o
@@ -6136,17 +6739,15 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 16
+      sort: 15
       special:
         - m2o
-      translations:
-        - language: es-MX
-          translation: 5.1 Participación en procedimientos de contrataciones públicas
+      translations: null
       validation: null
       validation_message: null
       width: full
     schema:
-      name: contratacionesPublicas
+      name: tipoContratacion
       table: servidores_intervengan_procedientos_contrataciones
       data_type: integer
       default_value: null
@@ -6159,9 +6760,188 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: contrataciones_publicas
+      foreign_key_table: tipos_adquisiciones_obras
       foreign_key_column: id
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: enajenacionBien
+    type: integer
+    meta:
+      collection: servidores_intervengan_procedientos_contrataciones
+      conditions:
+        - rule:
+            _and:
+              - tipoProcedimiento:
+                  _eq: ENAJENACION_BIENES
+          hidden: false
+          required: true
+          options:
+            enableCreate: true
+            enableSelect: true
+      display: null
+      display_options: null
+      field: enajenacionBien
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 17
+      special:
+        - m2o
+      translations:
+        - language: es-MX
+          translation: 5.3 Participación en la enajenación de bienes muebles
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: enajenacionBien
+      table: servidores_intervengan_procedientos_contrataciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: enajenaciones_bienes
+      foreign_key_column: id
+  - collection: tipos_adquisiciones_obras
+    field: id
+    type: integer
+    meta:
+      collection: tipos_adquisiciones_obras
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: tipos_adquisiciones_obras
+      data_type: integer
+      default_value: nextval('tipos_adquisiciones_obras_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: tipos_adquisiciones_obras
+    field: tipoContratacion
+    type: json
+    meta:
+      collection: tipos_adquisiciones_obras
+      conditions: null
+      display: null
+      display_options: null
+      field: tipoContratacion
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: >-
+              Contratación de adquisiciones y arrendamiento de bienes muebles y
+              servicios de cualquier naturaleza
+            value: contratacionAdquisiciones
+          - text: >-
+              Contratación de obra pública y los servicios relacionados con la
+              misma
+            value: contratacionObra
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - cast-json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: tipoContratacion
+      table: tipos_adquisiciones_obras
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
 relations:
+  - collection: contratacionAdquisiciones
+    field: nivelResponsabilidadContratacion
+    related_collection: niveles_responsabilidades_contrataciones
+    meta:
+      junction_field: null
+      many_collection: contratacionAdquisiciones
+      many_field: nivelResponsabilidadContratacion
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_contrataciones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: contratacionAdquisiciones
+      column: nivelResponsabilidadContratacion
+      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_column: id
+      constraint_name: contratacionadquisiciones_nivelresponsabil__209dd42d_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: contratacionAdquisiciones
+    field: contratacionPublica
+    related_collection: datos_contrataciones_publicas
+    meta:
+      junction_field: null
+      many_collection: contratacionAdquisiciones
+      many_field: contratacionPublica
+      one_allowed_collections: null
+      one_collection: datos_contrataciones_publicas
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: contratacionAdquisiciones
+      column: contratacionPublica
+      foreign_key_table: datos_contrataciones_publicas
+      foreign_key_column: id
+      constraint_name: contratacionadquisiciones_contratacionpublica_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
   - collection: contrataciones_publicas
     field: entePublico
     related_collection: entes_publicos
@@ -6772,27 +7552,6 @@ relations:
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: enajenacionesBienes
-    related_collection: enajenaciones_bienes
-    meta:
-      junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
-      many_field: enajenacionesBienes
-      one_allowed_collections: null
-      one_collection: enajenaciones_bienes
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: servidores_intervengan_procedientos_contrataciones
-      column: enajenacionesBienes
-      foreign_key_table: enajenaciones_bienes
-      foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__33251199_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
     field: avaluosJustipreciacion
     related_collection: dictaminaciones_avaluos
     meta:
@@ -6814,23 +7573,65 @@ relations:
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedientos_contrataciones
-    field: contratacionesPublicas
-    related_collection: contrataciones_publicas
+    field: continuaParticipando
+    related_collection: prueba
     meta:
       junction_field: null
       many_collection: servidores_intervengan_procedientos_contrataciones
-      many_field: contratacionesPublicas
+      many_field: continuaParticipando
       one_allowed_collections: null
-      one_collection: contrataciones_publicas
+      one_collection: prueba
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
       sort_field: null
     schema:
       table: servidores_intervengan_procedientos_contrataciones
-      column: contratacionesPublicas
-      foreign_key_table: contrataciones_publicas
+      column: continuaParticipando
+      foreign_key_table: prueba
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__79b5bdd6_foreign
+      constraint_name: servidores_intervengan_procedientos_contra__7e252a37_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: tipoContratacion
+    related_collection: tipos_adquisiciones_obras
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: tipoContratacion
+      one_allowed_collections: null
+      one_collection: tipos_adquisiciones_obras
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: tipoContratacion
+      foreign_key_table: tipos_adquisiciones_obras
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contra__21b6ec81_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: servidores_intervengan_procedientos_contrataciones
+    field: enajenacionBien
+    related_collection: enajenaciones_bienes
+    meta:
+      junction_field: null
+      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_field: enajenacionBien
+      one_allowed_collections: null
+      one_collection: enajenaciones_bienes
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: servidores_intervengan_procedientos_contrataciones
+      column: enajenacionBien
+      foreign_key_table: enajenaciones_bienes
+      foreign_key_column: id
+      constraint_name: servidores_intervengan_procedientos_contra__63e07575_foreign
       on_update: NO ACTION
       on_delete: SET NULL

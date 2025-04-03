@@ -77,8 +77,8 @@ export default function SpeakText() {
       setUtterance(null);
       
       toast({
-        title: "Error",
-        description: "Ocurrió un error al reproducir el texto.",
+        title: "Aviso",
+        description: "Se detuvo la reproducción del audio. Para iniciar de nuevo, selecciona el texto a escuchar y presiona el botón de lectura.",
         variant: "destructive",
       });
     };

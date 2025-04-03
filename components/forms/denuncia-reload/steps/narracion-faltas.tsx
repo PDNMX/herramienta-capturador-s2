@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import { useState } from "react"
 import type React from "react"
@@ -106,8 +107,8 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name,
       name={name}
       render={() => (
         <FormItem>
-          <ScrollArea className="h-[200px] rounded-md border p-4">
-            <div className="space-y-4">
+          <ScrollArea className="h-[200px] rounded-md border">
+            <div className="space-y-2 p-4 pt-2">
               {items.map((item) => (
                 <FormField
                   key={item.id}

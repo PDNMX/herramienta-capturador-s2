@@ -8,7 +8,8 @@ import {
   RotateCcw, 
   Contrast, 
   MousePointer2,
-  Volume2
+  Volume2,
+  Type
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from 'next-themes';
 import SpeakText from './SpeakText';
+import TextSpacing from './TextSpacing';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AccessibilityMenu() {
@@ -27,6 +29,7 @@ export default function AccessibilityMenu() {
   const [fontSize, setFontSize] = useState(16);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [textToSpeechActive, setTextToSpeechActive] = useState(false);
+  const [textSpacingActive, setTextSpacingActive] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -71,9 +74,22 @@ export default function AccessibilityMenu() {
     }
   };
 
+  const toggleTextSpacing = () => {
+    setTextSpacingActive(prev => !prev);
+    
+    if (!textSpacingActive) {
+      toast({
+        title: "Ajuste de espaciado activado",
+        description: "Puedes modificar el espaciado entre líneas y letras.",
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
       {textToSpeechActive && <SpeakText />}
+      <TextSpacing isActive={textSpacingActive} />
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -106,6 +122,10 @@ export default function AccessibilityMenu() {
           <DropdownMenuItem onClick={toggleReducedMotion}>
             <MousePointer2 className="mr-2 h-4 w-4" />
             <span>{reducedMotion ? 'Desactivar' : 'Activar'} movimiento reducido</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={toggleTextSpacing}>
+            <Type className="mr-2 h-4 w-4" />
+            <span>{textSpacingActive ? 'Desactivar' : 'Activar'} ajuste de espaciado</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={toggleTextToSpeech}>

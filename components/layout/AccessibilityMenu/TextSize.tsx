@@ -18,6 +18,8 @@ export default function TextSize({
   initialFontSize = 16, 
   onTogglePanel 
 }: TextSizeProps) {
+  // Agregar estado para verificar si estamos en el navegador
+  const [isBrowser, setIsBrowser] = useState(false);
   const [fontSize, setFontSize] = useState(initialFontSize);
   const [defaultSize] = useState(initialFontSize);
   
@@ -31,6 +33,14 @@ export default function TextSize({
   };
 
   useEffect(() => {
+    // Marcamos que estamos en el navegador
+    setIsBrowser(true);
+  }, []);
+
+  useEffect(() => {
+    // Solo aplicamos estilos si estamos en el navegador
+    if (!isBrowser) return;
+    
     if (isActive) {
       // Aplicar los estilos cuando el componente está activo
       document.documentElement.style.setProperty('--font-size-base', `${fontSizes.base}px`);
@@ -75,6 +85,8 @@ export default function TextSize({
 
     return () => {
       // Limpieza al desmontar el componente
+      if (!isBrowser) return;
+      
       const existingStyle = document.getElementById('text-size-styles');
       if (existingStyle) {
         existingStyle.remove();
@@ -82,14 +94,14 @@ export default function TextSize({
       // Restaurar el tamaño de fuente predeterminado
       document.documentElement.style.fontSize = `${initialFontSize}px`;
     };
-  }, [isActive, fontSizes, initialFontSize]);
+  }, [isActive, fontSizes, initialFontSize, isBrowser]);
 
   const increaseFontSize = () => setFontSize(prev => Math.min(prev + 1, 32));
   const decreaseFontSize = () => setFontSize(prev => Math.max(prev - 1, 12));
   const resetFontSize = () => setFontSize(defaultSize);
 
-  // Si el componente no está activo, no renderizamos nada
-  if (!isActive) return null;
+  // Si el componente no está activo o no estamos en el navegador, no renderizamos nada
+  if (!isActive || !isBrowser) return null;
   
   // Si el panel no debe ser visible, no renderizamos el panel pero seguimos
   // aplicando los estilos (ya que el componente está activo)

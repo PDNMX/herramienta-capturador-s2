@@ -6,22 +6,27 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
 export default function SpeakText() {
+  // Agregamos un estado para verificar si estamos en el navegador
+  const [isBrowser, setIsBrowser] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
+    // Marcamos que estamos en el navegador una vez que el componente se monte
+    setIsBrowser(true);
+    
     // Cleanup function to cancel speech when component unmounts
     return () => {
-      if (window.speechSynthesis) {
+      if (isBrowser && typeof window !== 'undefined' && window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
     };
-  }, []);
+  }, [isBrowser]);
 
   const speakSelectedText = () => {
-    if (!window.speechSynthesis) {
+    if (!isBrowser || !window.speechSynthesis) {
       toast({
         title: "Error",
         description: "Tu navegador no soporta la síntesis de voz.",
@@ -96,7 +101,7 @@ export default function SpeakText() {
   };
 
   const togglePause = () => {
-    if (!window.speechSynthesis || !isSpeaking) return;
+    if (!isBrowser || !window.speechSynthesis || !isSpeaking) return;
     
     if (isPaused) {
       window.speechSynthesis.resume();
@@ -108,13 +113,16 @@ export default function SpeakText() {
   };
 
   const stopSpeaking = () => {
-    if (!window.speechSynthesis) return;
+    if (!isBrowser || !window.speechSynthesis) return;
     
     window.speechSynthesis.cancel();
     setIsSpeaking(false);
     setIsPaused(false);
     setUtterance(null);
   };
+
+  // Si no estamos en el navegador, no renderizamos los botones
+  if (!isBrowser) return null;
 
   return (
     <div className="flex items-center gap-2">

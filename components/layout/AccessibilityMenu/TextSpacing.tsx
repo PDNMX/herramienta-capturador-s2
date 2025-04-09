@@ -12,12 +12,22 @@ interface TextSpacingProps {
 }
 
 export default function TextSpacing({ isActive, isPanelVisible, onTogglePanel }: TextSpacingProps) {
+  // Agregar estado para verificar si estamos en el navegador
+  const [isBrowser, setIsBrowser] = useState(false);
   const [lineSpacing, setLineSpacing] = useState(1.5);  // Valor predeterminado para line-height
   const [letterSpacing, setLetterSpacing] = useState(0); // Valor predeterminado para letter-spacing (en px)
   const [defaultLineSpacing] = useState(1.5);
   const [defaultLetterSpacing] = useState(0);
 
   useEffect(() => {
+    // Marcamos que estamos en el navegador
+    setIsBrowser(true);
+  }, []);
+
+  useEffect(() => {
+    // Solo aplicamos estilos si estamos en el navegador
+    if (!isBrowser) return;
+    
     if (isActive) {
       // Aplicar los estilos cuando el componente está activo
       document.documentElement.style.setProperty('--line-spacing', `${lineSpacing}`);
@@ -43,12 +53,14 @@ export default function TextSpacing({ isActive, isPanelVisible, onTogglePanel }:
 
     return () => {
       // Limpieza al desmontar el componente
+      if (!isBrowser) return;
+      
       const existingStyle = document.getElementById('text-spacing-styles');
       if (existingStyle) {
         existingStyle.remove();
       }
     };
-  }, [isActive, lineSpacing, letterSpacing]);
+  }, [isActive, lineSpacing, letterSpacing, isBrowser]);
 
   const increaseLineSpacing = () => setLineSpacing(prev => Math.min(prev + 0.2, 3));
   const decreaseLineSpacing = () => setLineSpacing(prev => Math.max(prev - 0.2, 1));
@@ -61,8 +73,8 @@ export default function TextSpacing({ isActive, isPanelVisible, onTogglePanel }:
     setLetterSpacing(defaultLetterSpacing);
   };
 
-  // Si el componente no está activo, no renderizamos nada
-  if (!isActive) return null;
+  // Si el componente no está activo o no estamos en el navegador, no renderizamos nada
+  if (!isActive || !isBrowser) return null;
   
   // Si el panel no debe ser visible, no renderizamos el panel pero seguimos
   // aplicando los estilos (ya que el componente está activo)

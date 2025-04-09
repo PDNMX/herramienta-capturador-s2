@@ -28,7 +28,7 @@ export function Landing() {
   }
 
   return (
-    <main className="relative gradient-background min-h-screen flex flex-col items-center justify-center">
+    <main className="relative gradient-background min-h-screen flex flex-col items-center justify-start md:justify-center">
       <div className="container relative mx-auto px-3 md:px-4 pt-1 flex flex-col items-center">
         {/* Header - Always visible */}
         <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-center md:text-left">

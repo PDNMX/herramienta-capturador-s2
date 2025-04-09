@@ -253,9 +253,9 @@ export function MultiStepForm() {
                         <Icon className="h-5 w-5" />
                       </Button>
                       <span className="text-xs mt-1 text-center hidden md:block max-w-[120px] whitespace-normal min-h-[2.5em]">{s.title}</span>
-                      {index < steps.length - 1 && (
-                        <div className="hidden md:block h-[2px] w-8 bg-muted absolute left-[calc(100%+0.5rem)] top-5" />
-                      )}
+                      {/* {index < steps.length - 1 && (
+                        <div className="hidden md:block h-[1px] w-6 bg-muted/50 absolute left-[calc(100%+0.25rem)] top-5" />
+                      )} */}
                     </div>
                   )
                 })}

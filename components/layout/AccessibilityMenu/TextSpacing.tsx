@@ -1,17 +1,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, Text, RotateCcw, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 
 interface TextSpacingProps {
   isActive: boolean;
+  isPanelVisible: boolean;
+  onTogglePanel?: () => void;
 }
 
-export default function TextSpacing({ isActive }: TextSpacingProps) {
+export default function TextSpacing({ isActive, isPanelVisible, onTogglePanel }: TextSpacingProps) {
   const [lineSpacing, setLineSpacing] = useState(1.5);  // Valor predeterminado para line-height
   const [letterSpacing, setLetterSpacing] = useState(0); // Valor predeterminado para letter-spacing (en px)
+  const [defaultLineSpacing] = useState(1.5);
+  const [defaultLetterSpacing] = useState(0);
 
   useEffect(() => {
     if (isActive) {
@@ -51,12 +55,35 @@ export default function TextSpacing({ isActive }: TextSpacingProps) {
   
   const increaseLetterSpacing = () => setLetterSpacing(prev => Math.min(prev + 0.5, 10));
   const decreaseLetterSpacing = () => setLetterSpacing(prev => Math.max(prev - 0.5, -1));
+  
+  const resetSpacing = () => {
+    setLineSpacing(defaultLineSpacing);
+    setLetterSpacing(defaultLetterSpacing);
+  };
 
+  // Si el componente no está activo, no renderizamos nada
   if (!isActive) return null;
+  
+  // Si el panel no debe ser visible, no renderizamos el panel pero seguimos
+  // aplicando los estilos (ya que el componente está activo)
+  if (!isPanelVisible) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-50 w-72">
-      <h3 className="text-lg font-medium mb-3">Ajuste de espaciado</h3>
+    <div className="fixed bottom-40 right-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg z-50 w-72">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-lg font-medium flex items-center">
+          <Text className="mr-2 h-5 w-5 text-amber-500" />
+          Ajuste de espaciado
+        </h3>
+        <button 
+          onClick={onTogglePanel}
+          className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 p-1"
+          aria-label="Ocultar panel de espaciado"
+          title="Ocultar panel de espaciado"
+        >
+          <X className="h-5 w-5" />
+        </button>
+      </div>
       
       <div className="space-y-4">
         <div>
@@ -127,6 +154,19 @@ export default function TextSpacing({ isActive }: TextSpacingProps) {
             onValueChange={(value) => setLetterSpacing(value[0])}
             aria-label="Control de espaciado entre letras"
           />
+        </div>
+        
+        <div className="pt-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={resetSpacing}
+            className="w-full text-xs sm:text-sm"
+            aria-label="Restablecer espaciado"
+          >
+            <RotateCcw className="mr-1 h-4 w-4" />
+            Restablecer
+          </Button>
         </div>
       </div>
     </div>

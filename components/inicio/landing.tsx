@@ -56,7 +56,7 @@ export function Landing() {
               <div className="grid gap-6 md:grid-cols-1">
                 <Button
                   size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-accent text-base md:text-lg p-4 md:p-6 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 hover:shadow-lg transition-all duration-300"
+                  className="bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-4 md:p-6 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 border-primary/50 shadow-lg transition-all duration-300 overflow-hidden relative glow-effect"
                   onClick={handlePresentarDenuncia}
                 >
                   <div className="rounded-full bg-primary-foreground/20 p-2 md:p-3">
@@ -74,7 +74,7 @@ export function Landing() {
                   size="lg"
                   variant="outline"
                   onClick={() => setIsModalOpen(true)}
-                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-4 md:p-6 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 hover:shadow-lg transition-all duration-300"
+                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-4 md:p-6 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 border-primary/30 shadow-md hover:shadow-lg transition-all duration-300"
                 >
                   <div className="rounded-full bg-primary/20 p-2 md:p-3">
                     <Search className="w-5 h-5 md:w-6 md:h-6 text-primary" />
@@ -88,7 +88,7 @@ export function Landing() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-4 md:p-6 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 hover:shadow-lg transition-all duration-300"
+                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-4 md:p-6 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 border-primary/30 shadow-md hover:shadow-lg transition-all duration-300"
                   asChild
                 >
                   <Link href="/estadisticas">
@@ -117,8 +117,8 @@ export function Landing() {
               }}
               className="w-full"
             >
-              {/* Main Card: Submit a Complaint - Original design */}
-              <Card className="mb-12 border-primary/10 bg-card/95 backdrop-blur">
+              {/* Main Card: Submit a Complaint - Diseño mejorado */}
+              <Card className="mb-12 border-2 border-primary/20 bg-card/95 backdrop-blur shadow-lg">
                 <CardHeader className="flex flex-row items-center justify-between border-b pb-6">
                   <div className="space-y-2">
                     <CardTitle className="text-3xl font-bold tracking-tight text-primary">Presenta tu Caso</CardTitle>
@@ -126,7 +126,7 @@ export function Landing() {
                       Ayúdanos a combatir la corrupción y las faltas administrativas
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground bg-primary/5 px-4 py-2 rounded-full">
+                  <div className="flex items-center gap-2 text-muted-foreground bg-primary/10 px-4 py-2 rounded-full shadow-sm">
                     <Clock className="h-5 w-5 text-primary" />
                     <span>20 minutos aproximadamente</span>
                   </div>
@@ -141,45 +141,45 @@ export function Landing() {
                   </p>
 
                   <div className="grid gap-8 md:grid-cols-2">
-                    {/* Podrás denunciar */}
-                    <div className="p-2">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="rounded-full bg-primary/10 p-2">
-                          <CheckCircle2 className="h-5 w-5 text-primary" />
+                    {/* Podrás denunciar - Mejorado */}
+                    <div className="p-4 rounded-lg border-2 border-primary/20 bg-card shadow-md hover:shadow-lg transition-all duration-300">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="rounded-full bg-primary/20 p-3 shadow-sm">
+                          <CheckCircle2 className="h-6 w-6 text-primary" />
                         </div>
                         <h3 className="text-xl font-semibold text-primary">Podrás denunciar</h3>
                       </div>
                       <ul className="space-y-4 pl-2">
-                        <li className="flex items-start gap-3">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
+                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
+                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
                             <CheckCircle2 className="h-4 w-4 text-primary" />
                           </div>
-                          <span>Conductas de personas servidoras públicas en el ejercicio de sus funciones.</span>
+                          <span className="text-foreground">Conductas de personas servidoras públicas en el ejercicio de sus funciones.</span>
                         </li>
-                        <li className="flex items-start gap-3">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
+                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
+                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
                             <CheckCircle2 className="h-4 w-4 text-primary" />
                           </div>
-                          <span>
+                          <span className="text-foreground">
                             Conductas de personas particulares o empresas que manejen recursos públicos, participen en
                             contrataciones públicas o realicen transacciones comerciales internacionales.
                           </span>
                         </li>
-                        <li className="flex items-start gap-3">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
+                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
+                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
                             <CheckCircle2 className="h-4 w-4 text-primary" />
                           </div>
-                          <span>
+                          <span className="text-foreground">
                             Conductas de candidatos a cargos de elección popular, miembros de equipos de campaña
                             electoral o de transición, o líderes de sindicatos del sector público.
                           </span>
                         </li>
-                        <li className="flex items-start gap-3 mt-6 pt-4 border-t border-primary/10">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
+                        <li className="flex items-start gap-3 mt-6 pt-4 border-t border-primary/20">
+                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
                             <Shield className="h-4 w-4 text-primary" />
                           </div>
-                          <span>
-                            <Link href="/aviso-de-privacidad" className="text-primary hover:underline">
+                          <span className="text-foreground hover:text-primary transition-colors duration-300">
+                            <Link href="/aviso-de-privacidad" className="text-primary hover:underline font-medium">
                               Aviso de privacidad
                             </Link>
                           </span>
@@ -187,46 +187,46 @@ export function Landing() {
                       </ul>
                     </div>
 
-                    {/* No podrás denunciar */}
-                    <div className="p-2">
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="rounded-full bg-primary/10 p-2">
-                          <XCircle className="h-5 w-5 text-primary" />
+                    {/* No podrás denunciar - Mejorado */}
+                    <div className="p-4 rounded-lg border-2 border-primary/20 bg-card shadow-md hover:shadow-lg transition-all duration-300">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="rounded-full bg-primary/20 p-3 shadow-sm">
+                          <XCircle className="h-6 w-6 text-primary" />
                         </div>
                         <h3 className="text-xl font-semibold text-primary">No podrás denunciar</h3>
                       </div>
-                      <p className="text-muted-foreground mb-4">
+                      <p className="text-muted-foreground mb-4 bg-primary/5 p-3 rounded-lg">
                         Este sistema no está diseñado para atender los siguientes casos:
                       </p>
                       <ul className="space-y-4 pl-2">
-                        <li className="flex items-start gap-3">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
+                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
+                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
                             <AlertCircle className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <span className="font-medium">Trámites y/o servicios</span>
+                            <span className="font-medium text-foreground">Trámites y/o servicios</span>
                             <p className="text-sm text-muted-foreground mt-1">
                               Problemas con trámites administrativos o servicios públicos.
                             </p>
                           </div>
                         </li>
-                        <li className="flex items-start gap-3">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
+                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
+                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
                             <AlertCircle className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <span className="font-medium">Conflictos laborales</span>
+                            <span className="font-medium text-foreground">Conflictos laborales</span>
                             <p className="text-sm text-muted-foreground mt-1">
                               Disputas entre empleadores y empleados o relacionadas con condiciones de trabajo.
                             </p>
                           </div>
                         </li>
-                        <li className="flex items-start gap-3">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
+                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
+                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
                             <AlertCircle className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <span className="font-medium">Conflictos entre particulares</span>
+                            <span className="font-medium text-foreground">Conflictos entre particulares</span>
                             <p className="text-sm text-muted-foreground mt-1">
                               Disputas civiles o comerciales entre personas o entidades privadas.
                             </p>
@@ -240,19 +240,23 @@ export function Landing() {
                 <CardFooter className="flex flex-col gap-4 pt-6">
                   <Button
                     size="lg"
-                    className="w-full max-w-md bg-primary text-primary-foreground hover:bg-accent py-6 text-lg shadow-lg transition-all duration-300 hover:shadow-xl"
+                    className="w-full max-w-md bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground py-6 text-lg border-2 border-primary/50 shadow-lg transition-all duration-300 hover:shadow-xl relative overflow-hidden glow-effect"
                     asChild
                   >
                     <Link
                       href="/presentar-denuncia"
-                      className="flex items-center justify-center gap-3 hover:text-accent-foreground"
+                      className="flex items-center justify-center gap-3"
                     >
                       Presenta tu Denuncia
                       <ArrowRight className="h-5 w-5" />
                     </Link>
                   </Button>
 
-                  <Button variant="ghost" onClick={() => setShowComplaintForm(false)} className="mt-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowComplaintForm(false)} 
+                    className="mt-2 hover:bg-primary/10 transition-all duration-300"
+                  >
                     Regresar
                   </Button>
                 </CardFooter>
@@ -264,9 +268,9 @@ export function Landing() {
                   size="lg"
                   variant="outline"
                   onClick={() => setIsModalOpen(true)}
-                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-3 md:p-4 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 hover:shadow-lg transition-all duration-300"
+                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-3 md:p-4 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 border-primary/30 shadow-md hover:shadow-lg transition-all duration-300"
                 >
-                  <div className="rounded-full bg-primary/20 p-2 md:p-3">
+                  <div className="rounded-full bg-primary/20 p-2 md:p-3 shadow-sm">
                     <Search className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                   </div>
                   <div className="flex flex-col items-start">
@@ -277,11 +281,11 @@ export function Landing() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-3 md:p-4 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 hover:shadow-lg transition-all duration-300"
+                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-3 md:p-4 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 border-primary/30 shadow-md hover:shadow-lg transition-all duration-300"
                   asChild
                 >
                   <Link href="/estadisticas">
-                    <div className="rounded-full bg-primary/20 p-2 md:p-3">
+                    <div className="rounded-full bg-primary/20 p-2 md:p-3 shadow-sm">
                       <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                     </div>
                     <div className="flex flex-col items-start">

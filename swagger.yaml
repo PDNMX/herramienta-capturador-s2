@@ -135,18 +135,20 @@ components:
           description: Fecha de última actualización
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
           description: Ente público al que pertenece
           nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/EntePublico"
         fecha:
           type: string
           format: date
           description: Fecha en la que se registra la información
           nullable: true
         datosGenerales:
-          $ref: "#/components/schemas/DatosGenerales"
           description: Datos personales del servidor público
           nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/DatosGenerales"
         empleoCargoComision:
           $ref: "#/components/schemas/EmpleoCargoComision"
           description: Datos del empleo, cargo o comisión
@@ -317,6 +319,15 @@ components:
           type: string
           description: Tipo de área
           nullable: false
+          enum:
+            - AREA_RESPONSABLE_EJECUCION
+            - AREA_RESPONSABLE_CONTRATACION
+            - AREA_TECNICA
+            - AREA_REQUIRENTE
+            - INTEGRANTE_COMITE
+            - ORGANO_REVISION
+            - PARTICIPANTE_ACLARACIONES
+            - OTRO
         nivelResponsabilidadContratacion:
           $ref: "#/components/schemas/NivelResponsabilidadContratacion"
           description: Nivel de responsabilidad en la contratación
@@ -349,6 +360,15 @@ components:
           type: string
           description: Tipo de área
           nullable: true
+          enum:
+            - AREA_RESPONSABLE_EJECUCION
+            - AREA_RESPONSABLE_CONTRATACION
+            - AREA_TECNICA
+            - AREA_REQUIRENTE
+            - INTEGRANTE_COMITE
+            - ORGANO_REVISION
+            - PARTICIPANTE_ACLARACIONES
+            - OTRO
         nivelResponsabilidadObra:
           $ref: "#/components/schemas/NivelResponsabilidadContratacion"
           description: Nivel de responsabilidad en la obra
@@ -377,30 +397,58 @@ components:
         id:
           type: integer
           nullable: false
-        autorizacion:
+        autorizacionDictamen:
           type: boolean
           description: Autorización del procedimiento
           nullable: true
-        justificacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        justificacionLicitacion:
           type: boolean
           description: Justificación del procedimiento
           nullable: true
-        convocatoria:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        convocatoriaInvitacion:
           type: boolean
           description: Convocatoria del procedimiento
           nullable: true
-        evaluacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        evaluacionProposiciones:
           type: boolean
           description: Evaluación del procedimiento
           nullable: true
-        adjudicacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        adjudicacionContrato:
           type: boolean
           description: Adjudicación del procedimiento
           nullable: true
-        formalizacion:
+          enum:
+            - ELABORAR (A)
+              - REVISAR (B)
+              - EMITIR (E)
+        formalizacionContrato:
           type: boolean
           description: Formalización del procedimiento
           nullable: true
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - EMITIR (E)
         entePublico:
           $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
@@ -454,6 +502,11 @@ components:
           type: string
           description: Materia del procedimiento
           nullable: true
+          enum:
+            - ARRENDAMIENTO
+            - ADQUICISION
+            - SERVICIOS
+            - OTRO
         otroMateria:
           type: string
           description: Otra materia del procedimiento
@@ -467,6 +520,12 @@ components:
           type: string
           description: Tipo de procedimiento
           nullable: true
+          enum:
+            - LICITACION_NACIONAL
+            - LICITACION_INTERNACIONAL
+            - INVITACION
+            - ADJUDICACION
+            - OTRO
     DatosGeneralesObra:
       type: object
       properties:
@@ -509,6 +568,11 @@ components:
           type: string
           description: Tipo de acto
           nullable: true
+          enum:
+            - CONCECIONES
+            - LICENCIAS
+            - PERMISOS
+            - AUTORIZACIONES
         nivelResponsabilidadConcesiones:
           $ref: "#/components/schemas/NivelResponsabilidadConcesion"
           description: Nivel de responsabilidad en concesiones
@@ -535,26 +599,50 @@ components:
         id:
           type: integer
           nullable: false
-        convocatoria:
+        convocatoriaLicitacion:
           type: boolean
           description: Convocatoria del procedimiento
           nullable: true
-        dictamenes:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - PERVISAR (D)
+        dictamenesOpiniones:
           type: boolean
           description: Dictámenes del procedimiento
           nullable: true
-        visitas:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        visitasVerificacion:
           type: boolean
           description: Visitas del procedimiento
           nullable: true
-        evaluacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        evaluacionCumplimiento:
           type: boolean
           description: Evaluación del procedimiento
           nullable: true
-        determinacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        determinacionOtorgamiento:
           type: boolean
           description: Determinación del procedimiento
           nullable: true
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - EMITIR (E)
         entePublico:
           $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
@@ -643,18 +731,35 @@ components:
         id:
           type: integer
           nullable: false
-        propuestas:
+        propuestasAsignaciones:
           type: boolean
           description: Propuestas del procedimiento
           nullable: true
-        asignacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        asignacionAvaluos:
           type: boolean
           description: Asignación del procedimiento
           nullable: true
-        emision:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D
+            - EMITIR (E)
+        emisionDictamenes:
           type: boolean
           description: Emisión del procedimiento
           nullable: true
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D
+            - EMITIR (E)
         entePublico:
           $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
@@ -715,34 +820,67 @@ components:
         id:
           type: integer
           nullable: false
-        autorizaciones:
+        autorizacionesDictamenes:
           type: boolean
           description: Autorizaciones del procedimiento
           nullable: true
-        analisis:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        analisisAutorizacion:
           type: boolean
           description: Análisis del procedimiento
           nullable: true
-        modificaciones:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        modificacionBases:
           type: boolean
           description: Modificaciones del procedimiento
           nullable: true
-        presentacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        presentacionOfertas:
           type: boolean
           description: Presentación del procedimiento
           nullable: true
-        evaluacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        evaluacionOfertas:
           type: boolean
           description: Evaluación del procedimiento
           nullable: true
-        adjudicacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - FIRMAR (C)
+            - SUPERVISAR (D)
+        adjudicacionBienes:
           type: boolean
           description: Adjudicación del procedimiento
           nullable: true
-        formalizacion:
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - EMITIR (E)
+        formalizacionContrato:
           type: boolean
           description: Formalización del procedimiento
           nullable: true
+          enum:
+            - ELABORAR (A)
+            - REVISAR (B)
+            - EMITIR (E)
         entePublico:
           $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado

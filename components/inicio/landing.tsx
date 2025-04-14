@@ -62,7 +62,7 @@ export function Landing() {
                   <div className="rounded-full bg-primary-foreground/20 p-2 md:p-3">
                     <FileText className="w-5 h-5 md:w-6 md:h-6 text-primary-foreground" />
                   </div>
-                  <div className="flex flex-col items-start">
+                  <div className="flex flex-col items-start flex-1 justify-center">
                     <span className="font-semibold text-lg md:text-xl">Presentar Denuncia</span>
                     <span className="text-xs md:text-sm text-primary-foreground/80">
                       Reporta faltas administrativas y hechos de corrupción
@@ -79,7 +79,7 @@ export function Landing() {
                   <div className="rounded-full bg-primary/20 p-2 md:p-3">
                     <Search className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                   </div>
-                  <div className="flex flex-col items-start">
+                  <div className="flex flex-col items-start flex-1 justify-center">
                     <span className="font-semibold text-lg md:text-xl">Consultar Estatus</span>
                     <span className="text-xs md:text-sm text-muted-foreground">Seguimiento de tu denuncia</span>
                   </div>
@@ -95,7 +95,7 @@ export function Landing() {
                     <div className="rounded-full bg-primary/20 p-2 md:p-3">
                       <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                     </div>
-                    <div className="flex flex-col items-start">
+                    <div className="flex flex-col items-start flex-1 justify-center">
                       <span className="font-semibold text-lg md:text-xl">Estadísticas Nacionales</span>
                       <span className="text-xs md:text-sm text-muted-foreground">Transparencia en cifras</span>
                     </div>
@@ -121,7 +121,7 @@ export function Landing() {
               <Card className="mb-12 border-primary/10 bg-card/95 backdrop-blur">
                 <CardHeader className="flex flex-row items-center justify-between border-b pb-6">
                   <div className="space-y-2">
-                    <CardTitle className="text-3xl font-bold tracking-tight text-primary">Presenta tu Caso</CardTitle>
+                    <CardTitle className="text-3xl font-bold tracking-tight text-primary">Presenta tu denuncia</CardTitle>
                     <p className="text-muted-foreground">
                       Ayúdanos a combatir la corrupción y las faltas administrativas
                     </p>
@@ -134,10 +134,9 @@ export function Landing() {
 
                 <CardContent className="pt-6">
                   <p className="mb-8 text-lg text-muted-foreground">
-                    Tu denuncia es importante para combatir la corrupción. Para garantizar la seguridad y
-                    confidencialidad de tu identidad, podrás presentar una denuncia anónima. Podrás consultar el estado
-                    de tu denuncia con el folio de seguimiento o, a través de notificaciones, en caso de que
-                    proporciones tus datos de contacto.
+                    Ayúdanos a combatir la corrupción, tu denuncia es muy importante. Tu denuncia podrá ser anónima para
+                    garantizar la seguridad y confidencialidad de tu identidad. Podrás consultar el estado de tu
+                    denuncia con el folio de seguimiento.
                   </p>
 
                   <div className="grid gap-8 md:grid-cols-2">
@@ -174,16 +173,6 @@ export function Landing() {
                             electoral o de transición, o líderes de sindicatos del sector público.
                           </span>
                         </li>
-                        <li className="flex items-start gap-3 mt-6 pt-4 border-t border-primary/10">
-                          <div className="rounded-full bg-primary/5 p-1 mt-0.5">
-                            <Shield className="h-4 w-4 text-primary" />
-                          </div>
-                          <span>
-                            <Link href="/aviso-de-privacidad" className="text-primary hover:underline">
-                              Aviso de privacidad
-                            </Link>
-                          </span>
-                        </li>
                       </ul>
                     </div>
 
@@ -204,7 +193,7 @@ export function Landing() {
                             <AlertCircle className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <span className="font-medium">Trámites y/o servicios</span>
+                            <span className="font-medium">Trámites y/o servicios.</span>
                             <p className="text-sm text-muted-foreground mt-1">
                               Problemas con trámites administrativos o servicios públicos.
                             </p>
@@ -215,9 +204,9 @@ export function Landing() {
                             <AlertCircle className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <span className="font-medium">Conflictos laborales</span>
+                            <span className="font-medium">Asuntos laborales.</span>
                             <p className="text-sm text-muted-foreground mt-1">
-                              Disputas entre empleadores y empleados o relacionadas con condiciones de trabajo.
+                              Conflictos entre empleadores y empleados, o relacionados con condiciones de trabajo.
                             </p>
                           </div>
                         </li>
@@ -226,14 +215,20 @@ export function Landing() {
                             <AlertCircle className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <span className="font-medium">Conflictos entre particulares</span>
+                            <span className="font-medium">Asuntos entre particulares.</span>
                             <p className="text-sm text-muted-foreground mt-1">
-                              Disputas civiles o comerciales entre personas o entidades privadas.
+                              Conflictos civiles o mercantiles entre personas u organizaciones privadas.
                             </p>
                           </div>
                         </li>
                       </ul>
                     </div>
+                  </div>
+                  <div className="mt-8 pt-4 border-t border-primary/10 flex justify-center items-center gap-2">
+                    <Shield className="h-4 w-4 text-primary" />
+                    <Link href="/aviso-de-privacidad" className="text-primary hover:underline">
+                      Aviso de privacidad
+                    </Link>
                   </div>
                 </CardContent>
 
@@ -269,7 +264,7 @@ export function Landing() {
                   <div className="rounded-full bg-primary/20 p-2 md:p-3">
                     <Search className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                   </div>
-                  <div className="flex flex-col items-start">
+                  <div className="flex flex-col items-start flex-1">
                     <span className="font-semibold">Consultar Estatus</span>
                     <span className="text-xs md:text-sm text-muted-foreground">Seguimiento de tu denuncia</span>
                   </div>
@@ -284,7 +279,7 @@ export function Landing() {
                     <div className="rounded-full bg-primary/20 p-2 md:p-3">
                       <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-primary" />
                     </div>
-                    <div className="flex flex-col items-start">
+                    <div className="flex flex-col items-start flex-1">
                       <span className="font-semibold">Estadísticas Nacionales</span>
                       <span className="text-xs md:text-sm text-muted-foreground">Transparencia en cifras</span>
                     </div>

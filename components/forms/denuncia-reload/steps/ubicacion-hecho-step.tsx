@@ -2,10 +2,14 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+//import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { Input } from "@/components/ui/input";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { MapPin, Search, Locate } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { MapPin, Search, Locate, Edit } from "lucide-react";
 import debounce from 'lodash/debounce';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
@@ -38,6 +42,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
   const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [tempMarker, setTempMarker] = useState<mapboxgl.Marker | null>(null);
+  const [manualAddressMode, setManualAddressMode] = useState(false);
   const [addressDetails, setAddressDetails] = useState<AddressDetails>({
     street: "",
     number: "",
@@ -50,7 +55,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
   const reverseGeocode = async (lat: number, lng: number) => {
     try {
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es&country=mx`
       );
       const data = await response.json();
       const features = data.features[0];
@@ -66,6 +71,14 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
           postalCode: context.find((c: any) => c.id.includes('postcode'))?.text || ""
         };
         setAddressDetails(address);
+        
+        // Actualizar los valores del formulario
+        form.setValue('calle', address.street);
+        form.setValue('numero', address.number);
+        form.setValue('ciudad', address.city);
+        form.setValue('estado', address.state);
+        form.setValue('pais', address.country);
+        form.setValue('codigoPostal', address.postalCode);
         form.setValue('direccion', `${address.street} ${address.number}, ${address.city}, ${address.state}, ${address.country}`);
       }
     } catch (error) {
@@ -105,17 +118,24 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgl.accessToken}&country=mx&language=es&types=place,address,poi,neighborhood,postcode`
       );
       const data = await response.json();
-      setSearchResults(data.features);
-      setShowResults(true);
+      if (data && data.features) {
+        setSearchResults(data.features);
+        setShowResults(true);
+      } else {
+        setSearchResults([]);
+        setShowResults(false);
+      }
     } catch (error) {
       console.error('Error en búsqueda:', error);
+      setSearchResults([]);
+      setShowResults(false);
     } finally {
       setIsLoading(false);
     }
   };
 
   const debouncedSearch = useCallback(
-    debounce((query: string) => performSearch(query), 300),
+    debounce((query: string) => performSearch(query), 500),
     []
   );
 
@@ -144,53 +164,37 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
   };
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (mapContainer.current) {
+      // Inicializar el mapa
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [coordinates.lng, coordinates.lat],
+        zoom: 3,
+        attributionControl: false // Quitar la atribución (footer)
+      });
+      mapRef.current = map;
 
-    const map = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [coordinates.lng, coordinates.lat],
-      zoom: 12,
-    });
+      // Añadir controles de navegación (zoom)
+      map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Crear un elemento personalizado para el marcador principal
-    const markerEl = document.createElement('div');
-    markerEl.className = 'custom-marker';
-    markerEl.style.width = '30px';
-    markerEl.style.height = '30px';
-    markerEl.style.backgroundImage = 'url(https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png)';
-    markerEl.style.backgroundSize = 'cover';
-    markerEl.style.cursor = 'pointer';
+      // Actualizar coordenadas cuando el mapa se mueve
+      map.on('moveend', () => {
+        const center = map.getCenter();
+        const lat = center.lat;
+        const lng = center.lng;
+        setCoordinates({ lat, lng });
+        reverseGeocode(lat, lng);
+      });
 
-    const marker = new mapboxgl.Marker({
-      element: markerEl,
-      draggable: true
-    })
-      .setLngLat([coordinates.lng, coordinates.lat])
-      .addTo(map);
+      // Hacer la geocodificación inicial
+      //reverseGeocode(coordinates.lat, coordinates.lng);
 
-    marker.on("dragend", () => {
-      const { lng, lat } = marker.getLngLat();
-      setCoordinates({ lat, lng });
-      reverseGeocode(lat, lng);
-    });
-
-    mapRef.current = map;
-    markerRef.current = marker;
-
-    map.on('click', (e) => {
-      const { lng, lat } = e.lngLat;
-      setCoordinates({ lat, lng });
-      marker.setLngLat([lng, lat]);
-      reverseGeocode(lat, lng);
-    });
-
-    reverseGeocode(coordinates.lat, coordinates.lng);
-
-    return () => {
-      if (tempMarker) tempMarker.remove();
-      map.remove();
-    };
+      return () => {
+        if (tempMarker) tempMarker.remove();
+        map.remove();
+      };
+    }
   }, []);
 
   return (
@@ -228,7 +232,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
           </Button>
         </div>
 
-        {showResults && searchResults.length > 0 && (
+        {showResults && searchResults && searchResults.length > 0 && (
           <div className="absolute z-10 w-full bg-white shadow-lg rounded-md mt-1">
             {searchResults.map((result, index) => (
               <div
@@ -238,37 +242,23 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                   if (mapRef.current) {
                     if (tempMarker) tempMarker.remove();
                     const [lng, lat] = result.center;
-                    const marker = new mapboxgl.Marker({
-                      color: '#FF4444',
-                      scale: 0.8
-                    })
-                      .setLngLat([lng, lat])
-                      .addTo(mapRef.current);
-                    setTempMarker(marker);
+                    
+                    // Centramos el mapa en la ubicación seleccionada
                     mapRef.current.flyTo({
                       center: [lng, lat],
                       zoom: 15,
                       speed: 1.5
                     });
+                    
+                    // Actualizamos las coordenadas
+                    setCoordinates({ lat, lng });
+                    
+                    // Hacemos geocodificación inversa para actualizar la dirección
+                    reverseGeocode(lat, lng);
                   }
                   setShowResults(false);
                   setSearchQuery("");
                 }}
-                /* onClick={() => {
-                  const [lng, lat] = result.center;
-                  setCoordinates({ lat, lng });
-                  if (mapRef.current && markerRef.current) {
-                    mapRef.current.flyTo({ center: [lng, lat], zoom: 15 });
-                    markerRef.current.setLngLat([lng, lat]);
-                    reverseGeocode(lat, lng);
-                  }
-                  if (tempMarker) {
-                    tempMarker.remove();
-                    setTempMarker(null);
-                  }
-                  setShowResults(false);
-                  setSearchQuery("");
-                }} */
               >
                 <span className="mr-2" role="img" aria-label="location type">
                   {getIconForPlaceType(result)}
@@ -280,7 +270,29 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         )}
       </div>
 
-      <div style={{ height: "400px", width: "100%" }} ref={mapContainer} className="rounded-lg overflow-hidden" />
+      <div className="relative">
+        {/* Contenedor del mapa */}
+        <div style={{ height: "400px", width: "100%" }} ref={mapContainer} className="rounded-lg overflow-hidden" />
+        
+        {/* Pin fijo en el centro */}
+        <div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+          style={{ marginTop: "-20px" }} // Ajuste para centrar correctamente el pin
+        >
+          <div className="flex flex-col items-center">
+            <MapPin size={45} color="#FF4444" fill="#404040" strokeWidth={1.6} />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-end space-x-2 mb-4">
+        <span className="text-sm font-medium">Ingresar manualmente la dirección</span>
+        <Switch 
+          checked={manualAddressMode} 
+          onCheckedChange={setManualAddressMode} 
+          id="manual-address-mode" 
+        />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
@@ -290,7 +302,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             <FormItem>
               <FormLabel>Calle</FormLabel>
               <FormControl>
-                <Input {...field} value={addressDetails.street} />
+                <Input 
+                  {...field} 
+                  readOnly={!manualAddressMode}
+                  className={!manualAddressMode ? "cursor-not-allowed bg-gray-100" : ""}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    if (manualAddressMode) {
+                      setAddressDetails(prev => ({ ...prev, street: e.target.value }));
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -304,7 +326,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             <FormItem>
               <FormLabel>Número</FormLabel>
               <FormControl>
-                <Input {...field} value={addressDetails.number} />
+                <Input 
+                  {...field} 
+                  readOnly={!manualAddressMode}
+                  className={!manualAddressMode ? "cursor-not-allowed bg-gray-100" : ""}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    if (manualAddressMode) {
+                      setAddressDetails(prev => ({ ...prev, number: e.target.value }));
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -318,7 +350,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             <FormItem>
               <FormLabel>Ciudad</FormLabel>
               <FormControl>
-                <Input {...field} value={addressDetails.city} />
+                <Input 
+                  {...field} 
+                  readOnly={!manualAddressMode}
+                  className={!manualAddressMode ? "cursor-not-allowed bg-gray-100" : ""}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    if (manualAddressMode) {
+                      setAddressDetails(prev => ({ ...prev, city: e.target.value }));
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -332,7 +374,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             <FormItem>
               <FormLabel>Estado</FormLabel>
               <FormControl>
-                <Input {...field} value={addressDetails.state} />
+                <Input 
+                  {...field} 
+                  readOnly={!manualAddressMode}
+                  className={!manualAddressMode ? "cursor-not-allowed bg-gray-100" : ""}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    if (manualAddressMode) {
+                      setAddressDetails(prev => ({ ...prev, state: e.target.value }));
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -346,7 +398,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             <FormItem>
               <FormLabel>País</FormLabel>
               <FormControl>
-                <Input {...field} value={addressDetails.country} />
+                <Input 
+                  {...field} 
+                  readOnly={!manualAddressMode}
+                  className={!manualAddressMode ? "cursor-not-allowed bg-gray-100" : ""}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    if (manualAddressMode) {
+                      setAddressDetails(prev => ({ ...prev, country: e.target.value }));
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -360,7 +422,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             <FormItem>
               <FormLabel>Código Postal</FormLabel>
               <FormControl>
-                <Input {...field} value={addressDetails.postalCode} />
+                <Input 
+                  {...field} 
+                  readOnly={!manualAddressMode}
+                  className={!manualAddressMode ? "cursor-not-allowed bg-gray-100" : ""}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    if (manualAddressMode) {
+                      setAddressDetails(prev => ({ ...prev, postalCode: e.target.value }));
+                    }
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

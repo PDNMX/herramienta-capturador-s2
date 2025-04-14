@@ -1,394 +1,373 @@
+//@ts-nocheck
 "use client";
-
-import { useState, useEffect } from "react";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from "@/components/ui/form";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import mapboxgl from "mapbox-gl";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Combobox } from "@/components/ui/combobox";
-import { Loader2 } from "lucide-react";
-import type { UseFormReturn } from "react-hook-form";
-import Image from "next/image";
-import LogoFederal from "@/components/orden-federal.svg";
-import LogoEstatal from "@/components/orden-estatal.svg";
+import { MapPin, Search, Locate } from "lucide-react";
+import debounce from 'lodash/debounce';
 
-interface UbicacionHechoStepProps {
-  form: UseFormReturn<any> | null;
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+
+interface AddressDetails {
+  street: string;
+  number: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
 }
 
-interface EntePublico {
-  id: number;
-  nombre: string;
+interface SearchResult {
+  place_name: string;
+  center: [number, number];
+  place_type: string[];
+  properties: {
+    category?: string;
+  };
 }
-
-const entidadesFederativas = [
-  { nombre: "Aguascalientes", clave: "01", valor: 1 },
-  { nombre: "Baja California", clave: "02", valor: 2 },
-  { nombre: "Baja California Sur", clave: "03", valor: 3 },
-  { nombre: "Campeche", clave: "04", valor: 4 },
-  { nombre: "Coahuila", clave: "05", valor: 5 },
-  { nombre: "Colima", clave: "06", valor: 6 },
-  { nombre: "Chiapas", clave: "07", valor: 7 },
-  { nombre: "Chihuahua", clave: "08", valor: 8 },
-  { nombre: "Ciudad de México", clave: "09", valor: 9 },
-  { nombre: "Durango", clave: "10", valor: 10 },
-  { nombre: "Guanajuato", clave: "11", valor: 11 },
-  { nombre: "Guerrero", clave: "12", valor: 12 },
-  { nombre: "Hidalgo", clave: "13", valor: 13 },
-  { nombre: "Jalisco", clave: "14", valor: 14 },
-  { nombre: "México", clave: "15", valor: 15 },
-  { nombre: "Michoacán", clave: "16", valor: 16 },
-  { nombre: "Morelos", clave: "17", valor: 17 },
-  { nombre: "Nayarit", clave: "18", valor: 18 },
-  { nombre: "Nuevo León", clave: "19", valor: 19 },
-  { nombre: "Oaxaca", clave: "20", valor: 20 },
-  { nombre: "Puebla", clave: "21", valor: 21 },
-  { nombre: "Querétaro", clave: "22", valor: 22 },
-  { nombre: "Quintana Roo", clave: "23", valor: 23 },
-  { nombre: "San Luis Potosí", clave: "24", valor: 24 },
-  { nombre: "Sinaloa", clave: "25", valor: 25 },
-  { nombre: "Sonora", clave: "26", valor: 26 },
-  { nombre: "Tabasco", clave: "27", valor: 27 },
-  { nombre: "Tamaulipas", clave: "28", valor: 28 },
-  { nombre: "Tlaxcala", clave: "29", valor: 29 },
-  { nombre: "Veracruz", clave: "30", valor: 30 },
-  { nombre: "Yucatán", clave: "31", valor: 31 },
-  { nombre: "Zacatecas", clave: "32", valor: 32 },
-]
 
 export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
-  const [step, setStep] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<"estatal" | "federal" | null>(null);
-  const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedEnteName, setSelectedEnteName] = useState<string>("");
+  const [coordinates, setCoordinates] = useState({ lat: 19.432608, lng: -99.133209 }); // Coordenadas iniciales (CDMX)
+  const mapContainer = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
+  const markerRef = useRef<mapboxgl.Marker | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tempMarker, setTempMarker] = useState<mapboxgl.Marker | null>(null);
+  const [addressDetails, setAddressDetails] = useState<AddressDetails>({
+    street: "",
+    number: "",
+    city: "",
+    state: "",
+    country: "",
+    postalCode: ""
+  });
 
-
-  useEffect(() => {
-    if (selectedOption === "federal") {
-      form?.setValue("ubicacionHecho.lugarHecho.entidad", 33); // Valor para federación
-      fetchEntesPublicos("00");
-    }
-  }, [selectedOption, form]);
-
-  const fetchEntesPublicos = async (clave: string) => {
-    setLoading(true);
+  const reverseGeocode = async (lat: number, lng: number) => {
     try {
       const response = await fetch(
-        `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=${clave}&limit=-1`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es`
       );
       const data = await response.json();
-      setEntesPublicos(data.data);
+      const features = data.features[0];
+
+      if (features) {
+        const context = features.context || [];
+        const address: AddressDetails = {
+          street: features.text || "",
+          number: features.address || "",
+          city: context.find((c: any) => c.id.includes('place'))?.text || "",
+          state: context.find((c: any) => c.id.includes('region'))?.text || "",
+          country: context.find((c: any) => c.id.includes('country'))?.text || "",
+          postalCode: context.find((c: any) => c.id.includes('postcode'))?.text || ""
+        };
+        setAddressDetails(address);
+        form.setValue('direccion', `${address.street} ${address.number}, ${address.city}, ${address.state}, ${address.country}`);
+      }
     } catch (error) {
-      console.error("Error fetching entes públicos:", error);
-    }
-    setLoading(false);
-  };
-
-  const handleEntidadChange = (value: string) => {
-    const entidad = entidadesFederativas.find((e) => e.nombre === value);
-    if (entidad) {
-      // Asegurarse de que se está estableciendo un número, no una cadena
-      form?.setValue("ubicacionHecho.lugarHecho.entidad", entidad.valor, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true
-      });
-
-      // Resetear el ente público al cambiar la entidad
-      form?.setValue("ubicacionHecho.lugarHecho.entePublico", undefined, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true
-      });
-
-      // Registrar la acción para debugging
-      console.log(`Entidad seleccionada: ${entidad.nombre}, valor: ${entidad.valor}, clave: ${entidad.clave}`);
-
-      // Fetch entes públicos para la entidad seleccionada
-      fetchEntesPublicos(entidad.clave);
+      console.error('Error en geocodificación inversa:', error);
     }
   };
 
-  const handleEntePublicoChange = (value: string) => {
-    const selectedEnte = entesPublicos.find(ente => ente.id.toString() === value);
-    if (selectedEnte) {
-      // Asegurar que se establece como número, no cadena
-      form?.setValue("ubicacionHecho.lugarHecho.entePublico", selectedEnte.id, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true
-      });
+  const getIconForPlaceType = (result: SearchResult) => {
+    const type = result.place_type[0];
+    const category = result.properties?.category;
 
-      setSelectedEnteName(selectedEnte.nombre);
-
-      // Registrar la acción para debugging
-      console.log(`Ente público seleccionado: ${selectedEnte.nombre}, id: ${selectedEnte.id}`);
+    if (category === 'building') return '🏢';
+    switch (type) {
+      case 'address': return '📍';
+      case 'place': return '🏛️';
+      case 'poi': return '🎯';
+      case 'neighborhood': return '🏘️';
+      case 'postcode': return '📮';
+      default: return '📍';
     }
   };
 
-  if (!form) {
-    return <div>Cargando...</div>;
-  }
+  const performSearch = async (query: string) => {
+    if (!query) {
+      setSearchResults([]);
+      setShowResults(false);
+      if (tempMarker) {
+        tempMarker.remove();
+        setTempMarker(null);
+      }
+      return;
+    }
 
-  const renderOptionSelection = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-      <Card
-        className="cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center"
-        onClick={() => {
-          setSelectedOption("estatal")
-          setStep(1)
-        }}
-      >
-        <CardContent className="p-6 text-center">
-          <h3 className="text-2xl font-semibold mb-4">Estatal</h3>
-          <Image
-            src={LogoEstatal || "/placeholder.svg"}
-            alt="Mapa de México"
-            height={200}
-            className="rounded-md mx-auto"
-            style={{
-              filter: "invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)",
-            }}
-          />
-        </CardContent>
-      </Card>
-      <Card
-        className="cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center"
-        onClick={() => {
-          setSelectedOption("federal")
-          setStep(1)
-          fetchEntesPublicos("00")
-        }}
-      >
-        <CardContent className="p-6 text-center">
-          <h3 className="text-2xl font-semibold mb-4">Federal</h3>
-          <Image
-            src={LogoFederal || "/placeholder.svg"}
-            alt="Escudo de México"
-            height={200}
-            className="rounded-md mx-auto"
-            style={{
-              filter: "invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)",
-            }}
-          />
-        </CardContent>
-      </Card>
-    </div>
-  )
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgl.accessToken}&country=mx&language=es&types=place,address,poi,neighborhood,postcode`
+      );
+      const data = await response.json();
+      setSearchResults(data.features);
+      setShowResults(true);
+    } catch (error) {
+      console.error('Error en búsqueda:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  const renderForm = () => (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 gap-4">
-          {selectedOption === "estatal" && (
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.entidad"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">
-                    Entidad Federativa
-                  </FormLabel>
-                  <FormDescription>
-                    Selecciona la entidad federativa donde ocurrió el hecho o
-                    falta administrativa.
-                  </FormDescription>
-                  <Select
-                    onValueChange={handleEntidadChange}
-                    value={field.value ? entidadesFederativas.find(e => e.valor === field.value)?.nombre : ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecciona una entidad" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {entidadesFederativas.map((entidad) => (
-                        <SelectItem key={entidad.clave} value={entidad.nombre}>
-                          {entidad.nombre}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.entePublico"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">
-                  Ente Público
-                </FormLabel>
-                <FormDescription>
-                  {selectedOption === "estatal"
-                    ? "Primero selecciona una entidad federativa para ver los entes públicos disponibles. El ente público es la institución donde ocurrió el hecho denunciado."
-                    : "Selecciona la institución federal donde ocurrió el hecho denunciado."}
-                </FormDescription>
-                <div className="w-full">
-                  <Combobox
-                    options={entesPublicos.map((ente) => ({
-                      label: ente.nombre,
-                      value: ente.id.toString()
-                    }))}
-                    value={field.value?.toString() || ""}
-                    onChange={handleEntePublicoChange}
-                    placeholder="Selecciona un ente público"
-                    disabled={
-                      selectedOption === "estatal" &&
-                      !form.getValues("ubicacionHecho.lugarHecho.entidad")
-                    }
-                  />
-                </div>
-                {loading && (
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>Cargando entes públicos...</span>
-                  </div>
-                )}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.codigoPostal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
-                  <FormDescription>Ingresa el código postal de la ubicación donde ocurrió el hecho.</FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. 03100" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.calle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Calle</FormLabel>
-                  <FormDescription>
-                    Proporciona el nombre de la calle donde se ubica la institución o lugar del hecho.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. Av. Insurgentes Sur" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.numeroExterior"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
-                  <FormDescription>Indica el número exterior del inmueble donde ocurrió el hecho.</FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. 1735" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.numeroInterior"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Número Interior (opcional)</FormLabel>
-                  <FormDescription>
-                    Si aplica, proporciona el número interior, piso u oficina donde ocurrió el hecho.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. Piso 10, Oficina 3" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-primary">Fecha y Hora del Hecho Denunciado</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.fechaHecho"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">Fecha del Hecho</FormLabel>
-                <FormDescription>Selecciona la fecha en que ocurrió el hecho o falta administrativa.</FormDescription>
-                <FormControl>
-                  <Input {...field} type="date" className="text-sm" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.horaHecho"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">Hora del Hecho</FormLabel>
-                <FormDescription>Indica la hora aproximada en que ocurrió el hecho denunciado.</FormDescription>
-                <FormControl>
-                  <Input {...field} type="time" className="text-sm" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-      </div>
-    </div>
+  const debouncedSearch = useCallback(
+    debounce((query: string) => performSearch(query), 300),
+    []
   );
+
+  useEffect(() => {
+    debouncedSearch(searchQuery);
+    return () => debouncedSearch.cancel();
+  }, [searchQuery, debouncedSearch]);
+
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude: lat, longitude: lng } = position.coords;
+          setCoordinates({ lat, lng });
+          if (mapRef.current && markerRef.current) {
+            mapRef.current.flyTo({ center: [lng, lat], zoom: 15 });
+            markerRef.current.setLngLat([lng, lat]);
+            reverseGeocode(lat, lng);
+          }
+        },
+        (error) => {
+          console.error('Error obteniendo ubicación:', error);
+        }
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!mapContainer.current) return;
+
+    const map = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [coordinates.lng, coordinates.lat],
+      zoom: 12,
+    });
+
+    // Crear un elemento personalizado para el marcador principal
+    const markerEl = document.createElement('div');
+    markerEl.className = 'custom-marker';
+    markerEl.style.width = '30px';
+    markerEl.style.height = '30px';
+    markerEl.style.backgroundImage = 'url(https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png)';
+    markerEl.style.backgroundSize = 'cover';
+    markerEl.style.cursor = 'pointer';
+
+    const marker = new mapboxgl.Marker({
+      element: markerEl,
+      draggable: true
+    })
+      .setLngLat([coordinates.lng, coordinates.lat])
+      .addTo(map);
+
+    marker.on("dragend", () => {
+      const { lng, lat } = marker.getLngLat();
+      setCoordinates({ lat, lng });
+      reverseGeocode(lat, lng);
+    });
+
+    mapRef.current = map;
+    markerRef.current = marker;
+
+    map.on('click', (e) => {
+      const { lng, lat } = e.lngLat;
+      setCoordinates({ lat, lng });
+      marker.setLngLat([lng, lat]);
+      reverseGeocode(lat, lng);
+    });
+
+    reverseGeocode(coordinates.lat, coordinates.lng);
+
+    return () => {
+      if (tempMarker) tempMarker.remove();
+      map.remove();
+    };
+  }, []);
 
   return (
-    <div className="space-y-6 p-6">
-      {step === 0 && renderOptionSelection()}
-      {step === 1 && (
-        <>
-          <h2 className="text-xl font-semibold mb-4">
-            {selectedOption === "estatal" ? "Ubicación Estatal" : "Ubicación Federal"}
-          </h2>
-          {renderForm()}
+    <div className="space-y-4">
+      <div className="relative">
+        <div className="flex gap-2 mb-4">
+          <div className="flex-1 relative">
+            <Input
+              type="text"
+              placeholder="Buscar dirección..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pr-20"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              ) : (
+                <Search className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
           <Button
-            onClick={() => {
-              setStep(0);
-            }}
             variant="outline"
-            className="mt-4"
+            onClick={getCurrentLocation}
+            title="Obtener ubicación actual"
           >
-            Volver a selección
+            <Locate className="h-4 w-4 mr-2" />
+            Mi Ubicación
           </Button>
-        </>
-      )}
+        </div>
+
+        {showResults && searchResults.length > 0 && (
+          <div className="absolute z-10 w-full bg-white shadow-lg rounded-md mt-1">
+            {searchResults.map((result, index) => (
+              <div
+                key={index}
+                className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                onClick={() => {
+                  if (mapRef.current) {
+                    if (tempMarker) tempMarker.remove();
+                    const [lng, lat] = result.center;
+                    const marker = new mapboxgl.Marker({
+                      color: '#FF4444',
+                      scale: 0.8
+                    })
+                      .setLngLat([lng, lat])
+                      .addTo(mapRef.current);
+                    setTempMarker(marker);
+                    mapRef.current.flyTo({
+                      center: [lng, lat],
+                      zoom: 15,
+                      speed: 1.5
+                    });
+                  }
+                  setShowResults(false);
+                  setSearchQuery("");
+                }}
+                /* onClick={() => {
+                  const [lng, lat] = result.center;
+                  setCoordinates({ lat, lng });
+                  if (mapRef.current && markerRef.current) {
+                    mapRef.current.flyTo({ center: [lng, lat], zoom: 15 });
+                    markerRef.current.setLngLat([lng, lat]);
+                    reverseGeocode(lat, lng);
+                  }
+                  if (tempMarker) {
+                    tempMarker.remove();
+                    setTempMarker(null);
+                  }
+                  setShowResults(false);
+                  setSearchQuery("");
+                }} */
+              >
+                <span className="mr-2" role="img" aria-label="location type">
+                  {getIconForPlaceType(result)}
+                </span>
+                {result.place_name}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div style={{ height: "400px", width: "100%" }} ref={mapContainer} className="rounded-lg overflow-hidden" />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField
+          control={form.control}
+          name="calle"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Calle</FormLabel>
+              <FormControl>
+                <Input {...field} value={addressDetails.street} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="numero"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Número</FormLabel>
+              <FormControl>
+                <Input {...field} value={addressDetails.number} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="ciudad"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Ciudad</FormLabel>
+              <FormControl>
+                <Input {...field} value={addressDetails.city} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="estado"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Estado</FormLabel>
+              <FormControl>
+                <Input {...field} value={addressDetails.state} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="pais"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>País</FormLabel>
+              <FormControl>
+                <Input {...field} value={addressDetails.country} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="codigoPostal"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Código Postal</FormLabel>
+              <FormControl>
+                <Input {...field} value={addressDetails.postalCode} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   );
-}
+};
+

@@ -107,7 +107,7 @@ paths:
           $ref: "#/components/responses/ServerError"
 components:
   schemas:
-    Meta:
+    x-metadata:
       type: object
       properties:
         total_count:
@@ -789,7 +789,7 @@ components:
                 items:
                   $ref: "#/components/schemas/ServidorPublico"
               meta:
-                $ref: "#/components/schemas/Meta"
+                $ref: "#/components/schemas/x-metadata"
               status:
                 type: string
                 example: "success"

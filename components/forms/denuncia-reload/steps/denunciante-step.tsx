@@ -33,7 +33,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                 <div className="space-y-2">
                   <FormLabel className="text-base block">¿Deseas presentar una denuncia anónima?</FormLabel>
                   <FormDescription className="text-xs sm:text-sm">
-                    En cualquier caso, tu identidad será de carácter confidencial.
+                    En ambos casos, tu denuncia será confidencial y se protegerá toda la información proporcionada.
                   </FormDescription>
 
                   {/* Botones estilizados debajo del texto, uno al lado del otro en desktop, apilados en móvil */}
@@ -49,7 +49,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}
                     >
-                      Sí – Deseo presentar la denuncia sin dar mis datos.
+                      Sí, deseo presentar la denuncia sin proporcionar mis datos.
                     </Button>
                     <Button
                       type="button"
@@ -62,7 +62,8 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}
                     >
-                      No – Deseo proporcionar mis datos de contacto.
+                      No, deseo proporcionar mis datos de contacto para recibir notificaciones y en caso de que la
+                      autoridad requiera más información.
                     </Button>
                   </div>
                 </div>

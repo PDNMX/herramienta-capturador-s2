@@ -1,0 +1,933 @@
+openapi: 3.0.1
+info:
+  title: Servidores Públicos API
+  description: API REST para consultar información de servidores públicos que intervienen en procedimientos de contratación
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+    description: API principal
+paths:
+  /servidores_intervengan_procedientos_contrataciones:
+    get:
+      summary: Listar servidores públicos
+      description: Obtiene una lista de servidores públicos que intervienen en procedimientos de contratación
+      tags:
+        - Servidores Públicos
+      operationId: getServidoresPublicos
+      parameters:
+        - name: fields
+          in: query
+          description: Campos a incluir en la respuesta
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+        - name: limit
+          in: query
+          description: Número máximo de elementos a devolver
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          description: Número de elementos a omitir
+          schema:
+            type: integer
+            default: 0
+        - name: sort
+          in: query
+          description: Ordenamiento de resultados (prefijo - para orden descendente)
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+        - name: filter
+          in: query
+          description: Filtrar elementos por condiciones específicas
+          schema:
+            type: object
+          style: form
+          explode: true
+        - name: search
+          in: query
+          description: Búsqueda de texto en los campos
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/ListaServidoresExitosa"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+  /servidores_intervengan_procedientos_contrataciones/{id}:
+    get:
+      summary: Obtener un servidor público
+      description: Obtiene información detallada de un servidor público por su ID
+      tags:
+        - Servidores Públicos
+      operationId: getServidorPublicoById
+      parameters:
+        - name: id
+          in: path
+          description: ID único del servidor público
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: fields
+          in: query
+          description: Campos a incluir en la respuesta
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+      responses:
+        "200":
+          $ref: "#/components/responses/ServidorExitoso"
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "403":
+          $ref: "#/components/responses/ForbiddenError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          $ref: "#/components/responses/ServerError"
+components:
+  schemas:
+    Meta:
+      type: object
+      properties:
+        total_count:
+          description: Número total de elementos disponibles
+          type: integer
+        filter_count:
+          description: Número de elementos después de aplicar filtros
+          type: integer
+    ServidorPublico:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identificador único del servidor público
+          nullable: false
+        date_created:
+          type: string
+          format: date-time
+          description: Fecha de creación del registro
+          nullable: true
+        date_updated:
+          type: string
+          format: date-time
+          description: Fecha de última actualización
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público al que pertenece
+          nullable: true
+        fecha:
+          type: string
+          format: date
+          description: Fecha en la que se registra la información
+          nullable: true
+        datosGenerales:
+          $ref: "#/components/schemas/DatosGenerales"
+          description: Datos personales del servidor público
+          nullable: true
+        empleoCargoComision:
+          $ref: "#/components/schemas/EmpleoCargoComision"
+          description: Datos del empleo, cargo o comisión
+          nullable: true
+        ejercicio:
+          type: string
+          description: Ejercicio presupuestal en que se realizó el acto público
+          nullable: true
+        tipoProcedimiento:
+          type: string
+          description: Tipo de procedimiento de contratación
+          nullable: true
+        otorgamientoConcesion:
+          $ref: "#/components/schemas/OtorgamientoConcesion"
+          description: Información sobre otorgamiento de concesiones
+          nullable: true
+        Observaciones:
+          type: string
+          description: Observaciones adicionales
+          nullable: true
+        avaluosJustipreciacion:
+          $ref: "#/components/schemas/DictaminacionAvaluo"
+          description: Información sobre avalúos y justipreciación
+          nullable: true
+        enajenacionBien:
+          $ref: "#/components/schemas/EnajenacionBien"
+          description: Información sobre enajenación de bienes
+          nullable: true
+        tipoContratacion:
+          type: array
+          items:
+            $ref: "#/components/schemas/TipoAdquisicionObra"
+          description: Tipos de contratación en que participa
+          nullable: true
+    DatosGenerales:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        primerApellido:
+          type: string
+          description: Primer apellido del servidor público
+          nullable: true
+        segundoApellido:
+          type: string
+          description: Segundo apellido del servidor público
+          nullable: true
+        curp:
+          type: string
+          description: CURP del servidor público
+          nullable: true
+        rfc:
+          type: string
+          description: RFC con homoclave del servidor público
+          nullable: true
+        sexo:
+          type: string
+          description: Sexo del servidor público
+          nullable: true
+        nombre:
+          type: string
+          description: Nombre(s) del servidor público
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público al que pertenece
+          nullable: true
+    EmpleoCargoComision:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        entidadFederativa:
+          type: string
+          description: Entidad federativa donde se ubica el ente público
+          nullable: true
+        nivelOrdenGobierno:
+          type: string
+          description: Nivel u orden de gobierno
+          nullable: true
+        ambitoPublico:
+          type: string
+          description: Ámbito público
+          nullable: true
+        nombreEntePublico:
+          type: string
+          description: Nombre del ente público
+          nullable: true
+        siglasEntePublico:
+          type: string
+          description: Siglas del ente público
+          nullable: true
+        nivelJerarquico:
+          $ref: "#/components/schemas/NivelJerarquico"
+          description: Nivel jerárquico del servidor público
+          nullable: true
+        denominacion:
+          type: string
+          description: Denominación del cargo
+          nullable: true
+        areaAdscripcion:
+          type: string
+          description: Área de adscripción
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público al que pertenece
+          nullable: true
+    EntePublico:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        nombre:
+          type: string
+          description: Nombre del ente público
+          nullable: true
+    NivelJerarquico:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        clave:
+          type: string
+          description: Clave del nivel jerárquico
+          nullable: true
+        valor:
+          type: string
+          description: Descripción del nivel jerárquico
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público al que pertenece
+          nullable: true
+    TipoAdquisicionObra:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        contratacionAdquisicion:
+          $ref: "#/components/schemas/ContratacionAdquisicion"
+          description: Información sobre contratación o adquisición
+          nullable: true
+        contratacionObra:
+          $ref: "#/components/schemas/ContratacionObra"
+          description: Información sobre contratación de obra
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        clave:
+          type: string
+          description: Clave del tipo de contratación
+          nullable: true
+    ContratacionAdquisicion:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        tipoArea:
+          type: string
+          description: Tipo de área
+          nullable: false
+        nivelResponsabilidadContratacion:
+          $ref: "#/components/schemas/NivelResponsabilidadContratacion"
+          description: Nivel de responsabilidad en la contratación
+          nullable: true
+        informacionPersonasBeneficiarias:
+          $ref: "#/components/schemas/DatosPersonaBeneficiaria"
+          description: Información de personas beneficiarias
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        continuaParticipando:
+          type: string
+          description: Indica si continúa participando
+          nullable: true
+        datosGeneralesProcedimientos:
+          type: array
+          items:
+            $ref: "#/components/schemas/DatosContratacionPublica"
+          description: Datos generales de los procedimientos
+          nullable: true
+    ContratacionObra:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        tipoArea:
+          type: string
+          description: Tipo de área
+          nullable: true
+        nivelResponsabilidadObra:
+          $ref: "#/components/schemas/NivelResponsabilidadContratacion"
+          description: Nivel de responsabilidad en la obra
+          nullable: true
+        informacionPersonasBeneficiarias:
+          $ref: "#/components/schemas/DatosPersonaBeneficiaria"
+          description: Información de personas beneficiarias
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        continuaParticipando:
+          type: string
+          description: Indica si continúa participando
+          nullable: true
+        datosGeneralesProcedimientos:
+          type: array
+          items:
+            $ref: "#/components/schemas/DatosGeneralesObra"
+          description: Datos generales de los procedimientos
+          nullable: true
+    NivelResponsabilidadContratacion:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        autorizacion:
+          type: boolean
+          description: Autorización del procedimiento
+          nullable: true
+        justificacion:
+          type: boolean
+          description: Justificación del procedimiento
+          nullable: true
+        convocatoria:
+          type: boolean
+          description: Convocatoria del procedimiento
+          nullable: true
+        evaluacion:
+          type: boolean
+          description: Evaluación del procedimiento
+          nullable: true
+        adjudicacion:
+          type: boolean
+          description: Adjudicación del procedimiento
+          nullable: true
+        formalizacion:
+          type: boolean
+          description: Formalización del procedimiento
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+    DatosPersonaBeneficiaria:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        razonSocial:
+          type: string
+          description: Razón social de la persona beneficiaria
+          nullable: true
+        nombre:
+          type: string
+          description: Nombre de la persona beneficiaria
+          nullable: true
+        primerApellido:
+          type: string
+          description: Primer apellido de la persona beneficiaria
+          nullable: true
+        segundoApellido:
+          type: string
+          description: Segundo apellido de la persona beneficiaria
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+    DatosContratacionPublica:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        fechaInicioProcedimiento:
+          type: string
+          format: date
+          description: Fecha de inicio del procedimiento
+          nullable: true
+        numeroExpedienteFolio:
+          type: string
+          description: Número de expediente o folio
+          nullable: true
+        materia:
+          type: string
+          description: Materia del procedimiento
+          nullable: true
+        otroMateria:
+          type: string
+          description: Otra materia del procedimiento
+          nullable: true
+        fechaConclusionProcedimiento:
+          type: string
+          format: date
+          description: Fecha de conclusión del procedimiento
+          nullable: true
+        tipoProcedimiento:
+          type: string
+          description: Tipo de procedimiento
+          nullable: true
+    DatosGeneralesObra:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        numeroExpedienteFolio:
+          type: string
+          description: Número de expediente o folio
+          nullable: true
+        materia:
+          type: string
+          description: Materia del procedimiento
+          nullable: true
+        inicioProcedimiento:
+          type: string
+          format: date
+          description: Fecha de inicio del procedimiento
+          nullable: true
+        conclusionProcedimiento:
+          type: string
+          format: date
+          description: Fecha de conclusión del procedimiento
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        tipoProcedimiento:
+          type: string
+          description: Tipo de procedimiento
+          nullable: true
+    OtorgamientoConcesion:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        tipoActo:
+          type: string
+          description: Tipo de acto
+          nullable: true
+        nivelResponsabilidadConcesiones:
+          $ref: "#/components/schemas/NivelResponsabilidadConcesion"
+          description: Nivel de responsabilidad en concesiones
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        datosGeneralesConcesiones:
+          $ref: "#/components/schemas/DatosGeneralesConcesion"
+          description: Datos generales de las concesiones
+          nullable: true
+        informacionPersonasBeneficiarias:
+          $ref: "#/components/schemas/DatosPersonaBeneficiaria"
+          description: Información de personas beneficiarias
+          nullable: true
+        continuaParticipando:
+          type: string
+          description: Indica si continúa participando
+          nullable: true
+    NivelResponsabilidadConcesion:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        convocatoria:
+          type: boolean
+          description: Convocatoria del procedimiento
+          nullable: true
+        dictamenes:
+          type: boolean
+          description: Dictámenes del procedimiento
+          nullable: true
+        visitas:
+          type: boolean
+          description: Visitas del procedimiento
+          nullable: true
+        evaluacion:
+          type: boolean
+          description: Evaluación del procedimiento
+          nullable: true
+        determinacion:
+          type: boolean
+          description: Determinación del procedimiento
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+    DatosGeneralesConcesion:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        numeroExpedienteFolio:
+          type: string
+          description: Número de expediente o folio
+          nullable: true
+        denominacion:
+          type: string
+          description: Denominación del acto
+          nullable: true
+        objeto:
+          type: string
+          description: Objeto del acto
+          nullable: true
+        fundamento:
+          type: string
+          description: Fundamento legal
+          nullable: true
+        nombrePersonaFisica:
+          type: string
+          description: Nombre de la persona física
+          nullable: true
+        denominacionPersonaMoral:
+          type: string
+          description: Denominación de la persona moral
+          nullable: true
+        sectorActoJuridico:
+          type: string
+          description: Sector del acto jurídico
+          nullable: true
+        fechaInicioVigencia:
+          type: string
+          format: date
+          description: Fecha de inicio de vigencia
+          nullable: true
+        fechaConclusionVigencia:
+          type: string
+          format: date
+          description: Fecha de conclusión de vigencia
+          nullable: true
+        monto:
+          type: string
+          description: Monto económico
+          nullable: true
+        urlActoJuridico:
+          type: string
+          description: URL del acto jurídico
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+    DictaminacionAvaluo:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        nivelesResponsabilidadesAvaluos:
+          $ref: "#/components/schemas/NivelResponsabilidadAvaluo"
+          description: Nivel de responsabilidad en avalúos
+          nullable: true
+        datosDictaminacionesAvaluos:
+          $ref: "#/components/schemas/DatosDictaminacionAvaluo"
+          description: Datos de dictaminación de avalúos
+          nullable: true
+        continuaParticipando:
+          type: string
+          description: Indica si continúa participando
+          nullable: true
+    NivelResponsabilidadAvaluo:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        propuestas:
+          type: boolean
+          description: Propuestas del procedimiento
+          nullable: true
+        asignacion:
+          type: boolean
+          description: Asignación del procedimiento
+          nullable: true
+        emision:
+          type: boolean
+          description: Emisión del procedimiento
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+    DatosDictaminacionAvaluo:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        numeroExpedienteFolio:
+          type: string
+          description: Número de expediente o folio
+          nullable: true
+        fechaInicioProcedimiento:
+          type: string
+          format: date
+          description: Fecha de inicio del procedimiento
+          nullable: true
+        fechaConclusionProcedimiento:
+          type: string
+          format: date
+          description: Fecha de conclusión del procedimiento
+          nullable: true
+        descripcion:
+          type: string
+          description: Descripción del procedimiento
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+    EnajenacionBien:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        nivelesResponsabilidadesEnajenaciones:
+          $ref: "#/components/schemas/NivelResponsabilidadEnajenacion"
+          description: Nivel de responsabilidad en enajenaciones
+          nullable: true
+        datosEnajenacionesBienes:
+          $ref: "#/components/schemas/DatosEnajenacionBien"
+          description: Datos de enajenación de bienes
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+        continuaParticipando:
+          type: string
+          description: Indica si continúa participando
+          nullable: true
+    NivelResponsabilidadEnajenacion:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        autorizaciones:
+          type: boolean
+          description: Autorizaciones del procedimiento
+          nullable: true
+        analisis:
+          type: boolean
+          description: Análisis del procedimiento
+          nullable: true
+        modificaciones:
+          type: boolean
+          description: Modificaciones del procedimiento
+          nullable: true
+        presentacion:
+          type: boolean
+          description: Presentación del procedimiento
+          nullable: true
+        evaluacion:
+          type: boolean
+          description: Evaluación del procedimiento
+          nullable: true
+        adjudicacion:
+          type: boolean
+          description: Adjudicación del procedimiento
+          nullable: true
+        formalizacion:
+          type: boolean
+          description: Formalización del procedimiento
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+    DatosEnajenacionBien:
+      type: object
+      properties:
+        id:
+          type: integer
+          nullable: false
+        numeroExpedienteFolio:
+          type: string
+          description: Número de expediente o folio
+          nullable: true
+        fechaInicioProcedimiento:
+          type: string
+          format: date
+          description: Fecha de inicio del procedimiento
+          nullable: true
+        fechaConclusionProcedimiento:
+          type: string
+          format: date
+          description: Fecha de conclusión del procedimiento
+          nullable: true
+        descripcion:
+          type: string
+          description: Descripción del procedimiento
+          nullable: true
+        entePublico:
+          $ref: "#/components/schemas/EntePublico"
+          description: Ente público relacionado
+          nullable: true
+  responses:
+    # Respuestas de éxito
+    ListaServidoresExitosa:
+      description: Lista de servidores públicos obtenida con éxito
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ServidorPublico"
+              meta:
+                $ref: "#/components/schemas/Meta"
+              status:
+                type: string
+                example: "success"
+              message:
+                type: string
+                example: "Servidores públicos obtenidos correctamente"
+    ServidorExitoso:
+      description: Servidor público obtenido con éxito
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: "#/components/schemas/ServidorPublico"
+              status:
+                type: string
+                example: "success"
+              message:
+                type: string
+                example: "Servidor público obtenido correctamente"
+    # Respuestas de error
+    BadRequestError:
+      description: Solicitud incorrecta
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    example: "Parámetros de solicitud inválidos"
+                  details:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: "limit"
+                        message:
+                          type: string
+                          example: "Debe ser un número entero positivo"
+                    example:
+                      - field: "limit"
+                        message: "Debe ser un número entero positivo"
+              status:
+                type: string
+                example: "error"
+    NotFoundError:
+      description: Recurso no encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 404
+                  message:
+                    type: string
+                    example: "El recurso solicitado no existe"
+              status:
+                type: string
+                example: "error"
+    UnauthorizedError:
+      description: No autorizado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 401
+                  message:
+                    type: string
+                    example: "No autorizado para acceder al recurso"
+              status:
+                type: string
+                example: "error"
+    ForbiddenError:
+      description: Prohibido
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 403
+                  message:
+                    type: string
+                    example: "No tiene permisos para acceder a este recurso"
+              status:
+                type: string
+                example: "error"
+    ServerError:
+      description: Error interno del servidor
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "Error interno del servidor"
+                  trace_id:
+                    type: string
+                    example: "e8fb9d4b-8a1d-4610-9a14-a62c55c8c8c5"
+              status:
+                type: string
+                example: "error"
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - BearerAuth: []

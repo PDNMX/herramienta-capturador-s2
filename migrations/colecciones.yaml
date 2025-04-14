@@ -635,6 +635,7 @@ fields:
       interface: select-multiple-checkbox
       note: null
       options:
+        allowOther: true
         choices:
           - text: Área requirente
             value: AREA_REQUIRENTE
@@ -650,14 +651,14 @@ fields:
             value: ORGANO_REVISION
           - text: Participante en junta de aclaraciones
             value: PARTICIPANTE_ACLARACIONES
-          - text: Otro (Especifique)
-            value: OTRO
       readonly: false
       required: false
       sort: 3
       special:
         - cast-json
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Tipo de área (Esta sección se podrá actualizar quincenalmente)
       validation: null
       validation_message: null
       width: full
@@ -669,7 +670,7 @@ fields:
       max_length: null
       numeric_precision: null
       numeric_scale: null
-      is_nullable: true
+      is_nullable: false
       is_unique: false
       is_primary_key: false
       is_generated: false
@@ -697,7 +698,9 @@ fields:
       sort: 4
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Objeto de la responsabilidad
       validation: null
       validation_message: null
       width: full
@@ -737,7 +740,11 @@ fields:
       sort: 6
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Datos de la(s) persona(s) beneficiaria(s) final(es) (solo aplica a
+            personas morales)
       validation: null
       validation_message: null
       width: full
@@ -773,7 +780,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 7
+      sort: 8
       special:
         - m2o
       translations: null
@@ -818,10 +825,61 @@ fields:
       sort: 5
       special:
         - o2m
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Datos Generales de los procedimientos de contrataciones públicas
       validation: null
       validation_message: null
       width: full
+  - collection: contrataciones_adquisiciones
+    field: continuaParticipando
+    type: string
+    meta:
+      collection: contrataciones_adquisiciones
+      conditions: null
+      display: null
+      display_options: null
+      field: continuaParticipando
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Sí
+            value: SI
+          - text: 'No'
+            value: 'NO'
+      readonly: false
+      required: true
+      sort: 7
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            ¿La persona servidora pública continúa participando en los
+            procedimientos de contratación de adquisiciones y arrendamientos de
+            bienes muebles y servicios de cualquier naturaleza? (Esta sección se
+            podrá actualizar quincenalmente)
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: continuaParticipando
+      table: contrataciones_adquisiciones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: contrataciones_obras
     field: id
     type: integer
@@ -894,7 +952,9 @@ fields:
       sort: 2
       special:
         - cast-json
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Tipo de área (Esta sección se actualizará quincenalmente)
       validation: null
       validation_message: null
       width: full
@@ -934,7 +994,9 @@ fields:
       sort: 3
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Objeto de la responsabilidad
       validation: null
       validation_message: null
       width: full
@@ -1054,10 +1116,64 @@ fields:
       sort: 4
       special:
         - o2m
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Datos Generales de los procedimientos de contrataciones públicas
+            (Esta sección se podrá actualizar quincenalmente agregando un nuevo
+            procedimiento)
       validation: null
       validation_message: null
       width: full
+  - collection: contrataciones_obras
+    field: continuaParticipando
+    type: string
+    meta:
+      collection: contrataciones_obras
+      conditions: null
+      display: null
+      display_options: null
+      field: continuaParticipando
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Sí
+            value: SI
+          - text: 'No'
+            value: 'NO'
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            ¿La persona servidora pública continúa participando en los
+            procedimientos de contratación de obra pública y los servicios
+            relacionados con la misma? (Esta sección se podrá actualizar
+            quincenalmente)
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: continuaParticipando
+      table: contrataciones_obras
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: contrataciones_publicas
     field: id
     type: integer
@@ -2707,7 +2823,9 @@ fields:
       required: false
       sort: 2
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Número de expediente, folio o numeclatura
       validation: null
       validation_message: null
       width: full
@@ -3208,7 +3326,9 @@ fields:
       required: false
       sort: 2
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Número de expediente, folio o numeclatura
       validation: null
       validation_message: null
       width: full
@@ -3291,7 +3411,9 @@ fields:
       required: false
       sort: 5
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de inicio del procedimiento
       validation: null
       validation_message: null
       width: full
@@ -3329,7 +3451,9 @@ fields:
       required: false
       sort: 6
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de conclusión del procedimiento
       validation: null
       validation_message: null
       width: full
@@ -3452,7 +3576,7 @@ fields:
             value: ADJUDICACION
       readonly: false
       required: true
-      sort: 9
+      sort: 3
       special: null
       translations: null
       validation: null
@@ -4270,49 +4394,6 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: datos_personas_beneficiarias
-    field: continuaParticipando
-    type: string
-    meta:
-      collection: datos_personas_beneficiarias
-      conditions: null
-      display: null
-      display_options: null
-      field: continuaParticipando
-      group: null
-      hidden: false
-      interface: select-radio
-      note: null
-      options:
-        choices:
-          - text: Sí
-            value: SI
-          - text: 'No'
-            value: 'NO'
-      readonly: false
-      required: false
-      sort: 6
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: continuaParticipando
-      table: datos_personas_beneficiarias
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: datos_personas_beneficiarias
     field: entePublico
     type: integer
     meta:
@@ -4449,7 +4530,9 @@ fields:
       sort: 2
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Objeto de la responsabilidad
       validation: null
       validation_message: null
       width: full
@@ -4486,10 +4569,14 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 4
+      sort: 3
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Datos generales del procedimiento (Esta sección se podrá actualizar
+            quincenalmente agregando un nuevo procedimiento)
       validation: null
       validation_message: null
       width: full
@@ -4509,6 +4596,54 @@ fields:
       has_auto_increment: false
       foreign_key_table: datos_dictaminaciones_avaluos
       foreign_key_column: id
+  - collection: dictaminaciones_avaluos
+    field: continuaParticipando
+    type: string
+    meta:
+      collection: dictaminaciones_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: continuaParticipando
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Sí
+            value: SI
+          - text: 'No'
+            value: 'NO'
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            ¿La persona servidora pública continúa participando en la
+            dictaminación en materia de avalúos y justipreciación de rentas?
+            (Esta sección se podrá actualizar quincenalmente)
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: continuaParticipando
+      table: dictaminaciones_avaluos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: directus_users
     field: entePublico
     type: integer
@@ -5099,7 +5234,9 @@ fields:
       sort: 2
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Objeto de la responsabilidad
       validation: null
       validation_message: null
       width: full
@@ -5198,6 +5335,54 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: enajenaciones_bienes
+    field: continuaParticipando
+    type: string
+    meta:
+      collection: enajenaciones_bienes
+      conditions: null
+      display: null
+      display_options: null
+      field: continuaParticipando
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Sí
+            value: SI
+          - text: 'No'
+            value: 'NO'
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            ¿La persona servidora pública continúa participando en la
+            enajenación de bienes muebles? (Esta sección se podrá actualizar
+            quincenalmente)
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: continuaParticipando
+      table: enajenaciones_bienes
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: entes_publicos
     field: id
     type: integer
@@ -7062,7 +7247,7 @@ fields:
         - m2o
       translations:
         - language: es-MX
-          translation: Niveles de responsabilidad
+          translation: Objeto de la responsabilidad
       validation: null
       validation_message: null
       width: full
@@ -7122,46 +7307,6 @@ fields:
       foreign_key_table: entes_publicos
       foreign_key_column: id
   - collection: otorgamientos_concesiones
-    field: datosOtorgamientoconseciones
-    type: integer
-    meta:
-      collection: otorgamientos_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: datosOtorgamientoconseciones
-      group: null
-      hidden: false
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableSelect: false
-      readonly: false
-      required: false
-      sort: 4
-      special:
-        - m2o
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: datosOtorgamientoconseciones
-      table: otorgamientos_concesiones
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: datos_otorgamientos_concesiones
-      foreign_key_column: id
-  - collection: otorgamientos_concesiones
     field: datosGeneralesConcesiones
     type: integer
     meta:
@@ -7174,13 +7319,19 @@ fields:
       hidden: false
       interface: select-dropdown-m2o
       note: null
-      options: null
+      options:
+        enableSelect: false
       readonly: false
       required: false
-      sort: 5
+      sort: 4
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Datos generales de los procedimientos de concesiones, licencias,
+            permisos, autorizaciones y sus prórrogas (Esta sección se podrá
+            actualizar quincenalmente agregando un nuevo procedimiento)
       validation: null
       validation_message: null
       width: full
@@ -7217,10 +7368,14 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 6
+      sort: 5
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Datos de la(s) persona(s) beneficiaria(s) final(es) (Solo aplica a
+            personas morales)
       validation: null
       validation_message: null
       width: full
@@ -7240,6 +7395,54 @@ fields:
       has_auto_increment: false
       foreign_key_table: datos_personas_beneficiarias
       foreign_key_column: id
+  - collection: otorgamientos_concesiones
+    field: continuaParticipando
+    type: string
+    meta:
+      collection: otorgamientos_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: continuaParticipando
+      group: null
+      hidden: false
+      interface: select-radio
+      note: null
+      options:
+        choices:
+          - text: Sí
+            value: SI
+          - text: 'No'
+            value: 'NO'
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations:
+        - language: es-MX
+          translation: >-
+            ¿La persona servidora pública continúa participando en los
+            procedimientos de concesiones, licencias, permisos, autorizaciones y
+            sus prórrogas? (esta sección se podrá actualizar quincenalmente)
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: continuaParticipando
+      table: otorgamientos_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: servidores_intervengan_procedientos_contrataciones
     field: id
     type: uuid
@@ -8116,7 +8319,9 @@ fields:
       sort: 4
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Capturar información referente a adquisiciones y arrendamientos
       validation: null
       validation_message: null
       width: full
@@ -8150,6 +8355,7 @@ fields:
           options:
             enableCreate: true
             enableSelect: false
+          required: true
       display: null
       display_options: null
       field: contratacionObra
@@ -8164,7 +8370,9 @@ fields:
       sort: 5
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Capturar información referente a obras públicas
       validation: null
       validation_message: null
       width: full
@@ -9064,27 +9272,6 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: otorgamientos_concesiones_entepublico_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
-  - collection: otorgamientos_concesiones
-    field: datosOtorgamientoconseciones
-    related_collection: datos_otorgamientos_concesiones
-    meta:
-      junction_field: null
-      many_collection: otorgamientos_concesiones
-      many_field: datosOtorgamientoconseciones
-      one_allowed_collections: null
-      one_collection: datos_otorgamientos_concesiones
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: otorgamientos_concesiones
-      column: datosOtorgamientoconseciones
-      foreign_key_table: datos_otorgamientos_concesiones
-      foreign_key_column: id
-      constraint_name: otorgamientos_concesiones_datosotorgamient__1d090545_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: otorgamientos_concesiones

@@ -17,19 +17,46 @@ const CustomCheckbox = React.forwardRef<
   <div
     ref={ref}
     onClick={onChange}
-    className={`bg-card relative w-full p-5 rounded-lg border-2 transition-all cursor-pointer ${
-      checked ? "border-primary shadow-md" : "border-input hover:border-primary/50 hover:shadow-sm"
-    }`}
+    className={`bg-card relative w-full p-5 rounded-lg border-2 transition-all duration-300 cursor-pointer overflow-hidden
+      ${
+        checked
+          ? "border-primary shadow-lg transform scale-[1.02] bg-primary/5"
+          : "border-input hover:border-primary/50 hover:shadow-md hover:transform hover:scale-[1.01]"
+      }`}
   >
     {children}
     {checked && (
-      <div className="absolute top-2 right-2 h-6 w-6 bg-primary rounded-full flex items-center justify-center">
+      <div className="absolute top-3 right-3 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <Check className="h-4 w-4 text-primary-foreground" />
       </div>
     )}
+    <div
+      className={`absolute bottom-0 left-0 right-0 h-1.5 bg-primary transition-transform duration-300 ${
+        checked ? "transform translate-y-0" : "transform translate-y-full"
+      }`}
+    ></div>
   </div>
 ))
 CustomCheckbox.displayName = "CustomCheckbox"
+
+const GenderCheckbox = React.forwardRef<
+  HTMLDivElement,
+  { checked: boolean; onChange: () => void; children: React.ReactNode }
+>(({ checked, onChange, children }, ref) => (
+  <div
+    ref={ref}
+    onClick={onChange}
+    className={`relative w-full py-3 px-4 rounded-lg border-2 transition-all duration-300 cursor-pointer
+      ${
+        checked
+          ? "border-primary bg-primary text-primary-foreground font-medium shadow-md"
+          : "border-input bg-card text-foreground hover:border-primary/50 hover:bg-accent"
+      }`}
+  >
+    {children}
+  </div>
+))
+GenderCheckbox.displayName = "GenderCheckbox"
 
 export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   if (!form) {
@@ -40,7 +67,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
     <div className="space-y-6 p-6">
       <div className="space-y-6">
         <div className="space-y-4">
-          <h2 className="font-semibold text-primary">Tipo de Persona</h2>
+          <h2 className="font-semibold text-primary text-lg">Tipo de Persona</h2>
           <FormDescription>
             Selecciona si la persona denunciada pertenece al servicio público o es un particular.
           </FormDescription>
@@ -50,18 +77,26 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
             render={({ field }) => (
               <FormItem className="space-y-4">
                 <FormControl>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <CustomCheckbox
                       checked={field.value === "SERVIDOR_PUBLICO"}
                       onChange={() => field.onChange("SERVIDOR_PUBLICO")}
                     >
-                      <div className="flex flex-col items-center text-center">
-                        <div className="relative mb-4 flex items-center justify-center">
+                      <div className="flex flex-col items-center text-center pt-2 pb-4">
+                        <div
+                          className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "scale-110" : ""}`}
+                        >
                           <div className="relative">
-                            <Scale className="h-16 w-16 text-primary" />
+                            <Scale
+                              className={`h-16 w-16 transition-colors duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "text-primary" : "text-primary/80"}`}
+                            />
                           </div>
                         </div>
-                        <h3 className="font-semibold mb-2">Persona servidora pública</h3>
+                        <h3
+                          className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "text-primary" : ""}`}
+                        >
+                          Persona servidora pública
+                        </h3>
                         <p className="text-sm text-muted-foreground">
                           Desempeña un empleo, cargo o comisión en una institución pública
                         </p>
@@ -71,9 +106,19 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       checked={field.value === "PARTICULAR"}
                       onChange={() => field.onChange("PARTICULAR")}
                     >
-                      <div className="flex flex-col items-center text-center">
-                        <CircleUser className="h-16 w-16 mb-4 text-primary" />
-                        <h3 className="font-semibold mb-2">Particular</h3>
+                      <div className="flex flex-col items-center text-center pt-2 pb-4">
+                        <div
+                          className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "PARTICULAR" ? "scale-110" : ""}`}
+                        >
+                          <CircleUser
+                            className={`h-16 w-16 transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : "text-primary/80"}`}
+                          />
+                        </div>
+                        <h3
+                          className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : ""}`}
+                        >
+                          Particular
+                        </h3>
                         <p className="text-sm text-muted-foreground">
                           Persona física o empresa del sector privado vinculada con actividades en la administración
                           pública
@@ -89,7 +134,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         </div>
 
         <div className="space-y-4">
-          <h2 className="font-semibold text-primary">Datos de la Persona Denunciada</h2>
+          <h2 className="font-semibold text-primary text-lg">Datos de la Persona Denunciada</h2>
           <FormDescription>
             Proporciona los datos de identificación de la persona denunciada o involucrada en los hechos.
           </FormDescription>
@@ -102,7 +147,11 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                   <FormLabel className="text-xs font-medium">Nombre(s) o alias</FormLabel>
                   <FormDescription>Escribe el nombre, nombres o alías de la persona denunciada</FormDescription>
                   <FormControl>
-                    <Input {...field} placeholder="Ej. Juan" className="text-sm" />
+                    <Input
+                      {...field}
+                      placeholder="Ej. Juan"
+                      className="text-sm focus-visible:ring-primary/20 focus-visible:ring-offset-2"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,7 +165,11 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                   <FormLabel className="text-xs font-medium">Apellidos</FormLabel>
                   <FormDescription>Escribe el o los apellidos de la persona denunciada</FormDescription>
                   <FormControl>
-                    <Input {...field} placeholder="Ej. Pérez García" className="text-sm" />
+                    <Input
+                      {...field}
+                      placeholder="Ej. Pérez García"
+                      className="text-sm focus-visible:ring-primary/20 focus-visible:ring-offset-2"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,24 +185,24 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                 <FormDescription>Selecciona el género de la persona denunciada</FormDescription>
                 <FormControl>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <CustomCheckbox checked={field.value === "FEMENINO"} onChange={() => field.onChange("FEMENINO")}>
-                      <div className="text-center py-2">
+                    <GenderCheckbox checked={field.value === "FEMENINO"} onChange={() => field.onChange("FEMENINO")}>
+                      <div className="text-center">
                         <h3 className="font-medium">Femenino</h3>
                       </div>
-                    </CustomCheckbox>
-                    <CustomCheckbox checked={field.value === "MASCULINO"} onChange={() => field.onChange("MASCULINO")}>
-                      <div className="text-center py-2">
+                    </GenderCheckbox>
+                    <GenderCheckbox checked={field.value === "MASCULINO"} onChange={() => field.onChange("MASCULINO")}>
+                      <div className="text-center">
                         <h3 className="font-medium">Masculino</h3>
                       </div>
-                    </CustomCheckbox>
-                    <CustomCheckbox
+                    </GenderCheckbox>
+                    <GenderCheckbox
                       checked={field.value === "NO_BINARIO"}
                       onChange={() => field.onChange("NO_BINARIO")}
                     >
-                      <div className="text-center py-2">
+                      <div className="text-center">
                         <h3 className="font-medium">No binario</h3>
                       </div>
-                    </CustomCheckbox>
+                    </GenderCheckbox>
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -159,7 +212,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         </div>
 
         <div className="space-y-4">
-          <h2 className="font-semibold text-primary">Descripción Detallada</h2>
+          <h2 className="font-semibold text-primary text-lg">Descripción Detallada</h2>
           <FormField
             control={form.control}
             name="personaDenunciada.descripcion"
@@ -176,7 +229,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                   <Textarea
                     {...field}
                     placeholder="Ejemplo: Es una persona del área de finanzas, alto, delgado, de piel morena, ojos cafés, con bigote, un lunar en la mejilla izquierda, tenía una quemadura en la mano y vestía pantalón café con camisa azul"
-                    className="h-48 text-sm"
+                    className="h-48 text-sm focus-visible:ring-primary/20 focus-visible:ring-offset-2"
                   />
                 </FormControl>
                 <FormMessage />

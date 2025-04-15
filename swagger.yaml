@@ -137,7 +137,7 @@ components:
         entePublico:
           description: Ente público al que pertenece
           nullable: true
-          oneOf:
+          allOf:
             - $ref: "#/components/schemas/EntePublico"
         fecha:
           type: string
@@ -150,9 +150,10 @@ components:
           oneOf:
             - $ref: "#/components/schemas/DatosGenerales"
         empleoCargoComision:
-          $ref: "#/components/schemas/EmpleoCargoComision"
-          description: Datos del empleo, cargo o comisión
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/EmpleoCargoComision"
+            - description: Datos del empleo, cargo o comisión
+            - nullable: true
         ejercicio:
           type: string
           description: Ejercicio presupuestal en que se realizó el acto público
@@ -162,21 +163,24 @@ components:
           description: Tipo de procedimiento de contratación
           nullable: true
         otorgamientoConcesion:
-          $ref: "#/components/schemas/OtorgamientoConcesion"
-          description: Información sobre otorgamiento de concesiones
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/OtorgamientoConcesion"
+            - description: Información sobre otorgamiento de concesiones
+            - nullable: true
         Observaciones:
           type: string
           description: Observaciones adicionales
           nullable: true
         avaluosJustipreciacion:
-          $ref: "#/components/schemas/DictaminacionAvaluo"
+          oneOf:
+            - $ref: "#/components/schemas/DictaminacionAvaluo"
           description: Información sobre avalúos y justipreciación
           nullable: true
         enajenacionBien:
-          $ref: "#/components/schemas/EnajenacionBien"
-          description: Información sobre enajenación de bienes
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/EnajenacionBien"
+            - description: Información sobre enajenación de bienes
+            - nullable: true
         tipoContratacion:
           type: array
           items:
@@ -214,9 +218,10 @@ components:
           description: Nombre(s) del servidor público
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
-          description: Ente público al que pertenece
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
+            - description: Ente público al que pertenece
+            - nullable: true
     EmpleoCargoComision:
       type: object
       properties:
@@ -244,9 +249,10 @@ components:
           description: Siglas del ente público
           nullable: true
         nivelJerarquico:
-          $ref: "#/components/schemas/NivelJerarquico"
-          description: Nivel jerárquico del servidor público
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/NivelJerarquico"
+            - description: Nivel jerárquico del servidor público
+            - nullable: true
         denominacion:
           type: string
           description: Denominación del cargo
@@ -256,9 +262,10 @@ components:
           description: Área de adscripción
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
-          description: Ente público al que pertenece
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
+            - description: Ente público al que pertenece
+            - nullable: true
     EntePublico:
       type: object
       properties:
@@ -284,7 +291,8 @@ components:
           description: Descripción del nivel jerárquico
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público al que pertenece
           nullable: true
     TipoAdquisicionObra:
@@ -294,15 +302,18 @@ components:
           type: integer
           nullable: false
         contratacionAdquisicion:
-          $ref: "#/components/schemas/ContratacionAdquisicion"
-          description: Información sobre contratación o adquisición
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/ContratacionAdquisicion"
+            - description: Información sobre contratación o adquisición
+            - nullable: true
         contratacionObra:
-          $ref: "#/components/schemas/ContratacionObra"
+          allOf:
+            - $ref: "#/components/schemas/ContratacionObra"
           description: Información sobre contratación de obra
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         clave:
@@ -329,15 +340,18 @@ components:
             - PARTICIPANTE_ACLARACIONES
             - OTRO
         nivelResponsabilidadContratacion:
-          $ref: "#/components/schemas/NivelResponsabilidadContratacion"
+          allOf:
+            - $ref: "#/components/schemas/NivelResponsabilidadContratacion"
           description: Nivel de responsabilidad en la contratación
           nullable: true
         informacionPersonasBeneficiarias:
-          $ref: "#/components/schemas/DatosPersonaBeneficiaria"
+          allOf:
+            - $ref: "#/components/schemas/DatosPersonaBeneficiaria"
           description: Información de personas beneficiarias
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         continuaParticipando:
@@ -370,15 +384,18 @@ components:
             - PARTICIPANTE_ACLARACIONES
             - OTRO
         nivelResponsabilidadObra:
-          $ref: "#/components/schemas/NivelResponsabilidadContratacion"
+          allOf:
+            - $ref: "#/components/schemas/NivelResponsabilidadContratacion"
           description: Nivel de responsabilidad en la obra
           nullable: true
         informacionPersonasBeneficiarias:
-          $ref: "#/components/schemas/DatosPersonaBeneficiaria"
+          allOf:
+            - $ref: "#/components/schemas/DatosPersonaBeneficiaria"
           description: Información de personas beneficiarias
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         continuaParticipando:
@@ -395,10 +412,10 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
           nullable: false
         autorizacionDictamen:
-          type: boolean
+          type: string
           description: Autorización del procedimiento
           nullable: true
           enum:
@@ -407,7 +424,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         justificacionLicitacion:
-          type: boolean
+          type: string
           description: Justificación del procedimiento
           nullable: true
           enum:
@@ -416,7 +433,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         convocatoriaInvitacion:
-          type: boolean
+          type: string
           description: Convocatoria del procedimiento
           nullable: true
           enum:
@@ -425,7 +442,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         evaluacionProposiciones:
-          type: boolean
+          type: string
           description: Evaluación del procedimiento
           nullable: true
           enum:
@@ -434,7 +451,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         adjudicacionContrato:
-          type: boolean
+          type: string
           description: Adjudicación del procedimiento
           nullable: true
           enum:
@@ -442,7 +459,7 @@ components:
               - REVISAR (B)
               - EMITIR (E)
         formalizacionContrato:
-          type: boolean
+          type: string
           description: Formalización del procedimiento
           nullable: true
           enum:
@@ -450,7 +467,8 @@ components:
             - REVISAR (B)
             - EMITIR (E)
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
     DatosPersonaBeneficiaria:
@@ -476,7 +494,8 @@ components:
           description: Segundo apellido de la persona beneficiaria
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
     DatosContratacionPublica:
@@ -486,7 +505,8 @@ components:
           type: integer
           nullable: false
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         fechaInicioProcedimiento:
@@ -551,7 +571,8 @@ components:
           description: Fecha de conclusión del procedimiento
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         tipoProcedimiento:
@@ -574,19 +595,23 @@ components:
             - PERMISOS
             - AUTORIZACIONES
         nivelResponsabilidadConcesiones:
-          $ref: "#/components/schemas/NivelResponsabilidadConcesion"
+          allOf:
+            - $ref: "#/components/schemas/NivelResponsabilidadConcesion"
           description: Nivel de responsabilidad en concesiones
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         datosGeneralesConcesiones:
-          $ref: "#/components/schemas/DatosGeneralesConcesion"
+          allOf:
+            - $ref: "#/components/schemas/DatosGeneralesConcesion"
           description: Datos generales de las concesiones
           nullable: true
         informacionPersonasBeneficiarias:
-          $ref: "#/components/schemas/DatosPersonaBeneficiaria"
+          allOf:
+            - $ref: "#/components/schemas/DatosPersonaBeneficiaria"
           description: Información de personas beneficiarias
           nullable: true
         continuaParticipando:
@@ -597,10 +622,10 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
           nullable: false
         convocatoriaLicitacion:
-          type: boolean
+          type: string
           description: Convocatoria del procedimiento
           nullable: true
           enum:
@@ -609,7 +634,7 @@ components:
             - FIRMAR (C)
             - PERVISAR (D)
         dictamenesOpiniones:
-          type: boolean
+          type: string
           description: Dictámenes del procedimiento
           nullable: true
           enum:
@@ -618,7 +643,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         visitasVerificacion:
-          type: boolean
+          type: string
           description: Visitas del procedimiento
           nullable: true
           enum:
@@ -627,7 +652,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         evaluacionCumplimiento:
-          type: boolean
+          type: string
           description: Evaluación del procedimiento
           nullable: true
           enum:
@@ -636,7 +661,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         determinacionOtorgamiento:
-          type: boolean
+          type: string
           description: Determinación del procedimiento
           nullable: true
           enum:
@@ -644,7 +669,8 @@ components:
             - REVISAR (B)
             - EMITIR (E)
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
     DatosGeneralesConcesion:
@@ -700,25 +726,29 @@ components:
           description: URL del acto jurídico
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
     DictaminacionAvaluo:
       type: object
       properties:
         id:
-          type: integer
+          type: string
           nullable: false
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         nivelesResponsabilidadesAvaluos:
-          $ref: "#/components/schemas/NivelResponsabilidadAvaluo"
+          allOf:
+            - $ref: "#/components/schemas/NivelResponsabilidadAvaluo"
           description: Nivel de responsabilidad en avalúos
           nullable: true
         datosDictaminacionesAvaluos:
-          $ref: "#/components/schemas/DatosDictaminacionAvaluo"
+          allOf:
+            - $ref: "#/components/schemas/DatosDictaminacionAvaluo"
           description: Datos de dictaminación de avalúos
           nullable: true
         continuaParticipando:
@@ -732,7 +762,7 @@ components:
           type: integer
           nullable: false
         propuestasAsignaciones:
-          type: boolean
+          type: string
           description: Propuestas del procedimiento
           nullable: true
           enum:
@@ -741,7 +771,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         asignacionAvaluos:
-          type: boolean
+          type: string
           description: Asignación del procedimiento
           nullable: true
           enum:
@@ -751,7 +781,7 @@ components:
             - SUPERVISAR (D
             - EMITIR (E)
         emisionDictamenes:
-          type: boolean
+          type: string
           description: Emisión del procedimiento
           nullable: true
           enum:
@@ -761,7 +791,8 @@ components:
             - SUPERVISAR (D
             - EMITIR (E)
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
     DatosDictaminacionAvaluo:
@@ -789,25 +820,29 @@ components:
           description: Descripción del procedimiento
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
     EnajenacionBien:
       type: object
       properties:
         id:
-          type: integer
+          type: string
           nullable: false
         nivelesResponsabilidadesEnajenaciones:
-          $ref: "#/components/schemas/NivelResponsabilidadEnajenacion"
+          allOf:
+            - $ref: "#/components/schemas/NivelResponsabilidadEnajenacion"
           description: Nivel de responsabilidad en enajenaciones
           nullable: true
         datosEnajenacionesBienes:
-          $ref: "#/components/schemas/DatosEnajenacionBien"
+          allOf:
+            - $ref: "#/components/schemas/DatosEnajenacionBien"
           description: Datos de enajenación de bienes
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
         continuaParticipando:
@@ -821,7 +856,7 @@ components:
           type: integer
           nullable: false
         autorizacionesDictamenes:
-          type: boolean
+          type: string
           description: Autorizaciones del procedimiento
           nullable: true
           enum:
@@ -830,7 +865,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         analisisAutorizacion:
-          type: boolean
+          type: string
           description: Análisis del procedimiento
           nullable: true
           enum:
@@ -839,7 +874,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         modificacionBases:
-          type: boolean
+          type: string
           description: Modificaciones del procedimiento
           nullable: true
           enum:
@@ -848,7 +883,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         presentacionOfertas:
-          type: boolean
+          type: string
           description: Presentación del procedimiento
           nullable: true
           enum:
@@ -857,7 +892,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         evaluacionOfertas:
-          type: boolean
+          type: string
           description: Evaluación del procedimiento
           nullable: true
           enum:
@@ -866,7 +901,7 @@ components:
             - FIRMAR (C)
             - SUPERVISAR (D)
         adjudicacionBienes:
-          type: boolean
+          type: string
           description: Adjudicación del procedimiento
           nullable: true
           enum:
@@ -874,7 +909,7 @@ components:
             - REVISAR (B)
             - EMITIR (E)
         formalizacionContrato:
-          type: boolean
+          type: string
           description: Formalización del procedimiento
           nullable: true
           enum:
@@ -882,7 +917,8 @@ components:
             - REVISAR (B)
             - EMITIR (E)
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
           description: Ente público relacionado
           nullable: true
     DatosEnajenacionBien:
@@ -910,9 +946,10 @@ components:
           description: Descripción del procedimiento
           nullable: true
         entePublico:
-          $ref: "#/components/schemas/EntePublico"
-          description: Ente público relacionado
-          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/EntePublico"
+            - description: Ente público relacionado
+            - nullable: true
   responses:
     # Respuestas de éxito
     ListaServidoresExitosa:

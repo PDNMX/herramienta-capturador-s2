@@ -175,6 +175,22 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
       });
       mapRef.current = map;
 
+      // Inicializar el marcador principal
+      const marker = new mapboxgl.Marker({
+        color: '#FF0000',
+        draggable: true
+      })
+        .setLngLat([coordinates.lng, coordinates.lat])
+        .addTo(map);
+      markerRef.current = marker;
+
+      // Actualizar coordenadas cuando se arrastra el marcador
+      marker.on('dragend', () => {
+        const lngLat = marker.getLngLat();
+        setCoordinates({ lat: lngLat.lat, lng: lngLat.lng });
+        reverseGeocode(lngLat.lat, lngLat.lng);
+      });
+
       // Añadir controles de navegación (zoom)
       map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
@@ -184,6 +200,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         const lat = center.lat;
         const lng = center.lng;
         setCoordinates({ lat, lng });
+        // Actualizar posición del marcador cuando el mapa se mueve
+        if (markerRef.current) {
+          markerRef.current.setLngLat([lng, lat]);
+        }
         reverseGeocode(lat, lng);
       });
 
@@ -192,6 +212,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
 
       return () => {
         if (tempMarker) tempMarker.remove();
+        if (markerRef.current) markerRef.current.remove();
         map.remove();
       };
     }

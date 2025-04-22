@@ -9,6 +9,8 @@ import AccessibilityMenu from '@/components/layout/AccessibilityMenu/accessibill
 import logoPDNd from '@/components/layout/logo-dark.svg';
 import logoPDNw from '@/components/layout/logo-white.svg';
 import logoPDNh from '@/components/layout/logo-high-contrast.svg';
+/* import { Shield } from 'lucide-react'; */
+import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const { theme } = useTheme();
@@ -29,6 +31,17 @@ export default function Header() {
             <span className="ml-2 text-sm font-semibold text-dark hidden sm:inline">Plataforma Digital Nacional</span>
           </Link>
           <div className="flex items-center space-x-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="flex items-center gap-2"
+              asChild
+            >
+              <Link href="/aviso-de-privacidad">
+                {/* <Shield className="h-4 w-4" /> */}
+                <span className="hidden sm:inline">Aviso de privacidad</span>
+              </Link>
+            </Button>
             <AccessibilityMenu />
             <ThemeToggle />
           </div>

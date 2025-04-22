@@ -122,13 +122,10 @@ export function Landing() {
                 <CardHeader className="flex flex-row items-center justify-between border-b pb-6">
                   <div className="space-y-2">
                     <CardTitle className="text-3xl font-bold tracking-tight text-primary">Presenta tu denuncia</CardTitle>
-                    <p className="text-muted-foreground">
-                      Ayúdanos a combatir la corrupción y las faltas administrativas
-                    </p>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground bg-primary/5 px-4 py-2 rounded-full">
                     <Clock className="h-5 w-5 text-primary" />
-                    <span>20 minutos aproximadamente</span>
+                    <span className="text-sm">20 minutos aproximadamente</span>
                   </div>
                 </CardHeader>
 
@@ -224,12 +221,6 @@ export function Landing() {
                       </ul>
                     </div>
                   </div>
-                  <div className="mt-8 pt-4 border-t border-primary/10 flex justify-center items-center gap-2">
-                    <Shield className="h-4 w-4 text-primary" />
-                    <Link href="/aviso-de-privacidad" className="text-primary hover:underline">
-                      Aviso de privacidad
-                    </Link>
-                  </div>
                 </CardContent>
 
                 <CardFooter className="flex flex-col gap-4 pt-6">
@@ -247,14 +238,13 @@ export function Landing() {
                     </Link>
                   </Button>
 
-                  <Button variant="ghost" onClick={() => setShowComplaintForm(false)} className="mt-2">
+                  <Button variant="outline" onClick={() => setShowComplaintForm(false)} className="mt-2">
                     Regresar
                   </Button>
                 </CardFooter>
               </Card>
 
-              {/* Additional Buttons Section - Shown below the complaint form */}
-              <div className="mb-8 md:mb-16 grid md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+              {/* <div className="mb-8 md:mb-16 grid md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
                 <Button
                   size="lg"
                   variant="outline"
@@ -285,7 +275,7 @@ export function Landing() {
                     </div>
                   </Link>
                 </Button>
-              </div>
+              </div> */}
             </motion.div>
           )}
         </AnimatePresence>

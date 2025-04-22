@@ -1,16 +1,17 @@
 // @ts-nocheck
 "use client"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import type React from "react"
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { X, Upload, CheckCircle2 } from "lucide-react"
+import { X, Upload, CheckCircle2, Mic, Square } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { UseFormReturn } from "react-hook-form"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 const faltasGraves = [
   {
@@ -148,6 +149,77 @@ interface NarracionYFaltaStepProps {
 
 export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   const [dragActive, setDragActive] = useState(false)
+  const [isListening, setIsListening] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isSpeechSupported, setIsSpeechSupported] = useState(true)
+  const recognitionRef = useRef<SpeechRecognition | null>(null)
+
+  useEffect(() => {
+    // Verificar si el navegador soporta la Web Speech API
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      setError('Tu navegador no soporta el reconocimiento de voz. Por favor, usa Chrome o Edge en caso de que quieras usar esta función.')
+      setIsSpeechSupported(false)
+      return
+    }
+
+    // Inicializar el reconocimiento de voz
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    const recognition = new SpeechRecognition()
+    recognition.continuous = true
+    recognition.interimResults = true
+    recognition.lang = 'es-MX'
+
+    recognition.onstart = () => {
+      setIsListening(true)
+      setError(null)
+    }
+
+    recognition.onend = () => {
+      setIsListening(false)
+    }
+
+    recognition.onerror = (event) => {
+      setIsListening(false)
+      if (event.error === 'not-allowed') {
+        setError('Por favor, permite el acceso al micrófono para usar esta función.')
+      } else {
+        setError('Ocurrió un error con el reconocimiento de voz. Por favor, intenta nuevamente.')
+      }
+    }
+
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('')
+
+      form?.setValue('narracionHechos', transcript)
+    }
+
+    recognitionRef.current = recognition
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+    }
+  }, [form])
+
+  const startListening = () => {
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.start()
+      } catch (error) {
+        setError('No se pudo iniciar el reconocimiento de voz. Por favor, intenta nuevamente.')
+      }
+    }
+  }
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop()
+    }
+  }
 
   if (!form) {
     return <div>Cargando...</div>
@@ -184,6 +256,73 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
     <div className="space-y-6 p-6">
       <div className="space-y-6">
         <div className="space-y-4">
+          {/* <div className="bg-primary/5 rounded-lg p-6 border border-primary/20">
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-primary">Tu voz es importante</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Cuéntanos detalladamente lo sucedido. Una descripción clara y completa nos ayudará a dar seguimiento efectivo a tu denuncia.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white p-4 rounded-lg border">
+                  <h4 className="text-sm font-medium mb-2">¿Qué debes incluir?</h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Fechas y horarios exactos
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Nombres completos de los involucrados
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Lugares específicos
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-white p-4 rounded-lg border">
+                  <h4 className="text-sm font-medium mb-2">Recomendaciones</h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li className="flex items-start gap-2">
+                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Sé objetivo y conciso
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Incluye testigos si los hay
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Menciona documentos o evidencias
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div> */}
+
           <FormField
             control={form.control}
             name="narracionHechos"
@@ -191,16 +330,54 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
               <FormItem>
                 <FormLabel className="text-base font-semibold">Descripción Detallada de los Hechos</FormLabel>
                 <FormDescription>
-                  Proporcione una descripción clara de los hechos, mencionando fechas, lugares, personas involucradas y
-                  cualquier otra información relevante que ayude a comprender la situación.
+                  Describe claramente los hechos indicando fechas, lugares, personas involucradas y las acciones específicas.
                 </FormDescription>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    placeholder="Describa los hechos de manera clara y detallada, incluyendo fechas específicas, nombres completos de los involucrados, lugares exactos y descripciones precisas de las acciones realizadas."
-                    className="h-40 resize-none text-sm"
-                  />
-                </FormControl>
+                <div className="space-y-2">
+                  {error && (
+                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
+                      <div className="flex">
+                        <div className="flex-shrink-0">
+                          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <p className="text-sm text-yellow-700">{error}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div className="relative">
+                    <Textarea
+                      {...field}
+                      placeholder="Ejemplo: El 12 de abril, en Av. Reforma 101, observé que..."
+                      className="h-80 resize-none text-sm pr-24"
+                    />
+                    <div className="absolute bottom-2 right-2">
+                      <Button
+                        type="button"
+                        variant={isListening ? "destructive" : "outline"}
+                        size="sm"
+                        onClick={isListening ? stopListening : startListening}
+                        className="flex items-center gap-2 shadow-sm"
+                        disabled={!isSpeechSupported}
+                        title={!isSpeechSupported ? "El reconocimiento de voz no está disponible en tu navegador" : ""}
+                      >
+                        {isListening ? (
+                          <>
+                            <Square className="h-4 w-4" />
+                            Detener dictado
+                          </>
+                        ) : (
+                          <>
+                            <Mic className="h-4 w-4" />
+                            Iniciar dictado
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

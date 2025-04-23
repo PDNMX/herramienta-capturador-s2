@@ -68,7 +68,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
       <div className="space-y-6">
         <div className="space-y-4">
           <h2 className="font-semibold text-primary text-lg">Tipo de Persona</h2>
-          <FormDescription>
+          <FormDescription className="text-xs sm:text-sm">
             Selecciona si la persona denunciada pertenece al servicio público o es un particular.
           </FormDescription>
           <FormField
@@ -135,7 +135,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
 
         <div className="space-y-4">
           <h2 className="font-semibold text-primary text-lg">Datos de la Persona Denunciada</h2>
-          <FormDescription>
+          <FormDescription className="text-xs sm:text-sm">
             Proporciona los datos de identificación de la persona denunciada o involucrada en los hechos.
           </FormDescription>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -145,7 +145,6 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-medium">Nombre(s) o alias</FormLabel>
-                  <FormDescription>Escribe el nombre, nombres o alías de la persona denunciada</FormDescription>
                   <FormControl>
                     <Input
                       {...field}
@@ -153,6 +152,9 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       className="text-sm focus-visible:ring-primary/20 focus-visible:ring-offset-2"
                     />
                   </FormControl>
+                  <FormDescription className="text-xs sm:text-sm">
+                    Escribe el nombre, nombres o alías de la persona denunciada
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -163,7 +165,6 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-xs font-medium">Apellidos</FormLabel>
-                  <FormDescription>Escribe el o los apellidos de la persona denunciada</FormDescription>
                   <FormControl>
                     <Input
                       {...field}
@@ -171,6 +172,9 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       className="text-sm focus-visible:ring-primary/20 focus-visible:ring-offset-2"
                     />
                   </FormControl>
+                  <FormDescription className="text-xs sm:text-sm">
+                    Escribe el o los apellidos de la persona denunciada
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -182,7 +186,6 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Género</FormLabel>
-                <FormDescription>Selecciona el género de la persona denunciada</FormDescription>
                 <FormControl>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <GenderCheckbox checked={field.value === "FEMENINO"} onChange={() => field.onChange("FEMENINO")}>
@@ -205,6 +208,9 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     </GenderCheckbox>
                   </div>
                 </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                  Selecciona el género de la persona denunciada
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -219,12 +225,6 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Descripción de la Persona</FormLabel>
-                <FormDescription>
-                  Proporciona los datos que pueden ayudar a identificar a la persona denunciada. Puedes mencionar: el
-                  cargo o área donde trabaja, características como altura, complexión, color de piel, color de ojos,
-                  cabello, barba, lunares, cicatrices, tatuajes, perforaciones, vestimenta o cualquier otra información
-                  que consideres relevante.
-                </FormDescription>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -232,6 +232,12 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     className="h-48 text-sm focus-visible:ring-primary/20 focus-visible:ring-offset-2"
                   />
                 </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                  Proporciona los datos que pueden ayudar a identificar a la persona denunciada. Puedes mencionar: el
+                  cargo o área donde trabaja, características como altura, complexión, color de piel, color de ojos,
+                  cabello, barba, lunares, cicatrices, tatuajes, perforaciones, vestimenta o cualquier otra información
+                  que consideres relevante.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

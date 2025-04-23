@@ -118,6 +118,19 @@ components:
           type: integer
     ServidorPublico:
       type: object
+      required:
+        [
+          id,
+          fecha,
+          ejercicio,
+          datosGenerales,
+          empleoCargoComision,
+          tipoProcedimiento,
+          otorgamientoConcesion,
+          enajenacionBien,
+          tipoContratacion,
+          avaluosJustipreciacion,
+        ]
       properties:
         id:
           type: string
@@ -162,6 +175,11 @@ components:
           type: string
           description: Tipo de procedimiento de contratación
           nullable: true
+          enum:
+            - CONTRATACION_PUBLICA
+            - OTORGAMIENTO_CONCECIONES
+            - ENAJENACION_BIENES
+            - DICTAMEN_VALUATORIO
         otorgamientoConcesion:
           allOf:
             - $ref: "#/components/schemas/OtorgamientoConcesion"
@@ -184,15 +202,20 @@ components:
         tipoContratacion:
           type: array
           items:
-            $ref: "#/components/schemas/TipoAdquisicionObra"
+            $ref: "#/components/schemas/TipoContratacion"
           description: Tipos de contratación en que participa
           nullable: true
     DatosGenerales:
       type: object
+      required: [nombre, primerApellido, curp, rfc, sexo]
       properties:
         id:
           type: integer
           nullable: false
+        nombre:
+          type: string
+          description: Nombre(s) del servidor público
+          nullable: true
         primerApellido:
           type: string
           description: Primer apellido del servidor público
@@ -213,10 +236,6 @@ components:
           type: string
           description: Sexo del servidor público
           nullable: true
-        nombre:
-          type: string
-          description: Nombre(s) del servidor público
-          nullable: true
         entePublico:
           allOf:
             - $ref: "#/components/schemas/EntePublico"
@@ -224,6 +243,16 @@ components:
             - nullable: true
     EmpleoCargoComision:
       type: object
+      required:
+        [
+          entidadFederativa,
+          nivelOrdenGobierno,
+          ambitoPublico,
+          nombreEntePublico,
+          nivelJerarquico,
+          denominacion,
+          areaAdscripcion,
+        ]
       properties:
         id:
           type: integer
@@ -278,6 +307,7 @@ components:
           nullable: true
     NivelJerarquico:
       type: object
+      required: [clave]
       properties:
         id:
           type: integer
@@ -295,8 +325,9 @@ components:
             - $ref: "#/components/schemas/EntePublico"
           description: Ente público al que pertenece
           nullable: true
-    TipoAdquisicionObra:
+    TipoContratacion:
       type: object
+      required: [contratacionAdquisicion, contratacionObra]
       properties:
         id:
           type: integer
@@ -322,6 +353,7 @@ components:
           nullable: true
     ContratacionAdquisicion:
       type: object
+      required: [continuaParticipando]
       properties:
         id:
           type: integer
@@ -366,6 +398,7 @@ components:
           nullable: true
     ContratacionObra:
       type: object
+      required: [continuaParticipando]
       properties:
         id:
           type: integer
@@ -500,6 +533,14 @@ components:
           nullable: true
     DatosContratacionPublica:
       type: object
+      required:
+        [
+          numeroExpedienteFolio,
+          tipoProcedimiento,
+          materia,
+          fechaInicioProcedimiento,
+          fechaConclusionProcedimiento,
+        ]
       properties:
         id:
           type: integer
@@ -548,6 +589,14 @@ components:
             - OTRO
     DatosGeneralesObra:
       type: object
+      required:
+        [
+          numeroExpedienteFolio,
+          tipoProcedimiento,
+          materia,
+          fechaInicioProcedimiento,
+          fechaConclusionProcedimiento,
+        ]
       properties:
         id:
           type: integer
@@ -560,12 +609,12 @@ components:
           type: string
           description: Materia del procedimiento
           nullable: true
-        inicioProcedimiento:
+        fechaInicioProcedimiento:
           type: string
           format: date
           description: Fecha de inicio del procedimiento
           nullable: true
-        conclusionProcedimiento:
+        fechaConclusionProcedimiento:
           type: string
           format: date
           description: Fecha de conclusión del procedimiento
@@ -581,6 +630,7 @@ components:
           nullable: true
     OtorgamientoConcesion:
       type: object
+      required: [continuaParticipando]
       properties:
         id:
           type: integer
@@ -675,6 +725,14 @@ components:
           nullable: true
     DatosGeneralesConcesion:
       type: object
+      required:
+        [
+          numeroExpedienteFolio,
+          denominacion,
+          fundamento,
+          fechaInicioVigencia,
+          fechaConclusionVigencia,
+        ]
       properties:
         id:
           type: integer
@@ -732,6 +790,7 @@ components:
           nullable: true
     DictaminacionAvaluo:
       type: object
+      required: [continuaParticipando]
       properties:
         id:
           type: string
@@ -797,6 +856,7 @@ components:
           nullable: true
     DatosDictaminacionAvaluo:
       type: object
+      required: [numeroExpedienteFolio, descripcion, fechaInicioProcedimiento]
       properties:
         id:
           type: integer
@@ -826,6 +886,7 @@ components:
           nullable: true
     EnajenacionBien:
       type: object
+      required: [continuaParticipando]
       properties:
         id:
           type: string
@@ -923,6 +984,13 @@ components:
           nullable: true
     DatosEnajenacionBien:
       type: object
+      required:
+        [
+          numeroExpedienteFolio,
+          descripcion,
+          fechaInicioProcedimiento,
+          fechaConclusionProcedimiento,
+        ]
       properties:
         id:
           type: integer

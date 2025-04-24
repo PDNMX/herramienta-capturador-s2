@@ -573,7 +573,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                   </div>
                 </FormControl>
                 <FormDescription className="text-xs sm:text-sm">
-                  Selecciona la fecha en que ocurrió el hecho o falta administrativa
+                Selecciona la fecha en que ocurrieron los hechos
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -592,7 +592,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                   </div>
                 </FormControl>
                 <FormDescription className="text-xs sm:text-sm">
-                  Indica la hora aproximada en que ocurrió el hecho denunciado
+                  Indica la hora aproximada en que ocurrieron los hechos
                 </FormDescription>
                 <FormMessage />
               </FormItem>

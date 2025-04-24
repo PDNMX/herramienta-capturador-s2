@@ -6,12 +6,14 @@ import "mapbox-gl/dist/mapbox-gl.css"
 //import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css"
 import { Input } from "@/components/ui/input"
-import { FormControl, FormField, FormItem, FormLabel, FormDescription } from "@/components/ui/form"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
-import { MapPin, Search, Locate, Edit, Hash, Building } from "lucide-react"
+import { MapPin, Search, Locate, Edit, Hash, Building, Calendar, Clock } from "lucide-react"
 import debounce from "lodash/debounce"
 import { cn } from "@/lib/utils"
+import { Textarea } from "@/components/ui/textarea"
+import type { UseFormReturn } from "react-hook-form"
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
 
@@ -31,6 +33,10 @@ interface SearchResult {
   properties: {
     category?: string
   }
+}
+
+interface UbicacionHechoStepProps {
+  form: UseFormReturn<any>
 }
 
 export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
@@ -328,6 +334,40 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
           control={form.control}
+          name="codigoPostal"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <Hash className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    {...field}
+                    placeholder="Ej. 06700"
+                    className={cn(
+                      "text-sm h-9 sm:h-10 pl-8",
+                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
+                    )}
+                    readOnly={!manualAddressMode}
+                    onChange={(e) => {
+                      field.onChange(e)
+                      if (manualAddressMode) {
+                        setAddressDetails((prev) => ({ ...prev, postalCode: e.target.value }))
+                      }
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">
+                Ingresa el código postal de la ubicación donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="calle"
           render={({ field }) => (
             <FormItem>
@@ -338,12 +378,11 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                   <Input
                     {...field}
                     placeholder="Ej. Av. Insurgentes"
-                    className="text-sm h-9 sm:h-10 pl-8"
-                    readOnly={!manualAddressMode}
                     className={cn(
                       "text-sm h-9 sm:h-10 pl-8",
                       !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
                     )}
+                    readOnly={!manualAddressMode}
                     onChange={(e) => {
                       field.onChange(e)
                       if (manualAddressMode) {
@@ -353,7 +392,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                   />
                 </div>
               </FormControl>
-              <FormDescription className="text-xs sm:text-sm">Ingresa el nombre completo de la calle</FormDescription>
+              <FormDescription className="text-xs sm:text-sm">
+                Escribe el nombre de la calle donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -363,7 +405,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
           name="numero"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-xs font-medium">Número</FormLabel>
+              <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Hash className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -384,7 +426,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                   />
                 </div>
               </FormControl>
-              <FormDescription className="text-xs sm:text-sm">Número exterior del domicilio</FormDescription>
+              <FormDescription className="text-xs sm:text-sm">
+                Indica el número del inmueble donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -416,6 +461,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                 </div>
               </FormControl>
               <FormDescription className="text-xs sm:text-sm">Ciudad donde ocurrieron los hechos</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -447,6 +493,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                 </div>
               </FormControl>
               <FormDescription className="text-xs sm:text-sm">Estado o entidad federativa</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -478,40 +525,80 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                 </div>
               </FormControl>
               <FormDescription className="text-xs sm:text-sm">País donde ocurrieron los hechos</FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
 
         <FormField
           control={form.control}
-          name="codigoPostal"
+          name="otrasReferencias"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
+            <FormItem className="md:col-span-2">
+              <FormLabel className="text-xs font-medium">Otras referencias del lugar</FormLabel>
               <FormControl>
-                <div className="relative">
-                  <Hash className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    {...field}
-                    placeholder="Ej. 06700"
-                    className={cn(
-                      "text-sm h-9 sm:h-10 pl-8",
-                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
-                    )}
-                    readOnly={!manualAddressMode}
-                    onChange={(e) => {
-                      field.onChange(e)
-                      if (manualAddressMode) {
-                        setAddressDetails((prev) => ({ ...prev, postalCode: e.target.value }))
-                      }
-                    }}
-                  />
-                </div>
+                <Textarea
+                  {...field}
+                  placeholder="Ej. Edificio de color azul, frente al parque, cerca de la estación del metro..."
+                  className={cn("text-sm min-h-[80px]", !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "")}
+                  readOnly={!manualAddressMode}
+                />
               </FormControl>
-              <FormDescription className="text-xs sm:text-sm">Código Postal de la ubicación</FormDescription>
+              <FormDescription className="text-xs sm:text-sm">
+                Proporciona referencias adicionales que ayuden a identificar el lugar donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
             </FormItem>
           )}
         />
+      </div>
+
+      {/* Nueva sección para fecha y hora de los hechos */}
+      <div className="space-y-4 border-t pt-6 mt-6">
+        <h3 className="text-lg font-semibold text-primary flex items-center">
+          <Calendar className="h-5 w-5 mr-2 text-primary/80" />
+          Fecha y Hora del Hecho Denunciado
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="fechaHecho"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-medium">Fecha del Hecho</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Calendar className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input {...field} type="date" className="text-sm h-9 sm:h-10 pl-8" />
+                  </div>
+                </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                  Selecciona la fecha en que ocurrió el hecho o falta administrativa
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="horaHecho"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-medium">Hora del Hecho</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Clock className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input {...field} type="time" className="text-sm h-9 sm:h-10 pl-8" />
+                  </div>
+                </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                  Indica la hora aproximada en que ocurrió el hecho denunciado
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
       </div>
     </div>
   )

@@ -1,14 +1,56 @@
 "use client"
-import React from "react"
+import React, { useState } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { CircleUser, Check, Scale } from "lucide-react"
+import { CircleUser, Check, Scale, MapPin, Building, Loader2 } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Combobox } from "@/components/ui/combobox"
 import type { UseFormReturn } from "react-hook-form"
 
 interface PersonaDenunciadaStepProps {
   form: UseFormReturn<any> | null
 }
+
+interface EntePublico {
+  id: number
+  nombre: string
+}
+
+const entidadesFederativas = [
+  { nombre: "Aguascalientes", clave: "01", valor: 1 },
+  { nombre: "Baja California", clave: "02", valor: 2 },
+  { nombre: "Baja California Sur", clave: "03", valor: 3 },
+  { nombre: "Campeche", clave: "04", valor: 4 },
+  { nombre: "Coahuila", clave: "05", valor: 5 },
+  { nombre: "Colima", clave: "06", valor: 6 },
+  { nombre: "Chiapas", clave: "07", valor: 7 },
+  { nombre: "Chihuahua", clave: "08", valor: 8 },
+  { nombre: "Ciudad de México", clave: "09", valor: 9 },
+  { nombre: "Durango", clave: "10", valor: 10 },
+  { nombre: "Guanajuato", clave: "11", valor: 11 },
+  { nombre: "Guerrero", clave: "12", valor: 12 },
+  { nombre: "Hidalgo", clave: "13", valor: 13 },
+  { nombre: "Jalisco", clave: "14", valor: 14 },
+  { nombre: "México", clave: "15", valor: 15 },
+  { nombre: "Michoacán", clave: "16", valor: 16 },
+  { nombre: "Morelos", clave: "17", valor: 17 },
+  { nombre: "Nayarit", clave: "18", valor: 18 },
+  { nombre: "Nuevo León", clave: "19", valor: 19 },
+  { nombre: "Oaxaca", clave: "20", valor: 20 },
+  { nombre: "Puebla", clave: "21", valor: 21 },
+  { nombre: "Querétaro", clave: "22", valor: 22 },
+  { nombre: "Quintana Roo", clave: "23", valor: 23 },
+  { nombre: "San Luis Potosí", clave: "24", valor: 24 },
+  { nombre: "Sinaloa", clave: "25", valor: 25 },
+  { nombre: "Sonora", clave: "26", valor: 26 },
+  { nombre: "Tabasco", clave: "27", valor: 27 },
+  { nombre: "Tamaulipas", clave: "28", valor: 28 },
+  { nombre: "Tlaxcala", clave: "29", valor: 29 },
+  { nombre: "Veracruz", clave: "30", valor: 30 },
+  { nombre: "Yucatán", clave: "31", valor: 31 },
+  { nombre: "Zacatecas", clave: "32", valor: 32 },
+]
 
 const CustomCheckbox = React.forwardRef<
   HTMLDivElement,
@@ -59,6 +101,70 @@ const GenderCheckbox = React.forwardRef<
 GenderCheckbox.displayName = "GenderCheckbox"
 
 export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
+  const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([])
+  const [loading, setLoading] = useState(false)
+  const [selectedEnteName, setSelectedEnteName] = useState<string>("")
+
+  const fetchEntesPublicos = async (clave: string) => {
+    setLoading(true)
+    try {
+      // Primero obtenemos los entes federales (clave "00")
+      const federalResponse = await fetch(
+        `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=00&limit=-1`,
+      )
+      const federalData = await federalResponse.json()
+
+      // Luego obtenemos los entes de la entidad seleccionada
+      const entidadResponse = await fetch(
+        `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=${clave}&limit=-1`,
+      )
+      const entidadData = await entidadResponse.json()
+
+      // Combinamos ambos resultados
+      const combinedEntes = [...federalData.data, ...entidadData.data]
+      setEntesPublicos(combinedEntes)
+    } catch (error) {
+      console.error("Error fetching entes públicos:", error)
+    }
+    setLoading(false)
+  }
+
+  const handleEntidadChange = (value: string) => {
+    const entidad = entidadesFederativas.find((e) => e.nombre === value)
+    if (entidad) {
+      // Asegurarse de que se está estableciendo un número, no una cadena
+      form?.setValue("personaDenunciada.entidad", entidad.valor, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+
+      // Resetear el ente público al cambiar la entidad
+      form?.setValue("personaDenunciada.entePublico", undefined, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+
+      // Fetch entes públicos para la entidad seleccionada
+      fetchEntesPublicos(entidad.clave)
+    }
+  }
+
+  const handleEntePublicoChange = (value: string) => {
+    const selectedEnte = entesPublicos.find((ente) => ente.id.toString() === value)
+    if (selectedEnte) {
+      // Asegurar que se establece como número, no cadena
+      form?.setValue("personaDenunciada.entePublico", selectedEnte.id, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+
+      setSelectedEnteName(selectedEnte.nombre)
+    }
+  }
+
   if (!form) {
     return <div>Cargando...</div>
   }
@@ -66,7 +172,89 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   return (
     <div className="space-y-6 p-6">
       <div className="space-y-6">
+        {/* SECCIÓN 1: Ubicación Institucional - Ahora es la primera sección */}
         <div className="space-y-4">
+          <h2 className="font-semibold text-primary text-lg">Ubicación Institucional</h2>
+          <FormDescription className="text-xs sm:text-sm">
+            Selecciona la entidad federativa y la institución donde ocurrieron los hechos o donde trabaja la persona
+            denunciada.
+          </FormDescription>
+
+          <FormField
+            control={form.control}
+            name="personaDenunciada.entidad"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-medium">Entidad Federativa</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <MapPin className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Select
+                      onValueChange={handleEntidadChange}
+                      value={field.value ? entidadesFederativas.find((e) => e.valor === field.value)?.nombre || "" : ""}
+                    >
+                      <SelectTrigger className="pl-8">
+                        <SelectValue placeholder="Selecciona una entidad" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {entidadesFederativas.map((entidad) => (
+                          <SelectItem key={entidad.clave} value={entidad.nombre}>
+                            {entidad.nombre}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                  Selecciona la entidad federativa donde ocurrieron los hechos.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="personaDenunciada.entePublico"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xs font-medium">Ente Público</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Building className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <div className="w-full pl-8">
+                      <Combobox
+                        options={entesPublicos.map((ente) => ({
+                          label: ente.nombre,
+                          value: ente.id.toString(),
+                        }))}
+                        value={field.value?.toString() || ""}
+                        onChange={handleEntePublicoChange}
+                        placeholder="Selecciona un ente público"
+                        disabled={!form.getValues("personaDenunciada.entidad")}
+                      />
+                    </div>
+                  </div>
+                </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                  Selecciona la institución donde ocurrieron los hechos. Se muestran tanto instituciones federales como
+                  de la entidad seleccionada.
+                </FormDescription>
+                {loading && (
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Cargando entes públicos...</span>
+                  </div>
+                )}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* SECCIÓN 2: Tipo de Persona - Ahora es la segunda sección */}
+        <div className="space-y-4 border-t pt-4">
           <h2 className="font-semibold text-primary text-lg">Tipo de Persona</h2>
           <FormDescription className="text-xs sm:text-sm">
             Selecciona si la persona denunciada pertenece al servicio público o es un particular.
@@ -80,7 +268,9 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <CustomCheckbox
                       checked={field.value === "SERVIDOR_PUBLICO"}
-                      onChange={() => field.onChange("SERVIDOR_PUBLICO")}
+                      onChange={() => {
+                        field.onChange("SERVIDOR_PUBLICO")
+                      }}
                     >
                       <div className="flex flex-col items-center text-center pt-2 pb-4">
                         <div
@@ -104,7 +294,9 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     </CustomCheckbox>
                     <CustomCheckbox
                       checked={field.value === "PARTICULAR"}
-                      onChange={() => field.onChange("PARTICULAR")}
+                      onChange={() => {
+                        field.onChange("PARTICULAR")
+                      }}
                     >
                       <div className="flex flex-col items-center text-center pt-2 pb-4">
                         <div
@@ -133,7 +325,8 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
           />
         </div>
 
-        <div className="space-y-4">
+        {/* SECCIÓN 3: Datos de la Persona Denunciada */}
+        <div className="space-y-4 border-t pt-4">
           <h2 className="font-semibold text-primary text-lg">Datos de la Persona Denunciada</h2>
           <FormDescription className="text-xs sm:text-sm">
             Proporciona los datos de identificación de la persona denunciada o involucrada en los hechos.
@@ -217,7 +410,8 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
           />
         </div>
 
-        <div className="space-y-4">
+        {/* SECCIÓN 4: Descripción Detallada */}
+        <div className="space-y-4 border-t pt-4">
           <h2 className="font-semibold text-primary text-lg">Descripción Detallada</h2>
           <FormField
             control={form.control}

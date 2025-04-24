@@ -1,5 +1,8 @@
-//@ts-nocheck
+// @ts-nocheck
+"use client"
+
 import { SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { AsistenteLegalChat } from "@/components/ia/asistente-legal-chat"
 
 interface HelpContentProps {
   step: number
@@ -35,12 +38,13 @@ export function HelpContent({ step }: HelpContentProps) {
   ]
 
   return (
-    <SheetContent>
+    <SheetContent className="overflow-y-auto max-h-screen">
       <SheetHeader>
         <SheetTitle>{helpContent[step].title}</SheetTitle>
         <SheetDescription>{helpContent[step].description}</SheetDescription>
+            {/* Chat insertado aquí */}
+            <AsistenteLegalChat />
       </SheetHeader>
     </SheetContent>
   )
 }
-

@@ -6,7 +6,7 @@ import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Mic, Square } from "lucide-react"
+import { Mic, Square, ClipboardList } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { UseFormReturn } from "react-hook-form"
@@ -99,48 +99,48 @@ interface CheckboxGroupProps {
 }
 
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name, items, form }) => (
-  <div className="space-y-2">
-    <div>
-      <h3 className="text-sm font-semibold text-primary">{title}</h3>
-      <FormDescription>{description}</FormDescription>
+  <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
+    <div className="space-y-2">
+      <FormLabel className="text-base block">{title}</FormLabel>
+      <FormDescription className="text-xs sm:text-sm">{description}</FormDescription>
+      <FormField
+        control={form.control}
+        name={name}
+        render={() => (
+          <FormItem>
+            <ScrollArea className="h-[200px] rounded-md border mt-3">
+              <div className="space-y-2 p-4 pt-2">
+                {items.map((item) => (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name={name}
+                    render={({ field }) => (
+                      <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(item.id)}
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...(field.value || []), item.id])
+                                : field.onChange(field.value?.filter((value: number) => value !== item.id))
+                            }}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm font-medium">{item.label}</FormLabel>
+                          <FormDescription className="text-xs">{item.description}</FormDescription>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
+          </FormItem>
+        )}
+      />
     </div>
-    <FormField
-      control={form.control}
-      name={name}
-      render={() => (
-        <FormItem>
-          <ScrollArea className="h-[200px] rounded-md border">
-            <div className="space-y-2 p-4 pt-2">
-              {items.map((item) => (
-                <FormField
-                  key={item.id}
-                  control={form.control}
-                  name={name}
-                  render={({ field }) => (
-                    <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value?.includes(item.id)}
-                          onCheckedChange={(checked) => {
-                            return checked
-                              ? field.onChange([...(field.value || []), item.id])
-                              : field.onChange(field.value?.filter((value: number) => value !== item.id))
-                          }}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-sm font-medium">{item.label}</FormLabel>
-                        <FormDescription className="text-xs">{item.description}</FormDescription>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </div>
-          </ScrollArea>
-        </FormItem>
-      )}
-    />
   </div>
 )
 
@@ -228,82 +228,66 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   }
 
   return (
-    <div className="space-y-6 p-6">
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <FormField
-            control={form.control}
-            name="narracionHechos"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-base font-semibold">Descripción Detallada de los Hechos</FormLabel>
-                <FormDescription>
-                  Describe claramente los hechos indicando fechas, lugares, personas involucradas y las acciones
-                  específicas.
-                </FormDescription>
-                <div className="space-y-2">
-                  {error && (
-                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md">
-                      <div className="flex">
-                        <div className="flex-shrink-0">
-                          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path
-                              fillRule="evenodd"
-                              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <div className="ml-3">
-                          <p className="text-sm text-yellow-700">{error}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  <div className="relative">
-                    <Textarea
-                      {...field}
-                      placeholder="Ejemplo: El 12 de abril, en Av. Reforma 101, observé que..."
-                      className="h-80 resize-none text-sm pr-24"
-                    />
-                    <div className="absolute bottom-2 right-2">
-                      <Button
-                        type="button"
-                        variant={isListening ? "destructive" : "outline"}
-                        size="sm"
-                        onClick={isListening ? stopListening : startListening}
-                        className="flex items-center gap-2 shadow-sm"
-                        disabled={!isSpeechSupported}
-                        title={!isSpeechSupported ? "El reconocimiento de voz no está disponible en tu navegador" : ""}
-                      >
-                        {isListening ? (
-                          <>
-                            <Square className="h-4 w-4" />
-                            Detener dictado
-                          </>
-                        ) : (
-                          <>
-                            <Mic className="h-4 w-4" />
-                            Iniciar dictado
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+      {/* Campo de narración de hechos */}
+      <FormField
+        control={form.control}
+        name="narracionHechos"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-base font-medium">Descripción Detallada de los Hechos</FormLabel>
+            <FormControl>
+              <div className="relative">
+                <Textarea
+                  {...field}
+                  placeholder="Ejemplo: El día 12 de abril de 2023, aproximadamente a las 14:30 horas, en las oficinas ubicadas en Av. Reforma 101, piso 3, observé que el Lic. Juan Pérez Gómez, Director de Adquisiciones, recibió un sobre de parte del representante de la empresa Construcciones XYZ. Al abrir el sobre, pude ver que contenía dinero en efectivo. Posteriormente, el día 15 de abril, se publicó la licitación LIC-2023-001 donde la empresa Construcciones XYZ resultó ganadora sin cumplir con todos los requisitos establecidos en la convocatoria..."
+                  className="h-80 resize-none text-sm pr-24"
+                />
+                <div className="absolute bottom-2 right-2">
+                  <Button
+                    type="button"
+                    variant={isListening ? "destructive" : "outline"}
+                    size="sm"
+                    onClick={isListening ? stopListening : startListening}
+                    className="flex items-center gap-2 shadow-sm"
+                    disabled={!isSpeechSupported}
+                    title={!isSpeechSupported ? "El reconocimiento de voz no está disponible en tu navegador" : ""}
+                  >
+                    {isListening ? (
+                      <>
+                        <Square className="h-4 w-4" />
+                        Detener dictado
+                      </>
+                    ) : (
+                      <>
+                        <Mic className="h-4 w-4" />
+                        Iniciar dictado
+                      </>
+                    )}
+                  </Button>
                 </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+              </div>
+            </FormControl>
+            <FormDescription className="text-xs sm:text-sm">
+              Describa detalladamente los hechos que desea denunciar. Sea lo más específico posible.
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Sección de clasificación de faltas */}
+      <div className="space-y-4 mt-6">
+        <h3 className="text-base font-medium flex items-center">
+          <ClipboardList className="h-4 w-4 mr-2 text-muted-foreground" />
+          Clasificación de Faltas
+        </h3>
+        <FormDescription className="text-xs sm:text-sm">
+          Seleccione las faltas administrativas que mejor describan los hechos denunciados. Su selección nos ayudará a
+          canalizar adecuadamente su denuncia. Puede seleccionar más de una opción en cada categoría.
+        </FormDescription>
 
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-primary">Clasificación de Faltas</h3>
-          <FormDescription>
-            Seleccione las faltas administrativas que mejor describan los hechos denunciados. Puede seleccionar más de
-            una opción.
-          </FormDescription>
-
           <CheckboxGroup
             title="Faltas Administrativas Graves"
             description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."

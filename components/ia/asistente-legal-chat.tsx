@@ -20,6 +20,13 @@ const ELEMENTOS = [
   { id: "evidencia", label: "Evidencia", icon: CheckCircle }
 ]
 
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+  return ''
+}
+
 export function AsistenteLegalChat() {
   const [messages, setMessages] = useState([{ tipo: "ia", texto: "Hola, ¿podrías contarme brevemente qué ocurrió?" }])
   const [input, setInput] = useState("")
@@ -46,7 +53,7 @@ export function AsistenteLegalChat() {
           respuesta: m.texto,
         }))
 
-      const res = await fetch("/api/ia/clasificar-falta", {
+      const res = await fetch(`${getBaseUrl()}/next-api/ia/clasificar-falta`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ historial }),
@@ -74,7 +81,7 @@ export function AsistenteLegalChat() {
     setLoading(true)
 
     try {
-      const resPregunta = await fetch("/api/ia/siguiente-pregunta", {
+      const resPregunta = await fetch(`${getBaseUrl()}/next-api/ia/siguiente-pregunta`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -89,7 +96,7 @@ export function AsistenteLegalChat() {
       const textoPregunta = dataPregunta.pregunta || "Sin respuesta de la IA."
       setMessages((prev) => [...prev, { tipo: "ia", texto: textoPregunta }])
 
-      const resAnalisis = await fetch("/api/ia/analizar-elementos", {
+      const resAnalisis = await fetch(`${getBaseUrl()}/next-api/ia/analizar-elementos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ historial: historialActualizado }),

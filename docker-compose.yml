@@ -7,7 +7,7 @@ services:
        dockerfile: Dockerfile
      restart: always
      ports:
-       - 3061:3000
+       - 3060:3000
 
   api:
     image: directus/directus:10
@@ -19,7 +19,7 @@ services:
               node cli.js schema apply --yes /directus/migrations/colecciones.yaml &&
               pm2-runtime start ecosystem.config.cjs"
     ports:
-      - 8056:8055
+      - 8055:8055
     depends_on:
       - db
     environment:

@@ -79,6 +79,17 @@ const formSchema = z.object({
 
   narracionHechos: z.string().optional(),
   archivosEvidencia: z.array(z.any()).default([]),
+  hayTestigos: z.boolean().optional(),
+  testigos: z
+    .array(
+      z.object({
+        nombre: z.string().optional(),
+        telefono: z.string().optional(),
+        email: z.string().optional(),
+        declaracion: z.string().optional(),
+      }),
+    )
+    .optional(),
 })
 
 const steps = [
@@ -86,6 +97,7 @@ const steps = [
   { title: "Ubicación del Hecho", icon: "ubicacion" },
   { title: "Persona Denunciada", icon: "persona" },
   { title: "Hechos y Faltas Cometidas", icon: "faltas" },
+  { title: "Pruebas y Testigos", icon: "pruebas" },
 ]
 
 export function MultiStepForm() {
@@ -144,6 +156,8 @@ export function MultiStepForm() {
       },
       narracionHechos: "",
       archivosEvidencia: [],
+      hayTestigos: false,
+      testigos: [],
     },
   })
 
@@ -175,8 +189,9 @@ export function MultiStepForm() {
     if (field.startsWith("denunciante")) return 0
     if (field.startsWith("ubicacionHecho")) return 1
     if (field.startsWith("personaDenunciada")) return 2
-    if (field.startsWith("faltaCometida")) return 3
-    if (field.startsWith("narracionHechos") || field.startsWith("archivosEvidencia")) return 4
+    if (field.startsWith("faltaCometida") || field.startsWith("narracionHechos")) return 3
+    if (field.startsWith("archivosEvidencia") || field.startsWith("hayTestigos") || field.startsWith("testigos"))
+      return 4
     return -1
   }
 
@@ -240,7 +255,7 @@ export function MultiStepForm() {
                       <Button
                         type="button"
                         variant="ghost"
-                        className={`w-10 h-10 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
+                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
                           index === step
                             ? "bg-primary text-primary-foreground"
                             : index < step
@@ -252,7 +267,7 @@ export function MultiStepForm() {
                       >
                         <Icon className="h-5 w-5" />
                       </Button>
-                      <span className="text-xs mt-1 text-center hidden md:block max-w-[120px] whitespace-normal min-h-[2.5em]">{s.title}</span>
+                      {/* <span className="text-xs mt-1 text-center hidden md:block max-w-[120px] whitespace-normal min-h-[2.5em]">{s.title}</span> */}
                       {/* {index < steps.length - 1 && (
                         <div className="hidden md:block h-[1px] w-6 bg-muted/50 absolute left-[calc(100%+0.25rem)] top-5" />
                       )} */}
@@ -321,7 +336,7 @@ export function MultiStepForm() {
           </div>
 
           {/* Footer with helpful text */}
-          <div className="border-t mt-auto">
+          {/* <div className="border-t mt-auto">
             <div className="container mx-auto px-4 py-3">
               <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
                 <p>Complete todos los campos requeridos</p>
@@ -330,7 +345,7 @@ export function MultiStepForm() {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <DenunciaModal
@@ -345,4 +360,3 @@ export function MultiStepForm() {
     </Form>
   )
 }
-

@@ -1,365 +1,599 @@
-"use client";
+//@ts-nocheck
+"use client"
+import { useState, useEffect, useRef, useCallback } from "react"
+import mapboxgl from "mapbox-gl"
+import "mapbox-gl/dist/mapbox-gl.css"
+//import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css"
+import { Input } from "@/components/ui/input"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
+import { MapPin, Search, Locate, Edit, Hash, Building, Calendar, Clock } from "lucide-react"
+import debounce from "lodash/debounce"
+import { cn } from "@/lib/utils"
+import { Textarea } from "@/components/ui/textarea"
+import type { UseFormReturn } from "react-hook-form"
 
-import { useState, useEffect } from "react";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Combobox } from "@/components/ui/combobox";
-import { Loader2 } from "lucide-react";
-import type { UseFormReturn } from "react-hook-form";
-import Image from "next/image";
-import LogoFederal from "@/components/orden-federal.svg";
-import LogoEstatal from "@/components/orden-estatal.svg";
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+
+interface AddressDetails {
+  street: string
+  number: string
+  city: string
+  state: string
+  country: string
+  postalCode: string
+}
+
+interface SearchResult {
+  place_name: string
+  center: [number, number]
+  place_type: string[]
+  properties: {
+    category?: string
+  }
+}
 
 interface UbicacionHechoStepProps {
-  form: UseFormReturn<any> | null;
+  form: UseFormReturn<any>
 }
-
-interface EntePublico {
-  id: number;
-  nombre: string;
-}
-
-const entidadesFederativas = [
-  { nombre: "Aguascalientes", clave: "01", valor: 1 },
-  { nombre: "Baja California", clave: "02", valor: 2 },
-  { nombre: "Baja California Sur", clave: "03", valor: 3 },
-  { nombre: "Campeche", clave: "04", valor: 4 },
-  { nombre: "Coahuila", clave: "05", valor: 5 },
-  { nombre: "Colima", clave: "06", valor: 6 },
-  { nombre: "Chiapas", clave: "07", valor: 7 },
-  { nombre: "Chihuahua", clave: "08", valor: 8 },
-  { nombre: "Ciudad de México", clave: "09", valor: 9 },
-  { nombre: "Durango", clave: "10", valor: 10 },
-  { nombre: "Guanajuato", clave: "11", valor: 11 },
-  { nombre: "Guerrero", clave: "12", valor: 12 },
-  { nombre: "Hidalgo", clave: "13", valor: 13 },
-  { nombre: "Jalisco", clave: "14", valor: 14 },
-  { nombre: "México", clave: "15", valor: 15 },
-  { nombre: "Michoacán", clave: "16", valor: 16 },
-  { nombre: "Morelos", clave: "17", valor: 17 },
-  { nombre: "Nayarit", clave: "18", valor: 18 },
-  { nombre: "Nuevo León", clave: "19", valor: 19 },
-  { nombre: "Oaxaca", clave: "20", valor: 20 },
-  { nombre: "Puebla", clave: "21", valor: 21 },
-  { nombre: "Querétaro", clave: "22", valor: 22 },
-  { nombre: "Quintana Roo", clave: "23", valor: 23 },
-  { nombre: "San Luis Potosí", clave: "24", valor: 24 },
-  { nombre: "Sinaloa", clave: "25", valor: 25 },
-  { nombre: "Sonora", clave: "26", valor: 26 },
-  { nombre: "Tabasco", clave: "27", valor: 27 },
-  { nombre: "Tamaulipas", clave: "28", valor: 28 },
-  { nombre: "Tlaxcala", clave: "29", valor: 29 },
-  { nombre: "Veracruz", clave: "30", valor: 30 },
-  { nombre: "Yucatán", clave: "31", valor: 31 },
-  { nombre: "Zacatecas", clave: "32", valor: 32 },
-]
 
 export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
-  const [step, setStep] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<"estatal" | "federal" | null>(null);
-  const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedEnteName, setSelectedEnteName] = useState<string>("");
+  const [coordinates, setCoordinates] = useState({ lat: 19.432608, lng: -99.133209 }) // Coordenadas iniciales (CDMX)
+  const mapContainer = useRef<HTMLDivElement | null>(null)
+  const mapRef = useRef<mapboxgl.Map | null>(null)
+  const markerRef = useRef<mapboxgl.Marker | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [showResults, setShowResults] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [tempMarker, setTempMarker] = useState<mapboxgl.Marker | null>(null)
+  const [manualAddressMode, setManualAddressMode] = useState(false)
+  const [addressDetails, setAddressDetails] = useState<AddressDetails>({
+    street: "",
+    number: "",
+    city: "",
+    state: "",
+    country: "",
+    postalCode: "",
+  })
 
-
-  useEffect(() => {
-    if (selectedOption === "federal") {
-      form?.setValue("ubicacionHecho.lugarHecho.entidad", 33); // Valor para federación
-      fetchEntesPublicos("00");
-    }
-  }, [selectedOption, form]);
-
-  const fetchEntesPublicos = async (clave: string) => {
-    setLoading(true);
+  const reverseGeocode = async (lat: number, lng: number) => {
     try {
       const response = await fetch(
-        `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=${clave}&limit=-1`
-      );
-      const data = await response.json();
-      setEntesPublicos(data.data);
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es&country=mx`,
+      )
+      const data = await response.json()
+      const features = data.features[0]
+
+      if (features) {
+        const context = features.context || []
+        const address: AddressDetails = {
+          street: features.text || "",
+          number: features.address || "",
+          city: context.find((c: any) => c.id.includes("place"))?.text || "",
+          state: context.find((c: any) => c.id.includes("region"))?.text || "",
+          country: context.find((c: any) => c.id.includes("country"))?.text || "",
+          postalCode: context.find((c: any) => c.id.includes("postcode"))?.text || "",
+        }
+        setAddressDetails(address)
+
+        // Actualizar los valores del formulario
+        form.setValue("calle", address.street)
+        form.setValue("numero", address.number)
+        form.setValue("ciudad", address.city)
+        form.setValue("estado", address.state)
+        form.setValue("pais", address.country)
+        form.setValue("codigoPostal", address.postalCode)
+        form.setValue(
+          "direccion",
+          `${address.street} ${address.number}, ${address.city}, ${address.state}, ${address.country}`,
+        )
+      }
     } catch (error) {
-      console.error("Error fetching entes públicos:", error);
+      console.error("Error en geocodificación inversa:", error)
     }
-    setLoading(false);
-  };
-
-  const handleEntidadChange = (value: string) => {
-    const entidad = entidadesFederativas.find((e) => e.nombre === value);
-    if (entidad) {
-      // Asegurarse de que se está estableciendo un número, no una cadena
-      form?.setValue("ubicacionHecho.lugarHecho.entidad", entidad.valor, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true
-      });
-
-      // Resetear el ente público al cambiar la entidad
-      form?.setValue("ubicacionHecho.lugarHecho.entePublico", undefined, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true
-      });
-
-      // Registrar la acción para debugging
-      console.log(`Entidad seleccionada: ${entidad.nombre}, valor: ${entidad.valor}, clave: ${entidad.clave}`);
-
-      // Fetch entes públicos para la entidad seleccionada
-      fetchEntesPublicos(entidad.clave);
-    }
-  };
-
-  const handleEntePublicoChange = (value: string) => {
-    const selectedEnte = entesPublicos.find(ente => ente.id.toString() === value);
-    if (selectedEnte) {
-      // Asegurar que se establece como número, no cadena
-      form?.setValue("ubicacionHecho.lugarHecho.entePublico", selectedEnte.id, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true
-      });
-
-      setSelectedEnteName(selectedEnte.nombre);
-
-      // Registrar la acción para debugging
-      console.log(`Ente público seleccionado: ${selectedEnte.nombre}, id: ${selectedEnte.id}`);
-    }
-  };
-
-  if (!form) {
-    return <div>Cargando...</div>;
   }
 
-  const renderOptionSelection = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-      <Card
-        className="cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center"
-        onClick={() => {
-          setSelectedOption("estatal")
-          setStep(1)
-        }}
-      >
-        <CardContent className="p-6 text-center">
-          <h3 className="text-2xl font-semibold mb-4">Estatal</h3>
-          <Image
-            src={LogoEstatal || "/placeholder.svg"}
-            alt="Mapa de México"
-            height={200}
-            className="rounded-md mx-auto"
-            style={{
-              filter: "invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)",
-            }}
-          />
-        </CardContent>
-      </Card>
-      <Card
-        className="cursor-pointer hover:shadow-lg transition-shadow duration-300 flex flex-col items-center justify-center"
-        onClick={() => {
-          setSelectedOption("federal")
-          setStep(1)
-          fetchEntesPublicos("00")
-        }}
-      >
-        <CardContent className="p-6 text-center">
-          <h3 className="text-2xl font-semibold mb-4">Federal</h3>
-          <Image
-            src={LogoFederal || "/placeholder.svg"}
-            alt="Escudo de México"
-            height={200}
-            className="rounded-md mx-auto"
-            style={{
-              filter: "invert(48%) sepia(13%) saturate(3207%) hue-rotate(130deg) brightness(95%) contrast(80%)",
-            }}
-          />
-        </CardContent>
-      </Card>
-    </div>
+  const getIconForPlaceType = (result: SearchResult) => {
+    const type = result.place_type[0]
+    const category = result.properties?.category
+
+    if (category === "building") return "🏢"
+    switch (type) {
+      case "address":
+        return "📍"
+      case "place":
+        return "🏛️"
+      case "poi":
+        return "🎯"
+      case "neighborhood":
+        return "🏘️"
+      case "postcode":
+        return "📮"
+      default:
+        return "📍"
+    }
+  }
+
+  const performSearch = async (query: string) => {
+    if (!query) {
+      setSearchResults([])
+      setShowResults(false)
+      if (tempMarker) {
+        tempMarker.remove()
+        setTempMarker(null)
+      }
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgl.accessToken}&country=mx&language=es&types=place,address,poi,neighborhood,postcode`,
+      )
+      const data = await response.json()
+      if (data && data.features) {
+        setSearchResults(data.features)
+        setShowResults(true)
+      } else {
+        setSearchResults([])
+        setShowResults(false)
+      }
+    } catch (error) {
+      console.error("Error en búsqueda:", error)
+      setSearchResults([])
+      setShowResults(false)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const debouncedSearch = useCallback(
+    debounce((query: string) => performSearch(query), 500),
+    [],
   )
 
-  const renderForm = () => (
-    <div className="space-y-6">
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 gap-4">
-          {selectedOption === "estatal" && (
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.entidad"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">
-                    Entidad Federativa
-                  </FormLabel>
-                  <FormDescription>
-                    Selecciona la entidad federativa donde ocurrió el hecho o
-                    falta administrativa.
-                  </FormDescription>
-                  <Select
-                    onValueChange={handleEntidadChange}
-                    value={field.value ? entidadesFederativas.find(e => e.valor === field.value)?.nombre : ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecciona una entidad" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {entidadesFederativas.map((entidad) => (
-                        <SelectItem key={entidad.clave} value={entidad.nombre}>
-                          {entidad.nombre}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
+  useEffect(() => {
+    debouncedSearch(searchQuery)
+    return () => debouncedSearch.cancel()
+  }, [searchQuery, debouncedSearch])
+
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude: lat, longitude: lng } = position.coords
+          setCoordinates({ lat, lng })
+          if (mapRef.current && markerRef.current) {
+            mapRef.current.flyTo({ center: [lng, lat], zoom: 15 })
+            markerRef.current.setLngLat([lng, lat])
+            reverseGeocode(lat, lng)
+          }
+        },
+        (error) => {
+          console.error("Error obteniendo ubicación:", error)
+        },
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (mapContainer.current) {
+      // Inicializar el mapa
+      const map = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [coordinates.lng, coordinates.lat],
+        zoom: 3,
+        attributionControl: false, // Quitar la atribución (footer)
+      })
+      mapRef.current = map
+
+      // Inicializar el marcador principal
+      const marker = new mapboxgl.Marker({
+        color: "#FF0000",
+        draggable: true,
+      })
+        .setLngLat([coordinates.lng, coordinates.lat])
+        .addTo(map)
+      markerRef.current = marker
+
+      // Actualizar coordenadas cuando se arrastra el marcador
+      marker.on("dragend", () => {
+        const lngLat = marker.getLngLat()
+        setCoordinates({ lat: lngLat.lat, lng: lngLat.lng })
+        reverseGeocode(lngLat.lat, lngLat.lng)
+      })
+
+      // Añadir controles de navegación (zoom)
+      map.addControl(new mapboxgl.NavigationControl(), "top-right")
+
+      // Actualizar coordenadas cuando el mapa se mueve
+      map.on("moveend", () => {
+        const center = map.getCenter()
+        const lat = center.lat
+        const lng = center.lng
+        setCoordinates({ lat, lng })
+        // Actualizar posición del marcador cuando el mapa se mueve
+        if (markerRef.current) {
+          markerRef.current.setLngLat([lng, lat])
+        }
+        reverseGeocode(lat, lng)
+      })
+
+      // Hacer la geocodificación inicial
+      //reverseGeocode(coordinates.lat, coordinates.lng);
+
+      return () => {
+        if (tempMarker) tempMarker.remove()
+        if (markerRef.current) markerRef.current.remove()
+        map.remove()
+      }
+    }
+  }, [])
+
+  return (
+    <div className="space-y-4">
+      <div className="relative">
+        <div className="flex gap-2 mb-4">
+          <div className="flex-1 relative">
+            <Input
+              type="text"
+              placeholder="Buscar dirección (calle, número, colonia, ciudad...)"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pr-20 text-sm h-9 sm:h-10"
             />
-          )}
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.lugarHecho.entePublico"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-xs font-medium">
-                  Ente Público
-                </FormLabel>
-                <FormDescription>
-                  {selectedOption === "estatal"
-                    ? "Primero selecciona una entidad federativa para ver los entes públicos disponibles. El ente público es la institución donde ocurrió el hecho denunciado."
-                    : "Selecciona la institución federal donde ocurrió el hecho denunciado."}
-                </FormDescription>
-                <div className="w-full">
-                  <Combobox
-                    options={entesPublicos.map((ente) => ({
-                      label: ente.nombre,
-                      value: ente.id.toString()
-                    }))}
-                    value={field.value?.toString() || ""}
-                    onChange={handleEntePublicoChange}
-                    placeholder="Selecciona un ente público"
-                    disabled={
-                      selectedOption === "estatal" &&
-                      !form.getValues("ubicacionHecho.lugarHecho.entidad")
-                    }
-                  />
-                </div>
-                {loading && (
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>Cargando entes públicos...</span>
-                  </div>
-                )}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.codigoPostal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
-                  <FormDescription>Ingresa el código postal de la ubicación donde ocurrió el hecho.</FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. 03100" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              ) : (
+                <Search className="h-4 w-4" />
               )}
-            />
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.calle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Calle</FormLabel>
-                  <FormDescription>
-                    Proporciona el nombre de la calle donde se ubica la institución o lugar del hecho.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. Av. Insurgentes Sur" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.numeroExterior"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
-                  <FormDescription>Indica el número exterior del inmueble donde ocurrió el hecho.</FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. 1735" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.lugarHecho.numeroInterior"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs font-medium">Número Interior (opcional)</FormLabel>
-                  <FormDescription>
-                    Si aplica, proporciona el número interior, piso u oficina donde ocurrió el hecho.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} placeholder="Ej. Piso 10, Oficina 3" className="text-sm" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            </Button>
+          </div>
+          <Button variant="outline" onClick={getCurrentLocation} title="Obtener ubicación actual">
+            <Locate className="h-4 w-4 mr-2" />
+            Mi Ubicación
+          </Button>
+        </div>
+
+        {showResults && searchResults && searchResults.length > 0 && (
+          <div className="absolute z-10 w-full bg-white shadow-lg rounded-md mt-1">
+            {searchResults.map((result, index) => (
+              <div
+                key={index}
+                className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                onClick={() => {
+                  if (mapRef.current) {
+                    if (tempMarker) tempMarker.remove()
+                    const [lng, lat] = result.center
+
+                    // Centramos el mapa en la ubicación seleccionada
+                    mapRef.current.flyTo({
+                      center: [lng, lat],
+                      zoom: 15,
+                      speed: 1.5,
+                    })
+
+                    // Actualizamos las coordenadas
+                    setCoordinates({ lat, lng })
+
+                    // Hacemos geocodificación inversa para actualizar la dirección
+                    reverseGeocode(lat, lng)
+                  }
+                  setShowResults(false)
+                  setSearchQuery("")
+                }}
+              >
+                <span className="mr-2" role="img" aria-label="location type">
+                  {getIconForPlaceType(result)}
+                </span>
+                {result.place_name}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="relative">
+        {/* Contenedor del mapa */}
+        <div style={{ height: "400px", width: "100%" }} ref={mapContainer} className="rounded-lg overflow-hidden" />
+
+        {/* Pin fijo en el centro */}
+        <div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+          style={{ marginTop: "-20px" }} // Ajuste para centrar correctamente el pin
+        >
+          <div className="flex flex-col items-center">
+            <MapPin size={45} color="#FF4444" fill="#404040" strokeWidth={1.6} />
           </div>
         </div>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-primary">Fecha y Hora del Hecho Denunciado</h3>
+      <div className="flex items-center justify-between mb-4 border-t pt-4 mt-6">
+        <div>
+          <h3 className="text-base font-medium flex items-center">
+            <Edit className="h-4 w-4 mr-2 text-muted-foreground" />
+            Edición manual de dirección
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1">
+            Activa esta opción si necesitas editar manualmente los campos de la dirección
+          </p>
+        </div>
+        <Switch checked={manualAddressMode} onCheckedChange={setManualAddressMode} id="manual-address-mode" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <FormField
+          control={form.control}
+          name="codigoPostal"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <Hash className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    {...field}
+                    placeholder="Ej. 06700"
+                    className={cn(
+                      "text-sm h-9 sm:h-10 pl-8",
+                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
+                    )}
+                    readOnly={!manualAddressMode}
+                    onChange={(e) => {
+                      field.onChange(e)
+                      if (manualAddressMode) {
+                        setAddressDetails((prev) => ({ ...prev, postalCode: e.target.value }))
+                      }
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">
+                Ingresa el código postal de la ubicación donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="calle"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs font-medium">Calle</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <MapPin className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    {...field}
+                    placeholder="Ej. Av. Insurgentes"
+                    className={cn(
+                      "text-sm h-9 sm:h-10 pl-8",
+                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
+                    )}
+                    readOnly={!manualAddressMode}
+                    onChange={(e) => {
+                      field.onChange(e)
+                      if (manualAddressMode) {
+                        setAddressDetails((prev) => ({ ...prev, street: e.target.value }))
+                      }
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">
+                Escribe el nombre de la calle donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="numero"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <Hash className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    {...field}
+                    placeholder="Ej. 123"
+                    className={cn(
+                      "text-sm h-9 sm:h-10 pl-8",
+                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
+                    )}
+                    readOnly={!manualAddressMode}
+                    onChange={(e) => {
+                      field.onChange(e)
+                      if (manualAddressMode) {
+                        setAddressDetails((prev) => ({ ...prev, number: e.target.value }))
+                      }
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">
+                Indica el número del inmueble donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="ciudad"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs font-medium">Ciudad</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <Building className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    {...field}
+                    placeholder="Ej. Ciudad de México"
+                    className={cn(
+                      "text-sm h-9 sm:h-10 pl-8",
+                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
+                    )}
+                    readOnly={!manualAddressMode}
+                    onChange={(e) => {
+                      field.onChange(e)
+                      if (manualAddressMode) {
+                        setAddressDetails((prev) => ({ ...prev, city: e.target.value }))
+                      }
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">Ciudad donde ocurrieron los hechos</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="estado"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs font-medium">Estado</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <MapPin className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    {...field}
+                    placeholder="Ej. CDMX"
+                    className={cn(
+                      "text-sm h-9 sm:h-10 pl-8",
+                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
+                    )}
+                    readOnly={!manualAddressMode}
+                    onChange={(e) => {
+                      field.onChange(e)
+                      if (manualAddressMode) {
+                        setAddressDetails((prev) => ({ ...prev, state: e.target.value }))
+                      }
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">Estado o entidad federativa</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="pais"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-xs font-medium">País</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <MapPin className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    {...field}
+                    placeholder="Ej. México"
+                    className={cn(
+                      "text-sm h-9 sm:h-10 pl-8",
+                      !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "",
+                    )}
+                    readOnly={!manualAddressMode}
+                    onChange={(e) => {
+                      field.onChange(e)
+                      if (manualAddressMode) {
+                        setAddressDetails((prev) => ({ ...prev, country: e.target.value }))
+                      }
+                    }}
+                  />
+                </div>
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">País donde ocurrieron los hechos</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="otrasReferencias"
+          render={({ field }) => (
+            <FormItem className="md:col-span-2">
+              <FormLabel className="text-xs font-medium">Otras referencias del lugar</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  placeholder="Ej. Edificio de color azul, frente al parque, cerca de la estación del metro..."
+                  className={cn("text-sm min-h-[80px]", !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "")}
+                  readOnly={!manualAddressMode}
+                />
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">
+                Proporciona referencias adicionales que ayuden a identificar el lugar donde ocurrieron los hechos
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      {/* Nueva sección para fecha y hora de los hechos */}
+      <div className="space-y-4 border-t pt-6 mt-6">
+        <h3 className="text-lg font-semibold text-primary flex items-center">
+          <Calendar className="h-5 w-5 mr-2 text-primary/80" />
+          Fecha y Hora del Hecho Denunciado
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="ubicacionHecho.lugarHecho.fechaHecho"
+            name="fechaHecho"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Fecha del Hecho</FormLabel>
-                <FormDescription>Selecciona la fecha en que ocurrió el hecho o falta administrativa.</FormDescription>
                 <FormControl>
-                  <Input {...field} type="date" className="text-sm" />
+                  <div className="relative">
+                    <Calendar className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input {...field} type="date" className="text-sm h-9 sm:h-10 pl-8" />
+                  </div>
                 </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                Selecciona la fecha en que ocurrieron los hechos
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="ubicacionHecho.lugarHecho.horaHecho"
+            name="horaHecho"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Hora del Hecho</FormLabel>
-                <FormDescription>Indica la hora aproximada en que ocurrió el hecho denunciado.</FormDescription>
                 <FormControl>
-                  <Input {...field} type="time" className="text-sm" />
+                  <div className="relative">
+                    <Clock className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input {...field} type="time" className="text-sm h-9 sm:h-10 pl-8" />
+                  </div>
                 </FormControl>
+                <FormDescription className="text-xs sm:text-sm">
+                  Indica la hora aproximada en que ocurrieron los hechos
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -367,28 +601,5 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         </div>
       </div>
     </div>
-  );
-
-  return (
-    <div className="space-y-6 p-6">
-      {step === 0 && renderOptionSelection()}
-      {step === 1 && (
-        <>
-          <h2 className="text-xl font-semibold mb-4">
-            {selectedOption === "estatal" ? "Ubicación Estatal" : "Ubicación Federal"}
-          </h2>
-          {renderForm()}
-          <Button
-            onClick={() => {
-              setStep(0);
-            }}
-            variant="outline"
-            className="mt-4"
-          >
-            Volver a selección
-          </Button>
-        </>
-      )}
-    </div>
-  );
+  )
 }

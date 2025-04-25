@@ -28,9 +28,9 @@ export function HelpContent({ step }: HelpContentProps) {
         "Seleccione las faltas que considera que se han cometido. Puede elegir entre faltas graves, no graves y hechos de corrupción.",
     },
     {
-      title: "Narración y Evidencia",
+      title: "Pruebas y Testigos",
       description:
-        "Describa en detalle lo sucedido y adjunte cualquier evidencia que pueda tener para respaldar su denuncia.",
+        "Adjunte documentos o archivos que respalden su denuncia y proporcione información sobre testigos que puedan corroborar los hechos.",
     },
   ]
 
@@ -43,4 +43,3 @@ export function HelpContent({ step }: HelpContentProps) {
     </SheetContent>
   )
 }
-

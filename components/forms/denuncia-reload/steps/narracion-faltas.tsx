@@ -1,16 +1,18 @@
-// @ts-nocheck
+//@ts-nocheck
 "use client"
 import { useState, useEffect, useRef } from "react"
 import type React from "react"
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { X, Upload, Mic, Square } from "lucide-react"
+import { Mic, Square } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { UseFormReturn } from "react-hook-form"
+
+declare var webkitSpeechRecognition: any
+declare var SpeechRecognition: any
 
 const faltasGraves = [
   {
@@ -147,11 +149,10 @@ interface NarracionYFaltaStepProps {
 }
 
 export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
-  const [dragActive, setDragActive] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isSpeechSupported, setIsSpeechSupported] = useState(true)
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<any>(null)
 
   useEffect(() => {
     // Verificar si el navegador soporta la Web Speech API
@@ -164,7 +165,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
     }
 
     // Inicializar el reconocimiento de voz
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition
     const recognition = new SpeechRecognition()
     recognition.continuous = true
     recognition.interimResults = true
@@ -226,104 +227,10 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
     return <div>Cargando...</div>
   }
 
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true)
-    } else if (e.type === "dragleave") {
-      setDragActive(false)
-    }
-  }
-
-  const handleDrop = (e: React.DragEvent, field: any) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files)
-      const validFiles = files.filter((file) => {
-        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
-        const extension = "." + file.name.split(".").pop()?.toLowerCase()
-        return validTypes.includes(extension) && file.size <= 10 * 1024 * 1024
-      })
-
-      field.onChange([...(field.value || []), ...validFiles])
-    }
-  }
-
   return (
     <div className="space-y-6 p-6">
       <div className="space-y-6">
         <div className="space-y-4">
-          {/* <div className="bg-primary/5 rounded-lg p-6 border border-primary/20">
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-primary">Tu voz es importante</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Cuéntanos detalladamente lo sucedido. Una descripción clara y completa nos ayudará a dar seguimiento efectivo a tu denuncia.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white p-4 rounded-lg border">
-                  <h4 className="text-sm font-medium mb-2">¿Qué debes incluir?</h4>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Fechas y horarios exactos
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Nombres completos de los involucrados
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Lugares específicos
-                    </li>
-                  </ul>
-                </div>
-                <div className="bg-white p-4 rounded-lg border">
-                  <h4 className="text-sm font-medium mb-2">Recomendaciones</h4>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Sé objetivo y conciso
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Incluye testigos si los hay
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg className="h-4 w-4 text-primary mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Menciona documentos o evidencias
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div> */}
-
           <FormField
             control={form.control}
             name="narracionHechos"
@@ -388,117 +295,6 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
               </FormItem>
             )}
           />
-
-          <FormField
-            control={form.control}
-            name="archivosEvidencia"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-base font-semibold">Evidencia Documental</FormLabel>
-                <FormDescription>
-                  Adjunte documentos, fotografías u otros archivos que respalden su denuncia. Los documentos ayudarán a
-                  sustentar los hechos descritos.
-                </FormDescription>
-                <FormControl>
-                  <div
-                    className={`border-2 border-dashed rounded-lg p-4 text-center ${dragActive ? "border-primary bg-primary/5" : "border-muted-foreground/30"}`}
-                    onDragEnter={(e) => handleDrag(e)}
-                    onDragOver={(e) => handleDrag(e)}
-                    onDragLeave={(e) => handleDrag(e)}
-                    onDrop={(e) => handleDrop(e, field)}
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <Upload className="h-8 w-8 text-muted-foreground" />
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium">Arrastre archivos aquí o haga clic para seleccionar</p>
-                        <p className="text-xs text-muted-foreground">
-                          Formatos: PDF, DOC, DOCX, JPG, JPEG, PNG. Máx. 10 MB por archivo.
-                        </p>
-                      </div>
-                      <Input
-                        type="file"
-                        multiple
-                        className="hidden"
-                        id="file-upload"
-                        onChange={(e) => {
-                          const files = Array.from(e.target.files || [])
-                          field.onChange([...(field.value || []), ...files])
-                        }}
-                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                      />
-                      <label htmlFor="file-upload">
-                        <Button type="button" variant="outline" size="sm" className="mt-2">
-                          Seleccionar archivos
-                        </Button>
-                      </label>
-                    </div>
-                  </div>
-                </FormControl>
-
-                {field.value?.length > 0 && (
-                  <div className="mt-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium">Archivos adjuntos ({field.value.length})</p>
-                      {field.value.length > 0 && (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 text-xs"
-                          onClick={() => field.onChange([])}
-                        >
-                          Eliminar todos
-                        </Button>
-                      )}
-                    </div>
-                    <div className="max-h-40 overflow-y-auto pr-2">
-                      {field.value.map((file: File, index: number) => {
-                        const extension = file.name.split(".").pop()?.toLowerCase()
-                        const isImage = ["jpg", "jpeg", "png"].includes(extension || "")
-                        const isPdf = extension === "pdf"
-                        const isDoc = ["doc", "docx"].includes(extension || "")
-
-                        return (
-                          <div key={index} className="flex items-center gap-2 rounded-md border p-2 text-sm mb-2">
-                            <div className="bg-muted h-8 w-8 rounded flex items-center justify-center">
-                              {isImage && (
-                                <img
-                                  src={URL.createObjectURL(file) || "/placeholder.svg"}
-                                  alt="preview"
-                                  className="h-8 w-8 object-cover rounded"
-                                />
-                              )}
-                              {isPdf && <span className="text-xs font-medium">PDF</span>}
-                              {isDoc && <span className="text-xs font-medium">DOC</span>}
-                            </div>
-                            <div className="flex-1 truncate">
-                              <p className="truncate font-medium">{file.name}</p>
-                              <p className="text-xs text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
-                            </div>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0"
-                              onClick={() => {
-                                const newFiles = [...field.value]
-                                newFiles.splice(index, 1)
-                                field.onChange(newFiles)
-                              }}
-                            >
-                              <X className="h-4 w-4" />
-                              <span className="sr-only">Eliminar archivo</span>
-                            </Button>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
 
         <div className="space-y-4">
@@ -511,7 +307,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
           <CheckboxGroup
             title="Faltas Administrativas Graves"
             description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."
-            name="faltasCometidas.faltasGraves"
+            name="faltaCometida.faltaGrave"
             items={faltasGraves}
             form={form}
           />
@@ -519,7 +315,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
           <CheckboxGroup
             title="Faltas Administrativas No Graves"
             description="Conductas que representan incumplimientos menores a la normatividad sin intención de obtener beneficios indebidos."
-            name="faltasCometidas.faltasNoGraves"
+            name="faltaCometida.faltaNoGrave"
             items={faltasNoGraves}
             form={form}
           />
@@ -527,7 +323,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
           <CheckboxGroup
             title="Hechos de Corrupción"
             description="Conductas que implican el abuso del poder para obtener beneficios privados o ventajas indebidas."
-            name="faltasCometidas.hechosCorrupcion"
+            name="faltaCometida.hechosCorrupcion"
             items={hechosCorrupcion}
             form={form}
           />

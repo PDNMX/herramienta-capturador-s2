@@ -79,6 +79,17 @@ const formSchema = z.object({
 
   narracionHechos: z.string().optional(),
   archivosEvidencia: z.array(z.any()).default([]),
+  hayTestigos: z.boolean().optional(),
+  testigos: z
+    .array(
+      z.object({
+        nombre: z.string().optional(),
+        telefono: z.string().optional(),
+        email: z.string().optional(),
+        declaracion: z.string().optional(),
+      }),
+    )
+    .optional(),
 })
 
 const steps = [
@@ -86,6 +97,7 @@ const steps = [
   { title: "Ubicación del Hecho", icon: "ubicacion" },
   { title: "Persona Denunciada", icon: "persona" },
   { title: "Hechos y Faltas Cometidas", icon: "faltas" },
+  { title: "Pruebas y Testigos", icon: "pruebas" },
 ]
 
 export function MultiStepForm() {
@@ -144,6 +156,8 @@ export function MultiStepForm() {
       },
       narracionHechos: "",
       archivosEvidencia: [],
+      hayTestigos: false,
+      testigos: [],
     },
   })
 
@@ -175,8 +189,9 @@ export function MultiStepForm() {
     if (field.startsWith("denunciante")) return 0
     if (field.startsWith("ubicacionHecho")) return 1
     if (field.startsWith("personaDenunciada")) return 2
-    if (field.startsWith("faltaCometida")) return 3
-    if (field.startsWith("narracionHechos") || field.startsWith("archivosEvidencia")) return 4
+    if (field.startsWith("faltaCometida") || field.startsWith("narracionHechos")) return 3
+    if (field.startsWith("archivosEvidencia") || field.startsWith("hayTestigos") || field.startsWith("testigos"))
+      return 4
     return -1
   }
 
@@ -345,4 +360,3 @@ export function MultiStepForm() {
     </Form>
   )
 }
-

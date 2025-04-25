@@ -255,7 +255,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
 
         {/* SECCIÓN 2: Tipo de Persona - Ahora es la segunda sección */}
         <div className="space-y-4 border-t pt-4">
-          <h2 className="font-semibold text-primary text-lg">Tipo de Persona</h2>
+          <h2 className="font-semibold text-primary text-lg">Persona o personas denunciadas</h2>
           <FormDescription className="text-xs sm:text-sm">
             Selecciona si la persona denunciada pertenece al servicio público o es un particular.
           </FormDescription>

@@ -3,6 +3,7 @@ import { MapPin } from "lucide-react"
 import { Users } from "lucide-react"
 import { ClipboardList } from "lucide-react"
 import { PencilIcon as NotePencil } from "lucide-react"
+import { FileText } from "lucide-react"
 
 export const stepIcons = {
   denunciante: User,
@@ -10,5 +11,5 @@ export const stepIcons = {
   persona: Users,
   faltas: ClipboardList,
   narracion: NotePencil,
+  pruebas: FileText,
 }
-

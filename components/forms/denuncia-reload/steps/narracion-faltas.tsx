@@ -7,11 +7,10 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescripti
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { X, Upload, CheckCircle2, Mic, Square } from "lucide-react"
+import { X, Upload, Mic, Square } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { UseFormReturn } from "react-hook-form"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 
 const faltasGraves = [
   {
@@ -156,8 +155,10 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
 
   useEffect(() => {
     // Verificar si el navegador soporta la Web Speech API
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      setError('Tu navegador no soporta el reconocimiento de voz. Por favor, usa Chrome o Edge en caso de que quieras usar esta función.')
+    if (!("webkitSpeechRecognition" in window) && !("SpeechRecognition" in window)) {
+      setError(
+        "Tu navegador no soporta el reconocimiento de voz. Por favor, usa Chrome o Edge en caso de que quieras usar esta función.",
+      )
       setIsSpeechSupported(false)
       return
     }
@@ -167,7 +168,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
     const recognition = new SpeechRecognition()
     recognition.continuous = true
     recognition.interimResults = true
-    recognition.lang = 'es-MX'
+    recognition.lang = "es-MX"
 
     recognition.onstart = () => {
       setIsListening(true)
@@ -180,20 +181,20 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
 
     recognition.onerror = (event) => {
       setIsListening(false)
-      if (event.error === 'not-allowed') {
-        setError('Por favor, permite el acceso al micrófono para usar esta función.')
+      if (event.error === "not-allowed") {
+        setError("Por favor, permite el acceso al micrófono para usar esta función.")
       } else {
-        setError('Ocurrió un error con el reconocimiento de voz. Por favor, intenta nuevamente.')
+        setError("Ocurrió un error con el reconocimiento de voz. Por favor, intenta nuevamente.")
       }
     }
 
     recognition.onresult = (event) => {
       const transcript = Array.from(event.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join('')
+        .map((result) => result[0])
+        .map((result) => result.transcript)
+        .join("")
 
-      form?.setValue('narracionHechos', transcript)
+      form?.setValue("narracionHechos", transcript)
     }
 
     recognitionRef.current = recognition
@@ -210,7 +211,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
       try {
         recognitionRef.current.start()
       } catch (error) {
-        setError('No se pudo iniciar el reconocimiento de voz. Por favor, intenta nuevamente.')
+        setError("No se pudo iniciar el reconocimiento de voz. Por favor, intenta nuevamente.")
       }
     }
   }
@@ -330,7 +331,8 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
               <FormItem>
                 <FormLabel className="text-base font-semibold">Descripción Detallada de los Hechos</FormLabel>
                 <FormDescription>
-                  Describe claramente los hechos indicando fechas, lugares, personas involucradas y las acciones específicas.
+                  Describe claramente los hechos indicando fechas, lugares, personas involucradas y las acciones
+                  específicas.
                 </FormDescription>
                 <div className="space-y-2">
                   {error && (
@@ -338,7 +340,11 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                       <div className="flex">
                         <div className="flex-shrink-0">
                           <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                            <path
+                              fillRule="evenodd"
+                              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                         </div>
                         <div className="ml-3">
@@ -525,22 +531,6 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
             items={hechosCorrupcion}
             form={form}
           />
-        </div>
-      </div>
-
-      <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-        <div className="flex items-start gap-3">
-          <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
-          <div>
-            <h4 className="text-sm font-medium">Recomendaciones para una denuncia efectiva</h4>
-            <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
-              <li>• Sea específico con fechas, lugares y nombres de los involucrados.</li>
-              <li>• Mencione testigos si existen y cómo se pueden contactar.</li>
-              <li>• Adjunte toda la evidencia disponible que respalde su denuncia.</li>
-              <li>• Clasifique correctamente las faltas para agilizar el proceso.</li>
-              <li>• Evite incluir opiniones personales; céntrese en hechos concretos.</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

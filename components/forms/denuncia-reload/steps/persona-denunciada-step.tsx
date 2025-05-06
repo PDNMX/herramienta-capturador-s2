@@ -283,7 +283,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                             <Image
                               src={iconServidorPublico}
                               alt="Icono de servidor público"
-                              className="h-16 w-16"
+                              className={`h-16 w-16 transition-opacity duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
                             />
                           </div>
                         </div>
@@ -310,9 +310,8 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                           <Image
                             src={iconParticular}
                             alt="Icono de particular"
-                            className="h-16 w-16"
+                            className={`h-16 w-16 transition-opacity duration-300 ${field.value === "PARTICULAR" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
                           />
-                          
                         </div>
                         <h3
                           className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : ""}`}

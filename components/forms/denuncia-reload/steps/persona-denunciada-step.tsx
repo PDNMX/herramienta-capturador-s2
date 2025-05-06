@@ -3,13 +3,16 @@ import React, { useState } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { CircleUser, Check, Scale, MapPin, Building, Loader2 } from "lucide-react"
+import {  Check, MapPin, Building, Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Combobox } from "@/components/ui/combobox"
 import type { UseFormReturn } from "react-hook-form"
+import Image from 'next/image';
+import iconParticular from '@/components/icon-particular.svg';
+import iconServidorPublico from '@/components/icon-servidor-publico.svg';
 
 interface PersonaDenunciadaStepProps {
-  form: UseFormReturn<any> | null
+  form: UseFormReturn<any> | nullImage
 }
 
 interface EntePublico {
@@ -277,8 +280,10 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                           className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "scale-110" : ""}`}
                         >
                           <div className="relative">
-                            <Scale
-                              className={`h-16 w-16 transition-colors duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "text-primary" : "text-primary/80"}`}
+                            <Image
+                              src={iconServidorPublico}
+                              alt="Icono de servidor público"
+                              className="h-16 w-16"
                             />
                           </div>
                         </div>
@@ -302,9 +307,12 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                         <div
                           className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "PARTICULAR" ? "scale-110" : ""}`}
                         >
-                          <CircleUser
-                            className={`h-16 w-16 transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : "text-primary/80"}`}
+                          <Image
+                            src={iconParticular}
+                            alt="Icono de particular"
+                            className="h-16 w-16"
                           />
+                          
                         </div>
                         <h3
                           className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : ""}`}

@@ -5,8 +5,7 @@ import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { X, Upload, Plus, User, Mail, Phone, Trash2 } from "lucide-react"
-import { Textarea } from "@/components/ui/textarea"
+import { X, Upload, Plus, User, Phone, Trash2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
@@ -48,32 +47,32 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
     }
   }
 
-  // Obtener los testigos del formulario o inicializar un array vacío
-  const testigos = form.watch("testigos") || []
-
-  // Función para añadir un nuevo testigo
+  // Cambiar la función para añadir un nuevo testigo
   const addTestigo = () => {
-    const currentTestigos = form.getValues("testigos") || []
-    form.setValue("testigos", [...currentTestigos, { nombre: "", telefono: "", email: "", declaracion: "" }])
+    const currentTestigos = form.getValues("datosTestigos") || []
+    form.setValue("datosTestigos", [...currentTestigos, { nombre: "", telefono: "" }])
   }
 
-  // Función para eliminar un testigo
+  // Cambiar la función para eliminar un testigo
   const removeTestigo = (index: number) => {
-    const currentTestigos = form.getValues("testigos") || []
+    const currentTestigos = form.getValues("datosTestigos") || []
     const updatedTestigos = [...currentTestigos]
     updatedTestigos.splice(index, 1)
-    form.setValue("testigos", updatedTestigos)
+    form.setValue("datosTestigos", updatedTestigos)
   }
+
+  // Cambiar la línea donde se obtienen los testigos del formulario
+  const datosTestigos = form.watch("datosTestigos") || []
 
   return (
     <div className="space-y-6 p-3 sm:p-6">
       {/* Sección de Evidencia Documental */}
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-primary">Evidencia Documental</h3>
+          <h3 className="text-lg font-semibold text-primary">Pruebas</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            Adjunte documentos, fotografías u otros archivos que respalden su denuncia. Los documentos ayudarán a
-            sustentar los hechos descritos.
+            Si cuentas con evidencia, agrega las pruebas que respalden tu dicho, pueden ser fotografías, videos,
+            grabaciones de voz, documentos, entre otros.
           </p>
         </div>
 
@@ -190,15 +189,12 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold text-primary">Testigos</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Si existen testigos que puedan corroborar los hechos denunciados, proporcione sus datos de contacto y una
-            breve descripción de su testimonio.
-          </p>
+          <p className="text-sm text-muted-foreground mt-1">En caso de contar con testigos, indica sus datos.</p>
         </div>
 
         <FormField
           control={form.control}
-          name="hayTestigos"
+          name="testigos"
           render={({ field }) => (
             <FormItem>
               <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
@@ -266,7 +262,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
         />
 
         {/* Lista de testigos */}
-        {form.watch("hayTestigos") && (
+        {form.watch("testigos") && (
           <div className="space-y-4 mt-4">
             <div className="flex items-center justify-between">
               <h4 className="text-base font-medium">Información de testigos</h4>
@@ -282,7 +278,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
               </Button>
             </div>
 
-            {testigos.length === 0 ? (
+            {datosTestigos.length === 0 ? (
               <div className="text-center py-8 border border-dashed rounded-lg">
                 <p className="text-muted-foreground">No ha añadido ningún testigo</p>
                 <Button type="button" variant="outline" size="sm" onClick={addTestigo} className="mt-2">
@@ -293,7 +289,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
             ) : (
               <ScrollArea className="max-h-[500px]">
                 <div className="space-y-4">
-                  {testigos.map((_, index) => (
+                  {datosTestigos.map((_, index) => (
                     <Card key={index} className="relative">
                       <Button
                         type="button"
@@ -308,10 +304,10 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
                             control={form.control}
-                            name={`testigos.${index}.nombre`}
+                            name={`datosTestigos.${index}.nombre`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-xs font-medium">Nombre completo</FormLabel>
+                                <FormLabel className="text-xs font-medium">Nombre del testigo</FormLabel>
                                 <FormControl>
                                   <div className="relative">
                                     <User className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -322,62 +318,32 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                                     />
                                   </div>
                                 </FormControl>
+                                <FormDescription className="text-xs mt-1">
+                                  Escriba el nombre (s), apellido (s) y/o alias de la persona que presenció los hechos
+                                </FormDescription>
                               </FormItem>
                             )}
                           />
                           <FormField
                             control={form.control}
-                            name={`testigos.${index}.telefono`}
+                            name={`datosTestigos.${index}.telefono`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-xs font-medium">Teléfono</FormLabel>
+                                <FormLabel className="text-xs font-medium">Datos de contacto</FormLabel>
                                 <FormControl>
                                   <div className="relative">
                                     <Phone className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                     <Input
                                       {...field}
-                                      placeholder="Ej. 55 1234 5678"
+                                      placeholder="Ej. 55 1234 5678 o correo@ejemplo.com"
                                       className="text-sm h-9 sm:h-10 pl-8"
                                     />
                                   </div>
                                 </FormControl>
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`testigos.${index}.email`}
-                            render={({ field }) => (
-                              <FormItem className="md:col-span-2">
-                                <FormLabel className="text-xs font-medium">Correo electrónico</FormLabel>
-                                <FormControl>
-                                  <div className="relative">
-                                    <Mail className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                      {...field}
-                                      placeholder="Ej. testigo@correo.com"
-                                      className="text-sm h-9 sm:h-10 pl-8"
-                                    />
-                                  </div>
-                                </FormControl>
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`testigos.${index}.declaracion`}
-                            render={({ field }) => (
-                              <FormItem className="md:col-span-2">
-                                <FormLabel className="text-xs font-medium">
-                                  Breve descripción de su testimonio
-                                </FormLabel>
-                                <FormControl>
-                                  <Textarea
-                                    {...field}
-                                    placeholder="Describa brevemente qué información puede aportar este testigo..."
-                                    className="min-h-[100px] text-sm"
-                                  />
-                                </FormControl>
+                                <FormDescription className="text-xs mt-1">
+                                  Proporciona los datos para contactar al testigo, puede ser número telefónico, correo
+                                  electrónico o dirección
+                                </FormDescription>
                               </FormItem>
                             )}
                           />

@@ -44,27 +44,26 @@ const formSchema = z.object({
 
   ubicacionHecho: z
     .object({
-      lugarHecho: z
-        .object({
-          entidad: z.number().optional(),
-          entePublico: z.number().optional(),
-          calle: z.string().optional(),
-          numeroExterior: z.string().optional(),
-          numeroInterior: z.string().optional(),
-          codigoPostal: z.string().optional(),
-          fechaHecho: z.string().optional(),
-          horaHecho: z.string().optional(),
-        })
-        .optional(),
+      codigoPostal: z.string().optional(),
+      calle: z.string().optional(),
+      numero: z.string().optional(),
+      ciudad: z.string().optional(),
+      estado: z.string().optional(),
+      pais: z.string().optional(),
+      otrasReferencias: z.string().optional(),
+      fechaHecho: z.string().optional(),
+      horaHecho: z.string().optional(),
     })
     .optional(),
 
   personaDenunciada: z
     .object({
+      entidad: z.number().optional(),
+      entePublico: z.number().optional(),
       tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"]).optional(),
       nombre: z.string().optional(),
-      apellidoPaterno: z.string().optional(),
-      apellidoMaterno: z.string().optional(),
+      apellidos: z.string().optional(),
+      genero: z.enum(["MASCULINO", "FEMENINO", "NO_BINARIO"]).optional(),
       descripcion: z.string().optional(),
     })
     .optional(),
@@ -78,15 +77,16 @@ const formSchema = z.object({
     .optional(),
 
   narracionHechos: z.string().optional(),
+
   archivosEvidencia: z.array(z.any()).default([]),
-  hayTestigos: z.boolean().optional(),
-  testigos: z
+
+  testigos: z.boolean().optional(),
+
+  datosTestigos: z
     .array(
       z.object({
         nombre: z.string().optional(),
-        telefono: z.string().optional(),
-        email: z.string().optional(),
-        declaracion: z.string().optional(),
+        contacto: z.string().optional(),
       }),
     )
     .optional(),
@@ -120,7 +120,7 @@ export function MultiStepForm() {
           telefono: "",
           email: "",
           proteccion: false,
-          razonesProteccion: "", // Valor por defecto para el nuevo campo
+          razonesProteccion: "",
           domicilioDenunciante: {
             codigoPostal: "",
             calle: "",
@@ -131,22 +131,23 @@ export function MultiStepForm() {
         },
       },
       ubicacionHecho: {
-        lugarHecho: {
-          entidad: undefined, // Cambiado de "" a undefined para campos numéricos
-          entePublico: undefined, // Cambiado de "" a undefined para campos numéricos
-          calle: "",
-          numeroExterior: "",
-          numeroInterior: "",
-          codigoPostal: "",
-          fechaHecho: "",
-          horaHecho: "",
-        },
+        codigoPostal: "",
+        calle: "",
+        numero: "",
+        ciudad: "",
+        estado: "",
+        pais: "",
+        otrasReferencias: "",
+        fechaHecho: "",
+        horaHecho: "",
       },
       personaDenunciada: {
+        entidad: undefined,
+        entePublico: undefined,
         tipoPersona: "SERVIDOR_PUBLICO",
         nombre: "",
-        apellidoPaterno: "",
-        apellidoMaterno: "",
+        apellidos: "",
+        genero: undefined,
         descripcion: "",
       },
       faltaCometida: {
@@ -255,13 +256,12 @@ export function MultiStepForm() {
                       <Button
                         type="button"
                         variant="ghost"
-                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
-                          index === step
+                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${index === step
                             ? "bg-primary text-primary-foreground"
                             : index < step
                               ? "bg-primary/80 text-primary-foreground hover:bg-primary"
                               : "bg-muted/90 text-muted-foreground pointer-events-none"
-                        }`}
+                          }`}
                         onClick={() => index < step && setStep(index)}
                         disabled={index >= step}
                       >
@@ -285,9 +285,8 @@ export function MultiStepForm() {
                   {steps.map((_, index) => (
                     <div
                       key={index}
-                      className={`w-2 h-2 rounded-full ${
-                        index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
-                      }`}
+                      className={`w-2 h-2 rounded-full ${index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
+                        }`}
                     />
                   ))}
                 </div>

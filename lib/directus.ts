@@ -70,66 +70,23 @@ export const denunciasPublicService = {
         console.error('Error al crear denunciante:', error);
       }
 
-      // Sección corregida para denunciasPublicService.createDenuncia
-
-      // 2. Crear lugar del hecho
-      let lugarHechoId = null;
-      let personaDenunciadaId = null;
+      // 2. Crear ubicación del hecho
       let ubicacionHechoId = null;
 
       try {
-        // Primero, crear lugar del hecho independientemente
-        if (formData.ubicacionHecho?.lugarHecho) {
-          const lugarHechoData = {
-            entidad: formData.ubicacionHecho.lugarHecho.entidad || null,
-            entePublico: formData.ubicacionHecho.lugarHecho.entePublico || null,
-            calle: formData.ubicacionHecho.lugarHecho.calle?.trim() || null,
-            numeroExterior: formData.ubicacionHecho.lugarHecho.numeroExterior?.trim() || null,
-            numeroInterior: formData.ubicacionHecho.lugarHecho.numeroInterior?.trim() || null,
-            codigoPostal: formData.ubicacionHecho.lugarHecho.codigoPostal?.trim() || null,
-            fechaHecho: formData.ubicacionHecho.lugarHecho.fechaHecho || null,
-            horaHecho: formData.ubicacionHecho.lugarHecho.horaHecho || null,
+        // Crear ubicación del hecho si hay datos
+        if (formData.ubicacionHecho) {
+          const ubicacionHechoData = {
+            codigoPostal: formData.ubicacionHecho.codigoPostal?.trim() || null,
+            calle: formData.ubicacionHecho.calle?.trim() || null,
+            numero: formData.ubicacionHecho.numero?.trim() || null,
+            ciudad: formData.ubicacionHecho.ciudad?.trim() || null,
+            estado: formData.ubicacionHecho.estado?.trim() || null,
+            pais: formData.ubicacionHecho.pais?.trim() || null,
+            otrasReferencias: formData.ubicacionHecho.otrasReferencias?.trim() || null,
+            fechaHecho: formData.ubicacionHecho.fechaHecho || null,
+            horaHecho: formData.ubicacionHecho.horaHecho || null,
           };
-
-          console.log('Datos de lugarHecho a crear:', lugarHechoData);
-
-          const lugarHecho = await publicDirectus.request(
-            createItem('lugares_hechos', lugarHechoData)
-          );
-
-          lugarHechoId = lugarHecho.id;
-          console.log('lugarHechoId creado:', lugarHechoId);
-        }
-
-        // 3. Crear persona denunciada (independientemente del lugar del hecho)
-        if (formData.personaDenunciada) {
-          const personaDenunciadaData = {
-            tipoPersona: formData.personaDenunciada.tipoPersona || 'SERVIDOR_PUBLICO',
-            nombre: formData.personaDenunciada.nombre?.trim() || null,
-            apellidoPaterno: formData.personaDenunciada.apellidoPaterno?.trim() || null,
-            apellidoMaterno: formData.personaDenunciada.apellidoMaterno?.trim() || null,
-            descripcion: formData.personaDenunciada.descripcion?.trim() || null,
-          };
-
-          console.log('Datos de personaDenunciada a crear:', personaDenunciadaData);
-
-          const personaDenunciada = await publicDirectus.request(
-            createItem('personas_denunciadas', personaDenunciadaData)
-          );
-
-          personaDenunciadaId = personaDenunciada.id;
-          console.log('personaDenunciadaId creado:', personaDenunciadaId);
-        }
-
-        // 4. Crear ubicación del hecho (con referencias a lugarHecho y personaDenunciada si existen)
-        if (lugarHechoId) {
-          const ubicacionHechoData: any = {
-            lugarHecho: lugarHechoId,
-          };
-
-          if (personaDenunciadaId) {
-            ubicacionHechoData.personaDenunciada = personaDenunciadaId;
-          }
 
           console.log('Datos de ubicacionHecho a crear:', ubicacionHechoData);
 
@@ -144,7 +101,34 @@ export const denunciasPublicService = {
         console.error('Error al crear ubicación del hecho:', error);
       }
 
-      // 5. Crear falta cometida
+      // 3. Crear persona denunciada
+      let personaDenunciadaId = null;
+      try {
+        if (formData.personaDenunciada) {
+          const personaDenunciadaData = {
+            entidad: formData.personaDenunciada.entidad || null,
+            entePublico: formData.personaDenunciada.entePublico || null,
+            tipoPersona: formData.personaDenunciada.tipoPersona || 'SERVIDOR_PUBLICO',
+            nombre: formData.personaDenunciada.nombre?.trim() || null,
+            apellidos: formData.personaDenunciada.apellidos?.trim() || null,
+            genero: formData.personaDenunciada.genero || null,
+            descripcion: formData.personaDenunciada.descripcion?.trim() || null,
+          };
+
+          console.log('Datos de personaDenunciada a crear:', personaDenunciadaData);
+
+          const personaDenunciada = await publicDirectus.request(
+            createItem('personas_denunciadas', personaDenunciadaData)
+          );
+
+          personaDenunciadaId = personaDenunciada.id;
+          console.log('personaDenunciadaId creado:', personaDenunciadaId);
+        }
+      } catch (error) {
+        console.error('Error al crear persona denunciada:', error);
+      }
+
+      // 4. Crear falta cometida
       let faltaCometidaId = null;
       try {
         if (formData.faltaCometida) {
@@ -161,13 +145,35 @@ export const denunciasPublicService = {
         console.error('Error al crear falta cometida:', error);
       }
 
+      // 5. Procesar testigos
+      let testigosId = null;
+      try {
+        // Solo procesamos testigos si el campo testigos es true
+        if (formData.testigos === true && formData.datosTestigos && formData.datosTestigos.length > 0) {
+          // Creamos un registro para todos los testigos
+          const testigosData = {
+            datos: formData.datosTestigos || []
+          };
+
+          const testigos = await publicDirectus.request(
+            createItem('testigos', testigosData)
+          );
+          testigosId = testigos.id;
+          console.log('testigosId creado:', testigosId);
+        }
+      } catch (error) {
+        console.error('Error al crear testigos:', error);
+      }
+
       // 6. Crear la denuncia principal
       const denunciaData = {
         status: 'PENDIENTE',
         narracionHechos: formData.narracionHechos?.trim() || '',
         ...(denuncianteId && { denunciante: denuncianteId }),
         ...(ubicacionHechoId && { ubicacionHecho: ubicacionHechoId }),
+        ...(personaDenunciadaId && { personaDenunciada: personaDenunciadaId }),
         ...(faltaCometidaId && { faltaCometida: faltaCometidaId }),
+        ...(testigosId && { testigos: testigosId }),
       };
 
       const denuncia = await publicDirectus.request(

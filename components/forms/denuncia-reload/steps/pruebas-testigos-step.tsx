@@ -326,7 +326,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                           />
                           <FormField
                             control={form.control}
-                            name={`datosTestigos.${index}.telefono`}
+                            name={`datosTestigos.${index}.contacto`}
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel className="text-xs font-medium">Datos de contacto</FormLabel>

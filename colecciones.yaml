@@ -26,6 +26,30 @@ collections:
       versioning: false
     schema:
       name: datos_denunciantes
+  - collection: datos_testigos
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: datos_testigos
+      color: null
+      display_template: null
+      group: denuncias
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 5
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: datos_testigos
   - collection: denunciantes
     meta:
       accountability: all
@@ -67,7 +91,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 4
+      sort: 1
       sort_field: null
       translations: null
       unarchive_value: draft
@@ -91,7 +115,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: null
+      sort: 5
       sort_field: null
       translations: null
       unarchive_value: null
@@ -139,7 +163,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 2
+      sort: 3
       sort_field: null
       translations: null
       unarchive_value: null
@@ -163,7 +187,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 3
+      sort: 4
       sort_field: null
       translations: null
       unarchive_value: null
@@ -187,37 +211,13 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 1
+      sort: 2
       sort_field: null
       translations: null
       unarchive_value: null
       versioning: false
     schema:
       name: faltas
-  - collection: lugares_hechos
-    meta:
-      accountability: all
-      archive_app_filter: true
-      archive_field: null
-      archive_value: null
-      collapse: open
-      collection: lugares_hechos
-      color: null
-      display_template: null
-      group: ubicaciones_hechos
-      hidden: true
-      icon: null
-      item_duplication_fields: null
-      note: null
-      preview_url: null
-      singleton: false
-      sort: 1
-      sort_field: null
-      translations: null
-      unarchive_value: null
-      versioning: false
-    schema:
-      name: lugares_hechos
   - collection: municipios
     meta:
       accountability: all
@@ -235,7 +235,7 @@ collections:
       note: null
       preview_url: null
       singleton: false
-      sort: 3
+      sort: 4
       sort_field: null
       translations: null
       unarchive_value: null
@@ -252,14 +252,14 @@ collections:
       collection: personas_denunciadas
       color: null
       display_template: null
-      group: ubicaciones_hechos
+      group: denuncias
       hidden: true
       icon: null
       item_duplication_fields: null
       note: null
       preview_url: null
       singleton: false
-      sort: 2
+      sort: 3
       sort_field: null
       translations: null
       unarchive_value: null
@@ -460,7 +460,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 6
+      sort: 5
       special:
         - cast-boolean
       translations: null
@@ -500,7 +500,7 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 5
+      sort: 6
       special:
         - m2o
       translations: null
@@ -523,6 +523,120 @@ fields:
       has_auto_increment: false
       foreign_key_table: domicilios_denunciantes
       foreign_key_column: id
+  - collection: datos_testigos
+    field: id
+    type: integer
+    meta:
+      collection: datos_testigos
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: datos_testigos
+      data_type: integer
+      default_value: nextval('datos_testigos_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_testigos
+    field: nombre
+    type: string
+    meta:
+      collection: datos_testigos
+      conditions: null
+      display: null
+      display_options: null
+      field: nombre
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: nombre
+      table: datos_testigos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: datos_testigos
+    field: contacto
+    type: string
+    meta:
+      collection: datos_testigos
+      conditions: null
+      display: null
+      display_options: null
+      field: contacto
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: contacto
+      table: datos_testigos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: denunciantes
     field: id
     type: integer
@@ -1010,7 +1124,7 @@ fields:
         enableSelect: false
       readonly: false
       required: false
-      sort: 9
+      sort: 10
       special:
         - m2o
       translations: null
@@ -1049,7 +1163,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 10
+      sort: 11
       special: null
       translations: null
       validation: null
@@ -1089,13 +1203,132 @@ fields:
         folder: 464442f4-c3f6-4120-a6eb-75a1a1ed6eb5
       readonly: false
       required: false
-      sort: 11
+      sort: 12
       special:
         - files
       translations: null
       validation: null
       validation_message: null
       width: full
+  - collection: denuncias
+    field: personaDenunciada
+    type: integer
+    meta:
+      collection: denuncias
+      conditions: null
+      display: null
+      display_options: null
+      field: personaDenunciada
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 9
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: personaDenunciada
+      table: denuncias
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: personas_denunciadas
+      foreign_key_column: id
+  - collection: denuncias
+    field: testigo
+    type: boolean
+    meta:
+      collection: denuncias
+      conditions: null
+      display: null
+      display_options: null
+      field: testigo
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 13
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: testigo
+      table: denuncias
+      data_type: boolean
+      default_value: false
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: denuncias
+    field: datosTestigos
+    type: integer
+    meta:
+      collection: denuncias
+      conditions: null
+      display: null
+      display_options: null
+      field: datosTestigos
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 14
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: datosTestigos
+      table: denuncias
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: datos_testigos
+      foreign_key_column: id
   - collection: denuncias_files
     field: id
     type: integer
@@ -2258,351 +2491,6 @@ fields:
       has_auto_increment: false
       foreign_key_table: falta_cometida
       foreign_key_column: id
-  - collection: lugares_hechos
-    field: id
-    type: integer
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: id
-      group: null
-      hidden: true
-      interface: input
-      note: null
-      options: null
-      readonly: true
-      required: false
-      sort: 1
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: id
-      table: lugares_hechos
-      data_type: integer
-      default_value: nextval('lugares_hechos_id_seq'::regclass)
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: false
-      is_unique: true
-      is_primary_key: true
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: true
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: lugares_hechos
-    field: calle
-    type: string
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: calle
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 4
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: calle
-      table: lugares_hechos
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: lugares_hechos
-    field: numeroExterior
-    type: string
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: numeroExterior
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 5
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: half
-    schema:
-      name: numeroExterior
-      table: lugares_hechos
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: lugares_hechos
-    field: numeroInterior
-    type: string
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: numeroInterior
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 6
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: half
-    schema:
-      name: numeroInterior
-      table: lugares_hechos
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: lugares_hechos
-    field: fechaHecho
-    type: date
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: fechaHecho
-      group: null
-      hidden: false
-      interface: datetime
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 8
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: half
-    schema:
-      name: fechaHecho
-      table: lugares_hechos
-      data_type: date
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: lugares_hechos
-    field: horaHecho
-    type: time
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: horaHecho
-      group: null
-      hidden: false
-      interface: datetime
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 9
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: half
-    schema:
-      name: horaHecho
-      table: lugares_hechos
-      data_type: time without time zone
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: lugares_hechos
-    field: codigoPostal
-    type: string
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: codigoPostal
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 7
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: codigoPostal
-      table: lugares_hechos
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: lugares_hechos
-    field: entidad
-    type: integer
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: entidad
-      group: null
-      hidden: false
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableCreate: false
-      readonly: false
-      required: false
-      sort: 2
-      special:
-        - m2o
-      translations: null
-      validation: null
-      validation_message: null
-      width: half
-    schema:
-      name: entidad
-      table: lugares_hechos
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: entidades
-      foreign_key_column: id
-  - collection: lugares_hechos
-    field: entePublico
-    type: integer
-    meta:
-      collection: lugares_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: entePublico
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options:
-        step: null
-      readonly: false
-      required: false
-      sort: 3
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: half
-    schema:
-      name: entePublico
-      table: lugares_hechos
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
   - collection: municipios
     field: id
     type: integer
@@ -2819,7 +2707,7 @@ fields:
             value: PARTICULAR
       readonly: false
       required: false
-      sort: 2
+      sort: 4
       special: null
       translations: null
       validation: null
@@ -2857,82 +2745,6 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 3
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: nombre
-      table: personas_denunciadas
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: personas_denunciadas
-    field: apellidoPaterno
-    type: string
-    meta:
-      collection: personas_denunciadas
-      conditions: null
-      display: null
-      display_options: null
-      field: apellidoPaterno
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 4
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: apellidoPaterno
-      table: personas_denunciadas
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: personas_denunciadas
-    field: apellidoMaterno
-    type: string
-    meta:
-      collection: personas_denunciadas
-      conditions: null
-      display: null
-      display_options: null
-      field: apellidoMaterno
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
       sort: 5
       special: null
       translations: null
@@ -2940,7 +2752,7 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: apellidoMaterno
+      name: nombre
       table: personas_denunciadas
       data_type: character varying
       default_value: null
@@ -2971,7 +2783,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 6
+      sort: 8
       special: null
       translations: null
       validation: null
@@ -2983,6 +2795,167 @@ fields:
       data_type: text
       default_value: null
       max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: personas_denunciadas
+    field: entidad
+    type: integer
+    meta:
+      collection: personas_denunciadas
+      conditions: null
+      display: null
+      display_options: null
+      field: entidad
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: entidad
+      table: personas_denunciadas
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entidades
+      foreign_key_column: id
+  - collection: personas_denunciadas
+    field: entePublico
+    type: string
+    meta:
+      collection: personas_denunciadas
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: entePublico
+      table: personas_denunciadas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: personas_denunciadas
+    field: apellidos
+    type: string
+    meta:
+      collection: personas_denunciadas
+      conditions: null
+      display: null
+      display_options: null
+      field: apellidos
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: apellidos
+      table: personas_denunciadas
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: personas_denunciadas
+    field: genero
+    type: string
+    meta:
+      collection: personas_denunciadas
+      conditions: null
+      display: null
+      display_options: null
+      field: genero
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Masculino
+            value: MASCULINO
+          - text: Femenino
+            value: FEMENINO
+          - text: No Binario
+            value: NO_BINARIO
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: genero
+      table: personas_denunciadas
+      data_type: character varying
+      default_value: null
+      max_length: 255
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -3032,85 +3005,347 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: ubicaciones_hechos
-    field: lugarHecho
-    type: integer
+    field: calle
+    type: string
     meta:
       collection: ubicaciones_hechos
       conditions: null
       display: null
       display_options: null
-      field: lugarHecho
+      field: calle
       group: null
       hidden: false
-      interface: select-dropdown-m2o
+      interface: input
       note: null
-      options:
-        enableSelect: false
-      readonly: false
-      required: false
-      sort: 2
-      special:
-        - m2o
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: lugarHecho
-      table: ubicaciones_hechos
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: lugares_hechos
-      foreign_key_column: id
-  - collection: ubicaciones_hechos
-    field: personaDenunciada
-    type: integer
-    meta:
-      collection: ubicaciones_hechos
-      conditions: null
-      display: null
-      display_options: null
-      field: personaDenunciada
-      group: null
-      hidden: false
-      interface: select-dropdown-m2o
-      note: null
-      options:
-        enableSelect: false
+      options: null
       readonly: false
       required: false
       sort: 3
-      special:
-        - m2o
+      special: null
       translations: null
       validation: null
       validation_message: null
       width: full
     schema:
-      name: personaDenunciada
+      name: calle
       table: ubicaciones_hechos
-      data_type: integer
+      data_type: character varying
       default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
       is_nullable: true
       is_unique: false
       is_primary_key: false
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: personas_denunciadas
-      foreign_key_column: id
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: codigoPostal
+    type: string
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: codigoPostal
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: codigoPostal
+      table: ubicaciones_hechos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: fechaHecho
+    type: date
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: fechaHecho
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 9
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: fechaHecho
+      table: ubicaciones_hechos
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: horaHecho
+    type: time
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: horaHecho
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 10
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: horaHecho
+      table: ubicaciones_hechos
+      data_type: time without time zone
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: ciudad
+    type: string
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: ciudad
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: ciudad
+      table: ubicaciones_hechos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: estado
+    type: string
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: estado
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: estado
+      table: ubicaciones_hechos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: pais
+    type: string
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: pais
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: pais
+      table: ubicaciones_hechos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: otrrasReferencias
+    type: text
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: otrrasReferencias
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 8
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: otrrasReferencias
+      table: ubicaciones_hechos
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: ubicaciones_hechos
+    field: numero
+    type: string
+    meta:
+      collection: ubicaciones_hechos
+      conditions: null
+      display: null
+      display_options: null
+      field: numero
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: numero
+      table: ubicaciones_hechos
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
 relations:
   - collection: datos_denunciantes
     field: domicilioDenunciante
@@ -3257,6 +3492,48 @@ relations:
       foreign_key_table: falta_cometida
       foreign_key_column: id
       constraint_name: denuncias_faltacometida_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: denuncias
+    field: personaDenunciada
+    related_collection: personas_denunciadas
+    meta:
+      junction_field: null
+      many_collection: denuncias
+      many_field: personaDenunciada
+      one_allowed_collections: null
+      one_collection: personas_denunciadas
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: denuncias
+      column: personaDenunciada
+      foreign_key_table: personas_denunciadas
+      foreign_key_column: id
+      constraint_name: denuncias_personadenunciada_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: denuncias
+    field: datosTestigos
+    related_collection: datos_testigos
+    meta:
+      junction_field: null
+      many_collection: denuncias
+      many_field: datosTestigos
+      one_allowed_collections: null
+      one_collection: datos_testigos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: denuncias
+      column: datosTestigos
+      foreign_key_table: datos_testigos
+      foreign_key_column: id
+      constraint_name: denuncias_datostestigos_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: denuncias_files
@@ -3406,27 +3683,6 @@ relations:
       constraint_name: faltas_fk_hechos_corrupcion_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: lugares_hechos
-    field: entidad
-    related_collection: entidades
-    meta:
-      junction_field: null
-      many_collection: lugares_hechos
-      many_field: entidad
-      one_allowed_collections: null
-      one_collection: entidades
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: lugares_hechos
-      column: entidad
-      foreign_key_table: entidades
-      foreign_key_column: id
-      constraint_name: lugares_hechos_entidad_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
   - collection: municipios
     field: claveAGEE
     related_collection: entidades
@@ -3448,45 +3704,24 @@ relations:
       constraint_name: municipios_claveagee_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: ubicaciones_hechos
-    field: lugarHecho
-    related_collection: lugares_hechos
+  - collection: personas_denunciadas
+    field: entidad
+    related_collection: entidades
     meta:
       junction_field: null
-      many_collection: ubicaciones_hechos
-      many_field: lugarHecho
+      many_collection: personas_denunciadas
+      many_field: entidad
       one_allowed_collections: null
-      one_collection: lugares_hechos
+      one_collection: entidades
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
       sort_field: null
     schema:
-      table: ubicaciones_hechos
-      column: lugarHecho
-      foreign_key_table: lugares_hechos
+      table: personas_denunciadas
+      column: entidad
+      foreign_key_table: entidades
       foreign_key_column: id
-      constraint_name: ubicaciones_hechos_lugarhecho_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
-  - collection: ubicaciones_hechos
-    field: personaDenunciada
-    related_collection: personas_denunciadas
-    meta:
-      junction_field: null
-      many_collection: ubicaciones_hechos
-      many_field: personaDenunciada
-      one_allowed_collections: null
-      one_collection: personas_denunciadas
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: ubicaciones_hechos
-      column: personaDenunciada
-      foreign_key_table: personas_denunciadas
-      foreign_key_column: id
-      constraint_name: ubicaciones_hechos_personadenunciada_foreign
+      constraint_name: personas_denunciadas_entidad_foreign
       on_update: NO ACTION
       on_delete: SET NULL

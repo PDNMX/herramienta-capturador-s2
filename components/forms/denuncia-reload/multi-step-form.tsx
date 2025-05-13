@@ -142,12 +142,12 @@ export function MultiStepForm() {
         horaHecho: "",
       },
       personaDenunciada: {
-        entidad: undefined,
-        entePublico: undefined,
+        entidad: "",
+        entePublico: "",
         tipoPersona: "SERVIDOR_PUBLICO",
         nombre: "",
         apellidos: "",
-        genero: undefined,
+        genero: "FEMENINO",
         descripcion: "",
       },
       faltaCometida: {
@@ -157,8 +157,8 @@ export function MultiStepForm() {
       },
       narracionHechos: "",
       archivosEvidencia: [],
-      hayTestigos: false,
-      testigos: [],
+      testigos: true,
+      datosTestigos: [],
     },
   })
 

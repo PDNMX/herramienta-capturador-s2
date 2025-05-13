@@ -50,7 +50,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   // Cambiar la función para añadir un nuevo testigo
   const addTestigo = () => {
     const currentTestigos = form.getValues("datosTestigos") || []
-    form.setValue("datosTestigos", [...currentTestigos, { nombre: "", telefono: "" }])
+    form.setValue("datosTestigos", [...currentTestigos, { nombre: "", contacto: "" }])
   }
 
   // Cambiar la función para eliminar un testigo
@@ -208,11 +208,11 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                   <div className="flex flex-col space-y-2 sm:space-y-3 md:space-y-0 md:flex-row md:space-x-3 mt-3 sm:mt-4 py-2 sm:py-4">
                     <Button
                       type="button"
-                      variant={field.value ? "default" : "outline"}
+                      variant={field.value === true  ? "default" : "outline"}
                       onClick={() => field.onChange(true)}
                       className={cn(
                         "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
-                        field.value
+                        field.value === true
                           ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}

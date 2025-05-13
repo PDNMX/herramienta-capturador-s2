@@ -22,108 +22,149 @@ export const publicDirectus = createDirectus(BACKEND_URL).with(rest());
 export const denunciasPublicService = {
   async createDenuncia(formData: any) {
     try {
+      console.log("------------------- INICIANDO CREACIÓN DE DENUNCIA -------------------");
+      console.log("Datos recibidos:", JSON.stringify(formData, null, 2));
+
       // 1. Crear denunciante (siempre, ya sea anónimo o no)
       let denuncianteId = null;
 
       try {
-        // Siempre creamos un registro de denunciante
+        // Verificar que denunciante existe en el objeto
+        if (!formData.denunciante) {
+          formData.denunciante = { anonimo: false };
+        }
+
+        // Preparar datos del denunciante
         const denuncianteData: any = {
-          anonimo: Boolean(formData.denunciante?.anonimo), // Aseguramos que sea un booleano
+          anonimo: Boolean(formData.denunciante.anonimo),
         };
+        
+        console.log("Preparando datos del denunciante:", denuncianteData);
 
         // Solo agregamos datos adicionales si no es anónimo
-        if (
-          !formData.denunciante?.anonimo &&
-          formData.denunciante?.datosDenunciante
-        ) {
-          // 1.1 Crear domicilio del denunciante si hay datos
+        if (!formData.denunciante.anonimo && formData.denunciante.datosDenunciante) {
+          console.log("El denunciante no es anónimo, procesando datos adicionales");
+          
+          // 1.1 Crear domicilio del denunciante
           let domicilioDenuncianteId = null;
-          const domicilioData =
-            formData.denunciante.datosDenunciante.domicilioDenunciante || {};
-
-          if (
-            Object.values(domicilioData).some(
-              (value) => value && String(value).trim() !== ""
-            )
-          ) {
-            const domicilioDenunciante = await publicDirectus.request(
-              createItem("domicilios_denunciantes", {
-                codigoPostal: domicilioData.codigoPostal?.trim() || null,
-                calle: domicilioData.calle?.trim() || null,
-                numeroExterior: domicilioData.numeroExterior?.trim() || null,
-                numeroInterior: domicilioData.numeroInterior?.trim() || null,
-                municipioAlcaldia:
-                  domicilioData.municipioAlcaldia?.trim() || null,
-              })
-            );
-            domicilioDenuncianteId = domicilioDenunciante.id;
+          try {
+            // Intentamos crear el domicilio solo si existe el objeto
+            if (formData.denunciante.datosDenunciante.domicilioDenunciante) {
+              // Extraer datos de domicilio
+              const domicilioData = formData.denunciante.datosDenunciante.domicilioDenunciante;
+              
+              // Crear objeto para la inserción, asegurando que ningún campo sea undefined
+              const domicilioObj = {
+                codigoPostal: domicilioData.codigoPostal || null,
+                calle: domicilioData.calle || null,
+                numeroExterior: domicilioData.numeroExterior || null,
+                numeroInterior: domicilioData.numeroInterior || null,
+                municipioAlcaldia: domicilioData.municipioAlcaldia || null,
+              };
+              
+              console.log("Creando domicilio con datos:", JSON.stringify(domicilioObj, null, 2));
+              
+              // Crear el domicilio en Directus
+              const domicilioDenunciante = await publicDirectus.request(
+                createItem("domicilios_denunciantes", domicilioObj)
+              );
+              
+              domicilioDenuncianteId = domicilioDenunciante.id;
+              console.log("Domicilio creado con ID:", domicilioDenuncianteId);
+            } else {
+              console.log("No hay datos de domicilio para procesar");
+            }
+          } catch (domicilioError) {
+            console.error("Error al crear domicilio:", domicilioError);
+            if (domicilioError.response) {
+              console.error("Respuesta del servidor:", domicilioError.response.data);
+            }
+            // Continuamos sin domicilio
           }
 
           // 1.2 Crear datos del denunciante
-          const datosDenuncianteData = {
-            nombre:
-              formData.denunciante.datosDenunciante.nombre?.trim() || null,
-            telefono:
-              formData.denunciante.datosDenunciante.telefono?.trim() || null,
-            email: formData.denunciante.datosDenunciante.email?.trim() || null,
-            proteccion: Boolean(
-              formData.denunciante.datosDenunciante.proteccion
-            ),
-            razonesProteccion:
-              formData.denunciante.datosDenunciante.razonesProteccion?.trim() ||
-              null,
-            ...(domicilioDenuncianteId && {
-              domicilioDenunciante: domicilioDenuncianteId,
-            }),
-          };
-
-          const datosDenunciante = await publicDirectus.request(
-            createItem("datos_denunciantes", datosDenuncianteData)
-          );
-
-          // Agregar ID de datos del denunciante al objeto denunciante
-          denuncianteData.datosDenunciante = datosDenunciante.id;
+          try {
+            // Preparar objeto con los datos básicos
+            const datosDenuncianteObj = {
+              nombre: formData.denunciante.datosDenunciante.nombre || null,
+              telefono: formData.denunciante.datosDenunciante.telefono || null,
+              email: formData.denunciante.datosDenunciante.email || null,
+              proteccion: Boolean(formData.denunciante.datosDenunciante.proteccion),
+              razonesProteccion: formData.denunciante.datosDenunciante.razonesProteccion || null,
+            };
+            
+            // Agregar domicilio solo si se creó correctamente
+            if (domicilioDenuncianteId) {
+              datosDenuncianteObj.domicilioDenunciante = domicilioDenuncianteId;
+            }
+            
+            console.log("Creando datos del denunciante:", JSON.stringify(datosDenuncianteObj, null, 2));
+            
+            // Crear datos del denunciante en Directus
+            const datosDenunciante = await publicDirectus.request(
+              createItem("datos_denunciantes", datosDenuncianteObj)
+            );
+            
+            // Guardar referencia en el objeto denunciante
+            denuncianteData.datosDenunciante = datosDenunciante.id;
+            console.log("Datos del denunciante creados con ID:", datosDenunciante.id);
+          } catch (datosError) {
+            console.error("Error al crear datos del denunciante:", datosError);
+            if (datosError.response) {
+              console.error("Respuesta del servidor:", datosError.response.data);
+            }
+            // Continuamos sin datos adicionales
+          }
         }
 
-        // Crear registro de denunciante (siempre)
+        // Crear el registro de denunciante
+        console.log("Creando registro de denunciante con:", JSON.stringify(denuncianteData, null, 2));
         const denunciante = await publicDirectus.request(
           createItem("denunciantes", denuncianteData)
         );
         denuncianteId = denunciante.id;
-      } catch (error) {
-        console.error("Error al crear denunciante:", error);
+        console.log("Denunciante creado con ID:", denuncianteId);
+      } catch (denuncianteError) {
+        console.error("Error al crear denunciante:", denuncianteError);
+        if (denuncianteError.response) {
+          console.error("Respuesta del servidor:", denuncianteError.response.data);
+        }
+        // Si no se puede crear el denunciante, no podemos continuar
+        throw new Error("No se pudo crear el denunciante");
       }
 
       // 2. Crear ubicación del hecho
       let ubicacionHechoId = null;
-
       try {
-        // Crear ubicación del hecho si hay datos
+        // Crear ubicación solo si hay datos
         if (formData.ubicacionHecho) {
           const ubicacionHechoData = {
-            codigoPostal: formData.ubicacionHecho.codigoPostal?.trim() || null,
-            calle: formData.ubicacionHecho.calle?.trim() || null,
-            numero: formData.ubicacionHecho.numero?.trim() || null,
-            ciudad: formData.ubicacionHecho.ciudad?.trim() || null,
-            estado: formData.ubicacionHecho.estado?.trim() || null,
-            pais: formData.ubicacionHecho.pais?.trim() || null,
-            otrasReferencias:
-              formData.ubicacionHecho.otrasReferencias?.trim() || null,
+            codigoPostal: formData.ubicacionHecho.codigoPostal || null,
+            calle: formData.ubicacionHecho.calle || null,
+            numero: formData.ubicacionHecho.numero || null,
+            ciudad: formData.ubicacionHecho.ciudad || null,
+            estado: formData.ubicacionHecho.estado || null,
+            pais: formData.ubicacionHecho.pais || null,
+            otrasReferencias: formData.ubicacionHecho.otrasReferencias || null,
             fechaHecho: formData.ubicacionHecho.fechaHecho || null,
             horaHecho: formData.ubicacionHecho.horaHecho || null,
           };
 
-          console.log("Datos de ubicacionHecho a crear:", ubicacionHechoData);
-
+          console.log("Creando ubicación del hecho con:", JSON.stringify(ubicacionHechoData, null, 2));
+          
           const ubicacionHecho = await publicDirectus.request(
             createItem("ubicaciones_hechos", ubicacionHechoData)
           );
 
           ubicacionHechoId = ubicacionHecho.id;
-          console.log("ubicacionHechoId creado:", ubicacionHechoId);
+          console.log("Ubicación del hecho creada con ID:", ubicacionHechoId);
         }
-      } catch (error) {
-        console.error("Error al crear ubicación del hecho:", error);
+      } catch (ubicacionError) {
+        console.error("Error al crear ubicación del hecho:", ubicacionError);
+        if (ubicacionError.response) {
+          console.error("Respuesta del servidor:", ubicacionError.response.data);
+        }
+        // Continuamos sin ubicación
       }
 
       // 3. Crear persona denunciada
@@ -133,123 +174,153 @@ export const denunciasPublicService = {
           const personaDenunciadaData = {
             entidad: formData.personaDenunciada.entidad || null,
             entePublico: formData.personaDenunciada.entePublico || null,
-            tipoPersona:
-              formData.personaDenunciada.tipoPersona || "SERVIDOR_PUBLICO",
-            nombre: formData.personaDenunciada.nombre?.trim() || null,
-            apellidos: formData.personaDenunciada.apellidos?.trim() || null,
+            tipoPersona: formData.personaDenunciada.tipoPersona || "SERVIDOR_PUBLICO",
+            nombre: formData.personaDenunciada.nombre || null,
+            apellidos: formData.personaDenunciada.apellidos || null,
             genero: formData.personaDenunciada.genero || null,
-            descripcion: formData.personaDenunciada.descripcion?.trim() || null,
+            descripcion: formData.personaDenunciada.descripcion || null,
           };
 
-          console.log(
-            "Datos de personaDenunciada a crear:",
-            personaDenunciadaData
-          );
-
+          console.log("Creando persona denunciada con:", JSON.stringify(personaDenunciadaData, null, 2));
+          
           const personaDenunciada = await publicDirectus.request(
             createItem("personas_denunciadas", personaDenunciadaData)
           );
 
           personaDenunciadaId = personaDenunciada.id;
-          console.log("personaDenunciadaId creado:", personaDenunciadaId);
+          console.log("Persona denunciada creada con ID:", personaDenunciadaId);
         }
-      } catch (error) {
-        console.error("Error al crear persona denunciada:", error);
+      } catch (personaError) {
+        console.error("Error al crear persona denunciada:", personaError);
+        if (personaError.response) {
+          console.error("Respuesta del servidor:", personaError.response.data);
+        }
+        // Continuamos sin persona denunciada
       }
 
       // 4. Crear falta cometida
       let faltaCometidaId = null;
       try {
         if (formData.faltaCometida) {
+          const faltaCometidaData = {
+            faltaGrave: formData.faltaCometida.faltaGrave || [],
+            faltaNoGrave: formData.faltaCometida.faltaNoGrave || [],
+            hechosCorrupcion: formData.faltaCometida.hechosCorrupcion || [],
+          };
+
+          console.log("Creando falta cometida con:", JSON.stringify(faltaCometidaData, null, 2));
+          
           const faltaCometida = await publicDirectus.request(
-            createItem("falta_cometida", {
-              faltaGrave: formData.faltaCometida.faltaGrave || [],
-              faltaNoGrave: formData.faltaCometida.faltaNoGrave || [],
-              hechosCorrupcion: formData.faltaCometida.hechosCorrupcion || [],
-            })
+            createItem("falta_cometida", faltaCometidaData)
           );
+          
           faltaCometidaId = faltaCometida.id;
+          console.log("Falta cometida creada con ID:", faltaCometidaId);
         }
-      } catch (error) {
-        console.error("Error al crear falta cometida:", error);
+      } catch (faltaError) {
+        console.error("Error al crear falta cometida:", faltaError);
+        if (faltaError.response) {
+          console.error("Respuesta del servidor:", faltaError.response.data);
+        }
+        // Continuamos sin falta cometida
       }
 
       // 5. Procesar testigos
       let testigosId = null;
       try {
-        // Verificar si el usuario indicó que hay testigos
+        // Verificar si hay testigos
         const hayTestigos = Boolean(formData.testigos);
-
-        // Preparar los datos de testigos (filtrados)
+        
+        // Preparar datos de testigos
         let datosTestigos = [];
-        if (
-          hayTestigos &&
-          formData.datosTestigos &&
-          formData.datosTestigos.length > 0
-        ) {
-          datosTestigos = formData.datosTestigos
-            .filter(
-              (testigo) =>
-                (testigo.nombre && testigo.nombre.trim() !== "") ||
-                (testigo.contacto && testigo.contacto.trim() !== "")
-            )
-            .map((testigo) => ({
-              nombre: testigo.nombre?.trim() || null,
-              contacto: testigo.contacto?.trim() || null,
-            }));
+        if (hayTestigos && formData.datosTestigos && formData.datosTestigos.length > 0) {
+          datosTestigos = formData.datosTestigos.map(testigo => ({
+            nombre: testigo.nombre || null,
+            contacto: testigo.contacto || null,
+          }));
         }
 
-        // Estructura final para Directus
+        // Estructura para Directus
         const testigosData = {
           hayTestigos: hayTestigos,
           datos: datosTestigos,
         };
 
-        // Crear el registro de testigos (siempre)
+        console.log("Creando testigos con:", JSON.stringify(testigosData, null, 2));
+        
+        // Crear registro de testigos
         const testigos = await publicDirectus.request(
           createItem("testigos", testigosData)
         );
 
         testigosId = testigos.id;
-        console.log("testigosId creado:", testigosId);
-      } catch (error) {
-        console.error("Error al crear testigos:", error);
+        console.log("Testigos creados con ID:", testigosId);
+      } catch (testigosError) {
+        console.error("Error al crear testigos:", testigosError);
+        if (testigosError.response) {
+          console.error("Respuesta del servidor:", testigosError.response.data);
+        }
+        // Continuamos sin testigos
       }
 
       // 6. Crear la denuncia principal
-      const denunciaData = {
-        status: "PENDIENTE",
-        narracionHechos: formData.narracionHechos?.trim() || "",
-        ...(denuncianteId && { denunciante: denuncianteId }),
-        ...(ubicacionHechoId && { ubicacionHecho: ubicacionHechoId }),
-        ...(personaDenunciadaId && { personaDenunciada: personaDenunciadaId }),
-        ...(faltaCometidaId && { faltaCometida: faltaCometidaId }),
-        ...(testigosId && { testigos: testigosId }),
-      };
+      try {
+        // Crear objeto base de la denuncia
+        const denunciaData = {
+          status: "PENDIENTE",
+          narracionHechos: formData.narracionHechos || "",
+        };
+        
+        // Añadir relaciones solo si existen los IDs
+        if (denuncianteId) denunciaData.denunciante = denuncianteId;
+        if (ubicacionHechoId) denunciaData.ubicacionHecho = ubicacionHechoId;
+        if (personaDenunciadaId) denunciaData.personaDenunciada = personaDenunciadaId;
+        if (faltaCometidaId) denunciaData.faltaCometida = faltaCometidaId;
+        if (testigosId) denunciaData.testigos = testigosId;
 
-      const denuncia = await publicDirectus.request(
-        createItem("denuncias", denunciaData)
-      );
+        console.log("Creando denuncia principal con:", JSON.stringify(denunciaData, null, 2));
+        
+        // Crear la denuncia en Directus
+        const denuncia = await publicDirectus.request(
+          createItem("denuncias", denunciaData)
+        );
+        
+        console.log("Denuncia creada con ID:", denuncia.id);
 
-      // 7. Crear relaciones con archivos de evidencia
-      if (formData.archivosEvidencia?.length > 0) {
-        try {
-          for (const fileId of formData.archivosEvidencia) {
-            await publicDirectus.request(
-              createItem("denuncias_files", {
-                denuncias_id: denuncia.id,
-                directus_files_id: fileId,
-              })
-            );
+        // 7. Crear relaciones con archivos de evidencia
+        if (formData.archivosEvidencia?.length > 0) {
+          try {
+            for (const fileId of formData.archivosEvidencia) {
+              await publicDirectus.request(
+                createItem("denuncias_files", {
+                  denuncias_id: denuncia.id,
+                  directus_files_id: fileId,
+                })
+              );
+            }
+            console.log("Relaciones de archivos creadas correctamente");
+          } catch (archivosError) {
+            console.error("Error al crear relaciones de archivos:", archivosError);
+            if (archivosError.response) {
+              console.error("Respuesta del servidor:", archivosError.response.data);
+            }
+            // Continuamos incluso si fallan los archivos
           }
-        } catch (error) {
-          console.error("Error al crear relaciones de archivos:", error);
         }
-      }
 
-      return denuncia;
+        console.log("------------------- DENUNCIA CREADA EXITOSAMENTE -------------------");
+        console.log("Resultado:", JSON.stringify(denuncia, null, 2));
+        
+        return denuncia;
+      } catch (denunciaError) {
+        console.error("Error al crear la denuncia principal:", denunciaError);
+        if (denunciaError.response) {
+          console.error("Respuesta del servidor:", denunciaError.response.data);
+        }
+        throw denunciaError;
+      }
     } catch (error) {
-      console.error("Error al crear la denuncia:", error);
+      console.error("Error general al crear la denuncia:", error);
       throw error;
     }
   },

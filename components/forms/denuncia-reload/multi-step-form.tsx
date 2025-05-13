@@ -191,7 +191,7 @@ export function MultiStepForm() {
     if (field.startsWith("ubicacionHecho")) return 1
     if (field.startsWith("personaDenunciada")) return 2
     if (field.startsWith("faltaCometida") || field.startsWith("narracionHechos")) return 3
-    if (field.startsWith("archivosEvidencia") || field.startsWith("hayTestigos") || field.startsWith("testigos"))
+    if (field.startsWith("archivosEvidencia") || field.startsWith("tesitgos") || field.startsWith("datosTestigos"))
       return 4
     return -1
   }
@@ -204,19 +204,21 @@ export function MultiStepForm() {
   }
 
   const handleConfirmSubmit = async () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
-      const result = await denunciasPublicService.createDenuncia(form.getValues())
-      setDenunciaId(result.id)
-      setModalMode("success")
+      const formValues = form.getValues();
+      console.log("Valores del formulario que se envían:", JSON.stringify(formValues, null, 2));
+      const result = await denunciasPublicService.createDenuncia(formValues);
+      setDenunciaId(result.id);
+      setModalMode("success");
     } catch (error) {
-      console.error("Error submitting form:", error)
-      setIsModalOpen(false)
+      console.error("Error al enviar el formulario:", error);
+      setIsModalOpen(false);
       // Maneja el error apropiadamente, por ejemplo, muestra un mensaje de error
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleModalClose = () => {
     setIsModalOpen(false)
@@ -267,10 +269,6 @@ export function MultiStepForm() {
                       >
                         <Icon className="h-5 w-5" />
                       </Button>
-                      {/* <span className="text-xs mt-1 text-center hidden md:block max-w-[120px] whitespace-normal min-h-[2.5em]">{s.title}</span> */}
-                      {/* {index < steps.length - 1 && (
-                        <div className="hidden md:block h-[1px] w-6 bg-muted/50 absolute left-[calc(100%+0.25rem)] top-5" />
-                      )} */}
                     </div>
                   )
                 })}
@@ -333,18 +331,6 @@ export function MultiStepForm() {
               <StepContent step={step} form={form} />
             </form>
           </div>
-
-          {/* Footer with helpful text */}
-          {/* <div className="border-t mt-auto">
-            <div className="container mx-auto px-4 py-3">
-              <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground">
-                <p>Complete todos los campos requeridos</p>
-                <p className="mt-1 sm:mt-0">
-                  Paso {step + 1} de {totalSteps}
-                </p>
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
       <DenunciaModal

@@ -1,6 +1,6 @@
 //@ts-nocheck
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -13,7 +13,7 @@ import iconParticular from '@/components/icon-particular.svg';
 import iconServidorPublico from '@/components/icon-servidor-publico.svg';
 
 interface PersonaDenunciadaStepProps {
-  form: UseFormReturn<any> | nullImage
+  form: UseFormReturn<any> | null
 }
 
 interface EntePublico {
@@ -133,6 +133,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
     setLoading(false)
   }
 
+  // Al cambiar la entidad, actualizar el valor en el formulario y resetear el ente público
   const handleEntidadChange = (value: string) => {
     const entidad = entidadesFederativas.find((e) => e.nombre === value)
     if (entidad) {
@@ -150,11 +151,31 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         shouldTouch: true,
       })
 
+      // Resetear las faltas seleccionadas al cambiar la entidad
+      form?.setValue("faltaCometida.faltaGrave", [], {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+      
+      form?.setValue("faltaCometida.faltaNoGrave", [], {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+      
+      form?.setValue("faltaCometida.hechosCorrupcion", [], {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+
       // Fetch entes públicos para la entidad seleccionada
       fetchEntesPublicos(entidad.clave)
     }
   }
 
+  // Actualizar el ente público seleccionado
   const handleEntePublicoChange = (value: string) => {
     const selectedEnte = entesPublicos.find((ente) => ente.id.toString() === value)
     if (selectedEnte) {
@@ -167,6 +188,34 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
 
       setSelectedEnteName(selectedEnte.nombre)
     }
+  }
+
+  // Al cambiar el tipo de persona (servidor público o particular), resetear las faltas seleccionadas
+  const handleTipoPersonaChange = (value: string) => {
+    form?.setValue("personaDenunciada.tipoPersona", value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+
+    // Resetear las faltas seleccionadas al cambiar el tipo de persona
+    form?.setValue("faltaCometida.faltaGrave", [], {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+    
+    form?.setValue("faltaCometida.faltaNoGrave", [], {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+    
+    form?.setValue("faltaCometida.hechosCorrupcion", [], {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
   }
 
   if (!form) {
@@ -273,7 +322,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     <CustomCheckbox
                       checked={field.value === "SERVIDOR_PUBLICO"}
                       onChange={() => {
-                        field.onChange("SERVIDOR_PUBLICO")
+                        handleTipoPersonaChange("SERVIDOR_PUBLICO")
                       }}
                     >
                       <div className="flex flex-col items-center text-center pt-2 pb-4">
@@ -301,7 +350,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     <CustomCheckbox
                       checked={field.value === "PARTICULAR"}
                       onChange={() => {
-                        field.onChange("PARTICULAR")
+                        handleTipoPersonaChange("PARTICULAR")
                       }}
                     >
                       <div className="flex flex-col items-center text-center pt-2 pb-4">

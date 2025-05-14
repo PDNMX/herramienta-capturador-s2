@@ -15,8 +15,98 @@ const directus = createDirectus(BACKEND_URL)
   .with(authentication("cookie", { credentials: "include", autoRefresh: true }))
   .with(rest());
 
-// Instancia pública (para el  de denuncias)
+// Instancia pública (para el formulario de denuncias)
 export const publicDirectus = createDirectus(BACKEND_URL).with(rest());
+
+// Servicio para manejar catálogos de faltas
+export const catalogosService = {
+  // Obtener todas las faltas
+  async getFaltas() {
+    try {
+      const faltas = await publicDirectus.request(
+        readItems("faltas", {
+          limit: -1,
+          fields: [
+            'id', 
+            'entidad', 
+            'clasificacion', 
+            'ley', 
+            'articulo', 
+            'fraccion', 
+            'incisio', 
+            'letra', 
+            'nombre', 
+            'descripcion', 
+            'servidorPublico', 
+            'particular'
+          ]
+        })
+      );
+      return faltas;
+    } catch (error) {
+      console.error("Error al obtener catálogo de faltas:", error);
+      throw error;
+    }
+  },
+
+  // Filtrar faltas por tipo, entidad y clasificación
+  async getFaltasFiltradas(tipoPersona, entidad, clasificacion) {
+    try {
+      const filter = {
+        _and: []
+      };
+
+      // Filtrar por tipo de persona
+      if (tipoPersona === "SERVIDOR_PUBLICO") {
+        filter._and.push({ servidorPublico: { _eq: true } });
+      } else if (tipoPersona === "PARTICULAR") {
+        filter._and.push({ particular: { _eq: true } });
+      }
+
+      // Filtrar por entidad (considerando que 0 o 33 son federales y aplican a todas)
+      if (entidad) {
+        filter._and.push({
+          _or: [
+            { entidad: { _eq: entidad } },
+            { entidad: { _eq: 0 } },
+            { entidad: { _eq: 33 } },
+            { entidad: { _null: true } }
+          ]
+        });
+      }
+
+      // Filtrar por clasificación
+      if (clasificacion) {
+        filter._and.push({ clasificacion: { _eq: clasificacion } });
+      }
+
+      // Si no hay condiciones, quitar _and
+      if (filter._and.length === 0) {
+        delete filter._and;
+      }
+
+      const faltas = await publicDirectus.request(
+        readItems("faltas", {
+          limit: -1,
+          filter,
+          fields: [
+            'id', 
+            'entidad', 
+            'clasificacion', 
+            'nombre', 
+            'descripcion', 
+            'servidorPublico', 
+            'particular'
+          ]
+        })
+      );
+      return faltas;
+    } catch (error) {
+      console.error("Error al obtener faltas filtradas:", error);
+      throw error;
+    }
+  }
+};
 
 // Servicio para manejar las denuncias públicas
 export const denunciasPublicService = {

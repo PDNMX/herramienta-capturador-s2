@@ -156,7 +156,6 @@ export const denunciasPublicService = {
           };
 
           // Log específico para verificar que el campo otrasReferencias se incluye correctamente
-          console.log("Valor de otrasReferencias que se enviará:", ubicacionHechoData.otrasReferencias);
           console.log("Creando ubicación del hecho con:", JSON.stringify(ubicacionHechoData, null, 2));
           
           const ubicacionHecho = await publicDirectus.request(

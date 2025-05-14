@@ -13,9 +13,10 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, CheckCircle2, FileText, Download, Shield, Info } from "lucide-react"
+import { AlertCircle, CheckCircle2, FileText, Download, Shield, Info, Loader2, UploadCloud } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
+import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 
 interface DenunciaModalProps {
@@ -26,6 +27,8 @@ interface DenunciaModalProps {
   onConfirm?: () => void
   onCancel?: () => void
   onClose?: () => void
+  uploadProgress?: number  // Nuevo: para mostrar el progreso de carga
+  isUploading?: boolean    // Nuevo: para indicar si está en proceso de carga
 }
 
 export function DenunciaModal({
@@ -36,6 +39,8 @@ export function DenunciaModal({
   onConfirm,
   onCancel,
   onClose,
+  uploadProgress = 0,
+  isUploading = false,
 }: DenunciaModalProps) {
   const [downloadReady, setDownloadReady] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
@@ -46,6 +51,13 @@ export function DenunciaModal({
       setDownloadReady(true)
     }
   }, [mode, denunciaId])
+
+  // Reset el estado de la casilla cuando se abre el modal
+  useEffect(() => {
+    if (isOpen && mode === "confirm") {
+      setIsChecked(false)
+    }
+  }, [isOpen, mode])
 
   const handleDownloadFolio = () => {
     if (!denunciaId) return
@@ -102,6 +114,23 @@ Fecha de generación: ${new Date().toLocaleString()}
             </div>
 
             <div className="p-6 space-y-6">
+              {/* Nuevo: Sección de progreso de carga */}
+              {isUploading && (
+                <div className="space-y-2 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-md border border-blue-100 dark:border-blue-800/30">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                      <UploadCloud className="h-4 w-4" />
+                      Subiendo archivos de evidencia...
+                    </span>
+                    <span className="text-sm font-mono text-blue-600 dark:text-blue-400">{uploadProgress}%</span>
+                  </div>
+                  <Progress value={uploadProgress} className="h-2 bg-blue-100 dark:bg-blue-800/40" />
+                  <p className="text-xs text-blue-600/80 dark:text-blue-400/90 mt-1">
+                    Por favor no cierre esta ventana mientras se suben los archivos.
+                  </p>
+                </div>
+              )}
+
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Info className="h-4 w-4" />
                 <span>Por favor revise cuidadosamente toda la información antes de enviar.</span>
@@ -123,6 +152,7 @@ Fecha de generación: ${new Date().toLocaleString()}
                       "border-amber-500 data-[state=checked]:bg-amber-500 data-[state=checked]:text-white",
                       "dark:border-amber-400 dark:data-[state=checked]:bg-amber-400 dark:data-[state=checked]:text-black",
                     )}
+                    disabled={isUploading} // Deshabilitado durante la carga
                   />
                   <div className="space-y-2">
                     <label
@@ -130,11 +160,12 @@ Fecha de generación: ${new Date().toLocaleString()}
                       className={cn(
                         "text-sm font-semibold leading-tight cursor-pointer",
                         "text-amber-800 dark:text-amber-300",
+                        isUploading ? "opacity-70" : ""
                       )}
                     >
                       Protesto decir verdad respecto de la denuncia presentada
                     </label>
-                    <p className={cn("text-xs", "text-amber-700/80 dark:text-amber-400/90")}>
+                    <p className={cn("text-xs", "text-amber-700/80 dark:text-amber-400/90", isUploading ? "opacity-70" : "")}>
                       Al marcar esta casilla, confirmo bajo protesta de decir verdad que toda la información
                       proporcionada en esta denuncia es verídica y exacta.
                     </p>
@@ -155,18 +186,31 @@ Fecha de generación: ${new Date().toLocaleString()}
                 variant="outline"
                 onClick={onCancel}
                 className="border-2 hover:bg-muted/50 transition-all duration-200"
+                disabled={isUploading}
               >
                 Cancelar
               </Button>
               <Button
                 onClick={onConfirm}
-                disabled={!isChecked}
+                disabled={!isChecked || isUploading}
                 className={cn(
-                  "font-medium transition-all duration-300",
-                  isChecked ? "bg-primary hover:bg-primary/90 shadow-md" : "bg-primary/60 dark:bg-primary/40",
+                  "font-medium transition-all duration-300 flex items-center gap-2",
+                  isChecked && !isUploading ? "bg-primary hover:bg-primary/90 shadow-md" : "bg-primary/60 dark:bg-primary/40",
                 )}
               >
-                {isChecked ? "Confirmar y Enviar" : "Marque la casilla para continuar"}
+                {isUploading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Procesando...
+                  </>
+                ) : !isChecked ? (
+                  "Marque la casilla para continuar"
+                ) : (
+                  <>
+                    <UploadCloud className="h-4 w-4" />
+                    Confirmar y Enviar
+                  </>
+                )}
               </Button>
             </DialogFooter>
           </>

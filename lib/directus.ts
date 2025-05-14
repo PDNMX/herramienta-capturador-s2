@@ -229,10 +229,6 @@ export const denunciasPublicService = {
         // Crear ubicación solo si hay datos
         if (formData.ubicacionHecho) {
           // Asegurarnos de que todos los campos estén definidos o sean null
-          // Logeamos específicamente el valor de otrasReferencias para depuración
-          console.log("otrasReferencias valor recibido:", formData.ubicacionHecho.otrasReferencias);
-          console.log("otrasReferencias tipo:", typeof formData.ubicacionHecho.otrasReferencias);
-          
           const ubicacionHechoData = {
             codigoPostal: formData.ubicacionHecho.codigoPostal || null,
             calle: formData.ubicacionHecho.calle || null,
@@ -332,50 +328,14 @@ export const denunciasPublicService = {
         // Continuamos sin falta cometida
       }
 
-      // 5. Procesar testigos
-      let testigosId = null;
-      try {
-        // Verificar si hay testigos (podría ser undefined, null, o un valor booleano)
-        const hayTestigos = Boolean(formData.testigos);
-        
-        // Preparar datos de testigos
-        let datosTestigos = [];
-        if (hayTestigos && formData.datosTestigos && formData.datosTestigos.length > 0) {
-          datosTestigos = formData.datosTestigos.map(testigo => ({
-            nombre: testigo.nombre || null,
-            contacto: testigo.contacto || null,
-          }));
-        }
-
-        // Estructura para Directus
-        const testigosData = {
-          hayTestigos: hayTestigos,
-          datos: datosTestigos,
-        };
-
-        console.log("Creando testigos con:", JSON.stringify(testigosData, null, 2));
-        
-        // Crear registro de testigos
-        const testigos = await publicDirectus.request(
-          createItem("testigos", testigosData)
-        );
-
-        testigosId = testigos.id;
-        console.log("Testigos creados con ID:", testigosId);
-      } catch (testigosError) {
-        console.error("Error al crear testigos:", testigosError);
-        if (testigosError.response) {
-          console.error("Respuesta del servidor:", testigosError.response.data);
-        }
-        // Continuamos sin testigos
-      }
-
       // 6. Crear la denuncia principal
       try {
         // Crear objeto base de la denuncia
         const denunciaData = {
           status: "PENDIENTE",
           narracionHechos: formData.narracionHechos || "",
+          testigo: Boolean(formData.testigo), // Cambiado a singular
+          datosTestigos: formData.datosTestigos || null, // Directamente en denuncia
         };
         
         // Añadir relaciones solo si existen los IDs
@@ -383,7 +343,6 @@ export const denunciasPublicService = {
         if (ubicacionHechoId) denunciaData.ubicacionHecho = ubicacionHechoId;
         if (personaDenunciadaId) denunciaData.personaDenunciada = personaDenunciadaId;
         if (faltaCometidaId) denunciaData.faltaCometida = faltaCometidaId;
-        if (testigosId) denunciaData.testigos = testigosId;
 
         console.log("Creando denuncia principal con:", JSON.stringify(denunciaData, null, 2));
         
@@ -397,7 +356,18 @@ export const denunciasPublicService = {
         // 7. Crear relaciones con archivos de evidencia
         if (formData.archivosEvidencia?.length > 0) {
           try {
+            console.log(`Procesando ${formData.archivosEvidencia.length} archivos de evidencia`);
+            
+            // Verificar que cada elemento sea un ID válido
             for (const fileId of formData.archivosEvidencia) {
+              if (!fileId) {
+                console.warn("ID de archivo no válido:", fileId);
+                continue;
+              }
+              
+              console.log(`Creando relación para archivo ${fileId} con denuncia ${denuncia.id}`);
+              
+              // Crear la relación many-to-many en la tabla de relaciones
               await publicDirectus.request(
                 createItem("denuncias_files", {
                   denuncias_id: denuncia.id,
@@ -432,27 +402,46 @@ export const denunciasPublicService = {
     }
   },
 
+  // Método para subir un archivo directamente al sistema de archivos de Directus
   async uploadEvidencia(file: File) {
     try {
+      // Verificamos si tenemos un objeto File válido
+      if (!(file instanceof File)) {
+        throw new Error("El parámetro proporcionado no es un objeto File válido");
+      }
+      
+      console.log(`Preparando subida de archivo: ${file.name} (${file.size} bytes, tipo: ${file.type})`);
+      
+      // Creamos un FormData para subir el archivo
       const formData = new FormData();
       formData.append("file", file);
-
+      
+      // Hacemos la petición directamente al endpoint /files de Directus
+      console.log(`Enviando archivo a ${BACKEND_URL}/files`);
       const response = await fetch(`${BACKEND_URL}/files`, {
         method: "POST",
         body: formData,
+        // No incluimos credenciales ya que es un endpoint público
       });
-
+      
+      // Si la respuesta no es exitosa, lanzamos un error
       if (!response.ok) {
-        throw new Error("Error al subir el archivo");
+        const errorBody = await response.text();
+        console.error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`);
+        console.error(`Cuerpo del error: ${errorBody}`);
+        throw new Error(`Error al subir archivo: ${response.status} ${response.statusText}`);
       }
-
+      
+      // Parseamos la respuesta JSON
       const data = await response.json();
-      return data;
+      console.log(`Archivo subido exitosamente. ID asignado por Directus: ${data.id}`);
+      return data; // Esto incluirá el ID del archivo y otros metadatos
+      
     } catch (error) {
       console.error("Error al subir evidencia:", error);
       throw error;
     }
-  },
+  }
 };
 
 // Servicio para consultar denuncias

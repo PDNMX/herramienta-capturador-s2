@@ -1,6 +1,6 @@
 //@ts-nocheck
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,8 @@ import { Separator } from "@/components/ui/separator"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
 import type { UseFormReturn } from "react-hook-form"
+import { useFieldArray } from "react-hook-form"
+import { toast } from "@/components/ui/use-toast"
 
 interface PruebasYTestigosStepProps {
   form: UseFormReturn<any>
@@ -19,6 +21,12 @@ interface PruebasYTestigosStepProps {
 
 export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   const [dragActive, setDragActive] = useState(false)
+
+  // Usar useFieldArray para manejar correctamente los arrays de testigos
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "datosTestigos",
+  });
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
@@ -40,29 +48,122 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
       const validFiles = files.filter((file) => {
         const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
         const extension = "." + file.name.split(".").pop()?.toLowerCase()
-        return validTypes.includes(extension) && file.size <= 10 * 1024 * 1024
+        
+        // Verificar formato y tamaño del archivo
+        const isValidFormat = validTypes.some(type => extension.endsWith(type))
+        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+        
+        if (!isValidFormat) {
+          toast({
+            title: "Formato no válido",
+            description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
+            variant: "destructive"
+          })
+        } else if (!isValidSize) {
+          toast({
+            title: "Archivo demasiado grande",
+            description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
+            variant: "destructive"
+          })
+        }
+        
+        return isValidFormat && isValidSize
       })
 
-      field.onChange([...(field.value || []), ...validFiles])
+      if (validFiles.length > 0) {
+        // Añadir los archivos válidos al campo
+        field.onChange([...(field.value || []), ...validFiles])
+        
+        if (validFiles.length === 1) {
+          toast({
+            title: "Archivo añadido",
+            description: "El archivo se ha añadido a la lista de evidencias",
+            variant: "default"
+          })
+        } else {
+          toast({
+            title: "Archivos añadidos",
+            description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
+            variant: "default"
+          })
+        }
+      }
     }
   }
 
-  // Cambiar la función para añadir un nuevo testigo
+  // Función para añadir un nuevo testigo
   const addTestigo = () => {
-    const currentTestigos = form.getValues("datosTestigos") || []
-    form.setValue("datosTestigos", [...currentTestigos, { nombre: "", contacto: "" }])
+    append({ nombre: "", contacto: "" });
   }
 
-  // Cambiar la función para eliminar un testigo
-  const removeTestigo = (index: number) => {
-    const currentTestigos = form.getValues("datosTestigos") || []
-    const updatedTestigos = [...currentTestigos]
-    updatedTestigos.splice(index, 1)
-    form.setValue("datosTestigos", updatedTestigos)
-  }
+  // Observar el valor de testigo (singular) para sincronizar el estado
+  const hayTestigos = form.watch("testigo");
 
-  // Cambiar la línea donde se obtienen los testigos del formulario
-  const datosTestigos = form.watch("datosTestigos") || []
+  // Cuando cambia el valor de hayTestigos a false, limpiar la lista de testigos
+  useEffect(() => {
+    if (hayTestigos === false) {
+      // Limpiar la lista de testigos si se marca "No hay testigos"
+      while (fields.length > 0) {
+        remove(0);
+      }
+    } else if (hayTestigos === true && fields.length === 0) {
+      // Añadir al menos un testigo si se marca "Sí hay testigos" y no hay ninguno
+      append({ nombre: "", contacto: "" });
+    }
+  }, [hayTestigos, fields.length, append, remove]);
+
+  // Función para validar archivos al seleccionarlos mediante el input
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = Array.from(e.target.files)
+      const validFiles = files.filter((file) => {
+        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
+        const extension = "." + file.name.split(".").pop()?.toLowerCase()
+        
+        // Verificar formato y tamaño del archivo
+        const isValidFormat = validTypes.some(type => extension.endsWith(type))
+        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+        
+        if (!isValidFormat) {
+          toast({
+            title: "Formato no válido",
+            description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
+            variant: "destructive"
+          })
+        } else if (!isValidSize) {
+          toast({
+            title: "Archivo demasiado grande",
+            description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
+            variant: "destructive"
+          })
+        }
+        
+        return isValidFormat && isValidSize
+      })
+
+      if (validFiles.length > 0) {
+        // Añadir los archivos válidos al campo
+        field.onChange([...(field.value || []), ...validFiles])
+        
+        if (validFiles.length === 1) {
+          toast({
+            title: "Archivo añadido",
+            description: "El archivo se ha añadido a la lista de evidencias",
+            variant: "default"
+          })
+        } else {
+          toast({
+            title: "Archivos añadidos",
+            description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
+            variant: "default"
+          })
+        }
+      }
+      
+      // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
+      e.target.value = ''
+    }
+  }
 
   return (
     <div className="space-y-6 p-3 sm:p-6">
@@ -102,10 +203,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                       multiple
                       className="hidden"
                       id="file-upload"
-                      onChange={(e) => {
-                        const files = Array.from(e.target.files || [])
-                        field.onChange([...(field.value || []), ...files])
-                      }}
+                      onChange={(e) => handleFileInputChange(e, field)}
                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                     />
                     <label htmlFor="file-upload">
@@ -127,7 +225,14 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                         variant="ghost"
                         size="sm"
                         className="h-8 text-xs"
-                        onClick={() => field.onChange([])}
+                        onClick={() => {
+                          field.onChange([])
+                          toast({
+                            title: "Archivos eliminados",
+                            description: "Se han eliminado todos los archivos de la lista",
+                            variant: "default"
+                          })
+                        }}
                       >
                         Eliminar todos
                       </Button>
@@ -166,6 +271,11 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                               const newFiles = [...field.value]
                               newFiles.splice(index, 1)
                               field.onChange(newFiles)
+                              toast({
+                                title: "Archivo eliminado",
+                                description: `Se eliminó ${file.name} de la lista`,
+                                variant: "default"
+                              })
                             }}
                           >
                             <X className="h-4 w-4" />
@@ -194,7 +304,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
 
         <FormField
           control={form.control}
-          name="testigos"
+          name="testigo" // Cambiado a singular
           render={({ field }) => (
             <FormItem>
               <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
@@ -209,7 +319,12 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                     <Button
                       type="button"
                       variant={field.value === true  ? "default" : "outline"}
-                      onClick={() => field.onChange(true)}
+                      onClick={() => {
+                        field.onChange(true)
+                        if (!fields.length) {
+                          append({ nombre: "", contacto: "" })
+                        }
+                      }}
                       className={cn(
                         "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
                         field.value === true
@@ -222,7 +337,13 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                     <Button
                       type="button"
                       variant={field.value === false ? "default" : "outline"}
-                      onClick={() => field.onChange(false)}
+                      onClick={() => {
+                        field.onChange(false)
+                        // Limpiar todos los testigos cuando se selecciona "No"
+                        while (fields.length > 0) {
+                          remove(0)
+                        }
+                      }}
                       className={cn(
                         "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
                         field.value === false
@@ -262,7 +383,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
         />
 
         {/* Lista de testigos */}
-        {form.watch("testigos") && (
+        {form.watch("testigo") && ( // Cambiado a singular
           <div className="space-y-4 mt-4">
             <div className="flex items-center justify-between">
               <h4 className="text-base font-medium">Información de testigos</h4>
@@ -278,7 +399,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
               </Button>
             </div>
 
-            {datosTestigos.length === 0 ? (
+            {fields.length === 0 ? (
               <div className="text-center py-8 border border-dashed rounded-lg">
                 <p className="text-muted-foreground">No ha añadido ningún testigo</p>
                 <Button type="button" variant="outline" size="sm" onClick={addTestigo} className="mt-2">
@@ -289,14 +410,14 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
             ) : (
               <ScrollArea className="max-h-[500px]">
                 <div className="space-y-4">
-                  {datosTestigos.map((_, index) => (
-                    <Card key={index} className="relative">
+                  {fields.map((item, index) => (
+                    <Card key={item.id} className="relative">
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
                         className="absolute top-2 right-2 h-8 w-8"
-                        onClick={() => removeTestigo(index)}
+                        onClick={() => remove(index)}
                       >
                         <Trash2 className="h-4 w-4 text-muted-foreground" />
                       </Button>

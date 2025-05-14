@@ -109,7 +109,7 @@ export function MultiStepForm() {
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [denunciaId, setDenunciaId] = React.useState<string | undefined>(undefined)
 
-  // Corrección para los defaultValues en el formulario
+  // Corregido: defaultValues para el formulario con estructura anidada completa
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -136,18 +136,18 @@ export function MultiStepForm() {
         numero: "",
         ciudad: "",
         estado: "",
-        pais: "",
+        pais: "México", // Valor por defecto
         otrasReferencias: "",
         fechaHecho: "",
         horaHecho: "",
       },
       personaDenunciada: {
-        entidad: "",
-        entePublico: "",
+        entidad: undefined,
+        entePublico: undefined,
         tipoPersona: "SERVIDOR_PUBLICO",
         nombre: "",
         apellidos: "",
-        genero: "FEMENINO",
+        genero: undefined,
         descripcion: "",
       },
       faltaCometida: {
@@ -157,7 +157,7 @@ export function MultiStepForm() {
       },
       narracionHechos: "",
       archivosEvidencia: [],
-      testigos: true,
+      testigos: false,
       datosTestigos: [],
     },
   })
@@ -186,12 +186,11 @@ export function MultiStepForm() {
 
   const getFieldStep = (field: string) => {
     // Implementa la lógica para determinar a qué paso pertenece cada campo
-    // Esto es un ejemplo, ajústalo según la estructura de tu formulario
     if (field.startsWith("denunciante")) return 0
     if (field.startsWith("ubicacionHecho")) return 1
     if (field.startsWith("personaDenunciada")) return 2
     if (field.startsWith("faltaCometida") || field.startsWith("narracionHechos")) return 3
-    if (field.startsWith("archivosEvidencia") || field.startsWith("tesitgos") || field.startsWith("datosTestigos"))
+    if (field.startsWith("archivosEvidencia") || field.startsWith("testigos") || field.startsWith("datosTestigos"))
       return 4
     return -1
   }
@@ -206,9 +205,55 @@ export function MultiStepForm() {
   const handleConfirmSubmit = async () => {
     setIsSubmitting(true);
     try {
+      // Obtenemos los valores completos del formulario
       const formValues = form.getValues();
+      
+      // Registro para depuración
       console.log("Valores del formulario que se envían:", JSON.stringify(formValues, null, 2));
-      const result = await denunciasPublicService.createDenuncia(formValues);
+      
+      // Verificar específicamente el valor de otrasReferencias
+      console.log("Valor específico de otrasReferencias:", formValues.ubicacionHecho?.otrasReferencias);
+      
+      // Realizar validación de tipos antes del envío
+      // Esto ayuda a prevenir problemas con campos vacíos o tipos incorrectos
+      const validatedValues = {
+        ...formValues,
+        // Asegurarse de que ubicacionHecho exista y tenga todos sus campos
+        ubicacionHecho: {
+          codigoPostal: formValues.ubicacionHecho?.codigoPostal || "",
+          calle: formValues.ubicacionHecho?.calle || "",
+          numero: formValues.ubicacionHecho?.numero || "",
+          ciudad: formValues.ubicacionHecho?.ciudad || "",
+          estado: formValues.ubicacionHecho?.estado || "",
+          pais: formValues.ubicacionHecho?.pais || "",
+          // Asegurarse explícitamente de que otrasReferencias esté definido
+          otrasReferencias: formValues.ubicacionHecho?.otrasReferencias || "",
+          fechaHecho: formValues.ubicacionHecho?.fechaHecho || "",
+          horaHecho: formValues.ubicacionHecho?.horaHecho || ""
+        },
+        // Asegurarse de que personaDenunciada tenga los valores correctos
+        personaDenunciada: {
+          ...formValues.personaDenunciada,
+          // Convertir a número o null para los campos de ID
+          entidad: formValues.personaDenunciada?.entidad ? 
+                   Number(formValues.personaDenunciada.entidad) : null,
+          entePublico: formValues.personaDenunciada?.entePublico ?
+                       Number(formValues.personaDenunciada.entePublico) : null,
+        },
+        // Asegurar que los arrays siempre estén inicializados
+        faltaCometida: {
+          faltaGrave: formValues.faltaCometida?.faltaGrave || [],
+          faltaNoGrave: formValues.faltaCometida?.faltaNoGrave || [],
+          hechosCorrupcion: formValues.faltaCometida?.hechosCorrupcion || []
+        },
+        archivosEvidencia: formValues.archivosEvidencia || []
+      };
+      
+      // Verificar que otrasReferencias está incluido en los valores validados
+      console.log("otrasReferencias en validatedValues:", validatedValues.ubicacionHecho.otrasReferencias);
+      
+      // Enviamos los datos validados
+      const result = await denunciasPublicService.createDenuncia(validatedValues);
       setDenunciaId(result.id);
       setModalMode("success");
     } catch (error) {

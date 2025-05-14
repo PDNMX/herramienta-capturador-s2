@@ -138,6 +138,11 @@ export const denunciasPublicService = {
       try {
         // Crear ubicación solo si hay datos
         if (formData.ubicacionHecho) {
+          // Asegurarnos de que todos los campos estén definidos o sean null
+          // Logeamos específicamente el valor de otrasReferencias para depuración
+          console.log("otrasReferencias valor recibido:", formData.ubicacionHecho.otrasReferencias);
+          console.log("otrasReferencias tipo:", typeof formData.ubicacionHecho.otrasReferencias);
+          
           const ubicacionHechoData = {
             codigoPostal: formData.ubicacionHecho.codigoPostal || null,
             calle: formData.ubicacionHecho.calle || null,
@@ -150,6 +155,8 @@ export const denunciasPublicService = {
             horaHecho: formData.ubicacionHecho.horaHecho || null,
           };
 
+          // Log específico para verificar que el campo otrasReferencias se incluye correctamente
+          console.log("Valor de otrasReferencias que se enviará:", ubicacionHechoData.otrasReferencias);
           console.log("Creando ubicación del hecho con:", JSON.stringify(ubicacionHechoData, null, 2));
           
           const ubicacionHecho = await publicDirectus.request(
@@ -158,6 +165,11 @@ export const denunciasPublicService = {
 
           ubicacionHechoId = ubicacionHecho.id;
           console.log("Ubicación del hecho creada con ID:", ubicacionHechoId);
+          
+          // Verificamos los datos retornados para confirmar que otrasReferencias se guardó
+          console.log("Datos retornados de la ubicación creada:", JSON.stringify(ubicacionHecho, null, 2));
+        } else {
+          console.log("No hay datos de ubicación para procesar");
         }
       } catch (ubicacionError) {
         console.error("Error al crear ubicación del hecho:", ubicacionError);
@@ -171,6 +183,7 @@ export const denunciasPublicService = {
       let personaDenunciadaId = null;
       try {
         if (formData.personaDenunciada) {
+          // Asegurarnos de que todos los campos estén definidos o sean null
           const personaDenunciadaData = {
             entidad: formData.personaDenunciada.entidad || null,
             entePublico: formData.personaDenunciada.entePublico || null,
@@ -189,6 +202,8 @@ export const denunciasPublicService = {
 
           personaDenunciadaId = personaDenunciada.id;
           console.log("Persona denunciada creada con ID:", personaDenunciadaId);
+        } else {
+          console.log("No hay datos de persona denunciada para procesar");
         }
       } catch (personaError) {
         console.error("Error al crear persona denunciada:", personaError);
@@ -202,6 +217,7 @@ export const denunciasPublicService = {
       let faltaCometidaId = null;
       try {
         if (formData.faltaCometida) {
+          // Asegurarnos de que los arrays siempre existan o sean vacíos
           const faltaCometidaData = {
             faltaGrave: formData.faltaCometida.faltaGrave || [],
             faltaNoGrave: formData.faltaCometida.faltaNoGrave || [],
@@ -216,6 +232,8 @@ export const denunciasPublicService = {
           
           faltaCometidaId = faltaCometida.id;
           console.log("Falta cometida creada con ID:", faltaCometidaId);
+        } else {
+          console.log("No hay datos de falta cometida para procesar");
         }
       } catch (faltaError) {
         console.error("Error al crear falta cometida:", faltaError);
@@ -228,7 +246,7 @@ export const denunciasPublicService = {
       // 5. Procesar testigos
       let testigosId = null;
       try {
-        // Verificar si hay testigos
+        // Verificar si hay testigos (podría ser undefined, null, o un valor booleano)
         const hayTestigos = Boolean(formData.testigos);
         
         // Preparar datos de testigos

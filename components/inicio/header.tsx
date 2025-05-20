@@ -9,12 +9,12 @@ import AccessibilityMenu from '@/components/layout/AccessibilityMenu/accessibill
 import logoPDNd from '@/components/layout/logo-dark.svg';
 import logoPDNw from '@/components/layout/logo-white.svg';
 import logoPDNh from '@/components/layout/logo-high-contrast.svg';
-/* import { Shield } from 'lucide-react'; */
+import { ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Header() {
   const { theme } = useTheme();
-  console.log(theme); // Verifica si devuelve 'high-contrast'
+  //console.log(theme); // Verifica si devuelve 'high-contrast'
 
   return (
     <header className="absolute w-full h-16">
@@ -37,8 +37,8 @@ export default function Header() {
               className="flex items-center gap-2"
               asChild
             >
-              <Link href="/aviso-de-privacidad">
-                {/* <Shield className="h-4 w-4" /> */}
+              <Link href="#">
+                <ShieldCheck className="h-4 w-4" />
                 <span className="hidden sm:inline">Aviso de privacidad</span>
               </Link>
             </Button>

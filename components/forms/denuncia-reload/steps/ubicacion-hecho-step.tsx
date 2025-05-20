@@ -79,17 +79,13 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         }
         setAddressDetails(address)
 
-        // Actualizar los valores del formulario
-        form.setValue("calle", address.street)
-        form.setValue("numero", address.number)
-        form.setValue("ciudad", address.city)
-        form.setValue("estado", address.state)
-        form.setValue("pais", address.country)
-        form.setValue("codigoPostal", address.postalCode)
-        form.setValue(
-          "direccion",
-          `${address.street} ${address.number}, ${address.city}, ${address.state}, ${address.country}`,
-        )
+        // Actualizar los valores del formulario usando la estructura anidada correcta
+        form.setValue("ubicacionHecho.calle", address.street)
+        form.setValue("ubicacionHecho.numero", address.number)
+        form.setValue("ubicacionHecho.ciudad", address.city)
+        form.setValue("ubicacionHecho.estado", address.state)
+        form.setValue("ubicacionHecho.pais", address.country)
+        form.setValue("ubicacionHecho.codigoPostal", address.postalCode)
       }
     } catch (error) {
       console.error("Error en geocodificación inversa:", error)
@@ -188,8 +184,8 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         center: [coordinates.lng, coordinates.lat],
         zoom: 3,
         attributionControl: false, // Quitar la atribución (footer)
-      })
-      mapRef.current = map
+      });
+      mapRef.current = map;
 
       // Inicializar el marcador principal
       const marker = new mapboxgl.Marker({
@@ -197,42 +193,39 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         draggable: true,
       })
         .setLngLat([coordinates.lng, coordinates.lat])
-        .addTo(map)
-      markerRef.current = marker
+        .addTo(map);
+      markerRef.current = marker;
 
       // Actualizar coordenadas cuando se arrastra el marcador
       marker.on("dragend", () => {
-        const lngLat = marker.getLngLat()
-        setCoordinates({ lat: lngLat.lat, lng: lngLat.lng })
-        reverseGeocode(lngLat.lat, lngLat.lng)
-      })
+        const lngLat = marker.getLngLat();
+        setCoordinates({ lat: lngLat.lat, lng: lngLat.lng });
+        reverseGeocode(lngLat.lat, lngLat.lng);
+      });
 
       // Añadir controles de navegación (zoom)
-      map.addControl(new mapboxgl.NavigationControl(), "top-right")
+      map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
       // Actualizar coordenadas cuando el mapa se mueve
       map.on("moveend", () => {
-        const center = map.getCenter()
-        const lat = center.lat
-        const lng = center.lng
-        setCoordinates({ lat, lng })
+        const center = map.getCenter();
+        const lat = center.lat;
+        const lng = center.lng;
+        setCoordinates({ lat, lng });
         // Actualizar posición del marcador cuando el mapa se mueve
         if (markerRef.current) {
-          markerRef.current.setLngLat([lng, lat])
+          markerRef.current.setLngLat([lng, lat]);
         }
-        reverseGeocode(lat, lng)
-      })
-
-      // Hacer la geocodificación inicial
-      //reverseGeocode(coordinates.lat, coordinates.lng);
+        reverseGeocode(lat, lng);
+      });
 
       return () => {
-        if (tempMarker) tempMarker.remove()
-        if (markerRef.current) markerRef.current.remove()
-        map.remove()
-      }
+        if (tempMarker) tempMarker.remove();
+        if (markerRef.current) markerRef.current.remove();
+        map.remove();
+      };
     }
-  }, [])
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -334,7 +327,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
           control={form.control}
-          name="codigoPostal"
+          name="ubicacionHecho.codigoPostal"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium">Código Postal</FormLabel>
@@ -368,7 +361,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
 
         <FormField
           control={form.control}
-          name="calle"
+          name="ubicacionHecho.calle"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium">Calle</FormLabel>
@@ -402,7 +395,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
 
         <FormField
           control={form.control}
-          name="numero"
+          name="ubicacionHecho.numero"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium">Número Exterior</FormLabel>
@@ -436,7 +429,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
 
         <FormField
           control={form.control}
-          name="ciudad"
+          name="ubicacionHecho.ciudad"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium">Ciudad</FormLabel>
@@ -468,7 +461,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
 
         <FormField
           control={form.control}
-          name="estado"
+          name="ubicacionHecho.estado"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium">Estado</FormLabel>
@@ -500,7 +493,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
 
         <FormField
           control={form.control}
-          name="pais"
+          name="ubicacionHecho.pais"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-xs font-medium">País</FormLabel>
@@ -529,24 +522,34 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
             </FormItem>
           )}
         />
-
+      </div>
+      
+      {/* Sección de referencias adicionales (siempre editable) */}
+      <div className="border-t mt-6 pt-6">
         <FormField
           control={form.control}
-          name="otrasReferencias"
+          name="ubicacionHecho.otrasReferencias"
           render={({ field }) => (
-            <FormItem className="md:col-span-2">
-              <FormLabel className="text-xs font-medium">Otras referencias del lugar</FormLabel>
+            <FormItem>
+              <FormLabel className="text-base font-medium flex items-center">
+                <Edit className="h-4 w-4 mr-2 text-muted-foreground" />
+                Referencias adicionales del lugar
+              </FormLabel>
+              <FormDescription className="text-xs sm:text-sm mb-2">
+                Proporciona referencias adicionales que ayuden a identificar el lugar donde ocurrieron los hechos
+              </FormDescription>
               <FormControl>
                 <Textarea
                   {...field}
                   placeholder="Ej. Edificio de color azul, frente al parque, cerca de la estación del metro..."
-                  className={cn("text-sm min-h-[80px]", !manualAddressMode ? "cursor-not-allowed bg-gray-100" : "")}
-                  readOnly={!manualAddressMode}
+                  className="text-sm min-h-[100px]"
+                  onChange={(e) => {
+                    field.onChange(e);
+                    // Log para verificar la actualización del valor
+                    console.log("Valor de otrasReferencias actualizado:", e.target.value);
+                  }}
                 />
               </FormControl>
-              <FormDescription className="text-xs sm:text-sm">
-                Proporciona referencias adicionales que ayuden a identificar el lugar donde ocurrieron los hechos
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -562,7 +565,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="fechaHecho"
+            name="ubicacionHecho.fechaHecho"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Fecha del Hecho</FormLabel>
@@ -581,7 +584,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
           />
           <FormField
             control={form.control}
-            name="horaHecho"
+            name="ubicacionHecho.horaHecho"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-xs font-medium">Hora del Hecho</FormLabel>
@@ -601,5 +604,5 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

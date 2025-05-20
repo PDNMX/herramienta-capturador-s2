@@ -13,7 +13,11 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { AlertCircle, CheckCircle2, FileText, Download } from "lucide-react"
+import { AlertCircle, CheckCircle2, FileText, Download, Shield, Info, Loader2, UploadCloud } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Separator } from "@/components/ui/separator"
+import { Progress } from "@/components/ui/progress"
+import { cn } from "@/lib/utils"
 
 interface DenunciaModalProps {
   isOpen: boolean
@@ -23,6 +27,8 @@ interface DenunciaModalProps {
   onConfirm?: () => void
   onCancel?: () => void
   onClose?: () => void
+  uploadProgress?: number  // Nuevo: para mostrar el progreso de carga
+  isUploading?: boolean    // Nuevo: para indicar si está en proceso de carga
 }
 
 export function DenunciaModal({
@@ -33,8 +39,11 @@ export function DenunciaModal({
   onConfirm,
   onCancel,
   onClose,
+  uploadProgress = 0,
+  isUploading = false,
 }: DenunciaModalProps) {
   const [downloadReady, setDownloadReady] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -42,6 +51,13 @@ export function DenunciaModal({
       setDownloadReady(true)
     }
   }, [mode, denunciaId])
+
+  // Reset el estado de la casilla cuando se abre el modal
+  useEffect(() => {
+    if (isOpen && mode === "confirm") {
+      setIsChecked(false)
+    }
+  }, [isOpen, mode])
 
   const handleDownloadFolio = () => {
     if (!denunciaId) return
@@ -79,54 +95,202 @@ Fecha de generación: ${new Date().toLocaleString()}
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden rounded-lg border-0 shadow-lg">
         {mode === "confirm" ? (
           <>
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-primary flex items-center gap-2">
-                <AlertCircle className="h-6 w-6" />
-                Confirmar Envío
-              </DialogTitle>
-              <DialogDescription className="text-base text-muted-foreground">
-                ¿Está seguro que desea enviar esta denuncia? Una vez enviada, no podrá modificar la información
-                proporcionada.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-              <Button variant="outline" onClick={onCancel}>
+            <div className="bg-primary/10 dark:bg-primary/5 p-6 border-b border-primary/20 dark:border-primary/10">
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-primary flex items-center gap-2">
+                  <div className="bg-primary/15 dark:bg-primary/10 p-1.5 rounded-full">
+                    <AlertCircle className="h-6 w-6 text-primary" />
+                  </div>
+                  Confirmar Envío
+                </DialogTitle>
+                <DialogDescription className="text-base text-muted-foreground mt-2">
+                  ¿Está seguro que desea enviar esta denuncia? Una vez enviada, no podrá modificar la información
+                  proporcionada.
+                </DialogDescription>
+              </DialogHeader>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Nuevo: Sección de progreso de carga */}
+              {isUploading && (
+                <div className="space-y-2 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-md border border-blue-100 dark:border-blue-800/30">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                      <UploadCloud className="h-4 w-4" />
+                      Subiendo archivos de evidencia...
+                    </span>
+                    <span className="text-sm font-mono text-blue-600 dark:text-blue-400">{uploadProgress}%</span>
+                  </div>
+                  <Progress value={uploadProgress} className="h-2 bg-blue-100 dark:bg-blue-800/40" />
+                  <p className="text-xs text-blue-600/80 dark:text-blue-400/90 mt-1">
+                    Por favor no cierre esta ventana mientras se suben los archivos.
+                  </p>
+                </div>
+              )}
+
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Info className="h-4 w-4" />
+                <span>Por favor revise cuidadosamente toda la información antes de enviar.</span>
+              </div>
+
+              <div
+                className={cn(
+                  "border-2 rounded-md p-5 shadow-sm",
+                  "bg-amber-50/50 border-amber-200 dark:bg-amber-900/10 dark:border-amber-700/30",
+                )}
+              >
+                <div className="flex items-start space-x-3">
+                  <Checkbox
+                    id="terms"
+                    checked={isChecked}
+                    onCheckedChange={setIsChecked}
+                    className={cn(
+                      "mt-1 h-5 w-5 border-2 transition-all duration-200",
+                      "border-amber-500 data-[state=checked]:bg-amber-500 data-[state=checked]:text-white",
+                      "dark:border-amber-400 dark:data-[state=checked]:bg-amber-400 dark:data-[state=checked]:text-black",
+                    )}
+                    disabled={isUploading} // Deshabilitado durante la carga
+                  />
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="terms"
+                      className={cn(
+                        "text-sm font-semibold leading-tight cursor-pointer",
+                        "text-amber-800 dark:text-amber-300",
+                        isUploading ? "opacity-70" : ""
+                      )}
+                    >
+                      Protesto decir verdad respecto de la denuncia presentada
+                    </label>
+                    <p className={cn("text-xs", "text-amber-700/80 dark:text-amber-400/90", isUploading ? "opacity-70" : "")}>
+                      Al marcar esta casilla, confirmo bajo protesta de decir verdad que toda la información
+                      proporcionada en esta denuncia es verídica y exacta.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Shield className="h-4 w-4 text-primary/70" />
+                <span>Su información será tratada con estricta confidencialidad.</span>
+              </div>
+            </div>
+
+            <Separator className="bg-border dark:bg-border/50" />
+
+            <DialogFooter className="p-6 flex flex-col sm:flex-row gap-3 sm:justify-end bg-muted/30 dark:bg-muted/10">
+              <Button
+                variant="outline"
+                onClick={onCancel}
+                className="border-2 hover:bg-muted/50 transition-all duration-200"
+                disabled={isUploading}
+              >
                 Cancelar
               </Button>
-              <Button onClick={onConfirm}>Confirmar y Enviar</Button>
+              <Button
+                onClick={onConfirm}
+                disabled={!isChecked || isUploading}
+                className={cn(
+                  "font-medium transition-all duration-300 flex items-center gap-2",
+                  isChecked && !isUploading ? "bg-primary hover:bg-primary/90 shadow-md" : "bg-primary/60 dark:bg-primary/40",
+                )}
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Procesando...
+                  </>
+                ) : !isChecked ? (
+                  "Marque la casilla para continuar"
+                ) : (
+                  <>
+                    <UploadCloud className="h-4 w-4" />
+                    Confirmar y Enviar
+                  </>
+                )}
+              </Button>
             </DialogFooter>
           </>
         ) : (
           <>
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-primary flex items-center gap-2">
-                <CheckCircle2 className="h-6 w-6 text-green-600" />
-                Denuncia Recibida
-              </DialogTitle>
-              <DialogDescription className="text-base text-muted-foreground">
-                Gracias por presentar su denuncia. Su caso será revisado por nuestro equipo y se le dará el seguimiento
-                correspondiente.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="py-4">
-              <Alert variant="info">
-                <FileText className="h-4 w-4" />
-                <AlertDescription>
-                  <span className="font-semibold">Su número de folio es:</span>
-                  <br />
-                  {denunciaId}
+            <div
+              className={cn(
+                "p-6 border-b",
+                "bg-green-50 border-green-100 text-green-800",
+                "dark:bg-green-900/20 dark:border-green-900/30 dark:text-green-300",
+              )}
+            >
+              <DialogHeader>
+                <DialogTitle
+                  className={cn("text-2xl font-bold flex items-center gap-2", "text-green-700 dark:text-green-300")}
+                >
+                  <div className={cn("p-1.5 rounded-full", "bg-green-100 dark:bg-green-800/40")}>
+                    <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400" />
+                  </div>
+                  Denuncia Recibida
+                </DialogTitle>
+                <DialogDescription className={cn("text-base mt-2", "text-green-700/70 dark:text-green-400/90")}>
+                  Gracias por presentar su denuncia. Su caso será revisado por nuestro equipo y se le dará el
+                  seguimiento correspondiente.
+                </DialogDescription>
+              </DialogHeader>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <Alert
+                className={cn(
+                  "border-2 shadow-sm",
+                  "bg-blue-50 border-blue-200 text-blue-800",
+                  "dark:bg-blue-900/20 dark:border-blue-800/30 dark:text-blue-300",
+                )}
+              >
+                <div className={cn("p-1.5 rounded-full", "bg-blue-100 dark:bg-blue-800/40")}>
+                  <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <AlertDescription className="mt-2">
+                  <span className={cn("font-semibold text-base block mb-1", "text-blue-800 dark:text-blue-300")}>
+                    Su número de folio es:
+                  </span>
+                  <span
+                    className={cn(
+                      "text-lg font-mono px-3 py-1 rounded border inline-block",
+                      "bg-white border-blue-200 text-blue-800",
+                      "dark:bg-blue-950/50 dark:border-blue-800/50 dark:text-blue-200",
+                    )}
+                  >
+                    {denunciaId}
+                  </span>
                 </AlertDescription>
               </Alert>
+
+              <p className="text-sm text-muted-foreground">
+                Guarde este número de folio para dar seguimiento a su denuncia.
+              </p>
             </div>
-            <DialogFooter className="flex flex-col gap-2">
-              <Button className="w-full" onClick={handleDownloadFolio} disabled={!downloadReady}>
+
+            <Separator className="bg-border dark:bg-border/50" />
+
+            <DialogFooter className="p-6 flex flex-col gap-3 bg-muted/30 dark:bg-muted/10">
+              <Button
+                className={cn(
+                  "w-full font-medium transition-all duration-200 shadow-md",
+                  "bg-green-600 hover:bg-green-700 text-white",
+                  "dark:bg-green-700 dark:hover:bg-green-600 dark:text-white",
+                )}
+                onClick={handleDownloadFolio}
+                disabled={!downloadReady}
+              >
                 <Download className="mr-2 h-4 w-4" />
                 Descargar Folio
               </Button>
-              <Button variant="outline" className="w-full" onClick={handleClose}>
+              <Button
+                variant="outline"
+                className="w-full border-2 hover:bg-muted/50 transition-all duration-200"
+                onClick={handleClose}
+              >
                 Cerrar
               </Button>
             </DialogFooter>

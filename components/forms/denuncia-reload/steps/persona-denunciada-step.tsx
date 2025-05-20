@@ -1,12 +1,16 @@
+//@ts-nocheck
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { CircleUser, Check, Scale, MapPin, Building, Loader2 } from "lucide-react"
+import {  Check, MapPin, Building, Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Combobox } from "@/components/ui/combobox"
 import type { UseFormReturn } from "react-hook-form"
+import Image from 'next/image';
+import iconParticular from '@/components/icon-particular.svg';
+import iconServidorPublico from '@/components/icon-servidor-publico.svg';
 
 interface PersonaDenunciadaStepProps {
   form: UseFormReturn<any> | null
@@ -129,6 +133,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
     setLoading(false)
   }
 
+  // Al cambiar la entidad, actualizar el valor en el formulario y resetear el ente público
   const handleEntidadChange = (value: string) => {
     const entidad = entidadesFederativas.find((e) => e.nombre === value)
     if (entidad) {
@@ -146,11 +151,31 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         shouldTouch: true,
       })
 
+      // Resetear las faltas seleccionadas al cambiar la entidad
+      form?.setValue("faltaCometida.faltaGrave", [], {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+      
+      form?.setValue("faltaCometida.faltaNoGrave", [], {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+      
+      form?.setValue("faltaCometida.hechosCorrupcion", [], {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+
       // Fetch entes públicos para la entidad seleccionada
       fetchEntesPublicos(entidad.clave)
     }
   }
 
+  // Actualizar el ente público seleccionado
   const handleEntePublicoChange = (value: string) => {
     const selectedEnte = entesPublicos.find((ente) => ente.id.toString() === value)
     if (selectedEnte) {
@@ -163,6 +188,34 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
 
       setSelectedEnteName(selectedEnte.nombre)
     }
+  }
+
+  // Al cambiar el tipo de persona (servidor público o particular), resetear las faltas seleccionadas
+  const handleTipoPersonaChange = (value: string) => {
+    form?.setValue("personaDenunciada.tipoPersona", value, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+
+    // Resetear las faltas seleccionadas al cambiar el tipo de persona
+    form?.setValue("faltaCometida.faltaGrave", [], {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+    
+    form?.setValue("faltaCometida.faltaNoGrave", [], {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+    
+    form?.setValue("faltaCometida.hechosCorrupcion", [], {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
   }
 
   if (!form) {
@@ -269,7 +322,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     <CustomCheckbox
                       checked={field.value === "SERVIDOR_PUBLICO"}
                       onChange={() => {
-                        field.onChange("SERVIDOR_PUBLICO")
+                        handleTipoPersonaChange("SERVIDOR_PUBLICO")
                       }}
                     >
                       <div className="flex flex-col items-center text-center pt-2 pb-4">
@@ -277,8 +330,10 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                           className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "scale-110" : ""}`}
                         >
                           <div className="relative">
-                            <Scale
-                              className={`h-16 w-16 transition-colors duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "text-primary" : "text-primary/80"}`}
+                            <Image
+                              src={iconServidorPublico}
+                              alt="Icono de servidor público"
+                              className={`h-16 w-16 transition-opacity duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
                             />
                           </div>
                         </div>
@@ -295,15 +350,17 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     <CustomCheckbox
                       checked={field.value === "PARTICULAR"}
                       onChange={() => {
-                        field.onChange("PARTICULAR")
+                        handleTipoPersonaChange("PARTICULAR")
                       }}
                     >
                       <div className="flex flex-col items-center text-center pt-2 pb-4">
                         <div
                           className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "PARTICULAR" ? "scale-110" : ""}`}
                         >
-                          <CircleUser
-                            className={`h-16 w-16 transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : "text-primary/80"}`}
+                          <Image
+                            src={iconParticular}
+                            alt="Icono de particular"
+                            className={`h-16 w-16 transition-opacity duration-300 ${field.value === "PARTICULAR" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
                           />
                         </div>
                         <h3

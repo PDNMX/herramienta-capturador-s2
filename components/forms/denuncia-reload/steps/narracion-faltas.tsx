@@ -6,89 +6,25 @@ import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Mic, Square, ClipboardList } from "lucide-react"
+import { Mic, Square, ClipboardList, Loader2 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { UseFormReturn } from "react-hook-form"
+import { publicDirectus } from "@/lib/directus"
+import { readItems } from "@directus/sdk"
 
 declare var webkitSpeechRecognition: any
 declare var SpeechRecognition: any
 
-const faltasGraves = [
-  {
-    id: 1,
-    label: "Cohecho",
-    description: "Aceptar sobornos o dádivas para realizar acciones relacionadas con su función",
-  },
-  { id: 2, label: "Peculado", description: "Apropiación o uso indebido de bienes públicos" },
-  {
-    id: 3,
-    label: "Desvío de recursos públicos",
-    description: "Utilizar recursos públicos para fines distintos a los autorizados",
-  },
-  {
-    id: 4,
-    label: "Abuso de funciones",
-    description: "Ejercer atribuciones que no tiene conferidas o usar las que tiene para obtener beneficios",
-  },
-  {
-    id: 5,
-    label: "Actuación bajo conflicto de interés",
-    description: "Intervenir en asuntos donde tiene interés personal o familiar",
-  },
-]
-
-const faltasNoGraves = [
-  {
-    id: 6,
-    label: "Negligencia administrativa",
-    description: "Descuido en el cumplimiento de obligaciones sin intención de causar daño",
-  },
-  {
-    id: 7,
-    label: "Incumplimiento de funciones",
-    description: "No realizar las tareas encomendadas conforme a normativa",
-  },
-  {
-    id: 8,
-    label: "Descuido en la conservación de recursos",
-    description: "No cuidar adecuadamente los bienes asignados",
-  },
-  {
-    id: 9,
-    label: "Omisión en la declaración patrimonial",
-    description: "No presentar o presentar de manera incompleta la declaración patrimonial",
-  },
-  {
-    id: 10,
-    label: "Violación de procedimientos de contratación",
-    description: "Incumplir los procedimientos establecidos en materia de contrataciones",
-  },
-]
-
-const hechosCorrupcion = [
-  { id: 11, label: "Soborno", description: "Ofrecer, entregar o recibir beneficios indebidos a cambio de favores" },
-  {
-    id: 12,
-    label: "Malversación de fondos",
-    description: "Uso indebido de fondos públicos para beneficio propio o de terceros",
-  },
-  {
-    id: 13,
-    label: "Tráfico de influencias",
-    description: "Utilizar relaciones o posición para obtener beneficios indebidos",
-  },
-  {
-    id: 14,
-    label: "Enriquecimiento ilícito",
-    description: "Incremento patrimonial injustificado por parte de un servidor público",
-  },
-  {
-    id: 15,
-    label: "Obstrucción de la justicia",
-    description: "Impedir la investigación o sanción de actos de corrupción",
-  },
-]
+interface Falta {
+  id: number
+  entidad: number
+  clasificacion: string
+  nombre: string
+  descripcion: string
+  servidorPublico: boolean
+  particular: boolean
+}
 
 interface CheckboxGroupProps {
   title: string
@@ -153,6 +89,89 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   const [error, setError] = useState<string | null>(null)
   const [isSpeechSupported, setIsSpeechSupported] = useState(true)
   const recognitionRef = useRef<any>(null)
+  
+  // Estados para las faltas cargadas desde Directus
+  const [faltas, setFaltas] = useState<Falta[]>([])
+  const [loadingFaltas, setLoadingFaltas] = useState(false)
+  
+  // Estados para las faltas filtradas por tipo
+  const [faltasGraves, setFaltasGraves] = useState<Array<{ id: number; label: string; description: string }>>([])
+  const [faltasNoGraves, setFaltasNoGraves] = useState<Array<{ id: number; label: string; description: string }>>([])
+  const [hechosCorrupcion, setHechosCorrupcion] = useState<Array<{ id: number; label: string; description: string }>>([])
+  
+  // Obtener el tipo de persona seleccionada
+  const tipoPersona = form?.watch("personaDenunciada.tipoPersona") || "SERVIDOR_PUBLICO"
+  const entidadSeleccionada = form?.watch("personaDenunciada.entidad")
+
+  // Cargar las faltas desde Directus
+  useEffect(() => {
+    const fetchFaltas = async () => {
+      setLoadingFaltas(true)
+      try {
+        // Consultar todas las faltas de la colección
+        const response = await publicDirectus.request(
+          readItems("faltas", {
+            limit: -1,
+            fields: ['id', 'entidad', 'clasificacion', 'nombre', 'descripcion', 'servidorPublico', 'particular']
+          })
+        )
+        
+        if (response && Array.isArray(response)) {
+          setFaltas(response)
+          console.log("Faltas cargadas:", response)
+        }
+      } catch (err) {
+        console.error("Error al cargar las faltas:", err)
+        setError("No se pudieron cargar las categorías de faltas. Por favor, intente nuevamente.")
+      } finally {
+        setLoadingFaltas(false)
+      }
+    }
+
+    fetchFaltas()
+  }, [])
+
+  // Filtrar las faltas según el tipo de persona y la entidad seleccionada
+  useEffect(() => {
+    if (faltas.length > 0) {
+      // Filtrar por tipo de persona (servidorPublico o particular)
+      const esTipoPersonaValido = (falta: Falta) => {
+        if (tipoPersona === "SERVIDOR_PUBLICO") return falta.servidorPublico
+        if (tipoPersona === "PARTICULAR") return falta.particular
+        return false
+      }
+      
+      // Filtrar por entidad si está seleccionada
+      const esEntidadValida = (falta: Falta) => {
+        // Si no hay entidad seleccionada, mostrar todas las faltas
+        if (!entidadSeleccionada) return true
+        // Si la falta tiene entidad 0 o 33, es federal y aplica para todas las entidades
+        if (falta.entidad === 0 || falta.entidad === 33) return true
+        // Si coincide la entidad específica
+        return falta.entidad === entidadSeleccionada
+      }
+
+      // Aplicar filtros y mapear a formato para checkboxes
+      const faltasFiltradas = faltas.filter(falta => esTipoPersonaValido(falta) && esEntidadValida(falta))
+      
+      // Separar por clasificación
+      const mapearFalta = (falta: Falta) => ({
+        id: falta.id,
+        label: falta.nombre,
+        description: falta.descripcion
+      })
+      
+      setFaltasGraves(faltasFiltradas.filter(f => f.clasificacion === "faltaGrave").map(mapearFalta))
+      setFaltasNoGraves(faltasFiltradas.filter(f => f.clasificacion === "noGrave").map(mapearFalta))
+      setHechosCorrupcion(faltasFiltradas.filter(f => f.clasificacion === "hechoCorrupcion").map(mapearFalta))
+      
+      console.log("Faltas filtradas:", {
+        graves: faltasGraves.length,
+        noGraves: faltasNoGraves.length,
+        corrupcion: hechosCorrupcion.length
+      })
+    }
+  }, [faltas, tipoPersona, entidadSeleccionada])
 
   useEffect(() => {
     // Verificar si el navegador soporta la Web Speech API
@@ -238,6 +257,24 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
             <FormLabel className="text-base font-medium">Descripción Detallada de los Hechos</FormLabel>
             <FormControl>
               <div className="relative">
+                {error && (
+                  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md mb-2">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path
+                            fillRule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-yellow-700">{error}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <Textarea
                   {...field}
                   placeholder="Ejemplo: El día 12 de abril de 2023, aproximadamente a las 14:30 horas, en las oficinas ubicadas en Av. Reforma 101, piso 3, observé que el Lic. Juan Pérez Gómez, Director de Adquisiciones, recibió un sobre de parte del representante de la empresa Construcciones XYZ. Al abrir el sobre, pude ver que contenía dinero en efectivo. Posteriormente, el día 15 de abril, se publicó la licitación LIC-2023-001 donde la empresa Construcciones XYZ resultó ganadora sin cumplir con todos los requisitos establecidos en la convocatoria..."
@@ -287,31 +324,38 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
           canalizar adecuadamente su denuncia. Puede seleccionar más de una opción en cada categoría.
         </FormDescription>
 
-        <div className="space-y-4">
-          <CheckboxGroup
-            title="Faltas Administrativas Graves"
-            description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."
-            name="faltaCometida.faltaGrave"
-            items={faltasGraves}
-            form={form}
-          />
+        {loadingFaltas ? (
+          <div className="flex items-center justify-center p-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <span className="ml-3 text-sm text-muted-foreground">Cargando categorías de faltas...</span>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <CheckboxGroup
+              title="Faltas Administrativas Graves"
+              description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."
+              name="faltaCometida.faltaGrave"
+              items={faltasGraves}
+              form={form}
+            />
 
-          <CheckboxGroup
-            title="Faltas Administrativas No Graves"
-            description="Conductas que representan incumplimientos menores a la normatividad sin intención de obtener beneficios indebidos."
-            name="faltaCometida.faltaNoGrave"
-            items={faltasNoGraves}
-            form={form}
-          />
+            <CheckboxGroup
+              title="Faltas Administrativas No Graves"
+              description="Conductas que representan incumplimientos menores a la normatividad sin intención de obtener beneficios indebidos."
+              name="faltaCometida.faltaNoGrave"
+              items={faltasNoGraves}
+              form={form}
+            />
 
-          <CheckboxGroup
-            title="Hechos de Corrupción"
-            description="Conductas que implican el abuso del poder para obtener beneficios privados o ventajas indebidas."
-            name="faltaCometida.hechosCorrupcion"
-            items={hechosCorrupcion}
-            form={form}
-          />
-        </div>
+            <CheckboxGroup
+              title="Hechos de Corrupción"
+              description="Conductas que implican el abuso del poder para obtener beneficios privados o ventajas indebidas."
+              name="faltaCometida.hechosCorrupcion"
+              items={hechosCorrupcion}
+              form={form}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

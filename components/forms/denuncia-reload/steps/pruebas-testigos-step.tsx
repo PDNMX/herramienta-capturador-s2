@@ -1,18 +1,19 @@
 //@ts-nocheck
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { X, Upload, Plus, User, Mail, Phone, Trash2 } from "lucide-react"
-import { Textarea } from "@/components/ui/textarea"
+import { X, Upload, Plus, User, Phone, Trash2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
 import type { UseFormReturn } from "react-hook-form"
+import { useFieldArray } from "react-hook-form"
+import { toast } from "@/components/ui/use-toast"
 
 interface PruebasYTestigosStepProps {
   form: UseFormReturn<any>
@@ -20,6 +21,12 @@ interface PruebasYTestigosStepProps {
 
 export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   const [dragActive, setDragActive] = useState(false)
+
+  // Usar useFieldArray para manejar correctamente los arrays de testigos
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "datosTestigos",
+  });
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
@@ -41,28 +48,121 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
       const validFiles = files.filter((file) => {
         const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
         const extension = "." + file.name.split(".").pop()?.toLowerCase()
-        return validTypes.includes(extension) && file.size <= 10 * 1024 * 1024
+        
+        // Verificar formato y tamaño del archivo
+        const isValidFormat = validTypes.some(type => extension.endsWith(type))
+        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+        
+        if (!isValidFormat) {
+          toast({
+            title: "Formato no válido",
+            description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
+            variant: "destructive"
+          })
+        } else if (!isValidSize) {
+          toast({
+            title: "Archivo demasiado grande",
+            description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
+            variant: "destructive"
+          })
+        }
+        
+        return isValidFormat && isValidSize
       })
 
-      field.onChange([...(field.value || []), ...validFiles])
+      if (validFiles.length > 0) {
+        // Añadir los archivos válidos al campo
+        field.onChange([...(field.value || []), ...validFiles])
+        
+        if (validFiles.length === 1) {
+          toast({
+            title: "Archivo añadido",
+            description: "El archivo se ha añadido a la lista de evidencias",
+            variant: "default"
+          })
+        } else {
+          toast({
+            title: "Archivos añadidos",
+            description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
+            variant: "default"
+          })
+        }
+      }
     }
   }
 
-  // Obtener los testigos del formulario o inicializar un array vacío
-  const testigos = form.watch("testigos") || []
-
   // Función para añadir un nuevo testigo
   const addTestigo = () => {
-    const currentTestigos = form.getValues("testigos") || []
-    form.setValue("testigos", [...currentTestigos, { nombre: "", telefono: "", email: "", declaracion: "" }])
+    append({ nombre: "", contacto: "" });
   }
 
-  // Función para eliminar un testigo
-  const removeTestigo = (index: number) => {
-    const currentTestigos = form.getValues("testigos") || []
-    const updatedTestigos = [...currentTestigos]
-    updatedTestigos.splice(index, 1)
-    form.setValue("testigos", updatedTestigos)
+  // Observar el valor de testigo (singular) para sincronizar el estado
+  const hayTestigos = form.watch("testigo");
+
+  // Cuando cambia el valor de hayTestigos a false, limpiar la lista de testigos
+  useEffect(() => {
+    if (hayTestigos === false) {
+      // Limpiar la lista de testigos si se marca "No hay testigos"
+      while (fields.length > 0) {
+        remove(0);
+      }
+    } else if (hayTestigos === true && fields.length === 0) {
+      // Añadir al menos un testigo si se marca "Sí hay testigos" y no hay ninguno
+      append({ nombre: "", contacto: "" });
+    }
+  }, [hayTestigos, fields.length, append, remove]);
+
+  // Función para validar archivos al seleccionarlos mediante el input
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = Array.from(e.target.files)
+      const validFiles = files.filter((file) => {
+        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
+        const extension = "." + file.name.split(".").pop()?.toLowerCase()
+        
+        // Verificar formato y tamaño del archivo
+        const isValidFormat = validTypes.some(type => extension.endsWith(type))
+        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+        
+        if (!isValidFormat) {
+          toast({
+            title: "Formato no válido",
+            description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
+            variant: "destructive"
+          })
+        } else if (!isValidSize) {
+          toast({
+            title: "Archivo demasiado grande",
+            description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
+            variant: "destructive"
+          })
+        }
+        
+        return isValidFormat && isValidSize
+      })
+
+      if (validFiles.length > 0) {
+        // Añadir los archivos válidos al campo
+        field.onChange([...(field.value || []), ...validFiles])
+        
+        if (validFiles.length === 1) {
+          toast({
+            title: "Archivo añadido",
+            description: "El archivo se ha añadido a la lista de evidencias",
+            variant: "default"
+          })
+        } else {
+          toast({
+            title: "Archivos añadidos",
+            description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
+            variant: "default"
+          })
+        }
+      }
+      
+      // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
+      e.target.value = ''
+    }
   }
 
   return (
@@ -70,10 +170,10 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
       {/* Sección de Evidencia Documental */}
       <div className="space-y-4">
         <div>
-          <h3 className="text-lg font-semibold text-primary">Evidencia Documental</h3>
+          <h3 className="text-lg font-semibold text-primary">Pruebas</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            Adjunte documentos, fotografías u otros archivos que respalden su denuncia. Los documentos ayudarán a
-            sustentar los hechos descritos.
+            Si cuentas con evidencia, agrega las pruebas que respalden tu dicho, pueden ser fotografías, videos,
+            grabaciones de voz, documentos, entre otros.
           </p>
         </div>
 
@@ -103,10 +203,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                       multiple
                       className="hidden"
                       id="file-upload"
-                      onChange={(e) => {
-                        const files = Array.from(e.target.files || [])
-                        field.onChange([...(field.value || []), ...files])
-                      }}
+                      onChange={(e) => handleFileInputChange(e, field)}
                       accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                     />
                     <label htmlFor="file-upload">
@@ -128,7 +225,14 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                         variant="ghost"
                         size="sm"
                         className="h-8 text-xs"
-                        onClick={() => field.onChange([])}
+                        onClick={() => {
+                          field.onChange([])
+                          toast({
+                            title: "Archivos eliminados",
+                            description: "Se han eliminado todos los archivos de la lista",
+                            variant: "default"
+                          })
+                        }}
                       >
                         Eliminar todos
                       </Button>
@@ -167,6 +271,11 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                               const newFiles = [...field.value]
                               newFiles.splice(index, 1)
                               field.onChange(newFiles)
+                              toast({
+                                title: "Archivo eliminado",
+                                description: `Se eliminó ${file.name} de la lista`,
+                                variant: "default"
+                              })
                             }}
                           >
                             <X className="h-4 w-4" />
@@ -190,15 +299,12 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
       <div className="space-y-4">
         <div>
           <h3 className="text-lg font-semibold text-primary">Testigos</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Si existen testigos que puedan corroborar los hechos denunciados, proporcione sus datos de contacto y una
-            breve descripción de su testimonio.
-          </p>
+          <p className="text-sm text-muted-foreground mt-1">En caso de contar con testigos, indica sus datos.</p>
         </div>
 
         <FormField
           control={form.control}
-          name="hayTestigos"
+          name="testigo" // Cambiado a singular
           render={({ field }) => (
             <FormItem>
               <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
@@ -212,11 +318,16 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                   <div className="flex flex-col space-y-2 sm:space-y-3 md:space-y-0 md:flex-row md:space-x-3 mt-3 sm:mt-4 py-2 sm:py-4">
                     <Button
                       type="button"
-                      variant={field.value ? "default" : "outline"}
-                      onClick={() => field.onChange(true)}
+                      variant={field.value === true  ? "default" : "outline"}
+                      onClick={() => {
+                        field.onChange(true)
+                        if (!fields.length) {
+                          append({ nombre: "", contacto: "" })
+                        }
+                      }}
                       className={cn(
                         "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
-                        field.value
+                        field.value === true
                           ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
                       )}
@@ -226,7 +337,13 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                     <Button
                       type="button"
                       variant={field.value === false ? "default" : "outline"}
-                      onClick={() => field.onChange(false)}
+                      onClick={() => {
+                        field.onChange(false)
+                        // Limpiar todos los testigos cuando se selecciona "No"
+                        while (fields.length > 0) {
+                          remove(0)
+                        }
+                      }}
                       className={cn(
                         "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
                         field.value === false
@@ -266,7 +383,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
         />
 
         {/* Lista de testigos */}
-        {form.watch("hayTestigos") && (
+        {form.watch("testigo") && ( // Cambiado a singular
           <div className="space-y-4 mt-4">
             <div className="flex items-center justify-between">
               <h4 className="text-base font-medium">Información de testigos</h4>
@@ -282,7 +399,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
               </Button>
             </div>
 
-            {testigos.length === 0 ? (
+            {fields.length === 0 ? (
               <div className="text-center py-8 border border-dashed rounded-lg">
                 <p className="text-muted-foreground">No ha añadido ningún testigo</p>
                 <Button type="button" variant="outline" size="sm" onClick={addTestigo} className="mt-2">
@@ -293,14 +410,14 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
             ) : (
               <ScrollArea className="max-h-[500px]">
                 <div className="space-y-4">
-                  {testigos.map((_, index) => (
-                    <Card key={index} className="relative">
+                  {fields.map((item, index) => (
+                    <Card key={item.id} className="relative">
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
                         className="absolute top-2 right-2 h-8 w-8"
-                        onClick={() => removeTestigo(index)}
+                        onClick={() => remove(index)}
                       >
                         <Trash2 className="h-4 w-4 text-muted-foreground" />
                       </Button>
@@ -308,10 +425,10 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField
                             control={form.control}
-                            name={`testigos.${index}.nombre`}
+                            name={`datosTestigos.${index}.nombre`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-xs font-medium">Nombre completo</FormLabel>
+                                <FormLabel className="text-xs font-medium">Nombre del testigo</FormLabel>
                                 <FormControl>
                                   <div className="relative">
                                     <User className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -322,62 +439,32 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                                     />
                                   </div>
                                 </FormControl>
+                                <FormDescription className="text-xs mt-1">
+                                  Escriba el nombre (s), apellido (s) y/o alias de la persona que presenció los hechos
+                                </FormDescription>
                               </FormItem>
                             )}
                           />
                           <FormField
                             control={form.control}
-                            name={`testigos.${index}.telefono`}
+                            name={`datosTestigos.${index}.contacto`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-xs font-medium">Teléfono</FormLabel>
+                                <FormLabel className="text-xs font-medium">Datos de contacto</FormLabel>
                                 <FormControl>
                                   <div className="relative">
                                     <Phone className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                     <Input
                                       {...field}
-                                      placeholder="Ej. 55 1234 5678"
+                                      placeholder="Ej. 55 1234 5678 o correo@ejemplo.com"
                                       className="text-sm h-9 sm:h-10 pl-8"
                                     />
                                   </div>
                                 </FormControl>
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`testigos.${index}.email`}
-                            render={({ field }) => (
-                              <FormItem className="md:col-span-2">
-                                <FormLabel className="text-xs font-medium">Correo electrónico</FormLabel>
-                                <FormControl>
-                                  <div className="relative">
-                                    <Mail className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                      {...field}
-                                      placeholder="Ej. testigo@correo.com"
-                                      className="text-sm h-9 sm:h-10 pl-8"
-                                    />
-                                  </div>
-                                </FormControl>
-                              </FormItem>
-                            )}
-                          />
-                          <FormField
-                            control={form.control}
-                            name={`testigos.${index}.declaracion`}
-                            render={({ field }) => (
-                              <FormItem className="md:col-span-2">
-                                <FormLabel className="text-xs font-medium">
-                                  Breve descripción de su testimonio
-                                </FormLabel>
-                                <FormControl>
-                                  <Textarea
-                                    {...field}
-                                    placeholder="Describa brevemente qué información puede aportar este testigo..."
-                                    className="min-h-[100px] text-sm"
-                                  />
-                                </FormControl>
+                                <FormDescription className="text-xs mt-1">
+                                  Proporciona los datos para contactar al testigo, puede ser número telefónico, correo
+                                  electrónico o dirección
+                                </FormDescription>
                               </FormItem>
                             )}
                           />

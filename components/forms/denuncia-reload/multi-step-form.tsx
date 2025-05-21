@@ -206,75 +206,6 @@ export function MultiStepForm() {
     }
   }
 
-  // Función mejorada para subir archivos
-  const uploadEvidenciaFiles = async (files: File[]) => {
-    if (!files || files.length === 0) return []
-    
-    const fileIds = []
-    let completed = 0
-    let errors = 0
-    
-    setUploadProgress(0) // Iniciar en 0%
-    
-    // Para cada archivo, subir y obtener su ID
-    for (const file of files) {
-      try {
-        console.log(`Subiendo archivo ${completed + 1} de ${files.length}: ${file.name}`)
-        
-        // Mostrar progreso actual
-        const currentProgress = Math.round((completed / files.length) * 100)
-        setUploadProgress(currentProgress)
-        
-        // Subir archivo utilizando el servicio de Directus
-        const fileData = await denunciasPublicService.uploadEvidencia(file)
-        
-        console.log(`Archivo subido correctamente. ID asignado: ${fileData.id}`)
-        fileIds.push(fileData.id)
-        
-        completed++
-        
-        // Actualizar progreso después de completar
-        const newProgress = Math.round((completed / files.length) * 100)
-        setUploadProgress(newProgress)
-        
-      } catch (error) {
-        console.error(`Error al subir archivo ${file.name}:`, error)
-        errors++
-        // Continuamos con el siguiente archivo incluso si hay error
-        
-        // Mostrar notificación de error
-        toast({
-          title: "Error al subir archivo",
-          description: `No se pudo subir el archivo ${file.name}. ${error.message || ""}`,
-          variant: "destructive"
-        })
-      }
-    }
-    
-    // Notificar resultados
-    if (completed > 0 && errors === 0) {
-      toast({
-        title: "Archivos subidos correctamente",
-        description: `${completed} archivo(s) subido(s) con éxito.`,
-        variant: "default"
-      })
-    } else if (completed > 0 && errors > 0) {
-      toast({
-        title: "Subida de archivos parcial",
-        description: `${completed} archivo(s) subido(s), ${errors} con errores.`,
-        variant: "default"
-      })
-    } else if (completed === 0 && errors > 0) {
-      toast({
-        title: "Error en la subida de archivos",
-        description: "No se pudo subir ningún archivo. Intente nuevamente.",
-        variant: "destructive"
-      })
-    }
-    
-    return fileIds
-  }
-
   const handleConfirmSubmit = async () => {
     setIsSubmitting(true);
     try {
@@ -298,19 +229,80 @@ export function MultiStepForm() {
           variant: "default"
         })
         
-        // Subir los archivos y obtener sus IDs
-        archivoIds = await uploadEvidenciaFiles(archivosParaSubir)
+        // Subir los archivos uno por uno y recopilar sus IDs
+        setUploadProgress(0);
+        let filesCompleted = 0;
+        
+        for (const file of archivosParaSubir) {
+          try {
+            // Actualizar el progreso para este archivo
+            const currentProgress = Math.round((filesCompleted / archivosParaSubir.length) * 100);
+            setUploadProgress(currentProgress);
+            
+            // Subir el archivo
+            const result = await denunciasPublicService.uploadEvidencia(file);
+            
+            // MODIFICADO: Guardar solo el ID del archivo (verificar que existe)
+            if (result && result.id) {
+              archivoIds.push(result.id);
+              console.log(`Archivo ${file.name} subido con ID: ${result.id}`);
+            } else {
+              console.error(`No se pudo obtener el ID para el archivo ${file.name}`, result);
+              toast({
+                title: "Error al procesar archivo",
+                description: `El archivo ${file.name} se subió pero no se pudo obtener su ID`,
+                variant: "destructive"
+              });
+            }
+            
+            // Incrementar contador y actualizar progreso
+            filesCompleted++;
+            setUploadProgress(Math.round((filesCompleted / archivosParaSubir.length) * 100));
+            
+          } catch (error) {
+            console.error(`Error al subir archivo ${file.name}:`, error);
+            toast({
+              title: "Error al subir archivo",
+              description: `No se pudo subir el archivo ${file.name}: ${error.message || "Error desconocido"}`,
+              variant: "destructive"
+            });
+          }
+        }
+        
+        if (archivoIds.length > 0) {
+          toast({
+            title: "Archivos subidos correctamente",
+            description: `${archivoIds.length} de ${archivosParaSubir.length} archivos subidos con éxito`,
+            variant: "default"
+          });
+        } else {
+          toast({
+            title: "Error en la subida de archivos",
+            description: "No se pudo procesar ningún archivo correctamente",
+            variant: "destructive"
+          });
+        }
+      } else {
+        console.log("No hay archivos para subir o los archivos no son objetos File válidos");
+      }
+      
+      // Imprimir los IDs de archivos que se van a enviar
+      console.log("IDs de archivos a enviar:", archivoIds);
+      
+      // MODIFICADO: Asegurarnos de que archivoIds es siempre un array
+      if (!Array.isArray(archivoIds)) {
+        archivoIds = [];
       }
       
       // 2. Preparar datos de testigos
-      const hayTestigos = Boolean(formValues.testigo) // Cambiado a singular
+      const hayTestigos = Boolean(formValues.testigo)
       
       // Si hay testigos pero no hay datos, inicializamos un array vacío
       let datosTestigos = null
       
       if (hayTestigos && Array.isArray(formValues.datosTestigos) && formValues.datosTestigos.length > 0) {
         datosTestigos = formValues.datosTestigos
-          .filter(testigo => testigo && (testigo.nombre || testigo.contacto)) // Solo incluir testigos con al menos un campo
+          .filter(testigo => testigo && (testigo.nombre || testigo.contacto))
           .map(testigo => ({
             nombre: testigo.nombre || "",
             contacto: testigo.contacto || ""
@@ -352,9 +344,9 @@ export function MultiStepForm() {
           faltaNoGrave: formValues.faltaCometida?.faltaNoGrave || [],
           hechosCorrupcion: formValues.faltaCometida?.hechosCorrupcion || []
         },
-        // Incluir los IDs de los archivos subidos
+        // MODIFICADO: Usar archivoIds en lugar de formValues.archivosEvidencia
         archivosEvidencia: archivoIds,
-        // Asegurar que testigo sea un booleano (en singular)
+        // Asegurar que testigo sea un booleano
         testigo: hayTestigos,
         // Usar los datos de testigos limpios
         datosTestigos: datosTestigos
@@ -368,7 +360,7 @@ export function MultiStepForm() {
         title: "Enviando denuncia",
         description: "Su denuncia está siendo procesada...",
         variant: "default"
-      })
+      });
       
       // Enviar los datos validados
       const result = await denunciasPublicService.createDenuncia(validatedValues);
@@ -378,7 +370,7 @@ export function MultiStepForm() {
         title: "Denuncia enviada",
         description: "Su denuncia ha sido recibida correctamente.",
         variant: "default"
-      })
+      });
       
       setDenunciaId(result.id);
       setModalMode("success");
@@ -391,7 +383,7 @@ export function MultiStepForm() {
         title: "Error al enviar denuncia",
         description: error.message || "Ha ocurrido un error al procesar su denuncia. Intente nuevamente.",
         variant: "destructive"
-      })
+      });
       
       setIsModalOpen(false);
     } finally {

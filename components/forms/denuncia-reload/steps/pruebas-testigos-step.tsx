@@ -39,53 +39,66 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   }
 
   const handleDrop = (e: React.DragEvent, field: any) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files)
+      const files = Array.from(e.dataTransfer.files);
       const validFiles = files.filter((file) => {
-        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
-        const extension = "." + file.name.split(".").pop()?.toLowerCase()
+        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"];
+        const extension = "." + file.name.split(".").pop()?.toLowerCase();
         
         // Verificar formato y tamaño del archivo
-        const isValidFormat = validTypes.some(type => extension.endsWith(type))
-        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+        const isValidFormat = validTypes.some(type => extension.endsWith(type));
+        const isValidSize = file.size <= 10 * 1024 * 1024; // 10 MB máximo
         
         if (!isValidFormat) {
           toast({
             title: "Formato no válido",
             description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
             variant: "destructive"
-          })
+          });
         } else if (!isValidSize) {
           toast({
             title: "Archivo demasiado grande",
             description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
             variant: "destructive"
-          })
+          });
         }
         
-        return isValidFormat && isValidSize
-      })
+        return isValidFormat && isValidSize;
+      });
 
       if (validFiles.length > 0) {
-        // Añadir los archivos válidos al campo
-        field.onChange([...(field.value || []), ...validFiles])
+        // Verificar que los objetos File se mantengan intactos
+        console.log("Archivos válidos a agregar:", validFiles.map(f => f.name));
+        
+        // MODIFICADO: Asegurarse de que field.value siempre sea un array
+        const currentFiles = Array.isArray(field.value) ? field.value : [];
+        
+        // MODIFICADO: Filtrar valores no válidos que puedan haber quedado en el array
+        const cleanedCurrentFiles = currentFiles.filter(f => f instanceof File || (f && typeof f === 'object' && f.id));
+        
+        // IMPORTANTE: Añadir los objetos File directamente al campo
+        field.onChange([...cleanedCurrentFiles, ...validFiles]);
+        
+        // Verificar después de agregar para confirmar que son objetos File
+        console.log("Nuevo estado del campo:", field.value);
+        console.log("¿Son los elementos objetos File?", field.value.map(f => f instanceof File));
         
         if (validFiles.length === 1) {
           toast({
             title: "Archivo añadido",
             description: "El archivo se ha añadido a la lista de evidencias",
             variant: "default"
-          })
+          });
         } else {
           toast({
             title: "Archivos añadidos",
             description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
             variant: "default"
-          })
+          });
         }
       }
     }
@@ -115,53 +128,66 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   // Función para validar archivos al seleccionarlos mediante el input
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
     if (e.target.files && e.target.files.length > 0) {
-      const files = Array.from(e.target.files)
+      const files = Array.from(e.target.files);
       const validFiles = files.filter((file) => {
-        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
-        const extension = "." + file.name.split(".").pop()?.toLowerCase()
+        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"];
+        const extension = "." + file.name.split(".").pop()?.toLowerCase();
         
         // Verificar formato y tamaño del archivo
-        const isValidFormat = validTypes.some(type => extension.endsWith(type))
-        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+        const isValidFormat = validTypes.some(type => extension.endsWith(type));
+        const isValidSize = file.size <= 10 * 1024 * 1024; // 10 MB máximo
         
         if (!isValidFormat) {
           toast({
             title: "Formato no válido",
             description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
             variant: "destructive"
-          })
+          });
         } else if (!isValidSize) {
           toast({
             title: "Archivo demasiado grande",
             description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
             variant: "destructive"
-          })
+          });
         }
         
-        return isValidFormat && isValidSize
-      })
+        return isValidFormat && isValidSize;
+      });
 
       if (validFiles.length > 0) {
-        // Añadir los archivos válidos al campo
-        field.onChange([...(field.value || []), ...validFiles])
+        // Verificar que los objetos File se mantengan intactos
+        console.log("Archivos válidos a agregar desde input:", validFiles.map(f => f.name));
+        
+        // MODIFICADO: Asegurarse de que field.value siempre sea un array
+        const currentFiles = Array.isArray(field.value) ? field.value : [];
+        
+        // MODIFICADO: Filtrar valores no válidos que puedan haber quedado en el array
+        const cleanedCurrentFiles = currentFiles.filter(f => f instanceof File || (f && typeof f === 'object' && f.id));
+        
+        // IMPORTANTE: Guardar los objetos File directamente
+        field.onChange([...cleanedCurrentFiles, ...validFiles]);
+        
+        // Verificar después de agregar
+        console.log("Nuevo estado del campo desde input:", field.value);
+        console.log("¿Son los elementos objetos File desde input?", field.value.map(f => f instanceof File));
         
         if (validFiles.length === 1) {
           toast({
             title: "Archivo añadido",
             description: "El archivo se ha añadido a la lista de evidencias",
             variant: "default"
-          })
+          });
         } else {
           toast({
             title: "Archivos añadidos",
             description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
             variant: "default"
-          })
+          });
         }
       }
       
       // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
-      e.target.value = ''
+      e.target.value = '';
     }
   }
 

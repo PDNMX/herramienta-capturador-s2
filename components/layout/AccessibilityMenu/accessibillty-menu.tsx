@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  Accessibility, 
+  Accessibility,
+  PersonStanding, 
   ZoomIn, 
   ZoomOut, 
   RotateCcw, 
@@ -203,7 +204,7 @@ export default function AccessibilityMenu() {
           size="icon"
           aria-label="Opciones de accesibilidad"
         >
-          <Accessibility className="h-[1.2rem] w-[1.2rem]" />
+          <PersonStanding className="h-[1.2rem] w-[1.2rem]" />
         </Button>
       </div>
     );
@@ -288,14 +289,14 @@ export default function AccessibilityMenu() {
             size="icon"
             aria-label="Opciones de accesibilidad"
           >
-            <Accessibility className="h-[1.2rem] w-[1.2rem]" />
+            <PersonStanding className="h-[1.2rem] w-[1.2rem]" />
             {anyFeatureActive && (
               <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-white border-2 border-amber-600"></span>
             )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem 
+          {/* <DropdownMenuItem 
             onClick={increaseFontSize}
             disabled={isSimpleTextSizeDisabled}
           >
@@ -315,7 +316,15 @@ export default function AccessibilityMenu() {
           >
             <RotateCcw className="mr-2 h-4 w-4" />
             <span>Restablecer tamaño</span>
+          </DropdownMenuItem> */}
+          <DropdownMenuItem 
+            onClick={toggleHighContrast}
+            className={theme === 'high-contrast' ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
+          >
+            <Contrast className="mr-2 h-4 w-4" />
+            <span>{theme === 'high-contrast' ? 'Desactivar' : 'Activar'} alto contraste</span>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem 
             onClick={toggleTextSize}
             className={textSizeActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
@@ -324,20 +333,14 @@ export default function AccessibilityMenu() {
             <span>{textSizeActive ? 'Desactivar' : 'Activar'} control avanzado de texto</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            onClick={toggleHighContrast}
-            className={theme === 'high-contrast' ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
-          >
-            <Contrast className="mr-2 h-4 w-4" />
-            <span>{theme === 'high-contrast' ? 'Desactivar' : 'Activar'} alto contraste</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem 
+          
+          {/* <DropdownMenuItem 
             onClick={toggleReducedMotion}
             className={reducedMotion ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
           >
             <MousePointer2 className="mr-2 h-4 w-4" />
             <span>{reducedMotion ? 'Desactivar' : 'Activar'} movimiento reducido</span>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem 
             onClick={toggleTextSpacing}
             className={textSpacingActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}

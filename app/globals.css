@@ -45,21 +45,20 @@
   }
 
   .bg-card\/95 {
-    background-color: hsl(var(--card) / 0.75);
+    background-color: hsl(var(--card) / 0.45);
   }
-
+  
   .border-2 {
-      border-width: 1px;
+    border-width: 1px;
   }
 
   h2 {
     font-size: 1.5rem;
   }
+  
   h1 {
     color: hsl(var(--contrast))
   }
-    
-    
 }
 
 .dark {
@@ -106,8 +105,6 @@
   --primary: 220 60% 10%; /* Azul más oscuro para acentos */
   --primary-foreground: 0 0% 100%; /* Blanco puro */
   --secondary: 45 100% 50%; /* Amarillo mostaza */
-  /*--secondary: 212 100% 83%;  Amarillo mostaza */
-  /*--secondary: 353 97% 85%;  Amarillo mostaza */
   --muted: 45 100% 50%;
   --muted-foreground: 0 0% 20%;
   --secondary-foreground: 0 0% 0%; /* Negro */
@@ -129,13 +126,13 @@
     radial-gradient(circle at 80% 20%, hsl(var(--secondary) / 0.3) 0%, transparent 40%),
     linear-gradient(45deg, hsl(0 0% 90% / 0.4) 0%, transparent 70%);
 
-    .bg-card\/95 {
-      background-color: hsl(var(--card) / 0.75);
-    }
+  .bg-card\/95 {
+    background-color: hsl(var(--card) / 0.75);
+  }
 
-    h1 {
-      color: hsl(var(--primary))
-    }
+  h1 {
+    color: hsl(var(--primary))
+  }
 }
 
 
@@ -145,6 +142,113 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Mejoras para hacer que las secciones sean más visibles */
+  .section-title {
+    @apply text-primary text-lg font-semibold pb-2 border-b border-primary/30 mb-4;
+  }
+  
+  /* Mejora para destacar campos en formularios */
+  .input-highlight {
+    @apply focus-within:ring-2 focus-within:ring-primary focus-within:ring-opacity-50 transition-all duration-300;
+  }
+  
+  /* Mejor visibilidad para los botones SI/NO */
+  .choice-button-selected {
+    @apply bg-primary text-primary-foreground shadow-md;
+    border-width: 2px;
+    border-color: hsl(var(--primary) / 0.7);
+  }
+  
+  .choice-button-unselected {
+    @apply bg-card text-muted-foreground;
+    border-width: 2px;
+    border-color: hsl(var(--primary) / 0.3);
+  }
+  
+  /* Mejora para los elementos de lista en qué denunciar/no denunciar */
+  .denunciar-item {
+    @apply bg-primary/5 p-3 rounded-lg border border-primary/10 hover:border-primary/30 hover:bg-primary/10 transition-all duration-300;
+  }
+  
+  /* Efecto de brillo mejorado para botones importantes */
+  .glow-button {
+    @apply relative overflow-hidden;
+  }
+  
+  .glow-button::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 transform translate-x-full transition-all duration-1000;
+  }
+  
+  .glow-button:hover::after {
+    @apply opacity-20 transform translate-x-[-200%];
+  }
+  
+  /* Nuevos estilos para mejorar visibilidad */
+  .section-card {
+    @apply rounded-lg p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md hover:shadow-lg transition-all duration-300;
+    border-width: 2px;
+    border-color: hsl(var(--primary) / 0.2);
+  }
+  
+  .section-header {
+    @apply text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20;
+  }
+  
+  .section-icon {
+    @apply h-5 w-5 mr-3 text-primary;
+  }
+  
+  .item-highlighted {
+    @apply bg-primary/5 p-3 rounded-lg border border-primary/10 hover:border-primary/30 hover:bg-primary/10 transition-all duration-300;
+  }
+  
+  .button-primary {
+    @apply bg-primary text-primary-foreground shadow-md hover:shadow-lg hover:bg-accent hover:text-accent-foreground transition-all duration-300 relative overflow-hidden;
+    border-width: 2px;
+    border-color: hsl(var(--primary) / 0.5);
+  }
+  
+  .button-primary::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 transform translate-x-full transition-all duration-1000;
+  }
+  
+  .button-primary:hover::after {
+    @apply opacity-20 transform translate-x-[-200%];
+  }
+  
+  .button-secondary {
+    @apply bg-card text-foreground shadow-sm hover:shadow-md hover:bg-accent/50 hover:text-accent-foreground transition-all duration-300;
+    border-width: 2px;
+    border-color: hsl(var(--primary) / 0.3);
+  }
+  
+  .form-group {
+    @apply mb-6;
+  }
+  
+  .form-label {
+    @apply text-sm font-medium text-primary mb-1 block;
+  }
+  
+  .form-input {
+    @apply rounded-md px-3 py-2 w-full transition-all duration-300;
+    border-width: 2px;
+    border-color: hsl(var(--primary) / 0.2);
+  }
+  
+  .form-input:focus {
+    @apply ring-2 ring-primary ring-opacity-50;
+    border-color: hsl(var(--primary) / 0.5);
+  }
+  
+  .form-help-text {
+    @apply text-xs text-muted-foreground mt-1;
   }
 }
 
@@ -181,6 +285,6 @@
     @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 transition-opacity duration-300;
   }
   .glow-effect:hover::before {
-    @apply opacity-20;
+    @apply opacity-20 transform translate-x-[-200%] transition-transform duration-1000;
   }
 }

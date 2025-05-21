@@ -49,7 +49,7 @@ export default function KeyboardNavigation({ isActive, isPanelVisible, onToggleP
             </li>
             <li className="flex items-center justify-between">
               <span>Activar enlace/botón seleccionado</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Enter</kbd>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Intro</kbd>
             </li>
             <li className="flex items-center justify-between">
               <span>Volver a elemento anterior</span>
@@ -57,19 +57,19 @@ export default function KeyboardNavigation({ isActive, isPanelVisible, onToggleP
             </li>
             <li className="flex items-center justify-between">
               <span>Desplazarse hacia abajo</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">↓ / PgDn</kbd>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">↓ / AvPág</kbd>
             </li>
             <li className="flex items-center justify-between">
               <span>Desplazarse hacia arriba</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">↑ / PgUp</kbd>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">↑ / RePág</kbd>
             </li>
             <li className="flex items-center justify-between">
               <span>Inicio de página</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Home</kbd>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Inicio</kbd>
             </li>
             <li className="flex items-center justify-between">
               <span>Fin de página</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">End</kbd>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Fin</kbd>
             </li>
           </ul>
         </div>
@@ -96,16 +96,16 @@ export default function KeyboardNavigation({ isActive, isPanelVisible, onToggleP
           <h4 className="font-medium text-amber-600 mb-2">Lectores de pantalla</h4>
           <ul className="space-y-2">
             <li className="flex items-center justify-between">
-              <span>Iniciar/detener lectura (NVDA)</span>
+              <span>Iniciar/detener lectura NVDA (Acceso NO Visual al Escritorio)</span>
               <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Insert + ↓</kbd>
             </li>
             <li className="flex items-center justify-between">
-              <span>Leer elemento actual (JAWS)</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Insert + Tab</kbd>
+              <span>Leer elemento actual JAWS (Acceso a Trabajos con Voz)</span>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">Insert + Tab →</kbd>
             </li>
             <li className="flex items-center justify-between">
-              <span>Leer página completa (VoiceOver)</span>
-              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">VO + A</kbd>
+              <span>Leer página completa VoiceOver (Mac e iOS)</span>
+              <kbd className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-xs">VO (Ctrl + Option) + A</kbd>
             </li>
           </ul>
         </div>

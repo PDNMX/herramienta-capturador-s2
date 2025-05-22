@@ -208,7 +208,6 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
 
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
-      {/* Eliminar todo este bloque
       <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 mb-6 overflow-hidden shadow-sm">
         <div className="flex flex-col sm:flex-row">
           <div className="bg-primary/20 p-3 sm:p-4 flex items-center justify-center sm:w-16">
@@ -298,7 +297,6 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
           </div>
         </div>
       </div>
-      */}
 
       {/* Sección de Evidencia Documental */}
       <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">

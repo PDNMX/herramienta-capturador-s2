@@ -250,6 +250,91 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
 
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+      <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 mb-6 overflow-hidden shadow-sm">
+        <div className="flex flex-col sm:flex-row">
+          <div className="bg-primary/20 p-3 sm:p-4 flex items-center justify-center sm:w-16">
+            <ClipboardList className="h-8 w-8 text-primary" />
+          </div>
+          <div className="p-4 sm:p-5 space-y-3 flex-1">
+            <div>
+              <h4 className="text-base font-medium text-primary">Recomendaciones para narrar los hechos</h4>
+              <p className="text-sm text-muted-foreground mt-1">
+                Siga estas pautas para describir claramente los hechos denunciados:
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Mencione <span className="font-medium">fechas, horas y lugares</span> específicos donde ocurrieron
+                    los hechos
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Identifique <span className="font-medium">nombres completos</span> de las personas involucradas
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Describa los hechos en <span className="font-medium">orden cronológico</span> y con el mayor detalle
+                    posible
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Evite incluir <span className="font-medium">opiniones personales</span>; céntrese en hechos
+                    concretos
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Campo de narración de hechos */}
       <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
         <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">

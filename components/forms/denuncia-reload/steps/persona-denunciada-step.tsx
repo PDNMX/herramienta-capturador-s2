@@ -224,6 +224,93 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
 
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+      <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 mb-6 overflow-hidden shadow-sm">
+        <div className="flex flex-col sm:flex-row">
+          <div className="bg-primary/20 p-3 sm:p-4 flex items-center justify-center sm:w-16">
+            <Building className="h-8 w-8 text-primary" />
+          </div>
+          <div className="p-4 sm:p-5 space-y-3 flex-1">
+            <div>
+              <h4 className="text-base font-medium text-primary">
+                Recomendaciones para identificar a la persona denunciada
+              </h4>
+              <p className="text-sm text-muted-foreground mt-1">
+                Siga estas pautas para proporcionar información precisa sobre la persona denunciada:
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Sea específico con <span className="font-medium">nombre completo y cargo</span> de la persona
+                    denunciada
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Indique la <span className="font-medium">institución o área</span> donde labora la persona
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Describa <span className="font-medium">características físicas</span> que faciliten su
+                    identificación
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Si no conoce el nombre, proporcione <span className="font-medium">detalles específicos</span> que
+                    permitan identificarla
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="space-y-6 sm:space-y-8">
         {/* SECCIÓN 1: Ubicación Institucional */}
         <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">

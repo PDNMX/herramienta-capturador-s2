@@ -89,16 +89,18 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   const [error, setError] = useState<string | null>(null)
   const [isSpeechSupported, setIsSpeechSupported] = useState(true)
   const recognitionRef = useRef<any>(null)
-  
+
   // Estados para las faltas cargadas desde Directus
   const [faltas, setFaltas] = useState<Falta[]>([])
   const [loadingFaltas, setLoadingFaltas] = useState(false)
-  
+
   // Estados para las faltas filtradas por tipo
   const [faltasGraves, setFaltasGraves] = useState<Array<{ id: number; label: string; description: string }>>([])
   const [faltasNoGraves, setFaltasNoGraves] = useState<Array<{ id: number; label: string; description: string }>>([])
-  const [hechosCorrupcion, setHechosCorrupcion] = useState<Array<{ id: number; label: string; description: string }>>([])
-  
+  const [hechosCorrupcion, setHechosCorrupcion] = useState<Array<{ id: number; label: string; description: string }>>(
+    [],
+  )
+
   // Obtener el tipo de persona seleccionada
   const tipoPersona = form?.watch("personaDenunciada.tipoPersona") || "SERVIDOR_PUBLICO"
   const entidadSeleccionada = form?.watch("personaDenunciada.entidad")
@@ -112,10 +114,10 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         const response = await publicDirectus.request(
           readItems("faltas", {
             limit: -1,
-            fields: ['id', 'entidad', 'clasificacion', 'nombre', 'descripcion', 'servidorPublico', 'particular']
-          })
+            fields: ["id", "entidad", "clasificacion", "nombre", "descripcion", "servidorPublico", "particular"],
+          }),
         )
-        
+
         if (response && Array.isArray(response)) {
           setFaltas(response)
           console.log("Faltas cargadas:", response)
@@ -140,7 +142,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         if (tipoPersona === "PARTICULAR") return falta.particular
         return false
       }
-      
+
       // Filtrar por entidad si está seleccionada
       const esEntidadValida = (falta: Falta) => {
         // Si no hay entidad seleccionada, mostrar todas las faltas
@@ -152,23 +154,23 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
       }
 
       // Aplicar filtros y mapear a formato para checkboxes
-      const faltasFiltradas = faltas.filter(falta => esTipoPersonaValido(falta) && esEntidadValida(falta))
-      
+      const faltasFiltradas = faltas.filter((falta) => esTipoPersonaValido(falta) && esEntidadValida(falta))
+
       // Separar por clasificación
       const mapearFalta = (falta: Falta) => ({
         id: falta.id,
         label: falta.nombre,
-        description: falta.descripcion
+        description: falta.descripcion,
       })
-      
-      setFaltasGraves(faltasFiltradas.filter(f => f.clasificacion === "faltaGrave").map(mapearFalta))
-      setFaltasNoGraves(faltasFiltradas.filter(f => f.clasificacion === "noGrave").map(mapearFalta))
-      setHechosCorrupcion(faltasFiltradas.filter(f => f.clasificacion === "hechoCorrupcion").map(mapearFalta))
-      
+
+      setFaltasGraves(faltasFiltradas.filter((f) => f.clasificacion === "faltaGrave").map(mapearFalta))
+      setFaltasNoGraves(faltasFiltradas.filter((f) => f.clasificacion === "noGrave").map(mapearFalta))
+      setHechosCorrupcion(faltasFiltradas.filter((f) => f.clasificacion === "hechoCorrupcion").map(mapearFalta))
+
       console.log("Faltas filtradas:", {
         graves: faltasGraves.length,
         noGraves: faltasNoGraves.length,
-        corrupcion: hechosCorrupcion.length
+        corrupcion: hechosCorrupcion.length,
       })
     }
   }, [faltas, tipoPersona, entidadSeleccionada])
@@ -249,77 +251,82 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   return (
     <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
       {/* Campo de narración de hechos */}
-      <FormField
-        control={form.control}
-        name="narracionHechos"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-base font-medium">Descripción Detallada de los Hechos</FormLabel>
-            <FormControl>
-              <div className="relative">
-                {error && (
-                  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md mb-2">
-                    <div className="flex">
-                      <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                          <path
-                            fillRule="evenodd"
-                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-yellow-700">{error}</p>
+      <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
+        <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
+          <ClipboardList className="h-5 w-5 mr-3 text-primary" />
+          Descripción Detallada de los Hechos
+        </h3>
+        <FormField
+          control={form.control}
+          name="narracionHechos"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="relative">
+                  {error && (
+                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md mb-2">
+                      <div className="flex">
+                        <div className="flex-shrink-0">
+                          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                              fillRule="evenodd"
+                              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <div className="ml-3">
+                          <p className="text-sm text-yellow-700">{error}</p>
+                        </div>
                       </div>
                     </div>
+                  )}
+                  <Textarea
+                    {...field}
+                    placeholder="Ejemplo: El día 12 de abril de 2023, aproximadamente a las 14:30 horas, en las oficinas ubicadas en Av. Reforma 101, piso 3, observé que el Lic. Juan Pérez Gómez, Director de Adquisiciones, recibió un sobre de parte del representante de la empresa Construcciones XYZ. Al abrir el sobre, pude ver que contenía dinero en efectivo. Posteriormente, el día 15 de abril, se publicó la licitación LIC-2023-001 donde la empresa Construcciones XYZ resultó ganadora sin cumplir con todos los requisitos establecidos en la convocatoria..."
+                    className="h-80 resize-none text-sm pr-24 min-h-[120px]"
+                  />
+                  <div className="absolute bottom-2 right-2">
+                    <Button
+                      type="button"
+                      variant={isListening ? "destructive" : "outline"}
+                      size="sm"
+                      onClick={isListening ? stopListening : startListening}
+                      className="flex items-center gap-2 shadow-sm"
+                      disabled={!isSpeechSupported}
+                      title={!isSpeechSupported ? "El reconocimiento de voz no está disponible en tu navegador" : ""}
+                    >
+                      {isListening ? (
+                        <>
+                          <Square className="h-4 w-4" />
+                          Detener dictado
+                        </>
+                      ) : (
+                        <>
+                          <Mic className="h-4 w-4" />
+                          Iniciar dictado
+                        </>
+                      )}
+                    </Button>
                   </div>
-                )}
-                <Textarea
-                  {...field}
-                  placeholder="Ejemplo: El día 12 de abril de 2023, aproximadamente a las 14:30 horas, en las oficinas ubicadas en Av. Reforma 101, piso 3, observé que el Lic. Juan Pérez Gómez, Director de Adquisiciones, recibió un sobre de parte del representante de la empresa Construcciones XYZ. Al abrir el sobre, pude ver que contenía dinero en efectivo. Posteriormente, el día 15 de abril, se publicó la licitación LIC-2023-001 donde la empresa Construcciones XYZ resultó ganadora sin cumplir con todos los requisitos establecidos en la convocatoria..."
-                  className="h-80 resize-none text-sm pr-24"
-                />
-                <div className="absolute bottom-2 right-2">
-                  <Button
-                    type="button"
-                    variant={isListening ? "destructive" : "outline"}
-                    size="sm"
-                    onClick={isListening ? stopListening : startListening}
-                    className="flex items-center gap-2 shadow-sm"
-                    disabled={!isSpeechSupported}
-                    title={!isSpeechSupported ? "El reconocimiento de voz no está disponible en tu navegador" : ""}
-                  >
-                    {isListening ? (
-                      <>
-                        <Square className="h-4 w-4" />
-                        Detener dictado
-                      </>
-                    ) : (
-                      <>
-                        <Mic className="h-4 w-4" />
-                        Iniciar dictado
-                      </>
-                    )}
-                  </Button>
                 </div>
-              </div>
-            </FormControl>
-            <FormDescription className="text-xs sm:text-sm">
-              Describa detalladamente los hechos que desea denunciar. Sea lo más específico posible.
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+              </FormControl>
+              <FormDescription className="text-xs sm:text-sm">
+                Describa detalladamente los hechos que desea denunciar. Sea lo más específico posible.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
 
       {/* Sección de clasificación de faltas */}
-      <div className="space-y-4 mt-6">
-        <h3 className="text-base font-medium flex items-center">
-          <ClipboardList className="h-4 w-4 mr-2 text-muted-foreground" />
+      <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
+        <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
+          <ClipboardList className="h-5 w-5 mr-3 text-primary" />
           Clasificación de Faltas
         </h3>
-        <FormDescription className="text-xs sm:text-sm">
+        <FormDescription className="text-xs sm:text-sm mb-4">
           Seleccione las faltas administrativas que mejor describan los hechos denunciados. Su selección nos ayudará a
           canalizar adecuadamente su denuncia. Puede seleccionar más de una opción en cada categoría.
         </FormDescription>

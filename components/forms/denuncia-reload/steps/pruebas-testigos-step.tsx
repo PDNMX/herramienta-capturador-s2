@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { X, Upload, Plus, User, Phone, Trash2 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
 import type { UseFormReturn } from "react-hook-form"
@@ -26,7 +25,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "datosTestigos",
-  });
+  })
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
@@ -39,66 +38,74 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   }
 
   const handleDrop = (e: React.DragEvent, field: any) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files);
+      const files = Array.from(e.dataTransfer.files)
       const validFiles = files.filter((file) => {
-        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"];
-        const extension = "." + file.name.split(".").pop()?.toLowerCase();
-        
+        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
+        const extension = "." + file.name.split(".").pop()?.toLowerCase()
+
         // Verificar formato y tamaño del archivo
-        const isValidFormat = validTypes.some(type => extension.endsWith(type));
-        const isValidSize = file.size <= 10 * 1024 * 1024; // 10 MB máximo
-        
+        const isValidFormat = validTypes.some((type) => extension.endsWith(type))
+        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+
         if (!isValidFormat) {
           toast({
             title: "Formato no válido",
             description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
-            variant: "destructive"
-          });
+            variant: "destructive",
+          })
         } else if (!isValidSize) {
           toast({
             title: "Archivo demasiado grande",
             description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
-            variant: "destructive"
-          });
+            variant: "destructive",
+          })
         }
-        
-        return isValidFormat && isValidSize;
-      });
+
+        return isValidFormat && isValidSize
+      })
 
       if (validFiles.length > 0) {
         // Verificar que los objetos File se mantengan intactos
-        console.log("Archivos válidos a agregar:", validFiles.map(f => f.name));
-        
+        console.log(
+          "Archivos válidos a agregar:",
+          validFiles.map((f) => f.name),
+        )
+
         // MODIFICADO: Asegurarse de que field.value siempre sea un array
-        const currentFiles = Array.isArray(field.value) ? field.value : [];
-        
+        const currentFiles = Array.isArray(field.value) ? field.value : []
+
         // MODIFICADO: Filtrar valores no válidos que puedan haber quedado en el array
-        const cleanedCurrentFiles = currentFiles.filter(f => f instanceof File || (f && typeof f === 'object' && f.id));
-        
+        const cleanedCurrentFiles = currentFiles.filter(
+          (f) => f instanceof File || (f && typeof f === "object" && f.id),
+        )
+
         // IMPORTANTE: Añadir los objetos File directamente al campo
-        field.onChange([...cleanedCurrentFiles, ...validFiles]);
-        
+        field.onChange([...cleanedCurrentFiles, ...validFiles])
+
         // Verificar después de agregar para confirmar que son objetos File
-        console.log("Nuevo estado del campo:", field.value);
-        console.log("¿Son los elementos objetos File?", field.value.map(f => f instanceof File));
-        
+        console.log("Nuevo estado del campo:", field.value)
+        console.log(
+          "¿Son los elementos objetos File?",
+          field.value.map((f) => f instanceof File),
+        )
+
         if (validFiles.length === 1) {
           toast({
             title: "Archivo añadido",
             description: "El archivo se ha añadido a la lista de evidencias",
-            variant: "default"
-          });
+            variant: "default",
+          })
         } else {
           toast({
             title: "Archivos añadidos",
             description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
-            variant: "default"
-          });
+            variant: "default",
+          })
         }
       }
     }
@@ -106,102 +113,203 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
 
   // Función para añadir un nuevo testigo
   const addTestigo = () => {
-    append({ nombre: "", contacto: "" });
+    append({ nombre: "", contacto: "" })
   }
 
   // Observar el valor de testigo (singular) para sincronizar el estado
-  const hayTestigos = form.watch("testigo");
+  const hayTestigos = form.watch("testigo")
 
   // Cuando cambia el valor de hayTestigos a false, limpiar la lista de testigos
   useEffect(() => {
     if (hayTestigos === false) {
       // Limpiar la lista de testigos si se marca "No hay testigos"
       while (fields.length > 0) {
-        remove(0);
+        remove(0)
       }
     } else if (hayTestigos === true && fields.length === 0) {
       // Añadir al menos un testigo si se marca "Sí hay testigos" y no hay ninguno
-      append({ nombre: "", contacto: "" });
+      append({ nombre: "", contacto: "" })
     }
-  }, [hayTestigos, fields.length, append, remove]);
+  }, [hayTestigos, fields.length, append, remove])
 
   // Función para validar archivos al seleccionarlos mediante el input
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: any) => {
     if (e.target.files && e.target.files.length > 0) {
-      const files = Array.from(e.target.files);
+      const files = Array.from(e.target.files)
       const validFiles = files.filter((file) => {
-        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"];
-        const extension = "." + file.name.split(".").pop()?.toLowerCase();
-        
+        const validTypes = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"]
+        const extension = "." + file.name.split(".").pop()?.toLowerCase()
+
         // Verificar formato y tamaño del archivo
-        const isValidFormat = validTypes.some(type => extension.endsWith(type));
-        const isValidSize = file.size <= 10 * 1024 * 1024; // 10 MB máximo
-        
+        const isValidFormat = validTypes.some((type) => extension.endsWith(type))
+        const isValidSize = file.size <= 10 * 1024 * 1024 // 10 MB máximo
+
         if (!isValidFormat) {
           toast({
             title: "Formato no válido",
             description: `El archivo ${file.name} no es un formato permitido. Use: PDF, DOC, DOCX, JPG, JPEG, PNG`,
-            variant: "destructive"
-          });
+            variant: "destructive",
+          })
         } else if (!isValidSize) {
           toast({
             title: "Archivo demasiado grande",
             description: `El archivo ${file.name} excede el tamaño máximo permitido de 10 MB`,
-            variant: "destructive"
-          });
+            variant: "destructive",
+          })
         }
-        
-        return isValidFormat && isValidSize;
-      });
+
+        return isValidFormat && isValidSize
+      })
 
       if (validFiles.length > 0) {
         // Verificar que los objetos File se mantengan intactos
-        console.log("Archivos válidos a agregar desde input:", validFiles.map(f => f.name));
-        
+        console.log(
+          "Archivos válidos a agregar desde input:",
+          validFiles.map((f) => f.name),
+        )
+
         // MODIFICADO: Asegurarse de que field.value siempre sea un array
-        const currentFiles = Array.isArray(field.value) ? field.value : [];
-        
+        const currentFiles = Array.isArray(field.value) ? field.value : []
+
         // MODIFICADO: Filtrar valores no válidos que puedan haber quedado en el array
-        const cleanedCurrentFiles = currentFiles.filter(f => f instanceof File || (f && typeof f === 'object' && f.id));
-        
+        const cleanedCurrentFiles = currentFiles.filter(
+          (f) => f instanceof File || (f && typeof f === "object" && f.id),
+        )
+
         // IMPORTANTE: Guardar los objetos File directamente
-        field.onChange([...cleanedCurrentFiles, ...validFiles]);
-        
+        field.onChange([...cleanedCurrentFiles, ...validFiles])
+
         // Verificar después de agregar
-        console.log("Nuevo estado del campo desde input:", field.value);
-        console.log("¿Son los elementos objetos File desde input?", field.value.map(f => f instanceof File));
-        
+        console.log("Nuevo estado del campo desde input:", field.value)
+        console.log(
+          "¿Son los elementos objetos File desde input?",
+          field.value.map((f) => f instanceof File),
+        )
+
         if (validFiles.length === 1) {
           toast({
             title: "Archivo añadido",
             description: "El archivo se ha añadido a la lista de evidencias",
-            variant: "default"
-          });
+            variant: "default",
+          })
         } else {
           toast({
             title: "Archivos añadidos",
             description: `${validFiles.length} archivos se han añadido a la lista de evidencias`,
-            variant: "default"
-          });
+            variant: "default",
+          })
         }
       }
-      
+
       // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
-      e.target.value = '';
+      e.target.value = ""
     }
   }
 
   return (
-    <div className="space-y-6 p-3 sm:p-6">
-      {/* Sección de Evidencia Documental */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-lg font-semibold text-primary">Pruebas</h3>
-          <p className="text-sm text-muted-foreground mt-1">
-            Si cuentas con evidencia, agrega las pruebas que respalden tu dicho, pueden ser fotografías, videos,
-            grabaciones de voz, documentos, entre otros.
-          </p>
+    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+      {/* Eliminar todo este bloque
+      <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 mb-6 overflow-hidden shadow-sm">
+        <div className="flex flex-col sm:flex-row">
+          <div className="bg-primary/20 p-3 sm:p-4 flex items-center justify-center sm:w-16">
+            <Upload className="h-8 w-8 text-primary" />
+          </div>
+          <div className="p-4 sm:p-5 space-y-3 flex-1">
+            <div>
+              <h4 className="text-base font-medium text-primary">Recomendaciones para aportar pruebas</h4>
+              <p className="text-sm text-muted-foreground mt-1">
+                Siga estas pautas para proporcionar evidencias que respalden su denuncia:
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Adjunte <span className="font-medium">fotografías, videos o grabaciones</span> que documenten los
+                    hechos
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Incluya <span className="font-medium">documentos oficiales</span> relacionados con la denuncia
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Proporcione datos de <span className="font-medium">testigos</span> que puedan corroborar los hechos
+                  </p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
+                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-xs sm:text-sm">
+                    Asegúrese de que los archivos estén en <span className="font-medium">formatos compatibles</span> y
+                    no excedan el tamaño máximo
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+      */}
+
+      {/* Sección de Evidencia Documental */}
+      <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
+        <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
+          <Upload className="h-5 w-5 mr-3 text-primary" />
+          Pruebas
+        </h3>
+        <FormDescription className="text-xs sm:text-sm mb-4">
+          Si cuentas con evidencia, agrega las pruebas que respalden tu dicho, pueden ser fotografías, videos,
+          grabaciones de voz, documentos, entre otros.
+        </FormDescription>
 
         <FormField
           control={form.control}
@@ -256,7 +364,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                           toast({
                             title: "Archivos eliminados",
                             description: "Se han eliminado todos los archivos de la lista",
-                            variant: "default"
+                            variant: "default",
                           })
                         }}
                       >
@@ -300,7 +408,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                               toast({
                                 title: "Archivo eliminado",
                                 description: `Se eliminó ${file.name} de la lista`,
-                                variant: "default"
+                                variant: "default",
                               })
                             }}
                           >
@@ -319,14 +427,15 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
         />
       </div>
 
-      <Separator className="my-6" />
-
       {/* Sección de Testigos */}
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-lg font-semibold text-primary">Testigos</h3>
-          <p className="text-sm text-muted-foreground mt-1">En caso de contar con testigos, indica sus datos.</p>
-        </div>
+      <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
+        <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
+          <User className="h-5 w-5 mr-3 text-primary" />
+          Testigos
+        </h3>
+        <FormDescription className="text-xs sm:text-sm mb-4">
+          En caso de contar con testigos, indica sus datos.
+        </FormDescription>
 
         <FormField
           control={form.control}
@@ -344,7 +453,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                   <div className="flex flex-col space-y-2 sm:space-y-3 md:space-y-0 md:flex-row md:space-x-3 mt-3 sm:mt-4 py-2 sm:py-4">
                     <Button
                       type="button"
-                      variant={field.value === true  ? "default" : "outline"}
+                      variant={field.value === true ? "default" : "outline"}
                       onClick={() => {
                         field.onChange(true)
                         if (!fields.length) {
@@ -354,8 +463,8 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                       className={cn(
                         "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
                         field.value === true
-                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
-                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
+                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
+                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
                       )}
                     >
                       Sí, hay testigos que pueden corroborar los hechos.
@@ -373,8 +482,8 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                       className={cn(
                         "w-full flex-1 h-auto min-h-[40px] sm:min-h-[48px] py-2 px-3 text-xs sm:text-sm font-medium transition-all duration-300 whitespace-normal text-left justify-start",
                         field.value === false
-                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground"
-                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground",
+                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
+                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
                       )}
                     >
                       No, no hay testigos o prefiero no proporcionarlos.
@@ -437,7 +546,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
               <ScrollArea className="max-h-[500px]">
                 <div className="space-y-4">
                   {fields.map((item, index) => (
-                    <Card key={item.id} className="relative">
+                    <Card key={item.id} className="relative border-2 border-primary/20 shadow-md">
                       <Button
                         type="button"
                         variant="ghost"
@@ -454,14 +563,14 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                             name={`datosTestigos.${index}.nombre`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-xs font-medium">Nombre del testigo</FormLabel>
+                                <FormLabel className="text-sm font-medium">Nombre del testigo</FormLabel>
                                 <FormControl>
                                   <div className="relative">
-                                    <User className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                                     <Input
                                       {...field}
                                       placeholder="Ej. María López García"
-                                      className="text-sm h-9 sm:h-10 pl-8"
+                                      className="text-sm h-10 sm:h-12 pl-10"
                                     />
                                   </div>
                                 </FormControl>
@@ -476,14 +585,14 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                             name={`datosTestigos.${index}.contacto`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel className="text-xs font-medium">Datos de contacto</FormLabel>
+                                <FormLabel className="text-sm font-medium">Datos de contacto</FormLabel>
                                 <FormControl>
                                   <div className="relative">
-                                    <Phone className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                                     <Input
                                       {...field}
                                       placeholder="Ej. 55 1234 5678 o correo@ejemplo.com"
-                                      className="text-sm h-9 sm:h-10 pl-8"
+                                      className="text-sm h-10 sm:h-12 pl-10"
                                     />
                                   </div>
                                 </FormControl>

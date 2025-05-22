@@ -161,7 +161,7 @@ export function MultiStepForm() {
       },
       narracionHechos: "",
       archivosEvidencia: [],
-      testigo: false,  // Cambiado a singular
+      testigo: false, // Cambiado a singular
       datosTestigos: [],
     },
   })
@@ -207,113 +207,112 @@ export function MultiStepForm() {
   }
 
   const handleConfirmSubmit = async () => {
-    setIsSubmitting(true);
+    setIsSubmitting(true)
     try {
       // Obtenemos los valores completos del formulario
-      const formValues = form.getValues();
-      
+      const formValues = form.getValues()
+
       // Registro para depuración
-      console.log("Valores del formulario que se envían:", JSON.stringify(formValues, null, 2));
-      
+      console.log("Valores del formulario que se envían:", JSON.stringify(formValues, null, 2))
+
       // 1. Primero subimos los archivos de evidencia (solo si son objetos File)
       const archivosFiles = formValues.archivosEvidencia || []
       let archivoIds = []
-      
+
       // Verificar si hay archivos por subir (objetos File)
-      const archivosParaSubir = archivosFiles.filter(archivo => archivo instanceof File)
-      
+      const archivosParaSubir = archivosFiles.filter((archivo) => archivo instanceof File)
+
       if (archivosParaSubir.length > 0) {
         toast({
           title: "Subiendo archivos",
           description: `Iniciando la subida de ${archivosParaSubir.length} archivo(s)`,
-          variant: "default"
+          variant: "default",
         })
-        
+
         // Subir los archivos uno por uno y recopilar sus IDs
-        setUploadProgress(0);
-        let filesCompleted = 0;
-        
+        setUploadProgress(0)
+        let filesCompleted = 0
+
         for (const file of archivosParaSubir) {
           try {
             // Actualizar el progreso para este archivo
-            const currentProgress = Math.round((filesCompleted / archivosParaSubir.length) * 100);
-            setUploadProgress(currentProgress);
-            
+            const currentProgress = Math.round((filesCompleted / archivosParaSubir.length) * 100)
+            setUploadProgress(currentProgress)
+
             // Subir el archivo
-            const result = await denunciasPublicService.uploadEvidencia(file);
-            
+            const result = await denunciasPublicService.uploadEvidencia(file)
+
             // MODIFICADO: Guardar solo el ID del archivo (verificar que existe)
             if (result && result.id) {
-              archivoIds.push(result.id);
-              console.log(`Archivo ${file.name} subido con ID: ${result.id}`);
+              archivoIds.push(result.id)
+              console.log(`Archivo ${file.name} subido con ID: ${result.id}`)
             } else {
-              console.error(`No se pudo obtener el ID para el archivo ${file.name}`, result);
+              console.error(`No se pudo obtener el ID para el archivo ${file.name}`, result)
               toast({
                 title: "Error al procesar archivo",
                 description: `El archivo ${file.name} se subió pero no se pudo obtener su ID`,
-                variant: "destructive"
-              });
+                variant: "destructive",
+              })
             }
-            
+
             // Incrementar contador y actualizar progreso
-            filesCompleted++;
-            setUploadProgress(Math.round((filesCompleted / archivosParaSubir.length) * 100));
-            
+            filesCompleted++
+            setUploadProgress(Math.round((filesCompleted / archivosParaSubir.length) * 100))
           } catch (error) {
-            console.error(`Error al subir archivo ${file.name}:`, error);
+            console.error(`Error al subir archivo ${file.name}:`, error)
             toast({
               title: "Error al subir archivo",
               description: `No se pudo subir el archivo ${file.name}: ${error.message || "Error desconocido"}`,
-              variant: "destructive"
-            });
+              variant: "destructive",
+            })
           }
         }
-        
+
         if (archivoIds.length > 0) {
           toast({
             title: "Archivos subidos correctamente",
             description: `${archivoIds.length} de ${archivosParaSubir.length} archivos subidos con éxito`,
-            variant: "default"
-          });
+            variant: "default",
+          })
         } else {
           toast({
             title: "Error en la subida de archivos",
             description: "No se pudo procesar ningún archivo correctamente",
-            variant: "destructive"
-          });
+            variant: "destructive",
+          })
         }
       } else {
-        console.log("No hay archivos para subir o los archivos no son objetos File válidos");
+        console.log("No hay archivos para subir o los archivos no son objetos File válidos")
       }
-      
+
       // Imprimir los IDs de archivos que se van a enviar
-      console.log("IDs de archivos a enviar:", archivoIds);
-      
+      console.log("IDs de archivos a enviar:", archivoIds)
+
       // MODIFICADO: Asegurarnos de que archivoIds es siempre un array
       if (!Array.isArray(archivoIds)) {
-        archivoIds = [];
+        archivoIds = []
       }
-      
+
       // 2. Preparar datos de testigos
       const hayTestigos = Boolean(formValues.testigo)
-      
+
       // Si hay testigos pero no hay datos, inicializamos un array vacío
       let datosTestigos = null
-      
+
       if (hayTestigos && Array.isArray(formValues.datosTestigos) && formValues.datosTestigos.length > 0) {
         datosTestigos = formValues.datosTestigos
-          .filter(testigo => testigo && (testigo.nombre || testigo.contacto))
-          .map(testigo => ({
+          .filter((testigo) => testigo && (testigo.nombre || testigo.contacto))
+          .map((testigo) => ({
             nombre: testigo.nombre || "",
-            contacto: testigo.contacto || ""
+            contacto: testigo.contacto || "",
           }))
-          
+
         // Si después de filtrar no quedan testigos, establecer a null
         if (datosTestigos.length === 0) {
           datosTestigos = null
         }
       }
-      
+
       // 3. Preparar el objeto final para enviar
       const validatedValues = {
         ...formValues,
@@ -327,70 +326,69 @@ export function MultiStepForm() {
           pais: formValues.ubicacionHecho?.pais || "",
           otrasReferencias: formValues.ubicacionHecho?.otrasReferencias || "",
           fechaHecho: formValues.ubicacionHecho?.fechaHecho || "",
-          horaHecho: formValues.ubicacionHecho?.horaHecho || ""
+          horaHecho: formValues.ubicacionHecho?.horaHecho || "",
         },
         // Asegurarse de que personaDenunciada tenga los valores correctos
         personaDenunciada: {
           ...formValues.personaDenunciada,
           // Convertir a número o null para los campos de ID
-          entidad: formValues.personaDenunciada?.entidad ? 
-                   Number(formValues.personaDenunciada.entidad) : null,
-          entePublico: formValues.personaDenunciada?.entePublico ?
-                       Number(formValues.personaDenunciada.entePublico) : null,
+          entidad: formValues.personaDenunciada?.entidad ? Number(formValues.personaDenunciada.entidad) : null,
+          entePublico: formValues.personaDenunciada?.entePublico
+            ? Number(formValues.personaDenunciada.entePublico)
+            : null,
         },
         // Asegurar que los arrays siempre estén inicializados
         faltaCometida: {
           faltaGrave: formValues.faltaCometida?.faltaGrave || [],
           faltaNoGrave: formValues.faltaCometida?.faltaNoGrave || [],
-          hechosCorrupcion: formValues.faltaCometida?.hechosCorrupcion || []
+          hechosCorrupcion: formValues.faltaCometida?.hechosCorrupcion || [],
         },
         // MODIFICADO: Usar archivoIds en lugar de formValues.archivosEvidencia
         archivosEvidencia: archivoIds,
         // Asegurar que testigo sea un booleano
         testigo: hayTestigos,
         // Usar los datos de testigos limpios
-        datosTestigos: datosTestigos
-      };
-      
+        datosTestigos: datosTestigos,
+      }
+
       // Log para depuración
-      console.log("Datos validados para enviar:", JSON.stringify(validatedValues, null, 2));
-      
+      console.log("Datos validados para enviar:", JSON.stringify(validatedValues, null, 2))
+
       // Mostrar toast de envío
       toast({
         title: "Enviando denuncia",
         description: "Su denuncia está siendo procesada...",
-        variant: "default"
-      });
-      
+        variant: "default",
+      })
+
       // Enviar los datos validados
-      const result = await denunciasPublicService.createDenuncia(validatedValues);
-      
+      const result = await denunciasPublicService.createDenuncia(validatedValues)
+
       // En caso de éxito, mostrar toast y actualizar estado
       toast({
         title: "Denuncia enviada",
         description: "Su denuncia ha sido recibida correctamente.",
-        variant: "default"
-      });
-      
-      setDenunciaId(result.id);
-      setModalMode("success");
-      
+        variant: "default",
+      })
+
+      setDenunciaId(result.id)
+      setModalMode("success")
     } catch (error) {
-      console.error("Error al enviar el formulario:", error);
-      
+      console.error("Error al enviar el formulario:", error)
+
       // Mostrar toast de error
       toast({
         title: "Error al enviar denuncia",
         description: error.message || "Ha ocurrido un error al procesar su denuncia. Intente nuevamente.",
-        variant: "destructive"
-      });
-      
-      setIsModalOpen(false);
+        variant: "destructive",
+      })
+
+      setIsModalOpen(false)
     } finally {
-      setIsSubmitting(false);
-      setUploadProgress(0);
+      setIsSubmitting(false)
+      setUploadProgress(0)
     }
-  };
+  }
 
   const handleModalClose = () => {
     setIsModalOpen(false)
@@ -430,12 +428,13 @@ export function MultiStepForm() {
                       <Button
                         type="button"
                         variant="ghost"
-                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${index === step
+                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
+                          index === step
                             ? "bg-primary text-primary-foreground"
                             : index < step
                               ? "bg-primary/80 text-primary-foreground hover:bg-primary"
                               : "bg-muted/90 text-muted-foreground pointer-events-none"
-                          }`}
+                        }`}
                         onClick={() => index < step && setStep(index)}
                         disabled={index >= step}
                       >
@@ -455,8 +454,9 @@ export function MultiStepForm() {
                   {steps.map((_, index) => (
                     <div
                       key={index}
-                      className={`w-2 h-2 rounded-full ${index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
-                        }`}
+                      className={`w-2 h-2 rounded-full ${
+                        index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
+                      }`}
                     />
                   ))}
                 </div>
@@ -499,6 +499,9 @@ export function MultiStepForm() {
         {/* Form content */}
         <div className="flex flex-col justify-between min-h-[calc(100vh-220px)]">
           <div className="container mx-auto px-4 py-6 md:py-8 overflow-y-auto">
+            <div className="mb-4 text-sm text-muted-foreground">
+              <span className="text-red-500">*</span> Campos obligatorios
+            </div>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
               <StepContent step={step} form={form} />
             </form>

@@ -114,7 +114,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
             <FormItem>
               <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
                 <div className="space-y-2">
-                  <FormLabel className="text-base block">¿Deseas presentar una denuncia anónima?</FormLabel>
+                  <FormLabel className="text-base block">
+                    ¿Deseas presentar una denuncia anónima? <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormDescription className="text-xs sm:text-sm">
                     En ambos casos, tu denuncia será confidencial y se protegerá toda la información proporcionada.
                   </FormDescription>
@@ -130,7 +132,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                         field.value
                           ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                        field.value && "glow-effect"
+                        field.value && "glow-effect",
                       )}
                     >
                       Sí, deseo presentar la denuncia sin proporcionar mis datos.
@@ -144,7 +146,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                         !field.value
                           ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
                           : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                        !field.value && "glow-effect"
+                        !field.value && "glow-effect",
                       )}
                     >
                       No, deseo proporcionar mis datos de contacto para recibir notificaciones y en caso de que la
@@ -165,7 +167,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                 <User className="h-5 w-5 mr-3 text-primary" />
                 Datos personales
               </h3>
-              
+
               <div className="space-y-4">
                 {/* Nombre completo en una sola fila */}
                 <FormField
@@ -340,10 +342,12 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                 render={({ field }) => (
                   <FormItem>
                     <div className="space-y-3">
-                      <FormLabel className="text-base block font-medium">¿Deseas solicitar medidas de protección?</FormLabel>
+                      <FormLabel className="text-base block font-medium">
+                        ¿Deseas solicitar medidas de protección?
+                      </FormLabel>
                       <FormDescription className="text-sm">
-                        Las medidas de protección son acciones para garantizar la seguridad e integridad de las
-                        personas involucradas en el hecho que se denuncia.
+                        Las medidas de protección son acciones para garantizar la seguridad e integridad de las personas
+                        involucradas en el hecho que se denuncia.
                       </FormDescription>
 
                       {/* Botones mejorados para protección */}
@@ -357,7 +361,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                             field.value
                               ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
                               : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                            field.value && "glow-effect"
+                            field.value && "glow-effect",
                           )}
                         >
                           <span className="font-bold">Sí</span>, considero que pueden presentarse situaciones de riesgo.
@@ -371,7 +375,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                             !field.value
                               ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
                               : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                            !field.value && "glow-effect"
+                            !field.value && "glow-effect",
                           )}
                         >
                           <span className="font-bold">No</span>

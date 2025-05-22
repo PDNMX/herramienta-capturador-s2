@@ -337,10 +337,10 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
 
       {/* Campo de narración de hechos */}
       <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
-        <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
+        <FormLabel className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
           <ClipboardList className="h-5 w-5 mr-3 text-primary" />
-          Descripción Detallada de los Hechos
-        </h3>
+          Descripción Detallada de los Hechos <span className="text-red-500">*</span>
+        </FormLabel>
         <FormField
           control={form.control}
           name="narracionHechos"

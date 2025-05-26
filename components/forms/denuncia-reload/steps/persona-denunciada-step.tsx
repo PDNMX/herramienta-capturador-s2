@@ -577,7 +577,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
           <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
             <Edit className="h-5 w-5 mr-3 text-primary" />
-            Descripción Detallada
+            Descripción Detallada de la Persona
           </h3>
           <FormField
             control={form.control}

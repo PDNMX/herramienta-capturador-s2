@@ -97,8 +97,8 @@ const formSchema = z.object({
 
 const steps = [
   { title: "Datos del Denunciante", icon: "denunciante" },
-  { title: "Ubicación del Hecho", icon: "ubicacion" },
-  { title: "Persona Denunciada", icon: "persona" },
+  { title: "Datos de los Hechos", icon: "ubicacion" },
+  { title: "Datos de la Persona Denunciada", icon: "persona" },
   { title: "Hechos y Faltas Cometidas", icon: "faltas" },
   { title: "Pruebas y Testigos", icon: "pruebas" },
 ]

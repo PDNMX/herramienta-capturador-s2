@@ -96,7 +96,7 @@ export function Estadisticas() {
           <TabsTrigger value="mapas">Mapas de Calor</TabsTrigger>
         </TabsList>
 
-        <div className="flex justify-end mb-4">
+        {/* <div className="flex justify-end mb-4">
           <Select value={periodoSeleccionado} onValueChange={setPeriodoSeleccionado}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Selecciona periodo" />
@@ -107,7 +107,7 @@ export function Estadisticas() {
               <SelectItem value="ultimo-anio">Último año</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </div> */}
 
         <TabsContent value="resumen">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -143,12 +143,21 @@ export function Estadisticas() {
                 <CardTitle>Top 5 Entidades Federativas</CardTitle>
                 <CardDescription>Entidades con más denuncias</CardDescription>
               </CardHeader>
-              <CardContent className="h-[200px]">
+              <CardContent className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={datosEntidades.slice(0, 5)} layout="vertical" margin={{ left: 100 }}>
+                  <BarChart 
+                    data={datosEntidades.slice(0, 5)} 
+                    layout="vertical" 
+                    margin={{ left: 10, right: 10, top: 10, bottom: 10 }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />
-                    <YAxis dataKey="nombre" type="category" />
+                    <YAxis 
+                      dataKey="nombre" 
+                      type="category" 
+                      width={110}
+                      tick={{ fontSize: 12 }}
+                    />
                     <Tooltip />
                     <Bar dataKey="denuncias" fill="hsl(var(--primary))" />
                   </BarChart>
@@ -233,9 +242,9 @@ export function Estadisticas() {
           <AvanceMapa baseColor={COLORS[3]} />
         </TabsContent>
 
-        <div className="flex justify-end mt-4">
+        {/* <div className="flex justify-end mt-4">
           <Button>Descargar Reporte Completo</Button>
-        </div>
+        </div> */}
       </Tabs>
     </main>
   );

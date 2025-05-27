@@ -214,8 +214,13 @@ const ColorLegend = ({ colorScale, width, height, x, y }) => {
 
 export const AvanceMapa = ({ baseColor = '#fff' }: { baseColor?: string }) => {
   const [tooltipContent, setTooltipContent] = useState('');
+  const [selectedEntidad, setSelectedEntidad] = useState<string | null>(null);
 
   const colorScale = useMemo(() => generateColorRange(baseColor, 10), [baseColor]);
+
+  const handleEntidadHover = (entidad: string | null) => {
+    setSelectedEntidad(entidad);
+  };
 
   return (
     <Card>
@@ -224,55 +229,98 @@ export const AvanceMapa = ({ baseColor = '#fff' }: { baseColor?: string }) => {
         <CardDescription>Número de denuncias por entidad federativa</CardDescription>
       </CardHeader>
       <CardContent>
-        <ComposableMap
-          className="w-full max-h-[600px] h-[60vh] overflow-hidden"
-          projection="geoMercator"
-          projectionConfig={{
-            center: [-102, 24],
-            scale: 1450,
-          }}>
-          <Geographies geography={dataMex}>
-            {({ geographies }: any) =>
-              geographies.map((geo: any) => {
-                const porcentajeAvance = data.find((s: any) => s.entidad == geo.properties.clave);
-                const percentage = porcentajeAvance ? porcentajeAvance.count : 0;
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    fill={(percentage && porcentajeAvance) || Number(percentage) ? colorScale(percentage) : '#fff'}
-                    stroke="#888888"
-                    strokeWidth={0.5}
-                    style={{
-                      default: {
-                        outline: 'none',
-                      },
-                      hover: {
-                        fill:
-                          (percentage && porcentajeAvance) || Number(percentage)
-                            ? interpolateRgb(colorScale(percentage), '#000000')(0.3)
-                            : interpolateRgb('#fff', '#000000')(0.3),
-                        strokeWidth: 1,
-                        outline: 'none',
-                        transition: 'all 250ms',
-                      },
-                    }}
-                    onMouseEnter={() => {
-                      setTooltipContent(
-                        `${porcentajeAvance?.nombreEntidad}: ${Number(percentage) ? percentage + '%' : '0%'}`,
-                      );
-                    }}
-                    onMouseLeave={() => {
-                      setTooltipContent('');
-                    }}
-                    data-tooltip-id="my-tooltip"
-                  />
-                );
-              })
-            }
-          </Geographies>
-          <ColorLegend colorScale={colorScale} width={150} height={15} x={620} y={40} />
-        </ComposableMap>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4">
+          <div className="w-full h-[50vh] lg:h-[60vh] min-h-[400px]">
+            <ComposableMap
+              className="w-full h-full"
+              projection="geoMercator"
+              projectionConfig={{
+                center: [-102, 24],
+                scale: 1450,
+              }}>
+              <Geographies geography={dataMex}>
+                {({ geographies }: any) =>
+                  geographies.map((geo: any) => {
+                    const porcentajeAvance = data.find((s: any) => s.entidad == geo.properties.clave);
+                    const percentage = porcentajeAvance ? porcentajeAvance.count : 0;
+                    const isSelected = selectedEntidad === geo.properties.clave;
+                    
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        fill={(percentage && porcentajeAvance) || Number(percentage) 
+                          ? isSelected 
+                            ? interpolateRgb(colorScale(percentage), '#000000')(0.4)
+                            : colorScale(percentage) 
+                          : '#fff'}
+                        stroke="#888888"
+                        strokeWidth={isSelected ? 1 : 0.8}
+                        style={{
+                          default: {
+                            opacity: isSelected ? 1 : 0.8,
+                          },
+                          hover: {
+                            fill:
+                              (percentage && porcentajeAvance) || Number(percentage)
+                                ? interpolateRgb(colorScale(percentage), '#000000')(0.4)
+                                : interpolateRgb('#fff', '#000000')(0.4),
+                            transition: 'all 250ms',
+                          },
+                        }}
+                        onMouseEnter={() => {
+                          setTooltipContent(
+                            `${porcentajeAvance?.nombreEntidad}: ${Number(percentage) ? percentage + '%' : '0%'}`
+                          );
+                          handleEntidadHover(geo.properties.clave);
+                        }}
+                        onMouseLeave={() => {
+                          setTooltipContent('');
+                          handleEntidadHover(null);
+                        }}
+                        data-tooltip-id="my-tooltip"
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+              <ColorLegend colorScale={colorScale} width={150} height={15} x={620} y={40} />
+            </ComposableMap>
+          </div>
+          <div className="w-full lg:w-[350px] xl:w-[450px] border-t lg:border-t-0 lg:border-l pt-4 lg:pt-0 lg:pl-4">
+            <h3 className="text-sm font-medium mb-4">Ranking de denuncias por Entidades</h3>
+            <div className="space-y-2 max-h-[300px] lg:max-h-[500px] overflow-y-auto pr-2">
+              {[...data]
+                .filter(item => item.entidad !== "00")
+                .sort((a, b) => {
+                  const countA = typeof a.count === 'number' ? a.count : 0;
+                  const countB = typeof b.count === 'number' ? b.count : 0;
+                  return countB - countA;
+                })
+                .map((entidad, index) => (
+                  <div 
+                    key={entidad.entidad}
+                    className={`flex items-center justify-between p-2 rounded-lg transition-colors cursor-pointer border
+                      ${selectedEntidad === entidad.entidad 
+                        ? 'bg-primary/10 border-primary/20' 
+                        : 'border-transparent hover:bg-black/40'}`}
+                    onMouseEnter={() => handleEntidadHover(entidad.entidad)}
+                    onMouseLeave={() => handleEntidadHover(null)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-muted-foreground">
+                        #{index + 1}
+                      </span>
+                      <span className="text-sm">{entidad.nombreEntidad}</span>
+                    </div>
+                    <span className="text-sm font-semibold">
+                      {typeof entidad.count === 'number' ? entidad.count : 0}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
         <Tooltip id="my-tooltip" content={tooltipContent} />
       </CardContent>
     </Card>

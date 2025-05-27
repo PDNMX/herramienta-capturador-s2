@@ -37,7 +37,7 @@ export default function Header() {
               className="flex items-center gap-2"
               asChild
             >
-              <Link href="#">
+              <Link target="_blank" href="https://drive.google.com/file/d/10UXcSV4I6uAQsTJyuwxiDQ1IKEmyg1Fe/view?usp=sharing">
                 <ShieldCheck className="h-4 w-4" />
                 <span className="hidden sm:inline">Aviso de privacidad</span>
               </Link>

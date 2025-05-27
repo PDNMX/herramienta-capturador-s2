@@ -1,251 +1,279 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from 'recharts';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
-import { TrendingUp, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
+"use client";
+
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LineChart, Line, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, BarChart, Bar, ResponsiveContainer, Legend } from "recharts";
+import { FileText, Clock, UserX, AlertTriangle, CheckCircle, Users, TrendingUp, BarChart3, PieChart as PieChartIcon } from 'lucide-react';
+import { useTheme } from 'next-themes';
 
 import { AvanceMapa } from './avance-mapa';
-
-// Datos de ejemplo (reemplazar con datos reales de tu API)
-const datosEntidades = [
-  { nombre: 'Aguascalientes', denuncias: 120, completadas: 80, enProceso: 30, pendientes: 10 },
-  { nombre: 'Baja California', denuncias: 230, completadas: 150, enProceso: 60, pendientes: 20 },
-  { nombre: 'Baja California Sur', denuncias: 90, completadas: 60, enProceso: 20, pendientes: 10 },
-  { nombre: 'Campeche', denuncias: 80, completadas: 50, enProceso: 20, pendientes: 10 },
-  { nombre: 'Chiapas', denuncias: 150, completadas: 100, enProceso: 40, pendientes: 10 },
-];
-
-const datosEntes = [
-  { nombre: 'Secretaría de Educación', denuncias: 150, completadas: 100, enProceso: 40, pendientes: 10 },
-  { nombre: 'Secretaría de Salud', denuncias: 200, completadas: 130, enProceso: 50, pendientes: 20 },
-  { nombre: 'Secretaría de Seguridad', denuncias: 180, completadas: 120, enProceso: 45, pendientes: 15 },
-  { nombre: 'Secretaría de Hacienda', denuncias: 120, completadas: 80, enProceso: 30, pendientes: 10 },
-  { nombre: 'Secretaría de Desarrollo Social', denuncias: 90, completadas: 60, enProceso: 25, pendientes: 5 },
-];
-
-const COLORS = ['#4CAF50', '#FFC107', '#F44336', '#9E9E9E'];
+import { 
+  dataMensual, 
+  dataTipos, 
+  dataEstatus, 
+  metricasPrincipales,
+  obtenerColoresAdaptativos,
+  obtenerTotalDenunciasPorEstatus,
+  calcularPorcentaje
+} from './data-estadisticas';
 
 export function Estadisticas() {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
-  const [COLORS, setCOLORS] = useState(getGraphColors());
-  useEffect(() => {
-    function handleThemeChange() {
-      setCOLORS(getGraphColors());
-    }
-
-    // Escuchar cambios en el tema
-    const observer = new MutationObserver(handleThemeChange);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-    // Limpieza al desmontar
-    return () => observer.disconnect();
-  }, []);
-
-  const [periodoSeleccionado, setPeriodoSeleccionado] = useState('ultimo-mes');
-  const totalDenuncias = datosEntidades.reduce((acc, curr) => acc + curr.denuncias, 0);
-  const totalCompletadas = datosEntidades.reduce((acc, curr) => acc + curr.completadas, 0);
-  const totalEnProceso = datosEntidades.reduce((acc, curr) => acc + curr.enProceso, 0);
-  const totalPendientes = datosEntidades.reduce((acc, curr) => acc + curr.pendientes, 0);
-
-  const datosEstado = [
-    { nombre: 'Completadas', valor: totalCompletadas, color: COLORS[0], icon: CheckCircle },
-    { nombre: 'En Proceso', valor: totalEnProceso, color: COLORS[1], icon: Clock },
-    { nombre: 'Pendientes', valor: totalPendientes, color: COLORS[2], icon: AlertTriangle },
-  ];
-
-  function getGraphColors() {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      // Si no estamos en el navegador, devuelve colores por defecto
-      return ['hsl(0, 0%, 0%)', 'hsl(0, 0%, 50%)', 'hsl(0, 0%, 100%)', 'hsl(0, 0%, 100%)'];
-    }
+  // Colores adaptativos para tema oscuro/claro
+  const chartColors = obtenerColoresAdaptativos(isDark);
   
-    const styles = getComputedStyle(document.documentElement);
-    return [
-      `hsl(${styles.getPropertyValue('--color-graph-0').trim()})`,
-      `hsl(${styles.getPropertyValue('--color-graph-1').trim()})`,
-      `hsl(${styles.getPropertyValue('--color-graph-2').trim()})`,
-      `hsl(${styles.getPropertyValue('--color-graph-base').trim()})`,
-    ];
-  }
-  
-
-
-  
+  // Cálculos dinámicos
+  const totalDenunciasEstatus = obtenerTotalDenunciasPorEstatus();
+  const porcentajeHechosCorrupcion = calcularPorcentaje(metricasPrincipales.hechosCorrupcion, metricasPrincipales.totalDenuncias);
+  const porcentajeFaltasAdmin = calcularPorcentaje(metricasPrincipales.faltasAdministrativas, metricasPrincipales.totalDenuncias);
+  const casosResueltos = Math.round((metricasPrincipales.totalDenuncias * metricasPrincipales.tasaResolucion) / 100);
+  const denunciasAnonimas = Math.round((metricasPrincipales.totalDenuncias * metricasPrincipales.porcentajeDenunciasAnonimas) / 100);
 
   return (
-    <main className="relative min-h-screen overflow-hidden gradient-background">
-      <Tabs defaultValue="resumen" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-4">
-          <TabsTrigger value="resumen">Resumen</TabsTrigger>
-          <TabsTrigger value="entidades">Entidades</TabsTrigger>
-          <TabsTrigger value="entes">Entes Públicos</TabsTrigger>
-          <TabsTrigger value="mapas">Mapas de Calor</TabsTrigger>
-        </TabsList>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center space-y-2">
+        <h1 className="text-3xl font-bold">Estadísticas del Sistema de Denuncias</h1>
+        <p className="text-muted-foreground max-w-5xl mx-auto">
+          Panel de información estadística del Sistema Nacional Anticorrupción para el seguimiento y análisis 
+          de denuncias de faltas administrativas y hechos de corrupción.
+        </p>
+      </div>
 
-        {/* <div className="flex justify-end mb-4">
-          <Select value={periodoSeleccionado} onValueChange={setPeriodoSeleccionado}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Selecciona periodo" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ultimo-mes">Último mes</SelectItem>
-              <SelectItem value="ultimo-trimestre">Último trimestre</SelectItem>
-              <SelectItem value="ultimo-anio">Último año</SelectItem>
-            </SelectContent>
-          </Select>
-        </div> */}
+      {/* Tarjetas de métricas principales */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <FileText className="h-5 w-5 text-blue-600" />
+              <p className="text-sm text-muted-foreground">Total de denuncias</p>
+            </div>
+            <p className="text-2xl font-semibold mt-2">{metricasPrincipales.totalDenuncias.toLocaleString()}</p>
+            <p className="text-xs text-muted-foreground mt-1">Sistema Nacional Anticorrupción</p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <AlertTriangle className="h-5 w-5 text-red-600" />
+              <p className="text-sm text-muted-foreground">Hechos de corrupción</p>
+            </div>
+            <p className="text-2xl font-semibold mt-2">{metricasPrincipales.hechosCorrupcion.toLocaleString()}</p>
+            <p className="text-xs text-green-600 mt-1">{porcentajeHechosCorrupcion}% del total</p>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="resumen">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Denuncias</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalDenuncias}</div>
-                <p className="text-xs text-muted-foreground">+20.1% desde el último periodo</p>
-              </CardContent>
-            </Card>
-            {datosEstado.map(estado => (
-              <Card key={estado.nombre}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{estado.nombre}</CardTitle>
-                  <estado.icon className="h-4 w-4" style={{ color: estado.color }} />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{estado.valor}</div>
-                  <p className="text-xs text-muted-foreground">
-                    {((estado.valor / totalDenuncias) * 100).toFixed(1)}% del total
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="h-5 w-5 text-orange-600" />
+              <p className="text-sm text-muted-foreground">Faltas administrativas</p>
+            </div>
+            <p className="text-2xl font-semibold mt-2">{metricasPrincipales.faltasAdministrativas.toLocaleString()}</p>
+            <p className="text-xs text-blue-600 mt-1">{porcentajeFaltasAdmin}% del total</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <Clock className="h-5 w-5 text-green-600" />
+              <p className="text-sm text-muted-foreground">Tiempo promedio resolución</p>
+            </div>
+            <p className="text-2xl font-semibold mt-2">{metricasPrincipales.tiempoPromedioResolucion} días</p>
+            <p className="text-xs text-muted-foreground mt-1">Meta: 45 días</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <UserX className="h-5 w-5 text-purple-600" />
+              <p className="text-sm text-muted-foreground">Denuncias anónimas</p>
+            </div>
+            <p className="text-2xl font-semibold mt-2">{metricasPrincipales.porcentajeDenunciasAnonimas}%</p>
+            <p className="text-xs text-muted-foreground mt-1">{denunciasAnonimas.toLocaleString()} de {metricasPrincipales.totalDenuncias.toLocaleString()} denuncias</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center space-x-2">
+              <Users className="h-5 w-5 text-indigo-600" />
+              <p className="text-sm text-muted-foreground">Tasa de resolución</p>
+            </div>
+            <p className="text-2xl font-semibold mt-2">{metricasPrincipales.tasaResolucion}%</p>
+            <p className="text-xs text-green-600 mt-1">{casosResueltos.toLocaleString()} casos resueltos</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Gráfica de tendencia temporal */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center space-x-2">
+            <TrendingUp className="h-5 w-5 text-blue-600" />
+            <CardTitle className="text-xl">Evolución mensual de denuncias</CardTitle>
           </div>
+          <p className="text-sm text-muted-foreground">
+            Análisis temporal que muestra la evolución de las denuncias a lo largo del año, diferenciando entre 
+            faltas administrativas y hechos de corrupción para identificar patrones y tendencias.
+          </p>
+        </CardHeader>
+        <CardContent className="h-[400px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={dataMensual}>
+              <XAxis 
+                dataKey="mes" 
+                stroke={chartColors.text}
+                fontSize={12}
+              />
+              <YAxis 
+                stroke={chartColors.text}
+                fontSize={12}
+              />
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                  border: `1px solid ${chartColors.grid}`,
+                  borderRadius: '8px',
+                  color: chartColors.text
+                }}
+              />
+              <Legend />
+              <Line 
+                type="monotone" 
+                dataKey="denuncias" 
+                stroke={chartColors.primary} 
+                strokeWidth={3}
+                name="Total denuncias"
+              />
+              <Line 
+                type="monotone" 
+                dataKey="faltasAdministrativas" 
+                stroke={chartColors.secondary} 
+                strokeWidth={2}
+                name="Faltas administrativas"
+              />
+              <Line 
+                type="monotone" 
+                dataKey="hechosCorrupcion" 
+                stroke={chartColors.quaternary} 
+                strokeWidth={2}
+                name="Hechos de corrupción"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
-          <div className="grid gap-4 md:grid-cols-2 mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Top 5 Entidades Federativas</CardTitle>
-                <CardDescription>Entidades con más denuncias</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
-                    data={datosEntidades.slice(0, 5)} 
-                    layout="vertical" 
-                    margin={{ left: 10, right: 10, top: 10, bottom: 10 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis 
-                      dataKey="nombre" 
-                      type="category" 
-                      width={110}
-                      tick={{ fontSize: 12 }}
-                    />
-                    <Tooltip />
-                    <Bar dataKey="denuncias" fill="hsl(var(--primary))" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Distribución por Ente Público</CardTitle>
-                <CardDescription>Porcentaje de denuncias por ente</CardDescription>
-              </CardHeader>
-              <CardContent className="h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={datosEntes}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="denuncias"
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
-                      {datosEntes.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+      {/* Grid de gráficas secundarias */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Gráfica de tipos de denuncia */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center space-x-2">
+              <BarChart3 className="h-5 w-5 text-green-600" />
+              <CardTitle className="text-xl">Clasificación por tipo de denuncia</CardTitle>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Distribución de denuncias según su naturaleza jurídica, clasificadas entre faltas administrativas 
+              y hechos de corrupción conforme a la normativa del Sistema Nacional Anticorrupción.
+            </p>
+          </CardHeader>
+          <CardContent className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={dataTipos} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
+                <XAxis 
+                  dataKey="tipo" 
+                  angle={-45}
+                  textAnchor="end"
+                  height={100}
+                  fontSize={11}
+                  stroke={chartColors.text}
+                />
+                <YAxis 
+                  stroke={chartColors.text}
+                  fontSize={12}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                    border: `1px solid ${chartColors.grid}`,
+                    borderRadius: '8px',
+                    color: chartColors.text
+                  }}
+                />
+                <Bar dataKey="cantidad" fill={chartColors.primary} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="entidades">
-          <Card>
-            <CardHeader>
-              <CardTitle>Estado de Denuncias por Entidad</CardTitle>
-              <CardDescription>Desglose de denuncias por estado y entidad</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={datosEntidades} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="nombre" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="completadas" stackId="a" fill={COLORS[0]} />
-                  <Bar dataKey="enProceso" stackId="a" fill={COLORS[1]} />
-                  <Bar dataKey="pendientes" stackId="a" fill={COLORS[2]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
+        {/* Gráfica de estatus */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center space-x-2">
+              <PieChartIcon className="h-5 w-5 text-purple-600" />
+              <CardTitle className="text-xl">Estado del trámite de denuncias</CardTitle>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Seguimiento del procedimiento de atención de denuncias según el artículo 59, mostrando el estado 
+              actual de cada caso para garantizar transparencia en el proceso.
+            </p>
+          </CardHeader>
+          <CardContent className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie 
+                  data={dataEstatus} 
+                  dataKey="value" 
+                  nameKey="name" 
+                  cx="50%" 
+                  cy="50%" 
+                  outerRadius={120}
+                  innerRadius={40}
+                  paddingAngle={2}
+                >
+                  {dataEstatus.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  formatter={(value, name) => [
+                    `${value} denuncias (${((Number(value) / totalDenunciasEstatus) * 100).toFixed(1)}%)`, 
+                    name
+                  ]}
+                  contentStyle={{
+                    backgroundColor: isDark ? '#1f2937' : '#ffffff',
+                    border: `1px solid ${chartColors.grid}`,
+                    borderRadius: '8px',
+                    color: chartColors.text
+                  }}
+                />
+                <Legend 
+                  verticalAlign="bottom" 
+                  height={36}
+                  formatter={(value, entry) => (
+                    <span style={{ color: entry?.color || '#000', fontSize: '12px' }}>
+                      {value}: {entry?.payload?.value || 0}
+                    </span>
+                  )}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
 
-        <TabsContent value="entes">
-          <Card>
-            <CardHeader>
-              <CardTitle>Denuncias por Ente Público</CardTitle>
-              <CardDescription>Desglose detallado de denuncias por ente público</CardDescription>
-            </CardHeader>
-            <CardContent className="h-[400px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={datosEntes} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="nombre" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="completadas" stackId="a" fill={COLORS[0]} />
-                  <Bar dataKey="enProceso" stackId="a" fill={COLORS[1]} />
-                  <Bar dataKey="pendientes" stackId="a" fill={COLORS[2]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="mapas">
-          <AvanceMapa baseColor={COLORS[3]} />
-        </TabsContent>
-
-        {/* <div className="flex justify-end mt-4">
-          <Button>Descargar Reporte Completo</Button>
-        </div> */}
-      </Tabs>
-    </main>
+      {/* Mapa de distribución territorial */}
+      <Card>
+        <AvanceMapa />
+      </Card>
+    </div>
   );
 }

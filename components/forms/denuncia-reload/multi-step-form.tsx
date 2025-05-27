@@ -18,82 +18,128 @@ import { HelpContent } from "./help-content"
 import { DenunciaModal } from "@/components/modal/denuncia-modal"
 import { toast } from "@/components/ui/use-toast"
 
-// Modificado el esquema para usar "testigo" en singular en lugar de "testigos"
-const formSchema = z.object({
-  denunciante: z
-    .object({
-      anonimo: z.boolean().default(false),
-      datosDenunciante: z
-        .object({
-          nombre: z.string().optional(),
-          telefono: z.string().optional(),
-          email: z.string().optional(),
-          proteccion: z.boolean().default(false),
-          razonesProteccion: z.string().optional(),
-          domicilioDenunciante: z
-            .object({
-              codigoPostal: z.string().optional(),
-              calle: z.string().optional(),
-              numeroExterior: z.string().optional(),
-              numeroInterior: z.string().optional(),
-              municipioAlcaldia: z.string().optional(),
-            })
-            .optional(),
-        })
-        .optional(),
-    })
-    .optional(),
+// Esquema modificado con validaciones condicionales
+const formSchema = z
+  .object({
+    denunciante: z
+      .object({
+        anonimo: z.boolean().default(false),
+        datosDenunciante: z
+          .object({
+            nombre: z.string().optional(),
+            telefono: z.string().optional(),
+            email: z.string().optional(),
+            proteccion: z.boolean().default(false),
+            razonesProteccion: z.string().optional(),
+            domicilioDenunciante: z
+              .object({
+                codigoPostal: z.string().optional(),
+                calle: z.string().optional(),
+                numeroExterior: z.string().optional(),
+                numeroInterior: z.string().optional(),
+                municipioAlcaldia: z.string().optional(),
+              })
+              .optional(),
+          })
+          .optional(),
+      })
+      .optional(),
 
-  ubicacionHecho: z
-    .object({
-      codigoPostal: z.string().optional(),
-      calle: z.string().optional(),
-      numero: z.string().optional(),
-      ciudad: z.string().optional(),
-      estado: z.string().optional(),
-      pais: z.string().optional(),
-      otrasReferencias: z.string().optional(),
-      fechaHecho: z.string().optional(),
-      horaHecho: z.string().optional(),
-    })
-    .optional(),
+    ubicacionHecho: z
+      .object({
+        codigoPostal: z.string().optional(),
+        calle: z.string().optional(),
+        numero: z.string().optional(),
+        ciudad: z.string().optional(),
+        estado: z.string().optional(),
+        pais: z.string().optional(),
+        otrasReferencias: z.string().optional(),
+        fechaHecho: z.string().min(1, "La fecha del hecho es obligatoria"),
+        horaHecho: z.string().optional(),
+      })
+      .optional(),
 
-  personaDenunciada: z
-    .object({
-      entidad: z.number().optional(),
-      entePublico: z.number().optional(),
-      tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"]).optional(),
-      nombre: z.string().optional(),
-      apellidos: z.string().optional(),
-      genero: z.enum(["MASCULINO", "FEMENINO", "NO_BINARIO"]).optional(),
-      descripcion: z.string().optional(),
-    })
-    .optional(),
-
-  faltaCometida: z
-    .object({
-      faltaGrave: z.array(z.number()).default([]),
-      faltaNoGrave: z.array(z.number()).default([]),
-      hechosCorrupcion: z.array(z.number()).default([]),
-    })
-    .optional(),
-
-  narracionHechos: z.string().optional(),
-
-  archivosEvidencia: z.array(z.any()).default([]),
-
-  // Cambiado de "testigos" a "testigo" para coincidir con tu esquema
-  testigo: z.boolean().optional(),
-
-  datosTestigos: z
-    .array(
-      z.object({
+    personaDenunciada: z
+      .object({
+        entidad: z.number().min(1, "Debe seleccionar una entidad federativa").optional(),
+        entePublico: z.number().optional(),
+        tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"], {
+          required_error: "Debe seleccionar el tipo de persona",
+        }),
         nombre: z.string().optional(),
-        contacto: z.string().optional(),
-      }),
-    )
-    .optional(),
-})
+        apellidos: z.string().optional(),
+        genero: z.enum(["MASCULINO", "FEMENINO", "NO_BINARIO"]).optional(),
+        descripcion: z.string().optional(),
+      })
+      .optional(),
+
+    faltaCometida: z
+      .object({
+        faltaGrave: z.array(z.number()).default([]),
+        faltaNoGrave: z.array(z.number()).default([]),
+        hechosCorrupcion: z.array(z.number()).default([]),
+      })
+      .optional(),
+
+    narracionHechos: z.string().min(50, "La narración debe tener al menos 50 caracteres"),
+
+    archivosEvidencia: z.array(z.any()).default([]),
+
+    testigo: z.boolean().optional(),
+
+    datosTestigos: z
+      .array(
+        z.object({
+          nombre: z.string().optional(),
+          contacto: z.string().optional(),
+        }),
+      )
+      .optional(),
+  })
+  // Refinamiento para validaciones condicionales
+  .refine(
+    (data) => {
+      // Si no es anónimo, validar campos obligatorios del denunciante
+      if (data.denunciante && !data.denunciante.anonimo) {
+        const datosDenunciante = data.denunciante.datosDenunciante
+        if (!datosDenunciante) return false
+
+        // Campos obligatorios cuando no es anónimo
+        if (!datosDenunciante.nombre || datosDenunciante.nombre.trim().length < 2) return false
+        if (!datosDenunciante.telefono || datosDenunciante.telefono.trim().length < 10) return false
+
+        // Validar domicilio obligatorio
+        const domicilio = datosDenunciante.domicilioDenunciante
+        if (!domicilio) return false
+        if (!domicilio.calle || domicilio.calle.trim().length < 3) return false
+        if (!domicilio.numeroExterior || domicilio.numeroExterior.trim().length < 1) return false
+        if (!domicilio.municipioAlcaldia || domicilio.municipioAlcaldia.trim().length < 2) return false
+        if (!domicilio.codigoPostal || domicilio.codigoPostal.trim().length < 5) return false
+      }
+      return true
+    },
+    {
+      message:
+        "Cuando no es anónimo, los campos de nombre completo, teléfono, calle, número exterior, municipio/alcaldía y código postal son obligatorios",
+      path: ["denunciante"],
+    },
+  )
+  .refine(
+    (data) => {
+      // Validar que al menos una falta esté seleccionada
+      const faltas = data.faltaCometida
+      if (!faltas) return false
+
+      const totalFaltas =
+        (faltas.faltaGrave?.length || 0) + (faltas.faltaNoGrave?.length || 0) + (faltas.hechosCorrupcion?.length || 0)
+
+      return totalFaltas > 0
+    },
+    {
+      message: "Debe seleccionar al menos una clasificación de falta",
+      path: ["faltaCometida"],
+    },
+  )
 
 const steps = [
   { title: "Datos del Denunciante", icon: "denunciante" },
@@ -111,11 +157,11 @@ export function MultiStepForm() {
   const [modalMode, setModalMode] = React.useState<"confirm" | "success">("confirm")
   const [isModalOpen, setIsModalOpen] = React.useState(false)
   const [denunciaId, setDenunciaId] = React.useState<string | undefined>(undefined)
-  const [uploadProgress, setUploadProgress] = React.useState(0) // Estado para el progreso de carga
+  const [uploadProgress, setUploadProgress] = React.useState(0)
 
-  // Corregido: defaultValues para el formulario con estructura anidada completa
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    mode: "onChange", // Validar en tiempo real
     defaultValues: {
       denunciante: {
         anonimo: false,
@@ -140,7 +186,7 @@ export function MultiStepForm() {
         numero: "",
         ciudad: "",
         estado: "",
-        pais: "México", // Valor por defecto
+        pais: "México",
         otrasReferencias: "",
         fechaHecho: "",
         horaHecho: "",
@@ -161,7 +207,7 @@ export function MultiStepForm() {
       },
       narracionHechos: "",
       archivosEvidencia: [],
-      testigo: false, // Cambiado a singular
+      testigo: false,
       datosTestigos: [],
     },
   })
@@ -169,27 +215,152 @@ export function MultiStepForm() {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps - 1))
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
 
-  const handleNextStep = async () => {
-    const fields = Object.keys(form.getValues())
-    const currentStepFields = fields.filter((field) => {
-      const fieldStep = getFieldStep(field)
-      return fieldStep === step
-    })
+  // Función para obtener los campos que deben validarse en cada paso
+  const getStepFields = (stepIndex: number): string[] => {
+    switch (stepIndex) {
+      case 0: // Datos del Denunciante
+        const isAnonymous = form.getValues("denunciante.anonimo")
+        if (isAnonymous) {
+          return ["denunciante.anonimo"]
+        } else {
+          return [
+            "denunciante.anonimo",
+            "denunciante.datosDenunciante.nombre",
+            "denunciante.datosDenunciante.telefono",
+            "denunciante.datosDenunciante.domicilioDenunciante.calle",
+            "denunciante.datosDenunciante.domicilioDenunciante.numeroExterior",
+            "denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia",
+            "denunciante.datosDenunciante.domicilioDenunciante.codigoPostal",
+          ]
+        }
+      case 1: // Ubicación del Hecho
+        return ["ubicacionHecho.fechaHecho"]
+      case 2: // Persona Denunciada
+        return ["personaDenunciada.tipoPersona", "personaDenunciada.entidad"]
+      case 3: // Faltas y Narración
+        return ["narracionHechos", "faltaCometida"]
+      case 4: // Pruebas y Testigos
+        return [] // No hay campos obligatorios en este paso
+      default:
+        return []
+    }
+  }
 
-    const isStepValid = await form.trigger(currentStepFields as any)
+  // Función para validar un paso específico
+  const validateStep = async (stepIndex: number): Promise<boolean> => {
+    const fieldsToValidate = getStepFields(stepIndex)
 
-    if (isStepValid) {
-      if (step === totalSteps - 1) {
-        setIsModalOpen(true)
-        setModalMode("confirm")
-      } else {
-        nextStep()
+    if (fieldsToValidate.length === 0) {
+      return true // No hay campos que validar
+    }
+
+    // Validar campos específicos del paso
+    const isValid = await form.trigger(fieldsToValidate as any)
+
+    // Validaciones adicionales personalizadas
+    if (stepIndex === 0) {
+      const isAnonymous = form.getValues("denunciante.anonimo")
+      if (!isAnonymous) {
+        // Validar campos obligatorios manualmente
+        const nombre = form.getValues("denunciante.datosDenunciante.nombre")
+        const telefono = form.getValues("denunciante.datosDenunciante.telefono")
+        const calle = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.calle")
+        const numeroExterior = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.numeroExterior")
+        const municipio = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia")
+        const codigoPostal = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.codigoPostal")
+
+        if (!nombre || nombre.trim().length < 2) {
+          form.setError("denunciante.datosDenunciante.nombre", {
+            message: "El nombre completo es obligatorio (mínimo 2 caracteres)",
+          })
+          return false
+        }
+
+        if (!telefono || telefono.trim().length < 10) {
+          form.setError("denunciante.datosDenunciante.telefono", {
+            message: "El teléfono es obligatorio (mínimo 10 caracteres)",
+          })
+          return false
+        }
+
+        if (!calle || calle.trim().length < 3) {
+          form.setError("denunciante.datosDenunciante.domicilioDenunciante.calle", {
+            message: "La calle es obligatoria (mínimo 3 caracteres)",
+          })
+          return false
+        }
+
+        if (!numeroExterior || numeroExterior.trim().length < 1) {
+          form.setError("denunciante.datosDenunciante.domicilioDenunciante.numeroExterior", {
+            message: "El número exterior es obligatorio",
+          })
+          return false
+        }
+
+        if (!municipio || municipio.trim().length < 2) {
+          form.setError("denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia", {
+            message: "El municipio o alcaldía es obligatorio (mínimo 2 caracteres)",
+          })
+          return false
+        }
+
+        if (!codigoPostal || codigoPostal.trim().length < 5) {
+          form.setError("denunciante.datosDenunciante.domicilioDenunciante.codigoPostal", {
+            message: "El código postal es obligatorio (mínimo 5 caracteres)",
+          })
+          return false
+        }
       }
+    }
+
+    if (stepIndex === 3) {
+      // Validar que al menos una falta esté seleccionada
+      const faltaGrave = form.getValues("faltaCometida.faltaGrave") || []
+      const faltaNoGrave = form.getValues("faltaCometida.faltaNoGrave") || []
+      const hechosCorrupcion = form.getValues("faltaCometida.hechosCorrupcion") || []
+
+      const totalFaltas = faltaGrave.length + faltaNoGrave.length + hechosCorrupcion.length
+
+      if (totalFaltas === 0) {
+        form.setError("faltaCometida", {
+          message: "Debe seleccionar al menos una clasificación de falta",
+        })
+        return false
+      }
+    }
+
+    return isValid
+  }
+
+  const handleNextStep = async () => {
+    // Validar el paso actual antes de continuar
+    const isStepValid = await validateStep(step)
+
+    if (!isStepValid) {
+      // Mostrar toast con error
+      toast({
+        title: "Campos incompletos",
+        description: "Por favor, complete todos los campos obligatorios antes de continuar.",
+        variant: "destructive",
+      })
+      return
+    }
+
+    if (step === totalSteps - 1) {
+      setIsModalOpen(true)
+      setModalMode("confirm")
+    } else {
+      nextStep()
+      // Mostrar toast de éxito al avanzar
+      toast({
+        title: "Paso completado",
+        description: "Puede continuar al siguiente paso.",
+        variant: "default",
+      })
     }
   }
 
   const getFieldStep = (field: string) => {
-    // Implementa la lógica para determinar a qué paso pertenece cada campo
     if (field.startsWith("denunciante")) return 0
     if (field.startsWith("ubicacionHecho")) return 1
     if (field.startsWith("personaDenunciada")) return 2
@@ -209,17 +380,13 @@ export function MultiStepForm() {
   const handleConfirmSubmit = async () => {
     setIsSubmitting(true)
     try {
-      // Obtenemos los valores completos del formulario
       const formValues = form.getValues()
 
-      // Registro para depuración
       console.log("Valores del formulario que se envían:", JSON.stringify(formValues, null, 2))
 
-      // 1. Primero subimos los archivos de evidencia (solo si son objetos File)
       const archivosFiles = formValues.archivosEvidencia || []
       let archivoIds = []
 
-      // Verificar si hay archivos por subir (objetos File)
       const archivosParaSubir = archivosFiles.filter((archivo) => archivo instanceof File)
 
       if (archivosParaSubir.length > 0) {
@@ -229,20 +396,16 @@ export function MultiStepForm() {
           variant: "default",
         })
 
-        // Subir los archivos uno por uno y recopilar sus IDs
         setUploadProgress(0)
         let filesCompleted = 0
 
         for (const file of archivosParaSubir) {
           try {
-            // Actualizar el progreso para este archivo
             const currentProgress = Math.round((filesCompleted / archivosParaSubir.length) * 100)
             setUploadProgress(currentProgress)
 
-            // Subir el archivo
             const result = await denunciasPublicService.uploadEvidencia(file)
 
-            // MODIFICADO: Guardar solo el ID del archivo (verificar que existe)
             if (result && result.id) {
               archivoIds.push(result.id)
               console.log(`Archivo ${file.name} subido con ID: ${result.id}`)
@@ -255,7 +418,6 @@ export function MultiStepForm() {
               })
             }
 
-            // Incrementar contador y actualizar progreso
             filesCompleted++
             setUploadProgress(Math.round((filesCompleted / archivosParaSubir.length) * 100))
           } catch (error) {
@@ -285,18 +447,14 @@ export function MultiStepForm() {
         console.log("No hay archivos para subir o los archivos no son objetos File válidos")
       }
 
-      // Imprimir los IDs de archivos que se van a enviar
       console.log("IDs de archivos a enviar:", archivoIds)
 
-      // MODIFICADO: Asegurarnos de que archivoIds es siempre un array
       if (!Array.isArray(archivoIds)) {
         archivoIds = []
       }
 
-      // 2. Preparar datos de testigos
       const hayTestigos = Boolean(formValues.testigo)
 
-      // Si hay testigos pero no hay datos, inicializamos un array vacío
       let datosTestigos = null
 
       if (hayTestigos && Array.isArray(formValues.datosTestigos) && formValues.datosTestigos.length > 0) {
@@ -307,16 +465,13 @@ export function MultiStepForm() {
             contacto: testigo.contacto || "",
           }))
 
-        // Si después de filtrar no quedan testigos, establecer a null
         if (datosTestigos.length === 0) {
           datosTestigos = null
         }
       }
 
-      // 3. Preparar el objeto final para enviar
       const validatedValues = {
         ...formValues,
-        // Asegurarse de que ubicacionHecho tenga todos sus campos
         ubicacionHecho: {
           codigoPostal: formValues.ubicacionHecho?.codigoPostal || "",
           calle: formValues.ubicacionHecho?.calle || "",
@@ -328,43 +483,33 @@ export function MultiStepForm() {
           fechaHecho: formValues.ubicacionHecho?.fechaHecho || "",
           horaHecho: formValues.ubicacionHecho?.horaHecho || "",
         },
-        // Asegurarse de que personaDenunciada tenga los valores correctos
         personaDenunciada: {
           ...formValues.personaDenunciada,
-          // Convertir a número o null para los campos de ID
           entidad: formValues.personaDenunciada?.entidad ? Number(formValues.personaDenunciada.entidad) : null,
           entePublico: formValues.personaDenunciada?.entePublico
             ? Number(formValues.personaDenunciada.entePublico)
             : null,
         },
-        // Asegurar que los arrays siempre estén inicializados
         faltaCometida: {
           faltaGrave: formValues.faltaCometida?.faltaGrave || [],
           faltaNoGrave: formValues.faltaCometida?.faltaNoGrave || [],
           hechosCorrupcion: formValues.faltaCometida?.hechosCorrupcion || [],
         },
-        // MODIFICADO: Usar archivoIds en lugar de formValues.archivosEvidencia
         archivosEvidencia: archivoIds,
-        // Asegurar que testigo sea un booleano
         testigo: hayTestigos,
-        // Usar los datos de testigos limpios
         datosTestigos: datosTestigos,
       }
 
-      // Log para depuración
       console.log("Datos validados para enviar:", JSON.stringify(validatedValues, null, 2))
 
-      // Mostrar toast de envío
       toast({
         title: "Enviando denuncia",
         description: "Su denuncia está siendo procesada...",
         variant: "default",
       })
 
-      // Enviar los datos validados
       const result = await denunciasPublicService.createDenuncia(validatedValues)
 
-      // En caso de éxito, mostrar toast y actualizar estado
       toast({
         title: "Denuncia enviada",
         description: "Su denuncia ha sido recibida correctamente.",
@@ -376,7 +521,6 @@ export function MultiStepForm() {
     } catch (error) {
       console.error("Error al enviar el formulario:", error)
 
-      // Mostrar toast de error
       toast({
         title: "Error al enviar denuncia",
         description: error.message || "Ha ocurrido un error al procesar su denuncia. Intente nuevamente.",
@@ -404,7 +548,6 @@ export function MultiStepForm() {
       <div className="w-full gradient-background shadow-md rounded-lg overflow-hidden flex flex-col">
         <div className="border-b">
           <div className="container mx-auto px-4 py-4 md:py-6">
-            {/* Header section with title and help button */}
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold foregroundy">{steps[step].title}</h1>
               <Sheet>
@@ -417,9 +560,7 @@ export function MultiStepForm() {
               </Sheet>
             </div>
 
-            {/* Navigation buttons and progress section */}
             <div className="space-y-4">
-              {/* Step indicators for larger screens */}
               <div className="hidden md:flex justify-center space-x-2 mb-2">
                 {steps.map((s, index) => {
                   const Icon = stepIcons[s.icon as keyof typeof stepIcons]
@@ -445,11 +586,9 @@ export function MultiStepForm() {
                 })}
               </div>
 
-              {/* Progress bar */}
               <div className="relative">
                 <Progress value={progress} className="h-2" />
 
-                {/* Step indicators for mobile - dots only */}
                 <div className="flex md:hidden justify-center space-x-2 mt-2">
                   {steps.map((_, index) => (
                     <div
@@ -462,7 +601,6 @@ export function MultiStepForm() {
                 </div>
               </div>
 
-              {/* Navigation buttons */}
               <div className="flex justify-between items-center pt-2">
                 <Button
                   type="button"
@@ -477,7 +615,6 @@ export function MultiStepForm() {
                   <span className="sm:hidden">{step === 0 ? "Inicio" : "Atrás"}</span>
                 </Button>
 
-                {/* Current step indicator for mobile */}
                 <div className="text-sm font-medium">
                   {step + 1}/{totalSteps}
                 </div>
@@ -496,7 +633,6 @@ export function MultiStepForm() {
           </div>
         </div>
 
-        {/* Form content */}
         <div className="flex flex-col justify-between min-h-[calc(100vh-220px)]">
           <div className="container mx-auto px-4 py-6 md:py-8 overflow-y-auto">
             <div className="mb-4 text-sm text-muted-foreground">
@@ -516,7 +652,6 @@ export function MultiStepForm() {
         onConfirm={handleConfirmSubmit}
         onCancel={() => setIsModalOpen(false)}
         onClose={handleModalClose}
-        // Información de progreso de carga
         uploadProgress={uploadProgress}
         isUploading={isSubmitting && uploadProgress > 0 && uploadProgress < 100}
       />

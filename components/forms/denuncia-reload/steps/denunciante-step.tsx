@@ -1,12 +1,39 @@
 "use client"
-import { FormControl, FormField, FormItem, FormLabel, FormDescription } from "@/components/ui/form"
+import { FormControl, FormField, FormItem, FormLabel, FormDescription, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { cn } from "@/lib/utils"
-import { User, Phone, Mail, MapPin, Building, Hash, Shield, CheckCircle2 } from "lucide-react"
+import { User, Phone, Mail, MapPin, Building, Hash, Shield, CheckCircle2, Check, UserCheck } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import type { UseFormReturn } from "react-hook-form"
+import React from "react"
+
+const CompactChoiceBox = React.forwardRef<
+  HTMLDivElement,
+  { checked: boolean; onChange: () => void; children: React.ReactNode }
+>(({ checked, onChange, children }, ref) => (
+  <div
+    ref={ref}
+    onClick={onChange}
+    className={`relative w-full p-5 rounded-lg border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+      checked
+        ? "border-primary bg-primary/10 text-primary shadow-lg transform scale-[1.02]"
+        : "border-input bg-card text-muted-foreground hover:border-primary/50 hover:bg-accent hover:shadow-md hover:transform hover:scale-[1.01] opacity-70 hover:opacity-90"
+    }`}
+  >
+    <div className={checked ? "opacity-100" : "opacity-60"}>{children}</div>
+    {checked && (
+      <div className="absolute top-3 right-3 h-6 w-6 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
+        <Check className="h-3 w-3 text-primary-foreground" />
+      </div>
+    )}
+    <div
+      className={`absolute bottom-0 left-0 right-0 h-1.5 bg-primary transition-transform duration-300 ${
+        checked ? "transform translate-y-0" : "transform translate-y-full"
+      }`}
+    ></div>
+  </div>
+))
+CompactChoiceBox.displayName = "CompactChoiceBox"
 
 interface DenuncianteStepProps {
   form: UseFormReturn<any> | null
@@ -113,7 +140,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
           render={({ field }) => (
             <FormItem>
               <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <FormLabel className="text-base block">
                     ¿Deseas presentar una denuncia anónima? <span className="text-red-500">*</span>
                   </FormLabel>
@@ -121,37 +148,34 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     En ambos casos, tu denuncia será confidencial y se protegerá toda la información proporcionada.
                   </FormDescription>
 
-                  {/* Botones mejorados */}
-                  <div className="flex flex-col space-y-3 sm:space-y-4 md:space-y-0 md:flex-row md:space-x-4 mt-4 sm:mt-6 py-2 sm:py-4">
-                    <Button
-                      type="button"
-                      variant={field.value ? "default" : "outline"}
-                      onClick={() => field.onChange(true)}
-                      className={cn(
-                        "w-full flex-1 h-auto min-h-[48px] sm:min-h-[56px] py-3 px-4 text-sm sm:text-base font-medium transition-all duration-300 whitespace-normal text-left justify-start relative overflow-hidden",
-                        field.value
-                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
-                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                        field.value && "glow-effect",
-                      )}
-                    >
-                      Sí, deseo presentar la denuncia sin proporcionar mis datos.
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={!field.value ? "default" : "outline"}
-                      onClick={() => field.onChange(false)}
-                      className={cn(
-                        "w-full flex-1 h-auto min-h-[48px] sm:min-h-[56px] py-3 px-4 text-sm sm:text-base font-medium transition-all duration-300 whitespace-normal text-left justify-start relative overflow-hidden",
-                        !field.value
-                          ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
-                          : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                        !field.value && "glow-effect",
-                      )}
-                    >
-                      No, deseo proporcionar mis datos de contacto para recibir notificaciones y en caso de que la
-                      autoridad requiera más información.
-                    </Button>
+                  {/* Botones mejorados con diseño más grande */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <CompactChoiceBox checked={field.value} onChange={() => field.onChange(true)}>
+                      <div className="flex items-start space-x-4">
+                        <div className="flex-shrink-0 mt-1">
+                          <Shield className="h-6 w-6 text-current" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-base mb-2">
+                            Sí, deseo presentar la denuncia sin proporcionar mis datos.
+                          </h4>
+                        </div>
+                      </div>
+                    </CompactChoiceBox>
+
+                    <CompactChoiceBox checked={!field.value} onChange={() => field.onChange(false)}>
+                      <div className="flex items-start space-x-4">
+                        <div className="flex-shrink-0 mt-1">
+                          <User className="h-6 w-6 text-current" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-base mb-2">
+                            No, deseo proporcionar mis datos de contacto para recibir notificaciones y en caso de que la
+                            autoridad requiera más información.
+                          </h4>
+                        </div>
+                      </div>
+                    </CompactChoiceBox>
                   </div>
                 </div>
               </div>
@@ -175,10 +199,13 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   name="denunciante.datosDenunciante.nombre"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Nombre completo</FormLabel>
+                      <FormLabel className="text-sm font-medium">
+                        Nombre completo {!isAnonymous && <span className="text-red-500">*</span>}
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Ej. Juan Pérez García" className="text-sm h-10 sm:h-12" />
                       </FormControl>
+                      <FormMessage />
                       <FormDescription className="text-xs sm:text-sm">Ingresa nombre(s) y apellidos</FormDescription>
                     </FormItem>
                   )}
@@ -195,7 +222,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     name="denunciante.datosDenunciante.telefono"
                     render={({ field }) => (
                       <FormItem className="relative">
-                        <FormLabel className="text-sm font-medium">Teléfono</FormLabel>
+                        <FormLabel className="text-sm font-medium">
+                          Teléfono {!isAnonymous && <span className="text-red-500">*</span>}
+                        </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
@@ -207,6 +236,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                             />
                           </div>
                         </FormControl>
+                        <FormMessage />
                         <FormDescription className="text-xs sm:text-sm">
                           Proporciona un número telefónico de contacto
                         </FormDescription>
@@ -230,6 +260,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                             />
                           </div>
                         </FormControl>
+                        <FormMessage />
                         <FormDescription className="text-xs sm:text-sm">
                           Ingresa una dirección de correo electrónico para recibir notificaciones
                         </FormDescription>
@@ -253,10 +284,13 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   name="denunciante.datosDenunciante.domicilioDenunciante.calle"
                   render={({ field }) => (
                     <FormItem className="md:col-span-2">
-                      <FormLabel className="text-sm font-medium">Calle</FormLabel>
+                      <FormLabel className="text-sm font-medium">
+                        Calle {!isAnonymous && <span className="text-red-500">*</span>}
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Ej. Av. Insurgentes" className="text-sm h-10 sm:h-12" />
                       </FormControl>
+                      <FormMessage />
                       <FormDescription className="text-xs sm:text-sm">
                         Ingresa el nombre completo de la calle
                       </FormDescription>
@@ -268,13 +302,16 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   name="denunciante.datosDenunciante.domicilioDenunciante.numeroExterior"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Número Exterior</FormLabel>
+                      <FormLabel className="text-sm font-medium">
+                        Número Exterior {!isAnonymous && <span className="text-red-500">*</span>}
+                      </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                           <Input {...field} placeholder="Ej. 123" className="text-sm h-10 sm:h-12 pl-10" />
                         </div>
                       </FormControl>
+                      <FormMessage />
                       <FormDescription className="text-xs sm:text-sm">No. exterior</FormDescription>
                     </FormItem>
                   )}
@@ -291,6 +328,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                           <Input {...field} placeholder="Ej. 4B" className="text-sm h-10 sm:h-12 pl-10" />
                         </div>
                       </FormControl>
+                      <FormMessage />
                       <FormDescription className="text-xs sm:text-sm">No. interior (opcional)</FormDescription>
                     </FormItem>
                   )}
@@ -300,10 +338,13 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   name="denunciante.datosDenunciante.domicilioDenunciante.codigoPostal"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Código Postal</FormLabel>
+                      <FormLabel className="text-sm font-medium">
+                        Código Postal {!isAnonymous && <span className="text-red-500">*</span>}
+                      </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Ej. 06700" className="text-sm h-10 sm:h-12" />
                       </FormControl>
+                      <FormMessage />
                       <FormDescription className="text-xs sm:text-sm">Código Postal de tu domicilio</FormDescription>
                     </FormItem>
                   )}
@@ -313,13 +354,16 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   name="denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium">Municipio o Alcaldía</FormLabel>
+                      <FormLabel className="text-sm font-medium">
+                        Municipio o Alcaldía {!isAnonymous && <span className="text-red-500">*</span>}
+                      </FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                           <Input {...field} placeholder="Ej. Cuauhtémoc" className="text-sm h-10 sm:h-12 pl-10" />
                         </div>
                       </FormControl>
+                      <FormMessage />
                       <FormDescription className="text-xs sm:text-sm">
                         Municipio o Alcaldía donde se encuentra tu domicilio
                       </FormDescription>
@@ -341,7 +385,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                 name="denunciante.datosDenunciante.proteccion"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <FormLabel className="text-base block font-medium">
                         ¿Deseas solicitar medidas de protección?
                       </FormLabel>
@@ -351,35 +395,30 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                       </FormDescription>
 
                       {/* Botones mejorados para protección */}
-                      <div className="flex flex-col space-y-3 sm:space-y-4 md:space-y-0 md:flex-row md:space-x-4 mt-4 py-2 sm:py-3">
-                        <Button
-                          type="button"
-                          variant={field.value ? "default" : "outline"}
-                          onClick={() => field.onChange(true)}
-                          className={cn(
-                            "w-full flex-1 h-auto min-h-[48px] sm:min-h-[56px] py-3 px-4 text-sm sm:text-base font-medium transition-all duration-300 whitespace-normal text-left justify-start relative overflow-hidden",
-                            field.value
-                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
-                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                            field.value && "glow-effect",
-                          )}
-                        >
-                          <span className="font-bold">Sí</span>, considero que pueden presentarse situaciones de riesgo.
-                        </Button>
-                        <Button
-                          type="button"
-                          variant={!field.value ? "default" : "outline"}
-                          onClick={() => field.onChange(false)}
-                          className={cn(
-                            "w-full flex-1 h-auto min-h-[48px] sm:min-h-[56px] py-3 px-4 text-sm sm:text-base font-medium transition-all duration-300 whitespace-normal text-left justify-start relative overflow-hidden",
-                            !field.value
-                              ? "bg-primary text-primary-foreground shadow-md hover:bg-accent hover:text-accent-foreground border-2 border-primary/50"
-                              : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground border-2",
-                            !field.value && "glow-effect",
-                          )}
-                        >
-                          <span className="font-bold">No</span>
-                        </Button>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                        <CompactChoiceBox checked={field.value} onChange={() => field.onChange(true)}>
+                          <div className="flex items-start space-x-4">
+                            <div className="flex-shrink-0 mt-1">
+                              <Shield className="h-6 w-6 text-current" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-base mb-2">
+                                Sí, considero que pueden presentarse situaciones de riesgo.
+                              </h4>
+                            </div>
+                          </div>
+                        </CompactChoiceBox>
+
+                        <CompactChoiceBox checked={!field.value} onChange={() => field.onChange(false)}>
+                          <div className="flex items-start space-x-4">
+                            <div className="flex-shrink-0 mt-1">
+                              <UserCheck className="h-6 w-6 text-current" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-base mb-2">No</h4>
+                            </div>
+                          </div>
+                        </CompactChoiceBox>
                       </div>
                     </div>
 

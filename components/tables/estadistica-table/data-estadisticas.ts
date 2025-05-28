@@ -79,12 +79,10 @@ export const dataTipos: TipoDenuncia[] = [
 
 // Datos de estatus de denuncias
 export const dataEstatus: EstatusDenuncia[] = [
-  { name: "En trámite", value: 520, color: "#f59e0b" },
-  { name: "En investigación", value: 340, color: "#3b82f6" },
-  { name: "Concluida - Sancionada", value: 480, color: "#10b981" },
-  { name: "Concluida - Sin sanción", value: 200, color: "#6b7280" },
-  { name: "Archivada", value: 230, color: "#ef4444" },
-  { name: "Suspendida", value: 85, color: "#8b5cf6" },
+  { name: "Registrada", value: 520, color: "#f59e0b" },
+  { name: "Turnada", value: 340, color: "#3b82f6" },
+  { name: "Atendida", value: 480, color: "#10b981" },
+  { name: "Proceso", value: 200, color: "#6b7280" },
 ];
 
 // Datos de entidades federativas

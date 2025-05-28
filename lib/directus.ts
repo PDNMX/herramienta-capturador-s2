@@ -9,7 +9,7 @@ import {
 } from "@directus/sdk";
 
 const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8060";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8056";
 
 // Instancia autenticada (para usuarios del sistema)
 const directus = createDirectus(BACKEND_URL)
@@ -481,27 +481,172 @@ export const denunciasPublicService = {
   }
 };
 
-// Servicio para consultar denuncias
+// Servicio para consultar denuncias - VERSIÓN SEGURA
 export const seguimientoService = {
+  /**
+   * Consulta una denuncia por su ID/folio
+   * Solo retorna información básica por protección de datos
+   * @param folio - ID de la denuncia a consultar
+   * @returns Datos básicos y seguros de la denuncia
+   */
   async consultarDenuncia(folio: string) {
     try {
-      const denuncia = await publicDirectus.request(
+      console.log(`Consultando denuncia con folio: ${folio}`);
+
+      // Validar que el folio no esté vacío
+      if (!folio || folio.trim() === '') {
+        throw new Error("El folio no puede estar vacío");
+      }
+
+      // Limpiar el folio (remover espacios y convertir a uppercase si es necesario)
+      const folioLimpio = folio.trim().toUpperCase();
+
+      // Buscar la denuncia por ID - SOLO CAMPOS SEGUROS
+      const denuncias = await publicDirectus.request(
         readItems("denuncias", {
-          filter: { id: folio },
-          fields: ["id", "status", "date_created"],
+          filter: {
+            id: { _eq: folioLimpio }
+          },
+          fields: [
+            "id",
+            "status",
+            "date_created",
+            "date_updated"
+          ],
+          limit: 1
         })
       );
 
-      if (!denuncia || denuncia.length === 0) {
-        throw new Error("Denuncia no encontrada");
+      console.log("Resultado de la consulta:", JSON.stringify(denuncias, null, 2));
+
+      // Verificar si se encontró la denuncia
+      if (!denuncias || denuncias.length === 0) {
+        throw new Error("No se encontró ninguna denuncia con el folio proporcionado. Verifique que el número sea correcto.");
       }
 
-      return denuncia[0];
+      const denuncia = denuncias[0];
+
+      // Retornar solo datos seguros y básicos
+      const denunciaSegura = {
+        id: denuncia.id,
+        folio: denuncia.id, // El ID es el folio
+        status: denuncia.status || 'REGISTRADA',
+        date_created: denuncia.date_created,
+        fecha_actualizacion: denuncia.date_updated || null,
+
+        // Información contextual sin datos personales
+        observaciones: this.generarObservacionesSeguras(denuncia.status),
+        tiempo_transcurrido: this.calcularTiempoTranscurrido(denuncia.date_created)
+      };
+
+      console.log("Denuncia procesada (versión segura):", JSON.stringify(denunciaSegura, null, 2));
+
+      return denunciaSegura;
+
     } catch (error) {
       console.error("Error al consultar la denuncia:", error);
+
+      // Personalizar mensajes de error
+      if (error instanceof Error) {
+        if (error.message.includes("not found") || error.message.includes("No se encontró")) {
+          throw new Error("La denuncia no fue encontrada. Verifique que el folio sea correcto.");
+        }
+        if (error.message.includes("network") || error.message.includes("fetch")) {
+          throw new Error("Error de conexión. Inténtelo nuevamente en unos momentos.");
+        }
+        throw error;
+      }
+
+      throw new Error("Error inesperado al consultar la denuncia. Inténtelo nuevamente.");
+    }
+  },
+
+  /**
+   * Obtiene estadísticas básicas y seguras de denuncias
+   * @returns Objeto con estadísticas generales sin datos personales
+   */
+  async obtenerEstadisticasSeguras() {
+    try {
+      // Consultar solo campos seguros para estadísticas
+      const denuncias = await publicDirectus.request(
+        readItems("denuncias", {
+          fields: ["status", "date_created"],
+          limit: -1 // Todas las denuncias
+        })
+      );
+
+      const estadisticas = {
+        total: denuncias.length,
+        por_status: {
+          REGISTRADA: 0,
+          TURNADA: 0,
+          PROCESO: 0,
+          ATENDIDA: 0
+        },
+        este_mes: 0,
+        este_ano: 0
+      };
+
+      const ahora = new Date();
+      const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
+      const inicioAno = new Date(ahora.getFullYear(), 0, 1);
+
+      denuncias.forEach(denuncia => {
+        // Contar por status
+        if (estadisticas.por_status.hasOwnProperty(denuncia.status)) {
+          estadisticas.por_status[denuncia.status]++;
+        }
+
+        // Contar por período
+        const fechaCreacion = new Date(denuncia.date_created);
+        if (fechaCreacion >= inicioMes) {
+          estadisticas.este_mes++;
+        }
+        if (fechaCreacion >= inicioAno) {
+          estadisticas.este_ano++;
+        }
+      });
+
+      return estadisticas;
+
+    } catch (error) {
+      console.error("Error al obtener estadísticas:", error);
       throw error;
     }
   },
-};
 
+  // Métodos auxiliares seguros (sin datos personales)
+  generarObservacionesSeguras(status: string): string {
+    const observacionesMap: Record<string, string> = {
+      'REGISTRADA': 'Su denuncia ha sido recibida correctamente y será revisada por el área correspondiente.',
+      'TURNADA': 'Su denuncia ha sido asignada al área competente para su investigación.',
+      'PROCESO': 'Su denuncia se encuentra en proceso de investigación activa.',
+      'ATENDIDA': 'Su denuncia ha sido procesada y se han tomado las medidas correspondientes.'
+    };
+
+    return observacionesMap[status] || 'Su denuncia está siendo procesada conforme a los procedimientos establecidos.';
+  },
+
+  calcularTiempoTranscurrido(fechaCreacion: string): string {
+    const ahora = new Date();
+    const fecha = new Date(fechaCreacion);
+    const diferencia = ahora.getTime() - fecha.getTime();
+
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+
+    if (dias === 0) {
+      return 'Hoy';
+    } else if (dias === 1) {
+      return 'Hace 1 día';
+    } else if (dias < 30) {
+      return `Hace ${dias} días`;
+    } else if (dias < 365) {
+      const meses = Math.floor(dias / 30);
+      return meses === 1 ? 'Hace 1 mes' : `Hace ${meses} meses`;
+    } else {
+      const anos = Math.floor(dias / 365);
+      return anos === 1 ? 'Hace 1 año' : `Hace ${anos} años`;
+    }
+  }
+};
 export default directus;

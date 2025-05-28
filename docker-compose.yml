@@ -1,13 +1,13 @@
 version: "3"
 
 services:
-  frontend:
-     build:
-       context: ./
-       dockerfile: Dockerfile
-     restart: always
-     ports:
-       - 3061:3000
+  # frontend:
+  #    build:
+  #      context: ./
+  #      dockerfile: Dockerfile
+  #    restart: always
+  #    ports:
+  #      - 3061:3000
 
   api:
     image: directus/directus:10
@@ -38,9 +38,9 @@ services:
       GRAPHQL_INTROSPECTION: 0
       CACHE_ENABLED: 0
       WEBSOCKETS_GRAPHQL_ENABLED: 0
-      CORS_CREDENTIALS: 1
-      CORS_ENABLED: 1
-      CORS_ORIGIN: 1
+      CORS_CREDENTIALS: "true"
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: ${NEXT_PUBLIC_URL}
       CORS_METHODS: "GET,POST,PATCH,DELETE"
       CORS_ALLOWED_HEADERS: "Content-Type,Authorization"
       CORS_EXPOSED_HEADERS: "Content-Range"
@@ -63,7 +63,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres:/var/lib/postgresql/data
-      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
     #ports:
     #- 5432:5432

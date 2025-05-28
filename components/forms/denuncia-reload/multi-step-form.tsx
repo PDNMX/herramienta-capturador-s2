@@ -81,7 +81,7 @@ const formSchema = z
       })
       .optional(),
 
-    narracionHechos: z.string().min(50, "La narración debe tener al menos 50 caracteres"),
+    narracionHechos: z.string().min(1, "La narración de los hechos es obligatoria"),
 
     archivosEvidencia: z.array(z.any()).default([]),
 
@@ -122,22 +122,6 @@ const formSchema = z
       message:
         "Cuando no es anónimo, los campos de nombre completo, teléfono, calle, número exterior, municipio/alcaldía y código postal son obligatorios",
       path: ["denunciante"],
-    },
-  )
-  .refine(
-    (data) => {
-      // Validar que al menos una falta esté seleccionada
-      const faltas = data.faltaCometida
-      if (!faltas) return false
-
-      const totalFaltas =
-        (faltas.faltaGrave?.length || 0) + (faltas.faltaNoGrave?.length || 0) + (faltas.hechosCorrupcion?.length || 0)
-
-      return totalFaltas > 0
-    },
-    {
-      message: "Debe seleccionar al menos una clasificación de falta",
-      path: ["faltaCometida"],
     },
   )
 
@@ -238,7 +222,7 @@ export function MultiStepForm() {
       case 2: // Persona Denunciada
         return ["personaDenunciada.tipoPersona", "personaDenunciada.entidad"]
       case 3: // Faltas y Narración
-        return ["narracionHechos", "faltaCometida"]
+        return ["narracionHechos"]
       case 4: // Pruebas y Testigos
         return [] // No hay campos obligatorios en este paso
       default:
@@ -310,22 +294,6 @@ export function MultiStepForm() {
           })
           return false
         }
-      }
-    }
-
-    if (stepIndex === 3) {
-      // Validar que al menos una falta esté seleccionada
-      const faltaGrave = form.getValues("faltaCometida.faltaGrave") || []
-      const faltaNoGrave = form.getValues("faltaCometida.faltaNoGrave") || []
-      const hechosCorrupcion = form.getValues("faltaCometida.hechosCorrupcion") || []
-
-      const totalFaltas = faltaGrave.length + faltaNoGrave.length + hechosCorrupcion.length
-
-      if (totalFaltas === 0) {
-        form.setError("faltaCometida", {
-          message: "Debe seleccionar al menos una clasificación de falta",
-        })
-        return false
       }
     }
 

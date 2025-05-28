@@ -397,8 +397,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                 </div>
               </FormControl>
               <FormDescription className="text-xs sm:text-sm">
-                Describa detalladamente los hechos que desea denunciar. Sea lo más específico posible. (Mínimo 50
-                caracteres)
+                Describa detalladamente los hechos que desea denunciar. Sea lo más específico posible.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -414,8 +413,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         </h3>
         <FormDescription className="text-xs sm:text-sm mb-4">
           Seleccione las conductas que mejor describan los hechos denunciados. Tu elección nos ayudará a canalizar
-          adecuadamente tu denuncia.{" "}
-          <span className="font-medium text-red-500">Debe seleccionar al menos una opción.</span>
+          adecuadamente tu denuncia. Esta sección es opcional.
         </FormDescription>
 
         {loadingFaltas ? (

@@ -332,7 +332,7 @@ export const denunciasPublicService = {
       try {
         // Crear objeto base de la denuncia
         const denunciaData = {
-          status: "PENDIENTE",
+          status: "REGISTRADA",
           narracionHechos: formData.narracionHechos || "",
           testigo: Boolean(formData.testigo),
           datosTestigos: formData.datosTestigos || null,

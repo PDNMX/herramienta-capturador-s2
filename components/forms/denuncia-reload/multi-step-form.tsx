@@ -537,13 +537,12 @@ export function MultiStepForm() {
                       <Button
                         type="button"
                         variant="ghost"
-                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
-                          index === step
+                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${index === step
                             ? "bg-primary text-primary-foreground"
                             : index < step
                               ? "bg-primary/80 text-primary-foreground hover:bg-primary"
                               : "bg-muted/90 text-muted-foreground pointer-events-none"
-                        }`}
+                          }`}
                         onClick={() => index < step && setStep(index)}
                         disabled={index >= step}
                       >
@@ -561,9 +560,8 @@ export function MultiStepForm() {
                   {steps.map((_, index) => (
                     <div
                       key={index}
-                      className={`w-2 h-2 rounded-full ${
-                        index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
-                      }`}
+                      className={`w-2 h-2 rounded-full ${index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
+                        }`}
                     />
                   ))}
                 </div>
@@ -622,6 +620,7 @@ export function MultiStepForm() {
         onClose={handleModalClose}
         uploadProgress={uploadProgress}
         isUploading={isSubmitting && uploadProgress > 0 && uploadProgress < 100}
+        formData={form.getValues()} // ← NUEVO: Pasar los datos del formulario
       />
     </Form>
   )

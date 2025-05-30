@@ -49,40 +49,134 @@ export interface MetricasPrincipales {
   tasaResolucion: number;
 }
 
-// Datos de evolución mensual
-export const dataMensual: DenunciaMensual[] = [
-  { mes: "Ene", denuncias: 120, faltasAdministrativas: 85, hechosCorrupcion: 35 },
-  { mes: "Feb", denuncias: 98, faltasAdministrativas: 70, hechosCorrupcion: 28 },
-  { mes: "Mar", denuncias: 150, faltasAdministrativas: 105, hechosCorrupcion: 45 },
-  { mes: "Abr", denuncias: 200, faltasAdministrativas: 140, hechosCorrupcion: 60 },
-  { mes: "May", denuncias: 180, faltasAdministrativas: 126, hechosCorrupcion: 54 },
-  { mes: "Jun", denuncias: 220, faltasAdministrativas: 154, hechosCorrupcion: 66 },
-  { mes: "Jul", denuncias: 195, faltasAdministrativas: 137, hechosCorrupcion: 58 },
-  { mes: "Ago", denuncias: 240, faltasAdministrativas: 168, hechosCorrupcion: 72 },
-  { mes: "Sep", denuncias: 210, faltasAdministrativas: 147, hechosCorrupcion: 63 },
-  { mes: "Oct", denuncias: 185, faltasAdministrativas: 130, hechosCorrupcion: 55 },
-  { mes: "Nov", denuncias: 165, faltasAdministrativas: 116, hechosCorrupcion: 49 },
-  { mes: "Dic", denuncias: 190, faltasAdministrativas: 133, hechosCorrupcion: 57 },
+// Datos de evolución mensual mejorados con datos mixtos más realistas
+export const dataMensual = [
+  { 
+    mes: "Ene 2024", 
+    denuncias: 145,
+    faltasAdministrativas: 58,
+    hechosCorrupcion: 42,
+    mixtas: 28,
+    sinClasificacion: 17
+  },
+  { 
+    mes: "Feb 2024", 
+    denuncias: 167,
+    faltasAdministrativas: 65,
+    hechosCorrupcion: 48,
+    mixtas: 35,
+    sinClasificacion: 19
+  },
+  { 
+    mes: "Mar 2024", 
+    denuncias: 189,
+    faltasAdministrativas: 72,
+    hechosCorrupcion: 55,
+    mixtas: 42,
+    sinClasificacion: 20
+  },
+  { 
+    mes: "Abr 2024", 
+    denuncias: 156,
+    faltasAdministrativas: 61,
+    hechosCorrupcion: 44,
+    mixtas: 32,
+    sinClasificacion: 19
+  },
+  { 
+    mes: "May 2024", 
+    denuncias: 203,
+    faltasAdministrativas: 78,
+    hechosCorrupcion: 62,
+    mixtas: 45,
+    sinClasificacion: 18
+  },
+  { 
+    mes: "Jun 2024", 
+    denuncias: 178,
+    faltasAdministrativas: 69,
+    hechosCorrupcion: 51,
+    mixtas: 38,
+    sinClasificacion: 20
+  },
+  { 
+    mes: "Jul 2024", 
+    denuncias: 224,
+    faltasAdministrativas: 85,
+    hechosCorrupcion: 68,
+    mixtas: 52,
+    sinClasificacion: 19
+  },
+  { 
+    mes: "Ago 2024", 
+    denuncias: 198,
+    faltasAdministrativas: 76,
+    hechosCorrupcion: 58,
+    mixtas: 44,
+    sinClasificacion: 20
+  },
+  { 
+    mes: "Sep 2024", 
+    denuncias: 235,
+    faltasAdministrativas: 89,
+    hechosCorrupcion: 72,
+    mixtas: 56,
+    sinClasificacion: 18
+  },
+  { 
+    mes: "Oct 2024", 
+    denuncias: 212,
+    faltasAdministrativas: 81,
+    hechosCorrupcion: 65,
+    mixtas: 48,
+    sinClasificacion: 18
+  },
+  { 
+    mes: "Nov 2024", 
+    denuncias: 267,
+    faltasAdministrativas: 98,
+    hechosCorrupcion: 82,
+    mixtas: 68,
+    sinClasificacion: 19
+  },
+  { 
+    mes: "Dic 2024", 
+    denuncias: 189,
+    faltasAdministrativas: 72,
+    hechosCorrupcion: 56,
+    mixtas: 42,
+    sinClasificacion: 19
+  }
 ];
 
-// Datos de tipos de denuncia
+// Datos de tipos de denuncia basados en la Ley General de Responsabilidades Administrativas
 export const dataTipos: TipoDenuncia[] = [
+  // Faltas Administrativas Graves
+  { tipo: "Conflicto de interés", cantidad: 245, categoria: "Falta Administrativa" },
+  { tipo: "Contratación indebida", cantidad: 198, categoria: "Falta Administrativa" },
+  { tipo: "Encubrimiento", cantidad: 167, categoria: "Falta Administrativa" },
+  { tipo: "Desacato", cantidad: 143, categoria: "Falta Administrativa" },
+  { tipo: "Obstaculización de investigaciones", cantidad: 125, categoria: "Falta Administrativa" },
+  { tipo: "Uso indebido de información", cantidad: 112, categoria: "Falta Administrativa" },
+  
+  // Faltas Administrativas No Graves
+  { tipo: "Incumplimiento de normativa", cantidad: 189, categoria: "Falta Administrativa" },
+  { tipo: "Negligencia en funciones", cantidad: 156, categoria: "Falta Administrativa" },
+  { tipo: "Inasistencia injustificada", cantidad: 134, categoria: "Falta Administrativa" },
+  
+  // Hechos de Corrupción
   { tipo: "Cohecho", cantidad: 285, categoria: "Hecho de Corrupción" },
-  { tipo: "Peculado", cantidad: 320, categoria: "Hecho de Corrupción" },
-  { tipo: "Conflicto de interés", cantidad: 180, categoria: "Falta Administrativa" },
-  { tipo: "Abuso de funciones", cantidad: 245, categoria: "Falta Administrativa" },
-  { tipo: "Nepotismo", cantidad: 95, categoria: "Falta Administrativa" },
-  { tipo: "Malversación", cantidad: 105, categoria: "Hecho de Corrupción" },
-  { tipo: "Incumplimiento de deberes", cantidad: 165, categoria: "Falta Administrativa" },
-  { tipo: "Uso indebido de recursos", cantidad: 140, categoria: "Falta Administrativa" },
+  { tipo: "Peculado", cantidad: 234, categoria: "Hecho de Corrupción" },
+  { tipo: "Malversación", cantidad: 191, categoria: "Hecho de Corrupción" },
 ];
 
-// Datos de estatus de denuncias
-export const dataEstatus: EstatusDenuncia[] = [
-  { name: "Registrada", value: 520, color: "#f59e0b" },
-  { name: "Turnada", value: 340, color: "#3b82f6" },
-  { name: "Atendida", value: 480, color: "#10b981" },
-  { name: "Proceso", value: 200, color: "#6b7280" },
+// Datos de estatus con colores mejorados y semánticamente correctos
+export const dataEstatus = [
+  { name: "Registrada", value: 385, color: "#94a3b8" },      // Gris claro - Inicial
+  { name: "Turnada", value: 280, color: "#fbbf24" },         // Amarillo - En proceso inicial
+  { name: "En Proceso", value: 195, color: "#f97316" },      // Naranja - En revisión activa
+  { name: "Atendida", value: 142, color: "#10b981" },        // Verde - Completada exitosamente
+  { name: "Pendiente", value: 98, color: "#ef4444" },        // Rojo - Requiere atención urgente
 ];
 
 // Datos de entidades federativas

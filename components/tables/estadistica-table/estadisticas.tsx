@@ -51,8 +51,8 @@ export function Estadisticas() {
         setCargandoMetricas(true);
         setErrorMetricas(null);
         
-        const metricasAPI = await obtenerMetricasPrincipales();
-        setMetricasPrincipales(metricasAPI);
+        //const metricasAPI = await obtenerMetricasPrincipales();
+        setMetricasPrincipales(metricasEstaticas);
         
       } catch (error) {
         console.error('Error al cargar métricas:', error);
@@ -73,7 +73,7 @@ export function Estadisticas() {
       try {
         setCargandoDatosMensuales(true);
         
-        const datosMensualesAPI = await obtenerDatosMensualesSimplificados();
+        /* const datosMensualesAPI = await obtenerDatosMensualesSimplificados();
         
         // Transformar datos para compatibilidad con la gráfica
         const datosTransformados = datosMensualesAPI.map(dato => ({
@@ -83,9 +83,9 @@ export function Estadisticas() {
           hechosCorrupcion: dato.conHechosCorrupcion,
           mixtas: dato.mixtas,
           sinClasificacion: dato.sinClasificacion
-        }));
+        })); */
         
-        setDatosMensuales(datosTransformados);
+        setDatosMensuales(dataMensual);
         
       } catch (error) {
         console.error('Error al cargar datos mensuales:', error);
@@ -100,16 +100,18 @@ export function Estadisticas() {
   }, []);
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">Estadísticas del Sistema de Denuncias</h1>
-        <p className="text-muted-foreground max-w-5xl mx-auto">
-          Panel de información estadística del Sistema Nacional Anticorrupción para el seguimiento y análisis 
-          de denuncias de faltas administrativas y hechos de corrupción.
+    <div className="space-y-8 bg-background min-h-screen p-6">
+      {/* Header mejorado */}
+      <div className="text-center space-y-4 py-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Estadísticas del Sistema de Denuncias
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          Panel integral de análisis y seguimiento de denuncias por faltas administrativas y hechos de corrupción 
+          en el marco del Sistema Nacional Anticorrupción mexicano.
         </p>
         {/* {errorMetricas && (
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 max-w-2xl mx-auto">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 max-w-2xl mx-auto">
             <p className="text-sm text-yellow-800 dark:text-yellow-200">
               ⚠️ {errorMetricas}
             </p>
@@ -117,117 +119,129 @@ export function Estadisticas() {
         )} */}
       </div>
 
-      {/* Tarjetas de métricas principales */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <FileText className="h-5 w-5 text-blue-600" />
-              <p className="text-sm text-muted-foreground">Total de denuncias</p>
+      {/* Tarjetas de métricas principales mejoradas */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="p-2 bg-blue-100 dark:bg-blue-800/50 rounded-lg">
+                <FileText className="h-5 w-5 text-blue-600 dark:text-blue-300" />
+              </div>
+              <p className="text-sm font-medium text-muted-foreground">Total de denuncias</p>
             </div>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-3">
               {cargandoMetricas ? (
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               ) : (
-                <p className="text-2xl font-semibold">{metricasPrincipales.totalDenuncias.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{metricasPrincipales.totalDenuncias.toLocaleString()}</p>
               )}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {cargandoMetricas ? 'Cargando...' : 'Sistema Nacional Anticorrupción'}
+            <p className="text-xs text-muted-foreground mt-2 font-medium">
+              {cargandoMetricas ? 'Cargando...' : 'Registradas en el sistema'}
             </p>
           </CardContent>
         </Card>
         
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <AlertTriangle className="h-5 w-5 text-red-600" />
-              <p className="text-sm text-muted-foreground">Hechos de corrupción</p>
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="p-2 bg-red-100 dark:bg-red-800/50 rounded-lg">
+                <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-300" />
+              </div>
+              <p className="text-sm font-medium text-muted-foreground">Hechos de corrupción</p>
             </div>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-3">
               {cargandoMetricas ? (
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               ) : (
-                <p className="text-2xl font-semibold">{metricasPrincipales.hechosCorrupcion.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-red-600 dark:text-red-400">{metricasPrincipales.hechosCorrupcion.toLocaleString()}</p>
               )}
             </div>
-            <p className="text-xs text-green-600 mt-1">
+            <p className="text-xs text-green-600 dark:text-green-400 mt-2 font-medium">
               {cargandoMetricas ? 'Cargando...' : `${porcentajeHechosCorrupcion}% del total`}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <CheckCircle className="h-5 w-5 text-orange-600" />
-              <p className="text-sm text-muted-foreground">Faltas administrativas</p>
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="p-2 bg-orange-100 dark:bg-orange-800/50 rounded-lg">
+                <CheckCircle className="h-5 w-5 text-orange-600 dark:text-orange-300" />
+              </div>
+              <p className="text-sm font-medium text-muted-foreground">Faltas administrativas</p>
             </div>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-3">
               {cargandoMetricas ? (
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               ) : (
-                <p className="text-2xl font-semibold">{metricasPrincipales.faltasAdministrativas.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">{metricasPrincipales.faltasAdministrativas.toLocaleString()}</p>
               )}
             </div>
-            <p className="text-xs text-blue-600 mt-1">
+            <p className="text-xs text-blue-600 dark:text-blue-400 mt-2 font-medium">
               {cargandoMetricas ? 'Cargando...' : `${porcentajeFaltasAdmin}% del total`}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Clock className="h-5 w-5 text-green-600" />
-              <p className="text-sm text-muted-foreground">Tiempo promedio atención</p>
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="p-2 bg-green-100 dark:bg-green-800/50 rounded-lg">
+                <Clock className="h-5 w-5 text-green-600 dark:text-green-300" />
+              </div>
+              <p className="text-sm font-medium text-muted-foreground">Tiempo promedio atención</p>
             </div>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-3">
               {cargandoMetricas ? (
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               ) : (
-                <p className="text-2xl font-semibold">{metricasPrincipales.tiempoPromedioResolucion} días</p>
+                <p className="text-3xl font-bold text-green-600 dark:text-green-400">{metricasPrincipales.tiempoPromedioResolucion} días</p>
               )}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-2 font-medium">
               {cargandoMetricas ? 'Cargando...' : 'Solo denuncias atendidas'}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <UserX className="h-5 w-5 text-purple-600" />
-              <p className="text-sm text-muted-foreground">Denuncias anónimas</p>
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="p-2 bg-purple-100 dark:bg-purple-800/50 rounded-lg">
+                <UserX className="h-5 w-5 text-purple-600 dark:text-purple-300" />
+              </div>
+              <p className="text-sm font-medium text-muted-foreground">Denuncias anónimas</p>
             </div>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-3">
               {cargandoMetricas ? (
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               ) : (
-                <p className="text-2xl font-semibold">{metricasPrincipales.porcentajeDenunciasAnonimas}%</p>
+                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{metricasPrincipales.porcentajeDenunciasAnonimas}%</p>
               )}
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-muted-foreground mt-2 font-medium">
               {cargandoMetricas ? 'Cargando...' : `${denunciasAnonimas.toLocaleString()} de ${metricasPrincipales.totalDenuncias.toLocaleString()} denuncias`}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-indigo-600" />
-              <p className="text-sm text-muted-foreground">Tasa de atención</p>
+        <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-3 mb-3">
+              <div className="p-2 bg-indigo-100 dark:bg-indigo-800/50 rounded-lg">
+                <Users className="h-5 w-5 text-indigo-600 dark:text-indigo-300" />
+              </div>
+              <p className="text-sm font-medium text-muted-foreground">Tasa de atención</p>
             </div>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-3">
               {cargandoMetricas ? (
-                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
               ) : (
-                <p className="text-2xl font-semibold">{metricasPrincipales.tasaResolucion}%</p>
+                <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{metricasPrincipales.tasaResolucion}%</p>
               )}
             </div>
-            <p className="text-xs text-green-600 mt-1">
+            <p className="text-xs text-green-600 dark:text-green-400 mt-2 font-medium">
               {cargandoMetricas ? 'Cargando...' : `${casosAtendidos.toLocaleString()} casos atendidos`}
             </p>
           </CardContent>
@@ -235,18 +249,23 @@ export function Estadisticas() {
       </div>
 
       {/* Gráfica de tendencia temporal mejorada */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center space-x-2">
-            <TrendingUp className="h-5 w-5 text-blue-600" />
-            <CardTitle className="text-xl">Evolución mensual por clasificación de denuncias</CardTitle>
-            {cargandoDatosMensuales && (
-              <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-            )}
+      <Card className="shadow-xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+        <CardHeader className="pb-4">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <TrendingUp className="h-5 w-5 text-blue-600" />
+            </div>
+            <div className="flex-1">
+              <CardTitle className="text-xl font-bold">Evolución mensual por clasificación de denuncias</CardTitle>
+              {cargandoDatosMensuales && (
+                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground inline ml-2" />
+              )}
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Análisis temporal que muestra la evolución de las denuncias considerando que una denuncia puede tener 
-            múltiples clasificaciones: solo faltas administrativas, solo hechos de corrupción, ambas (mixtas), o sin clasificar.
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Evolución temporal de las denuncias clasificadas por tipo. Una denuncia puede contener múltiples 
+            clasificaciones: solo faltas administrativas, solo hechos de corrupción, casos mixtos que 
+            incluyen ambos tipos, o casos pendientes de clasificar por el área técnica.
           </p>
         </CardHeader>
         <CardContent className="h-[450px]">
@@ -270,23 +289,24 @@ export function Estadisticas() {
                 }}
                 formatter={(value, name) => {
                   const labels: Record<string, string> = {
-                    'denuncias': 'Total denuncias',
+                    'denuncias': 'Total de denuncias',
                     'faltasAdministrativas': 'Solo faltas administrativas',
                     'hechosCorrupcion': 'Solo hechos de corrupción',
-                    'mixtas': 'Mixtas (faltas + hechos)',
-                    'sinClasificacion': 'Sin clasificación'
+                    'mixtas': 'Casos mixtos (faltas + corrupción)',
+                    'sinClasificacion': 'Pendientes de clasificar'
                   };
-                  return [value, labels[name as string] || name];
+                  return [`${value} casos`, labels[name as string] || name];
                 }}
+                labelFormatter={(label) => `Período: ${label}`}
               />
               <Legend 
                 formatter={(value) => {
                   const labels: Record<string, string> = {
-                    'denuncias': 'Total denuncias',
+                    'denuncias': 'Total de denuncias recibidas',
                     'faltasAdministrativas': 'Solo faltas administrativas',
                     'hechosCorrupcion': 'Solo hechos de corrupción',
-                    'mixtas': 'Mixtas (faltas + hechos)',
-                    'sinClasificacion': 'Sin clasificación'
+                    'mixtas': 'Casos mixtos (faltas + corrupción)',
+                    'sinClasificacion': 'Pendientes de clasificar'
                   };
                   return labels[value] || value;
                 }}
@@ -344,31 +364,34 @@ export function Estadisticas() {
         </CardContent>
       </Card>
 
-      {/* Grid de gráficas secundarias */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Grid de gráficas secundarias mejoradas */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Gráfica de tipos de denuncia */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center space-x-2">
-              <BarChart3 className="h-5 w-5 text-green-600" />
-              <CardTitle className="text-xl">Clasificación por tipo de denuncia</CardTitle>
+        <Card className="shadow-xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardHeader className="pb-4">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                <BarChart3 className="h-5 w-5 text-green-600" />
+              </div>
+              <CardTitle className="text-xl font-bold">Clasificación por tipo de infracción</CardTitle>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Distribución de denuncias según su naturaleza jurídica, clasificadas entre faltas administrativas 
-              y hechos de corrupción conforme a la normativa del Sistema Nacional Anticorrupción.
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Distribución de denuncias según la Ley General de Responsabilidades Administrativas, 
+              diferenciando entre faltas administrativas y hechos de corrupción.
             </p>
           </CardHeader>
           <CardContent className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={dataTipos} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
+              <BarChart data={dataTipos} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
                 <XAxis 
                   dataKey="tipo" 
                   angle={-45}
                   textAnchor="end"
-                  height={100}
+                  height={120}
                   fontSize={11}
                   stroke={chartColors.text}
+                  interval={0}
                 />
                 <YAxis 
                   stroke={chartColors.text}
@@ -381,23 +404,42 @@ export function Estadisticas() {
                     borderRadius: '8px',
                     color: chartColors.text
                   }}
+                  formatter={(value, name, props) => [
+                    `${value} denuncias`,
+                    props.payload.categoria === "Hecho de Corrupción" ? "🚨 Hecho de Corrupción" : "📋 Falta Administrativa"
+                  ]}
+                  labelFormatter={(label) => `Tipo: ${label}`}
                 />
-                <Bar dataKey="cantidad" fill={chartColors.primary} />
+                <Bar 
+                  dataKey="cantidad" 
+                  radius={[4, 4, 0, 0]}
+                >
+                  {dataTipos.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={entry.categoria === "Hecho de Corrupción" 
+                        ? isDark ? "#f87171" : "#ef4444"  // Rojo para hechos de corrupción
+                        : isDark ? "#34d399" : "#10b981"  // Verde para faltas administrativas
+                      } 
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* Gráfica de estatus */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center space-x-2">
-              <PieChartIcon className="h-5 w-5 text-purple-600" />
-              <CardTitle className="text-xl">Estado del trámite de denuncias</CardTitle>
+        {/* Gráfica de estatus mejorada */}
+        <Card className="shadow-xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
+          <CardHeader className="pb-4">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                <PieChartIcon className="h-5 w-5 text-purple-600" />
+              </div>
+              <CardTitle className="text-xl font-bold">Estado del trámite de denuncias</CardTitle>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Seguimiento del procedimiento de atención de denuncias según el artículo 59, mostrando el estado 
-              actual de cada caso para garantizar transparencia en el proceso.
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Seguimiento del procedimiento de atención de denuncias según su estado actual en el sistema.
             </p>
           </CardHeader>
           <CardContent className="h-[400px]">
@@ -444,8 +486,8 @@ export function Estadisticas() {
         </Card>
       </div>
 
-      {/* Mapa de distribución territorial */}
-      <Card>
+      {/* Mapa de distribución territorial mejorado */}
+      <Card className="shadow-xl border-0 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm">
         <AvanceMapa />
       </Card>
     </div>

@@ -3,9 +3,6 @@ info:
   title: Servidores Públicos API
   description: API REST para consultar información de servidores públicos que intervienen en procedimientos de contratación
   version: 2.0.0
-servers:
-  - url: https://api.example.com/v1
-    description: API principal
 paths:
   /servidores_intervengan_procedientos_contrataciones:
     get:

@@ -76,30 +76,30 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
   );
 
   return (
-    <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 dark:from-slate-800 dark:via-blue-900/20 dark:to-slate-900 m-4">
-      <DialogHeader className="pb-6 pr-12">
-        <DialogTitle className="flex items-center justify-between text-2xl">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-              <MapPin className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+    <DialogContent className="w-[98vw] sm:w-[95vw] max-w-7xl max-h-[98vh] sm:max-h-[95vh] lg:max-h-[90vh] overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 dark:from-slate-800 dark:via-blue-900/20 dark:to-slate-900 mx-auto my-1 sm:my-2 lg:my-4 !rounded-xl sm:!rounded-2xl lg:!rounded-3xl border-0 flex flex-col">
+      <DialogHeader className="pb-4 sm:pb-6 pt-3 sm:pt-5 px-2 sm:px-0">
+        <DialogTitle className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 text-xl sm:text-2xl">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <span className="font-bold">Denuncias por municipio</span>
-              <p className="text-lg font-normal text-muted-foreground">{entidadData.entidad}</p>
+              <span className="font-bold text-base sm:text-xl lg:text-2xl">Denuncias por municipio</span>
+              <p className="text-sm sm:text-lg font-normal text-muted-foreground">{entidadData.entidad}</p>
             </div>
           </div>
           
-          {/* Selector de comparación mejorado */}
-          <div className="flex items-center gap-4">
-            <div className="relative">
+          {/* Selector de comparación responsivo */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4 w-full lg:w-auto">
+            <div className="relative w-full sm:w-auto">
               <select 
                 onChange={(e) => e.target.value && handleCompararEstado(e.target.value)}
                 className="appearance-none bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 
-                          border border-blue-200/60 dark:border-blue-700/40 rounded-xl px-4 py-3 pr-10
-                          text-sm font-medium text-gray-700 dark:text-gray-200
+                          border border-blue-200/60 dark:border-blue-700/40 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 pr-8 sm:pr-10
+                          text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200
                           hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-800/30 dark:hover:to-purple-800/30
                           focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent
-                          shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer min-w-[200px]"
+                          shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer w-full sm:min-w-[200px]"
                 defaultValue=""
               >
                 <option value="" className="bg-white dark:bg-gray-800">
@@ -114,8 +114,8 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
                   );
                 })}
               </select>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <ArrowLeftRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 pointer-events-none">
+                <ArrowLeftRight className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
             
@@ -126,73 +126,74 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
                 onClick={() => setMostrarComparacion(false)}
                 className="bg-white/90 dark:bg-gray-800/90 border-red-200/60 dark:border-red-700/40 
                           text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20
-                          shadow-md hover:shadow-lg transition-all duration-300 rounded-xl px-4 py-2
-                          flex items-center gap-2 whitespace-nowrap"
+                          shadow-md hover:shadow-lg transition-all duration-300 rounded-xl px-3 sm:px-4 py-2
+                          flex items-center justify-center gap-2 text-xs sm:text-sm w-full sm:w-auto"
               >
-                <X className="h-4 w-4" />
-                Ocultar comparación
+                <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="sm:inline">Ocultar comparación</span>
               </Button>
             )}
           </div>
         </DialogTitle>
       </DialogHeader>
       
-      <div className="space-y-8">
+      <div className="flex-1 overflow-y-auto px-2 sm:px-0">
+        <div className="space-y-4 sm:space-y-6 lg:space-y-8 pb-4 sm:pb-6">
         {/* Resumen comparativo si está activo */}
-        {mostrarComparacion && entidadComparacion && (
-          <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-xl border border-blue-200/40 dark:border-blue-700/30 shadow-xl">
+                  {mostrarComparacion && entidadComparacion && (
+            <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-4 sm:p-6 lg:p-8 rounded-xl border border-blue-200/40 dark:border-blue-700/30 shadow-xl">
             {/* Decorative elements sutiles */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/6 to-slate-400/6 rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-slate-400/6 to-blue-400/6 rounded-full blur-2xl"></div>
             
-            <div className="relative z-10">
-              {/* Header de comparación */}
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl shadow-md">
-                    <BarChart3 className="h-6 w-6 text-white" />
+              <div className="relative z-10">
+                {/* Header de comparación responsivo */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
+                  <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="p-2 sm:p-3 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl shadow-md">
+                      <BarChart3 className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-gray-100">
+                        Análisis Comparativo
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                        {entidadData.entidad} vs {entidadComparacion.entidad}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                      Análisis Comparativo
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {entidadData.entidad} vs {entidadComparacion.entidad}
-                    </p>
+                  
+                  {/* Indicador de diferencia general responsivo */}
+                  <div className="w-full sm:w-auto sm:text-right">
+                    <div className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold w-full sm:w-auto justify-center sm:justify-start ${
+                      entidadData.totalDenuncias > entidadComparacion.totalDenuncias 
+                        ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' 
+                        : entidadData.totalDenuncias < entidadComparacion.totalDenuncias
+                        ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                        : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300'
+                    }`}>
+                      {entidadData.totalDenuncias > entidadComparacion.totalDenuncias ? (
+                        <>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-red-500 rounded-full"></div>
+                          <span>Mayor incidencia</span>
+                        </>
+                      ) : entidadData.totalDenuncias < entidadComparacion.totalDenuncias ? (
+                        <>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full"></div>
+                          <span>Menor incidencia</span>
+                        </>
+                      ) : (
+                        <>
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-500 rounded-full"></div>
+                          <span>Igual incidencia</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-                
-                {/* Indicador de diferencia general */}
-                <div className="text-right">
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
-                    entidadData.totalDenuncias > entidadComparacion.totalDenuncias 
-                      ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300' 
-                      : entidadData.totalDenuncias < entidadComparacion.totalDenuncias
-                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
-                      : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300'
-                  }`}>
-                    {entidadData.totalDenuncias > entidadComparacion.totalDenuncias ? (
-                      <>
-                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                        Mayor incidencia
-                      </>
-                    ) : entidadData.totalDenuncias < entidadComparacion.totalDenuncias ? (
-                      <>
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        Menor incidencia
-                      </>
-                    ) : (
-                      <>
-                        <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                        Igual incidencia
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
 
-              {/* Grid de comparación mejorado */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Grid de comparación responsivo */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
                 
                 {/* Total de denuncias */}
                 <div className="bg-white/85 dark:bg-gray-800/85 backdrop-blur-sm rounded-xl p-6 border border-gray-200/60 dark:border-gray-700/40 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -391,68 +392,71 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
           </div>
         )}
 
-        {/* Resumen de la entidad mejorado */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Resumen de la entidad responsivo */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
           <Card className="shadow-lg border-0 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-blue-100 dark:bg-blue-800/50 rounded-lg">
-                  <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-300" />
+            <CardContent className="p-4 sm:p-5 lg:p-6">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-800/50 rounded-lg">
+                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-300" />
                 </div>
-                <span className="text-sm font-medium text-muted-foreground">Total denuncias</span>
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground">Total denuncias</span>
               </div>
-              <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{entidadData.totalDenuncias}</p>
+              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-600 dark:text-blue-400">{entidadData.totalDenuncias}</p>
             </CardContent>
           </Card>
           
           <Card className="shadow-lg border-0 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-green-100 dark:bg-green-800/50 rounded-lg">
-                  <Users className="h-5 w-5 text-green-600 dark:text-green-300" />
+            <CardContent className="p-4 sm:p-5 lg:p-6">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-green-100 dark:bg-green-800/50 rounded-lg">
+                  <Users className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 dark:text-green-300" />
                 </div>
-                <span className="text-sm font-medium text-muted-foreground">Municipios activos</span>
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground">Municipios activos</span>
               </div>
-              <p className="text-3xl font-bold text-green-600 dark:text-green-400">{entidadData.municipios.length}</p>
+              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-600 dark:text-green-400">{entidadData.municipios.length}</p>
             </CardContent>
           </Card>
           
-          <Card className="shadow-lg border-0 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-orange-100 dark:bg-orange-800/50 rounded-lg">
-                  <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-300" />
+          <Card className="shadow-lg border-0 bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 sm:col-span-2 lg:col-span-1">
+            <CardContent className="p-4 sm:p-5 lg:p-6">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                <div className="p-1.5 sm:p-2 bg-orange-100 dark:bg-orange-800/50 rounded-lg">
+                  <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600 dark:text-orange-300" />
                 </div>
-                <span className="text-sm font-medium text-muted-foreground">Promedio por municipio</span>
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground">Promedio por municipio</span>
               </div>
-              <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">
+              <p className="text-xl sm:text-2xl lg:text-3xl font-bold text-orange-600 dark:text-orange-400">
                 {Math.round(entidadData.totalDenuncias / entidadData.municipios.length)}
               </p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Lista de municipios mejorada */}
+        {/* Lista de municipios responsiva */}
         <div>
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-purple-100 dark:bg-purple-800/50 rounded-lg">
-              <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-300" />
+          <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+            <div className="p-1.5 sm:p-2 bg-purple-100 dark:bg-purple-800/50 rounded-lg">
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 dark:text-purple-300" />
             </div>
-            <h3 className="text-xl font-bold">Clasificación de municipios por número de denuncias</h3>
+            <div>
+              <h3 className="text-base sm:text-lg lg:text-xl font-bold">Clasificación de municipios</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">Ordenados por número de denuncias</p>
+            </div>
           </div>
           
-          {/* Tabla compacta para mejor uso del espacio */}
+          {/* Tabla responsiva */}
           <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl border border-blue-200/50 dark:border-blue-700/40 overflow-hidden shadow-lg">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gradient-to-r from-blue-50/80 to-slate-50/80 dark:from-blue-900/30 dark:to-slate-800/30 border-b border-blue-200/60 dark:border-blue-700/50">
+            <div className="overflow-x-auto max-h-[300px] sm:max-h-[400px] lg:max-h-[500px] overflow-y-auto">
+              <table className="w-full min-w-[600px]">
+                <thead className="bg-gradient-to-r from-blue-50/80 to-slate-50/80 dark:from-blue-900/30 dark:to-slate-800/30 border-b border-blue-200/60 dark:border-blue-700/50 sticky top-0 z-10">
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">#</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">Municipio</th>
-                    <th className="px-6 py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">Total</th>
-                    <th className="px-6 py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">F. Admin.</th>
-                    <th className="px-6 py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">H. Corrup.</th>
-                    <th className="px-6 py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">Distribución</th>
+                    <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-left text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">#</th>
+                    <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-left text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">Municipio</th>
+                    <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider">Total</th>
+                    <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider hidden sm:table-cell">F. Admin.</th>
+                    <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider hidden sm:table-cell">H. Corrup.</th>
+                    <th className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-center text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider hidden lg:table-cell">Distribución</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-blue-100/60 dark:divide-blue-800/40">
@@ -460,7 +464,7 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
                     .sort((a, b) => b.denuncias - a.denuncias)
                     .map((municipio, index) => (
                       <tr key={municipio.nombre} className="hover:bg-blue-50/50 dark:hover:bg-blue-900/20 transition-colors duration-200 group">
-                        <td className="px-6 py-4">
+                        <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
                           <Badge 
                             variant={index < 3 ? "default" : "secondary"} 
                             className={`text-xs font-bold shadow-sm border-0
@@ -472,22 +476,33 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
                             {index + 1}
                           </Badge>
                         </td>
-                        <td className="px-6 py-4">
-                          <p className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
-                            {municipio.nombre}
-                          </p>
+                        <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
+                          <div>
+                            <p className="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
+                              {municipio.nombre}
+                            </p>
+                            {/* Info adicional para móviles */}
+                            <div className="flex items-center gap-4 mt-1 sm:hidden">
+                              <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                                F.A: {municipio.faltasAdmin}
+                              </span>
+                              <span className="text-xs text-red-600 dark:text-red-400 font-medium">
+                                H.C: {municipio.hechosCorrupcion}
+                              </span>
+                            </div>
+                          </div>
                         </td>
-                        <td className="px-6 py-4 text-center">
-                          <p className="text-lg font-bold text-blue-600 dark:text-blue-400">{municipio.denuncias}</p>
+                        <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-center">
+                          <p className="text-base sm:text-lg font-bold text-blue-600 dark:text-blue-400">{municipio.denuncias}</p>
                         </td>
-                        <td className="px-6 py-4 text-center">
+                        <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-center hidden sm:table-cell">
                           <p className="font-bold text-green-600 dark:text-green-400">{municipio.faltasAdmin}</p>
                         </td>
-                        <td className="px-6 py-4 text-center">
+                        <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-center hidden sm:table-cell">
                           <p className="font-bold text-red-600 dark:text-red-400">{municipio.hechosCorrupcion}</p>
                         </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-3">
+                        <td className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 hidden lg:table-cell">
+                          <div className="flex items-center gap-2 lg:gap-3">
                             <div className="flex-1 h-2.5 bg-slate-200 dark:bg-slate-600 rounded-full overflow-hidden shadow-inner">
                               <div className="h-full flex">
                                 <div 
@@ -500,7 +515,7 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
                                 ></div>
                               </div>
                             </div>
-                            <span className="text-xs text-slate-600 dark:text-slate-400 min-w-[4rem] font-medium">
+                            <span className="text-xs text-slate-600 dark:text-slate-400 min-w-[3rem] font-medium">
                               {Math.round((municipio.faltasAdmin / municipio.denuncias) * 100)}% / {Math.round((municipio.hechosCorrupcion / municipio.denuncias) * 100)}%
                             </span>
                           </div>
@@ -511,6 +526,7 @@ const MunicipiosModal = ({ entidadData, isOpen, onClose }) => {
               </table>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </DialogContent>
@@ -616,19 +632,19 @@ export const AvanceMapa = ({ baseColor = '#3b82f6' }: { baseColor?: string }) =>
             </ComposableMap>
           </div>
           
-          <div className="w-full lg:w-[350px] xl:w-[450px] border-t lg:border-t-0 pt-4 lg:pt-0 lg:pl-6 lg:ml-2">
-            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl p-6 border border-gray-200/60 dark:border-gray-700/40 shadow-lg">
+          <div className="w-full lg:w-[350px] xl:w-[450px] border-t lg:border-t-0 pt-4 lg:pt-0 lg:pl-6 lg:ml-2 flex flex-col lg:h-[60vh]">
+            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl p-6 border border-gray-200/60 dark:border-gray-700/40 shadow-lg flex flex-col h-full">
               <div className="flex items-center gap-3 mb-2">
                 <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                   <TrendingUp className="h-5 w-5 text-blue-600 dark:text-blue-300" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Concentración por entidad</h3>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 w-full">Concentración por entidad</h3>
                   {/* <p className="text-sm text-muted-foreground">Ranking nacional de denuncias</p> */}
                 </div>
               </div>
               
-              <div className="space-y-2 max-h-[300px] lg:max-h-[500px] overflow-y-auto pr-2">
+              <div className="space-y-2 flex-1 overflow-y-auto pr-2">
                 {entidadesOrdenadas.map((entidad, index) => {
                   const hasDetails = municipiosData[entidad.entidad];
                   return (
@@ -656,17 +672,9 @@ export const AvanceMapa = ({ baseColor = '#3b82f6' }: { baseColor?: string }) =>
                             <span className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                               {entidad.nombreEntidad}
                             </span>
-                            {hasDetails && (
-                              <div className="flex items-center">
-                                <Eye className="h-3 w-3 text-blue-600 dark:text-blue-400" />
-                              </div>
-                            )}
+                            
                           </div>
-                          {hasDetails && (
-                            <p className="text-xs text-green-600 dark:text-green-400 font-medium">
-                              Clic para ver municipios
-                            </p>
-                          )}
+                          
                         </div>
                       </div>
                       <div className="text-right flex items-center gap-2">
@@ -676,9 +684,7 @@ export const AvanceMapa = ({ baseColor = '#3b82f6' }: { baseColor?: string }) =>
                           </span>
                           <p className="text-xs text-gray-500 dark:text-gray-400">denuncias</p>
                         </div>
-                        {hasDetails && (
-                          <MapPin className="h-4 w-4 text-blue-600 dark:text-blue-400 opacity-60 hover:opacity-100 transition-opacity" />
-                        )}
+                        
                       </div>
                     </div>
                   );

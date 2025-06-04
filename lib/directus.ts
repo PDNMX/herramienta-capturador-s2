@@ -19,6 +19,79 @@ const directus = createDirectus(BACKEND_URL)
 // Instancia pública (para el formulario de denuncias)
 export const publicDirectus = createDirectus(BACKEND_URL).with(rest());
 
+// Servicio para manejar catálogos de entidades y municipios
+export const catalogosUbicacionService = {
+  // Obtener todas las entidades
+  async getEntidades() {
+    try {
+      const entidades = await publicDirectus.request(
+        readItems("entidades", {
+          limit: -1,
+          fields: [
+            'id',
+            'nombre',
+            'claveAGEE'
+          ],
+          sort: ['nombre']
+        })
+      );
+      return entidades;
+    } catch (error) {
+      console.error("Error al obtener catálogo de entidades:", error);
+      throw error;
+    }
+  },
+
+  // Obtener municipios por ID de entidad (no por claveAGEE)
+  async getMunicipiosPorEntidad(entidadId: number) {
+    try {
+      if (!entidadId) return [];
+      
+      const municipios = await publicDirectus.request(
+        readItems("municipios", {
+          limit: -1,
+          filter: {
+            claveAGEE: { _eq: entidadId } // claveAGEE en municipios = id de entidades
+          },
+          fields: [
+            'id',
+            'nombre',
+            'claveAGEM',
+            'claveAGEE'
+          ],
+          sort: ['nombre']
+        })
+      );
+      return municipios;
+    } catch (error) {
+      console.error("Error al obtener municipios por entidad:", error);
+      throw error;
+    }
+  },
+
+  // Obtener todos los municipios (si se necesita)
+  async getAllMunicipios() {
+    try {
+      const municipios = await publicDirectus.request(
+        readItems("municipios", {
+          limit: -1,
+          fields: [
+            'id',
+            'nombre',
+            'claveAGEM',
+            'claveAGEE'
+          ],
+          sort: ['nombre']
+        })
+      );
+      return municipios;
+    } catch (error) {
+      console.error("Error al obtener todos los municipios:", error);
+      throw error;
+    }
+  }
+};
+
 // Servicio para manejar catálogos de faltas
 export const catalogosService = {
   // Obtener todas las faltas
@@ -146,11 +219,13 @@ export const denunciasPublicService = {
 
               // Crear objeto para la inserción, asegurando que ningún campo sea undefined
               const domicilioObj = {
+                entidad: domicilioData.entidad || null, // ID de entidades
+                municipio: domicilioData.municipio || null, // ID de municipios
                 codigoPostal: domicilioData.codigoPostal || null,
                 calle: domicilioData.calle || null,
                 numeroExterior: domicilioData.numeroExterior || null,
                 numeroInterior: domicilioData.numeroInterior || null,
-                municipioAlcaldia: domicilioData.municipioAlcaldia || null,
+                municipioAlcaldia: domicilioData.municipioAlcaldia || null, // Campo legacy para compatibilidad
               };
 
               console.log("Creando domicilio con datos:", JSON.stringify(domicilioObj, null, 2));
@@ -649,4 +724,5 @@ export const seguimientoService = {
     }
   }
 };
+
 export default directus;

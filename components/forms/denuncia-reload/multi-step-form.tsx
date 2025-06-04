@@ -13,7 +13,7 @@ import { Progress } from "@/components/ui/progress"
 import { Sheet, SheetTrigger } from "@/components/ui/sheet"
 import { stepIcons } from "./step-icons"
 import { Form } from "@/components/ui/form"
-import { denunciasPublicService } from "@/lib/directus"
+import { denunciasPublicService, catalogosUbicacionService } from "@/lib/directus"
 import { HelpContent } from "./help-content"
 import { DenunciaModal } from "@/components/modal/denuncia-modal"
 import { toast } from "@/components/ui/use-toast"
@@ -33,11 +33,13 @@ const formSchema = z
             razonesProteccion: z.string().optional(),
             domicilioDenunciante: z
               .object({
+                entidad: z.number().optional(),
+                municipio: z.number().optional(),
                 codigoPostal: z.string().optional(),
                 calle: z.string().optional(),
                 numeroExterior: z.string().optional(),
                 numeroInterior: z.string().optional(),
-                municipioAlcaldia: z.string().optional(),
+                municipioAlcaldia: z.string().optional(), // Campo legacy para compatibilidad
               })
               .optional(),
           })
@@ -108,19 +110,20 @@ const formSchema = z
         if (!datosDenunciante.nombre || datosDenunciante.nombre.trim().length < 2) return false
         if (!datosDenunciante.telefono || datosDenunciante.telefono.trim().length < 10) return false
 
-        // Validar domicilio obligatorio
+        // Validar domicilio obligatorio ACTUALIZADO
         const domicilio = datosDenunciante.domicilioDenunciante
         if (!domicilio) return false
         if (!domicilio.calle || domicilio.calle.trim().length < 3) return false
         if (!domicilio.numeroExterior || domicilio.numeroExterior.trim().length < 1) return false
-        if (!domicilio.municipioAlcaldia || domicilio.municipioAlcaldia.trim().length < 2) return false
+        if (!domicilio.entidad || domicilio.entidad <= 0) return false
+        if (!domicilio.municipio || domicilio.municipio <= 0) return false
         if (!domicilio.codigoPostal || domicilio.codigoPostal.trim().length < 5) return false
       }
       return true
     },
     {
       message:
-        "Cuando no es anónimo, los campos de nombre completo, teléfono, calle, número exterior, municipio/alcaldía y código postal son obligatorios",
+        "Cuando no es anónimo, los campos de nombre completo, teléfono, calle, número exterior, entidad, municipio y código postal son obligatorios",
       path: ["denunciante"],
     },
   )
@@ -156,11 +159,13 @@ export function MultiStepForm() {
           proteccion: false,
           razonesProteccion: "",
           domicilioDenunciante: {
+            entidad: undefined,
+            municipio: undefined,
             codigoPostal: "",
             calle: "",
             numeroExterior: "",
             numeroInterior: "",
-            municipioAlcaldia: "",
+            municipioAlcaldia: "", // Campo legacy para compatibilidad
           },
         },
       },
@@ -199,7 +204,7 @@ export function MultiStepForm() {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps - 1))
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
 
-  // Función para obtener los campos que deben validarse en cada paso
+  // Función para obtener los campos que deben validarse en cada paso - ACTUALIZADA
   const getStepFields = (stepIndex: number): string[] => {
     switch (stepIndex) {
       case 0: // Datos del Denunciante
@@ -211,9 +216,10 @@ export function MultiStepForm() {
             "denunciante.anonimo",
             "denunciante.datosDenunciante.nombre",
             "denunciante.datosDenunciante.telefono",
+            "denunciante.datosDenunciante.domicilioDenunciante.entidad",
+            "denunciante.datosDenunciante.domicilioDenunciante.municipio",
             "denunciante.datosDenunciante.domicilioDenunciante.calle",
             "denunciante.datosDenunciante.domicilioDenunciante.numeroExterior",
-            "denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia",
             "denunciante.datosDenunciante.domicilioDenunciante.codigoPostal",
           ]
         }
@@ -230,7 +236,7 @@ export function MultiStepForm() {
     }
   }
 
-  // Función para validar un paso específico
+  // Función para validar un paso específico - ACTUALIZADA
   const validateStep = async (stepIndex: number): Promise<boolean> => {
     const fieldsToValidate = getStepFields(stepIndex)
 
@@ -241,16 +247,17 @@ export function MultiStepForm() {
     // Validar campos específicos del paso
     const isValid = await form.trigger(fieldsToValidate as any)
 
-    // Validaciones adicionales personalizadas
+    // Validaciones adicionales personalizadas ACTUALIZADAS
     if (stepIndex === 0) {
       const isAnonymous = form.getValues("denunciante.anonimo")
       if (!isAnonymous) {
         // Validar campos obligatorios manualmente
         const nombre = form.getValues("denunciante.datosDenunciante.nombre")
         const telefono = form.getValues("denunciante.datosDenunciante.telefono")
+        const entidad = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.entidad")
+        const municipio = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.municipio")
         const calle = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.calle")
         const numeroExterior = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.numeroExterior")
-        const municipio = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia")
         const codigoPostal = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.codigoPostal")
 
         if (!nombre || nombre.trim().length < 2) {
@@ -267,6 +274,20 @@ export function MultiStepForm() {
           return false
         }
 
+        if (!entidad || entidad <= 0) {
+          form.setError("denunciante.datosDenunciante.domicilioDenunciante.entidad", {
+            message: "La entidad federativa es obligatoria",
+          })
+          return false
+        }
+
+        if (!municipio || municipio <= 0) {
+          form.setError("denunciante.datosDenunciante.domicilioDenunciante.municipio", {
+            message: "El municipio o alcaldía es obligatorio",
+          })
+          return false
+        }
+
         if (!calle || calle.trim().length < 3) {
           form.setError("denunciante.datosDenunciante.domicilioDenunciante.calle", {
             message: "La calle es obligatoria (mínimo 3 caracteres)",
@@ -277,13 +298,6 @@ export function MultiStepForm() {
         if (!numeroExterior || numeroExterior.trim().length < 1) {
           form.setError("denunciante.datosDenunciante.domicilioDenunciante.numeroExterior", {
             message: "El número exterior es obligatorio",
-          })
-          return false
-        }
-
-        if (!municipio || municipio.trim().length < 2) {
-          form.setError("denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia", {
-            message: "El municipio o alcaldía es obligatorio (mínimo 2 caracteres)",
           })
           return false
         }

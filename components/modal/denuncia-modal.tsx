@@ -1,7 +1,9 @@
 //@ts-nocheck
 "use client"
 
-import { useState, useEffect } from "react"
+import type React from "react"
+
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import {
   Dialog,
@@ -13,27 +15,23 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { 
-  AlertCircle, 
-  CheckCircle2, 
-  FileText, 
-  Download, 
-  Shield, 
-  Info, 
-  Loader2, 
+import {
+  AlertCircle,
+  CheckCircle2,
+  FileText,
+  Download,
+  Shield,
+  Loader2,
   UploadCloud,
   User,
   MapPin,
-  Calendar,
-  Phone,
-  Mail,
   Eye,
   EyeOff,
   Building,
   Users,
-  Scale,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  ArrowUp,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator"
@@ -141,7 +139,7 @@ const entidadesFederativas = {
   31: "Yucatán",
   32: "Zacatecas",
   0: "Federal",
-  33: "Tribunal de Justicia Administrativa"
+  33: "Tribunal de Justicia Administrativa",
 }
 
 export function DenunciaModal({
@@ -154,7 +152,7 @@ export function DenunciaModal({
   onClose,
   uploadProgress = 0,
   isUploading = false,
-  formData
+  formData,
 }: DenunciaModalProps) {
   const [downloadReady, setDownloadReady] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
@@ -163,9 +161,26 @@ export function DenunciaModal({
     ubicacion: false,
     persona: false,
     faltas: false,
-    evidencia: false
+    evidencia: false,
   })
+  const [showScrollTop, setShowScrollTop] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+
+  // Monitorear el scroll para mostrar/ocultar el botón de volver arriba
+  const handleScroll = () => {
+    if (contentRef.current) {
+      setShowScrollTop(contentRef.current.scrollTop > 300)
+    }
+  }
+
+  // Función para volver al inicio del scroll
+  const scrollToTop = () => {
+    contentRef.current?.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
 
   useEffect(() => {
     if (mode === "success" && denunciaId) {
@@ -180,10 +195,32 @@ export function DenunciaModal({
   }, [isOpen, mode])
 
   const toggleSection = (section: string) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }))
+  }
+
+  // Expandir todas las secciones
+  const expandAllSections = () => {
+    setExpandedSections({
+      denunciante: true,
+      ubicacion: true,
+      persona: true,
+      faltas: true,
+      evidencia: true,
+    })
+  }
+
+  // Colapsar todas las secciones
+  const collapseAllSections = () => {
+    setExpandedSections({
+      denunciante: false,
+      ubicacion: false,
+      persona: false,
+      faltas: false,
+      evidencia: false,
+    })
   }
 
   const handleDownloadFolio = () => {
@@ -223,23 +260,23 @@ Fecha de generación: ${new Date().toLocaleString()}
   const formatDate = (dateString: string) => {
     if (!dateString) return "No especificada"
     try {
-      return new Date(dateString).toLocaleDateString('es-MX', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+      return new Date(dateString).toLocaleDateString("es-MX", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       })
     } catch {
       return dateString
     }
   }
 
-  const SummarySection = ({ 
-    title, 
-    icon: Icon, 
-    children, 
+  const SummarySection = ({
+    title,
+    icon: Icon,
+    children,
     sectionKey,
-    isEmpty = false 
-  }: { 
+    isEmpty = false,
+  }: {
     title: string
     icon: any
     children: React.ReactNode
@@ -247,48 +284,50 @@ Fecha de generación: ${new Date().toLocaleString()}
     isEmpty?: boolean
   }) => (
     <div className="mb-4">
-      <Card className={cn(
-        "transition-all duration-200 hover:shadow-md cursor-pointer",
-        isEmpty ? "border-gray-200 bg-gray-50" : "border-blue-200 bg-blue-50"
-      )}>
-        <CardHeader 
-          className="pb-3 cursor-pointer"
-          onClick={() => toggleSection(sectionKey)}
-        >
-          <CardTitle className={cn(
-            "text-sm font-medium flex items-center justify-between",
-            isEmpty ? "text-gray-600" : "text-blue-800"
-          )}>
+      <Card
+        className={cn(
+          "transition-all duration-200 hover:shadow-md",
+          isEmpty ? "border-gray-200 bg-gray-50" : "border-blue-200 bg-blue-50",
+        )}
+      >
+        <CardHeader className="pb-3 cursor-pointer" onClick={() => toggleSection(sectionKey)}>
+          <CardTitle
+            className={cn(
+              "text-sm font-medium flex items-center justify-between",
+              isEmpty ? "text-gray-600" : "text-blue-800",
+            )}
+          >
             <div className="flex items-center gap-2">
               <Icon className="h-4 w-4" />
               {title}
-              {isEmpty && <Badge variant="secondary" className="text-xs">Sin información</Badge>}
+              {isEmpty && (
+                <Badge variant="secondary" className="text-xs">
+                  Sin información
+                </Badge>
+              )}
             </div>
-            {expandedSections[sectionKey] ? 
-              <ChevronUp className="h-4 w-4" /> : 
-              <ChevronDown className="h-4 w-4" />
-            }
+            {expandedSections[sectionKey] ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </CardTitle>
         </CardHeader>
-        
-        {expandedSections[sectionKey] && (
-          <CardContent className="pt-0 pb-4">
-            {children}
-          </CardContent>
-        )}
+
+        {expandedSections[sectionKey] && <CardContent className="pt-0 pb-4">{children}</CardContent>}
       </Card>
     </div>
   )
 
-  const InfoRow = ({ label, value, sensitive = false }: { 
+  const InfoRow = ({
+    label,
+    value,
+    sensitive = false,
+  }: {
     label: string
     value: string | undefined | null
-    sensitive?: boolean 
+    sensitive?: boolean
   }) => {
     const [showSensitive, setShowSensitive] = useState(false)
-    
+
     if (!value) return null
-    
+
     return (
       <div className="flex justify-between items-center py-1">
         <span className="text-sm text-gray-600">{label}:</span>
@@ -297,12 +336,7 @@ Fecha de generación: ${new Date().toLocaleString()}
             {sensitive && !showSensitive ? "••••••••••" : value}
           </span>
           {sensitive && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 p-0"
-              onClick={() => setShowSensitive(!showSensitive)}
-            >
+            <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setShowSensitive(!showSensitive)}>
               {showSensitive ? <EyeOff className="h-3 w-3" /> : <Eye className="h-3 w-3" />}
             </Button>
           )}
@@ -316,7 +350,7 @@ Fecha de generación: ${new Date().toLocaleString()}
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] p-0 overflow-hidden rounded-lg border-0 shadow-lg">
         {mode === "confirm" ? (
           <>
-            <div className="bg-primary/10 dark:bg-primary/5 p-6 border-b border-primary/20 dark:border-primary/10">
+            <div className="bg-primary/10 dark:bg-primary/5 p-6 border-b border-primary/20 dark:border-primary/10 sticky top-0 z-10">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-primary flex items-center gap-2">
                   <div className="bg-primary/15 dark:bg-primary/10 p-1.5 rounded-full">
@@ -330,7 +364,26 @@ Fecha de generación: ${new Date().toLocaleString()}
               </DialogHeader>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {/* Contenedor con scroll */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 max-h-[60vh]" ref={contentRef} onScroll={handleScroll}>
+              {/* Controles de expansión */}
+              <div className="flex justify-between items-center mb-2 sticky top-0 z-10 bg-white/80 backdrop-blur-sm p-2 -mx-2 rounded-lg shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <FileText className="h-5 w-5" />
+                  Resumen de la Información
+                </h3>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={expandAllSections} className="text-xs h-8">
+                    <ChevronDown className="h-3 w-3 mr-1" />
+                    Expandir todo
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={collapseAllSections} className="text-xs h-8">
+                    <ChevronUp className="h-3 w-3 mr-1" />
+                    Colapsar todo
+                  </Button>
+                </div>
+              </div>
+
               {/* Progreso de carga */}
               {isUploading && (
                 <div className="space-y-2 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-md border border-blue-100 dark:border-blue-800/30">
@@ -351,14 +404,9 @@ Fecha de generación: ${new Date().toLocaleString()}
               {/* Resumen de información */}
               {formData && (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    Resumen de la Información
-                  </h3>
-
                   {/* Datos del Denunciante */}
-                  <SummarySection 
-                    title="Datos del Denunciante" 
+                  <SummarySection
+                    title="Datos del Denunciante"
                     icon={User}
                     sectionKey="denunciante"
                     isEmpty={formData.denunciante?.anonimo}
@@ -371,35 +419,27 @@ Fecha de generación: ${new Date().toLocaleString()}
                       </div>
                     ) : (
                       <div className="space-y-2">
-                        <InfoRow 
-                          label="Nombre completo" 
+                        <InfoRow
+                          label="Nombre completo"
                           value={formData.denunciante?.datosDenunciante?.nombre}
                           sensitive
                         />
-                        <InfoRow 
-                          label="Teléfono" 
-                          value={formData.denunciante?.datosDenunciante?.telefono}
-                          sensitive
-                        />
-                        <InfoRow 
-                          label="Email" 
-                          value={formData.denunciante?.datosDenunciante?.email}
-                          sensitive
-                        />
+                        <InfoRow label="Teléfono" value={formData.denunciante?.datosDenunciante?.telefono} sensitive />
+                        <InfoRow label="Email" value={formData.denunciante?.datosDenunciante?.email} sensitive />
                         {formData.denunciante?.datosDenunciante?.domicilioDenunciante && (
                           <>
                             <Separator className="my-2" />
                             <p className="text-xs font-medium text-gray-700 mb-1">Domicilio:</p>
-                            <InfoRow 
-                              label="Calle y número" 
-                              value={`${formData.denunciante.datosDenunciante.domicilioDenunciante.calle || ''} ${formData.denunciante.datosDenunciante.domicilioDenunciante.numeroExterior || ''}`.trim()}
+                            <InfoRow
+                              label="Calle y número"
+                              value={`${formData.denunciante.datosDenunciante.domicilioDenunciante.calle || ""} ${formData.denunciante.datosDenunciante.domicilioDenunciante.numeroExterior || ""}`.trim()}
                             />
-                            <InfoRow 
-                              label="Municipio/Alcaldía" 
+                            <InfoRow
+                              label="Municipio/Alcaldía"
                               value={formData.denunciante.datosDenunciante.domicilioDenunciante.municipioAlcaldia}
                             />
-                            <InfoRow 
-                              label="Código Postal" 
+                            <InfoRow
+                              label="Código Postal"
                               value={formData.denunciante.datosDenunciante.domicilioDenunciante.codigoPostal}
                             />
                           </>
@@ -417,93 +457,75 @@ Fecha de generación: ${new Date().toLocaleString()}
                   </SummarySection>
 
                   {/* Ubicación del Hecho */}
-                  <SummarySection 
-                    title="Ubicación del Hecho" 
+                  <SummarySection
+                    title="Ubicación del Hecho"
                     icon={MapPin}
                     sectionKey="ubicacion"
                     isEmpty={!formData.ubicacionHecho?.fechaHecho}
                   >
                     <div className="space-y-2">
-                      <InfoRow 
-                        label="Fecha del hecho" 
-                        value={formatDate(formData.ubicacionHecho?.fechaHecho || '')}
+                      <InfoRow label="Fecha del hecho" value={formatDate(formData.ubicacionHecho?.fechaHecho || "")} />
+                      <InfoRow label="Hora" value={formData.ubicacionHecho?.horaHecho} />
+                      <InfoRow
+                        label="Calle y número"
+                        value={`${formData.ubicacionHecho?.calle || ""} ${formData.ubicacionHecho?.numero || ""}`.trim()}
                       />
-                      <InfoRow 
-                        label="Hora" 
-                        value={formData.ubicacionHecho?.horaHecho}
-                      />
-                      <InfoRow 
-                        label="Calle y número" 
-                        value={`${formData.ubicacionHecho?.calle || ''} ${formData.ubicacionHecho?.numero || ''}`.trim()}
-                      />
-                      <InfoRow 
-                        label="Ciudad" 
-                        value={formData.ubicacionHecho?.ciudad}
-                      />
-                      <InfoRow 
-                        label="Estado" 
-                        value={formData.ubicacionHecho?.estado}
-                      />
-                      <InfoRow 
-                        label="Referencias adicionales" 
-                        value={formData.ubicacionHecho?.otrasReferencias}
-                      />
+                      <InfoRow label="Ciudad" value={formData.ubicacionHecho?.ciudad} />
+                      <InfoRow label="Estado" value={formData.ubicacionHecho?.estado} />
+                      <InfoRow label="Referencias adicionales" value={formData.ubicacionHecho?.otrasReferencias} />
                     </div>
                   </SummarySection>
 
                   {/* Persona Denunciada */}
-                  <SummarySection 
-                    title="Persona Denunciada" 
+                  <SummarySection
+                    title="Persona Denunciada"
                     icon={Building}
                     sectionKey="persona"
                     isEmpty={!formData.personaDenunciada?.tipoPersona}
                   >
                     <div className="space-y-2">
-                      <InfoRow 
-                        label="Tipo de persona" 
-                        value={formData.personaDenunciada?.tipoPersona === 'SERVIDOR_PUBLICO' ? 
-                          'Servidor Público' : 'Particular'}
+                      <InfoRow
+                        label="Tipo de persona"
+                        value={
+                          formData.personaDenunciada?.tipoPersona === "SERVIDOR_PUBLICO"
+                            ? "Servidor Público"
+                            : "Particular"
+                        }
                       />
-                      <InfoRow 
-                        label="Entidad" 
-                        value={formData.personaDenunciada?.entidad ? 
-                          entidadesFederativas[formData.personaDenunciada.entidad] : undefined}
+                      <InfoRow
+                        label="Entidad"
+                        value={
+                          formData.personaDenunciada?.entidad
+                            ? entidadesFederativas[formData.personaDenunciada.entidad]
+                            : undefined
+                        }
                       />
-                      <InfoRow 
-                        label="Nombre" 
-                        value={formData.personaDenunciada?.nombre}
-                      />
-                      <InfoRow 
-                        label="Apellidos" 
-                        value={formData.personaDenunciada?.apellidos}
-                      />
-                      <InfoRow 
-                        label="Descripción adicional" 
-                        value={formData.personaDenunciada?.descripcion}
-                      />
+                      <InfoRow label="Nombre" value={formData.personaDenunciada?.nombre} />
+                      <InfoRow label="Apellidos" value={formData.personaDenunciada?.apellidos} />
+                      <InfoRow label="Descripción adicional" value={formData.personaDenunciada?.descripcion} />
                     </div>
                   </SummarySection>
 
                   {/* Narración de Hechos */}
-                  <SummarySection 
-                    title="Narración de los Hechos" 
+                  <SummarySection
+                    title="Narración de los Hechos"
                     icon={FileText}
                     sectionKey="faltas"
                     isEmpty={!formData.narracionHechos}
                   >
                     <div className="bg-gray-50 p-3 rounded border text-sm">
                       <p className="leading-relaxed">
-                        {formData.narracionHechos || 'No se ha proporcionado narración de hechos'}
+                        {formData.narracionHechos || "No se ha proporcionado narración de hechos"}
                       </p>
                     </div>
                   </SummarySection>
 
                   {/* Evidencia y Testigos */}
-                  <SummarySection 
-                    title="Evidencia y Testigos" 
+                  <SummarySection
+                    title="Evidencia y Testigos"
                     icon={Users}
                     sectionKey="evidencia"
-                    isEmpty={(!formData.archivosEvidencia?.length && !formData.testigo)}
+                    isEmpty={!formData.archivosEvidencia?.length && !formData.testigo}
                   >
                     <div className="space-y-3">
                       {formData.archivosEvidencia && formData.archivosEvidencia.length > 0 && (
@@ -515,14 +537,14 @@ Fecha de generación: ${new Date().toLocaleString()}
                                 <FileText className="h-4 w-4 text-blue-500" />
                                 <span>{archivo.name || `Archivo ${index + 1}`}</span>
                                 <Badge variant="secondary" className="text-xs">
-                                  {archivo.size ? `${Math.round(archivo.size / 1024)} KB` : 'Tamaño desconocido'}
+                                  {archivo.size ? `${Math.round(archivo.size / 1024)} KB` : "Tamaño desconocido"}
                                 </Badge>
                               </div>
                             ))}
                           </div>
                         </div>
                       )}
-                      
+
                       {formData.testigo && (
                         <div>
                           <p className="text-sm font-medium text-gray-700 mb-2">Testigos:</p>
@@ -540,8 +562,8 @@ Fecha de generación: ${new Date().toLocaleString()}
                           )}
                         </div>
                       )}
-                      
-                      {(!formData.archivosEvidencia?.length && !formData.testigo) && (
+
+                      {!formData.archivosEvidencia?.length && !formData.testigo && (
                         <p className="text-sm text-gray-500 text-center py-2">
                           No se han proporcionado evidencias o testigos
                         </p>
@@ -552,10 +574,12 @@ Fecha de generación: ${new Date().toLocaleString()}
               )}
 
               {/* Checkbox de confirmación */}
-              <div className={cn(
-                "border-2 rounded-md p-5 shadow-sm",
-                "bg-amber-50/50 border-amber-200 dark:bg-amber-900/10 dark:border-amber-700/30",
-              )}>
+              <div
+                className={cn(
+                  "border-2 rounded-md p-5 shadow-sm",
+                  "bg-amber-50/50 border-amber-200 dark:bg-amber-900/10 dark:border-amber-700/30",
+                )}
+              >
                 <div className="flex items-start space-x-3">
                   <Checkbox
                     id="terms"
@@ -574,12 +598,18 @@ Fecha de generación: ${new Date().toLocaleString()}
                       className={cn(
                         "text-sm font-semibold leading-tight cursor-pointer",
                         "text-amber-800 dark:text-amber-300",
-                        isUploading ? "opacity-70" : ""
+                        isUploading ? "opacity-70" : "",
                       )}
                     >
                       Protesto decir verdad respecto de la denuncia presentada
                     </label>
-                    <p className={cn("text-xs", "text-amber-700/80 dark:text-amber-400/90", isUploading ? "opacity-70" : "")}>
+                    <p
+                      className={cn(
+                        "text-xs",
+                        "text-amber-700/80 dark:text-amber-400/90",
+                        isUploading ? "opacity-70" : "",
+                      )}
+                    >
                       Al marcar esta casilla, confirmo bajo protesta de decir verdad que toda la información
                       proporcionada en esta denuncia es verídica y exacta.
                     </p>
@@ -591,11 +621,23 @@ Fecha de generación: ${new Date().toLocaleString()}
                 <Shield className="h-4 w-4 text-primary/70" />
                 <span>Su información será tratada con estricta confidencialidad.</span>
               </div>
+
+              {/* Botón para volver arriba */}
+              {showScrollTop && (
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="fixed bottom-20 right-6 h-10 w-10 rounded-full shadow-lg z-50 bg-primary/90 text-white hover:bg-primary"
+                  onClick={scrollToTop}
+                >
+                  <ArrowUp className="h-5 w-5" />
+                </Button>
+              )}
             </div>
 
             <Separator className="bg-border dark:bg-border/50" />
 
-            <DialogFooter className="p-6 flex flex-col sm:flex-row gap-3 sm:justify-end bg-muted/30 dark:bg-muted/10">
+            <DialogFooter className="p-6 flex flex-col sm:flex-row gap-3 sm:justify-end bg-muted/30 dark:bg-muted/10 sticky bottom-0 z-10">
               <Button
                 variant="outline"
                 onClick={onCancel}
@@ -609,7 +651,9 @@ Fecha de generación: ${new Date().toLocaleString()}
                 disabled={!isChecked || isUploading}
                 className={cn(
                   "font-medium transition-all duration-300 flex items-center gap-2",
-                  isChecked && !isUploading ? "bg-primary hover:bg-primary/90 shadow-md" : "bg-primary/60 dark:bg-primary/40",
+                  isChecked && !isUploading
+                    ? "bg-primary hover:bg-primary/90 shadow-md"
+                    : "bg-primary/60 dark:bg-primary/40",
                 )}
               >
                 {isUploading ? (
@@ -630,14 +674,18 @@ Fecha de generación: ${new Date().toLocaleString()}
           </>
         ) : (
           <>
-            {/* Modal de éxito (sin cambios) */}
-            <div className={cn(
-              "p-6 border-b",
-              "bg-green-50 border-green-100 text-green-800",
-              "dark:bg-green-900/20 dark:border-green-900/30 dark:text-green-300",
-            )}>
+            {/* Modal de éxito */}
+            <div
+              className={cn(
+                "p-6 border-b",
+                "bg-green-50 border-green-100 text-green-800",
+                "dark:bg-green-900/20 dark:border-green-900/30 dark:text-green-300",
+              )}
+            >
               <DialogHeader>
-                <DialogTitle className={cn("text-2xl font-bold flex items-center gap-2", "text-green-700 dark:text-green-300")}>
+                <DialogTitle
+                  className={cn("text-2xl font-bold flex items-center gap-2", "text-green-700 dark:text-green-300")}
+                >
                   <div className={cn("p-1.5 rounded-full", "bg-green-100 dark:bg-green-800/40")}>
                     <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-400" />
                   </div>
@@ -651,11 +699,13 @@ Fecha de generación: ${new Date().toLocaleString()}
             </div>
 
             <div className="p-6 space-y-4">
-              <Alert className={cn(
-                "border-2 shadow-sm",
-                "bg-blue-50 border-blue-200 text-blue-800",
-                "dark:bg-blue-900/20 dark:border-blue-800/30 dark:text-blue-300",
-              )}>
+              <Alert
+                className={cn(
+                  "border-2 shadow-sm",
+                  "bg-blue-50 border-blue-200 text-blue-800",
+                  "dark:bg-blue-900/20 dark:border-blue-800/30 dark:text-blue-300",
+                )}
+              >
                 <div className={cn("p-1.5 rounded-full", "bg-blue-100 dark:bg-blue-800/40")}>
                   <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                 </div>
@@ -663,11 +713,13 @@ Fecha de generación: ${new Date().toLocaleString()}
                   <span className={cn("font-semibold text-base block mb-1", "text-blue-800 dark:text-blue-300")}>
                     Su número de folio es:
                   </span>
-                  <span className={cn(
-                    "text-lg font-mono px-3 py-1 rounded border inline-block",
-                    "bg-white border-blue-200 text-blue-800",
-                    "dark:bg-blue-950/50 dark:border-blue-800/50 dark:text-blue-200",
-                  )}>
+                  <span
+                    className={cn(
+                      "text-lg font-mono px-3 py-1 rounded border inline-block",
+                      "bg-white border-blue-200 text-blue-800",
+                      "dark:bg-blue-950/50 dark:border-blue-800/50 dark:text-blue-200",
+                    )}
+                  >
                     {denunciaId}
                   </span>
                 </AlertDescription>

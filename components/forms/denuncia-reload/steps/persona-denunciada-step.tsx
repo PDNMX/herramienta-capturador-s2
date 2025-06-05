@@ -1,16 +1,15 @@
-//@ts-nocheck
 "use client"
 import React, { useState } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Check, MapPin, Building, Loader2, User, Edit } from "lucide-react"
+import { Check, Building, Loader2, User, Globe, Flag, MapPin } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Combobox } from "@/components/ui/combobox"
 import type { UseFormReturn } from "react-hook-form"
 import Image from "next/image"
 import iconParticular from "@/components/icon-particular.svg"
 import iconServidorPublico from "@/components/icon-servidor-publico.svg"
+import { EntePublicoCombobox } from "@/components/ui/ente-publico-combobox"
 
 interface PersonaDenunciadaStepProps {
   form: UseFormReturn<any> | null
@@ -19,6 +18,7 @@ interface PersonaDenunciadaStepProps {
 interface EntePublico {
   id: number
   nombre: string
+  entidad?: string
 }
 
 const entidadesFederativas = [
@@ -63,21 +63,20 @@ const CustomCheckbox = React.forwardRef<
   <div
     ref={ref}
     onClick={onChange}
-    className={`bg-card relative w-full p-5 rounded-lg border-2 transition-all duration-300 cursor-pointer overflow-hidden
-      ${
-        checked
-          ? "border-primary shadow-lg transform scale-[1.02] bg-primary/5"
-          : "border-input hover:border-primary/50 hover:shadow-md hover:transform hover:scale-[1.01]"
-      }`}
+    className={`relative w-full p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+      checked
+        ? "border-primary bg-primary/10 text-primary shadow-lg transform scale-[1.02]"
+        : "border-input bg-card text-muted-foreground hover:border-primary/50 hover:bg-accent hover:shadow-md hover:transform hover:scale-[1.01] opacity-70 hover:opacity-90"
+    }`}
   >
-    {children}
+    <div className={checked ? "opacity-100" : "opacity-60"}>{children}</div>
     {checked && (
-      <div className="absolute top-3 right-3 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
+      <div className="absolute top-4 right-4 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <Check className="h-4 w-4 text-primary-foreground" />
       </div>
     )}
     <div
-      className={`absolute bottom-0 left-0 right-0 h-1.5 bg-primary transition-transform duration-300 ${
+      className={`absolute bottom-0 left-0 right-0 h-2 bg-primary transition-transform duration-300 ${
         checked ? "transform translate-y-0" : "transform translate-y-full"
       }`}
     ></div>
@@ -85,7 +84,7 @@ const CustomCheckbox = React.forwardRef<
 ))
 CustomCheckbox.displayName = "CustomCheckbox"
 
-const GenderCheckbox = React.forwardRef<
+const GenderOption = React.forwardRef<
   HTMLDivElement,
   { checked: boolean; onChange: () => void; children: React.ReactNode }
 >(({ checked, onChange, children }, ref) => (
@@ -96,18 +95,24 @@ const GenderCheckbox = React.forwardRef<
       ${
         checked
           ? "border-primary bg-primary text-primary-foreground font-medium shadow-md"
-          : "border-input bg-card text-foreground hover:border-primary/50 hover:bg-accent"
+          : "border-gray-300 bg-gray-100 text-gray-600 hover:border-primary/50 hover:bg-gray-200"
       }`}
   >
-    {children}
+    <div className="flex justify-center">
+      {children}
+      {checked && (
+        <div className="absolute right-3 h-5 w-5 bg-white rounded-full flex items-center justify-center">
+          <Check className="h-3 w-3 text-primary" />
+        </div>
+      )}
+    </div>
   </div>
 ))
-GenderCheckbox.displayName = "GenderCheckbox"
+GenderOption.displayName = "GenderOption"
 
 export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([])
   const [loading, setLoading] = useState(false)
-  const [selectedEnteName, setSelectedEnteName] = useState<string>("")
 
   const fetchEntesPublicos = async (clave: string) => {
     setLoading(true)
@@ -124,8 +129,19 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
       )
       const entidadData = await entidadResponse.json()
 
-      // Combinamos ambos resultados
-      const combinedEntes = [...federalData.data, ...entidadData.data]
+      // Marcamos los entes federales y de entidad para identificarlos
+      const federalEntes = federalData.data.map((ente: EntePublico) => ({
+        ...ente,
+        entidad: "00", // Federal
+      }))
+
+      const entidadEntes = entidadData.data.map((ente: EntePublico) => ({
+        ...ente,
+        entidad: clave, // Entidad específica
+      }))
+
+      // Combinamos ambos resultados, primero federales, luego de la entidad
+      const combinedEntes = [...federalEntes, ...entidadEntes]
       setEntesPublicos(combinedEntes)
     } catch (error) {
       console.error("Error fetching entes públicos:", error)
@@ -133,89 +149,80 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
     setLoading(false)
   }
 
-  // Al cambiar la entidad, actualizar el valor en el formulario y resetear el ente público
   const handleEntidadChange = (value: string) => {
     const entidad = entidadesFederativas.find((e) => e.nombre === value)
     if (entidad) {
-      // Asegurarse de que se está estableciendo un número, no una cadena
       form?.setValue("personaDenunciada.entidad", entidad.valor, {
-        shouldValidate: true,
+        shouldValidate: false,
         shouldDirty: true,
         shouldTouch: true,
       })
 
-      // Resetear el ente público al cambiar la entidad
       form?.setValue("personaDenunciada.entePublico", undefined, {
-        shouldValidate: true,
+        shouldValidate: false,
         shouldDirty: true,
         shouldTouch: true,
       })
 
-      // Resetear las faltas seleccionadas al cambiar la entidad
       form?.setValue("faltaCometida.faltaGrave", [], {
-        shouldValidate: true,
+        shouldValidate: false,
         shouldDirty: true,
         shouldTouch: true,
       })
 
       form?.setValue("faltaCometida.faltaNoGrave", [], {
-        shouldValidate: true,
+        shouldValidate: false,
         shouldDirty: true,
         shouldTouch: true,
       })
 
       form?.setValue("faltaCometida.hechosCorrupcion", [], {
-        shouldValidate: true,
+        shouldValidate: false,
         shouldDirty: true,
         shouldTouch: true,
       })
 
-      // Fetch entes públicos para la entidad seleccionada
       fetchEntesPublicos(entidad.clave)
     }
   }
 
-  // Actualizar el ente público seleccionado
-  const handleEntePublicoChange = (value: string) => {
-    const selectedEnte = entesPublicos.find((ente) => ente.id.toString() === value)
-    if (selectedEnte) {
-      // Asegurar que se establece como número, no cadena
-      form?.setValue("personaDenunciada.entePublico", selectedEnte.id, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      })
-
-      setSelectedEnteName(selectedEnte.nombre)
-    }
+  const handleEntePublicoChange = (value: number | undefined) => {
+    form?.setValue("personaDenunciada.entePublico", value, {
+      shouldValidate: false,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
   }
 
-  // Al cambiar el tipo de persona (servidor público o particular), resetear las faltas seleccionadas
   const handleTipoPersonaChange = (value: string) => {
     form?.setValue("personaDenunciada.tipoPersona", value, {
-      shouldValidate: true,
+      shouldValidate: false,
       shouldDirty: true,
       shouldTouch: true,
     })
 
-    // Resetear las faltas seleccionadas al cambiar el tipo de persona
     form?.setValue("faltaCometida.faltaGrave", [], {
-      shouldValidate: true,
+      shouldValidate: false,
       shouldDirty: true,
       shouldTouch: true,
     })
 
     form?.setValue("faltaCometida.faltaNoGrave", [], {
-      shouldValidate: true,
+      shouldValidate: false,
       shouldDirty: true,
       shouldTouch: true,
     })
 
     form?.setValue("faltaCometida.hechosCorrupcion", [], {
-      shouldValidate: true,
+      shouldValidate: false,
       shouldDirty: true,
       shouldTouch: true,
     })
+  }
+
+  const getSelectedEntidadName = () => {
+    const entidadValue = form?.getValues("personaDenunciada.entidad")
+    return entidadesFederativas.find((e) => e.valor === entidadValue)?.nombre || ""
   }
 
   if (!form) {
@@ -223,26 +230,26 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
-      <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 mb-6 overflow-hidden shadow-sm">
+    <div className="space-y-6 sm:space-y-8 p-4 sm:p-6">
+      <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20 mb-8 overflow-hidden shadow-lg">
         <div className="flex flex-col sm:flex-row">
-          <div className="bg-primary/20 p-3 sm:p-4 flex items-center justify-center sm:w-16">
-            <Building className="h-8 w-8 text-primary" />
+          <div className="bg-primary/20 p-4 sm:p-6 flex items-center justify-center sm:w-20">
+            <Building className="h-10 w-10 text-primary" />
           </div>
-          <div className="p-4 sm:p-5 space-y-3 flex-1">
+          <div className="p-5 sm:p-6 space-y-4 flex-1">
             <div>
-              <h4 className="text-base font-medium text-primary">
+              <h4 className="text-lg font-semibold text-primary">
                 Recomendaciones para identificar a la persona denunciada
               </h4>
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground mt-2">
                 Siga estas pautas para proporcionar información precisa sobre la persona denunciada:
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -251,14 +258,14 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Sea específico con <span className="font-medium">nombre completo y cargo</span> de la persona
+                  <p className="text-sm">
+                    Sea específico con <span className="font-semibold">nombre completo y cargo</span> de la persona
                     denunciada
                   </p>
                 </div>
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -267,15 +274,15 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Indique la <span className="font-medium">institución o área</span> donde labora la persona
+                  <p className="text-sm">
+                    Indique la <span className="font-semibold">institución o área</span> donde labora la persona
                   </p>
                 </div>
               </div>
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -284,14 +291,14 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Describa <span className="font-medium">características físicas</span> que faciliten su
+                  <p className="text-sm">
+                    Describa <span className="font-semibold">características físicas</span> que faciliten su
                     identificación
                   </p>
                 </div>
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -300,8 +307,8 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Si no conoce el nombre, proporcione <span className="font-medium">detalles específicos</span> que
+                  <p className="text-sm">
+                    Si no conoce el nombre, proporcione <span className="font-semibold">detalles específicos</span> que
                     permitan identificarla
                   </p>
                 </div>
@@ -312,36 +319,33 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
       </div>
 
       <div className="space-y-6 sm:space-y-8">
-        {/* SECCIÓN 1: Ubicación Institucional */}
-        <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
-          <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
-            <Building className="h-5 w-5 mr-3 text-primary" />
-            Ubicación Institucional
-          </h3>
-          <FormDescription className="text-xs sm:text-sm mb-4">
-            Selecciona la entidad federativa y la institución donde ocurrieron los hechos o donde trabaja la persona
-            denunciada.
-          </FormDescription>
+        <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
+          <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
+            <div className="bg-primary/10 rounded-lg p-2 mr-4">
+              <Building className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold text-primary">Ubicación Institucional</h3>
+          </div>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             <FormField
               control={form.control}
               name="personaDenunciada.entidad"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">
+                  <FormLabel className="text-sm font-semibold">
                     Entidad Federativa <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                      <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary z-10" />
                       <Select
                         onValueChange={handleEntidadChange}
                         value={
                           field.value ? entidadesFederativas.find((e) => e.valor === field.value)?.nombre || "" : ""
                         }
                       >
-                        <SelectTrigger className="pl-10 text-sm h-10 sm:h-12">
+                        <SelectTrigger className="pl-10 text-sm h-12">
                           <SelectValue placeholder="Selecciona una entidad" />
                         </SelectTrigger>
                         <SelectContent>
@@ -354,8 +358,8 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                       </Select>
                     </div>
                   </FormControl>
-                  <FormDescription className="text-xs sm:text-sm">
-                    Selecciona la entidad federativa donde ocurrieron los hechos.
+                  <FormDescription className="text-xs text-muted-foreground">
+                    Selecciona la entidad federativa donde ocurrieron los hechos o donde trabaja la persona denunciada
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -367,27 +371,34 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
               name="personaDenunciada.entePublico"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">Ente Público</FormLabel>
+                  <FormLabel className="text-sm font-semibold">Ente Público</FormLabel>
                   <FormControl>
-                    <div className="relative">
-                      <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <div className="w-full pl-10">
-                        <Combobox
-                          options={entesPublicos.map((ente) => ({
-                            label: ente.nombre,
-                            value: ente.id.toString(),
-                          }))}
-                          value={field.value?.toString() || ""}
-                          onChange={handleEntePublicoChange}
-                          placeholder="Selecciona un ente público"
-                          disabled={!form.getValues("personaDenunciada.entidad")}
-                        />
-                      </div>
-                    </div>
+                    <EntePublicoCombobox
+                      options={entesPublicos}
+                      value={field.value}
+                      onChange={handleEntePublicoChange}
+                      placeholder={
+                        !form.getValues("personaDenunciada.entidad")
+                          ? "Primero selecciona una entidad"
+                          : loading
+                            ? "Cargando entes públicos..."
+                            : "Buscar y seleccionar ente público..."
+                      }
+                      disabled={!form.getValues("personaDenunciada.entidad") || loading}
+                      entidadNombre={getSelectedEntidadName()}
+                    />
                   </FormControl>
-                  <FormDescription className="text-xs sm:text-sm">
-                    Selecciona la institución donde ocurrieron los hechos. Se muestran tanto instituciones federales
-                    como de la entidad seleccionada.
+                  <FormDescription className="text-xs text-muted-foreground">
+                    Busca y selecciona la institución donde ocurrieron los hechos. Se muestran instituciones federales{" "}
+                    <span className="inline-flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium mx-1">
+                      <Flag className="h-3 w-3 mr-1" />
+                      Federal
+                    </span>{" "}
+                    y de la entidad seleccionada{" "}
+                    <span className="inline-flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium mx-1">
+                      <MapPin className="h-3 w-3 mr-1" />
+                      Entidad
+                    </span>
                   </FormDescription>
                   {loading && (
                     <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
@@ -402,23 +413,23 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
           </div>
         </div>
 
-        {/* SECCIÓN 2: Tipo de Persona */}
-        <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
-          <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
-            <User className="h-5 w-5 mr-3 text-primary" />
-            Persona o personas denunciadas <span className="text-red-500">*</span>
-          </h3>
-          <FormDescription className="text-xs sm:text-sm mb-4">
-            Selecciona si la persona denunciada pertenece al servicio público o es un particular. Este campo es
-            obligatorio.
-          </FormDescription>
+        <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
+          <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
+            <div className="bg-primary/10 rounded-lg p-2 mr-4">
+              <User className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold text-primary">
+              Persona o personas denunciadas <span className="text-red-500">*</span>
+            </h3>
+          </div>
+
           <FormField
             control={form.control}
             name="personaDenunciada.tipoPersona"
             render={({ field }) => (
-              <FormItem className="space-y-4">
+              <FormItem className="space-y-5">
                 <FormControl>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <CustomCheckbox
                       checked={field.value === "SERVIDOR_PUBLICO"}
                       onChange={() => {
@@ -442,7 +453,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                         >
                           Persona servidora pública
                         </h3>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm opacity-80">
                           Desempeña un empleo, cargo o comisión en una institución pública
                         </p>
                       </div>
@@ -468,7 +479,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                         >
                           Particular
                         </h3>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm opacity-80">
                           Persona física o empresa del sector privado vinculada con actividades en la administración
                           pública
                         </p>
@@ -476,132 +487,123 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     </CustomCheckbox>
                   </div>
                 </FormControl>
+
+                <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
+                  <FormDescription className="text-sm text-muted-foreground">
+                    Selecciona si la persona denunciada pertenece al servicio público o es un particular. Este campo es
+                    obligatorio.
+                  </FormDescription>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
 
-        {/* SECCIÓN 3: Datos de la Persona Denunciada */}
-        <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
-          <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
-            <User className="h-5 w-5 mr-3 text-primary" />
-            Datos de la Persona Denunciada
-          </h3>
-          <FormDescription className="text-xs sm:text-sm mb-4">
-            Proporciona los datos de identificación de la persona denunciada o involucrada en los hechos.
-          </FormDescription>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="personaDenunciada.nombre"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium">Nombre(s) o alias</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <Input {...field} placeholder="Ej. Juan" className="text-sm h-10 sm:h-12 pl-10" />
-                    </div>
-                  </FormControl>
-                  <FormDescription className="text-xs sm:text-sm">
-                    Escribe el nombre, nombres o alías de la persona denunciada
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="personaDenunciada.apellidos"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium">Apellidos</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <Input {...field} placeholder="Ej. Pérez García" className="text-sm h-10 sm:h-12 pl-10" />
-                    </div>
-                  </FormControl>
-                  <FormDescription className="text-xs sm:text-sm">
-                    Escribe el o los apellidos de la persona denunciada
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
+          <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
+            <div className="bg-primary/10 rounded-lg p-2 mr-4">
+              <User className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold text-primary">Datos de la Persona Denunciada</h3>
           </div>
-          <div className="mt-4">
+
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="personaDenunciada.nombre"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold">Nombre(s) o alias</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                        <Input {...field} placeholder="Ej. Juan" className="text-sm h-12 pl-10" />
+                      </div>
+                    </FormControl>
+                    <FormDescription className="text-xs text-muted-foreground">
+                      Nombre, nombres o alias de la persona denunciada
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="personaDenunciada.apellidos"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold">Apellidos</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                        <Input {...field} placeholder="Ej. Pérez García" className="text-sm h-12 pl-10" />
+                      </div>
+                    </FormControl>
+                    <FormDescription className="text-xs text-muted-foreground">
+                      Apellidos de la persona denunciada
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="personaDenunciada.genero"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">Género</FormLabel>
+                  <FormLabel className="text-sm font-semibold">Género</FormLabel>
                   <FormControl>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <GenderCheckbox checked={field.value === "FEMENINO"} onChange={() => field.onChange("FEMENINO")}>
-                        <div className="text-center">
-                          <h3 className="font-medium">Femenino</h3>
-                        </div>
-                      </GenderCheckbox>
-                      <GenderCheckbox
-                        checked={field.value === "MASCULINO"}
-                        onChange={() => field.onChange("MASCULINO")}
-                      >
-                        <div className="text-center">
-                          <h3 className="font-medium">Masculino</h3>
-                        </div>
-                      </GenderCheckbox>
-                      <GenderCheckbox
+                      <GenderOption checked={field.value === "FEMENINO"} onChange={() => field.onChange("FEMENINO")}>
+                        <h3 className="font-medium text-base">Femenino</h3>
+                      </GenderOption>
+                      <GenderOption checked={field.value === "MASCULINO"} onChange={() => field.onChange("MASCULINO")}>
+                        <h3 className="font-medium text-base">Masculino</h3>
+                      </GenderOption>
+                      <GenderOption
                         checked={field.value === "NO_BINARIO"}
                         onChange={() => field.onChange("NO_BINARIO")}
                       >
-                        <div className="text-center">
-                          <h3 className="font-medium">No binario</h3>
-                        </div>
-                      </GenderCheckbox>
+                        <h3 className="font-medium text-base">No binario</h3>
+                      </GenderOption>
                     </div>
                   </FormControl>
-                  <FormDescription className="text-xs sm:text-sm">
+                  <FormDescription className="text-xs text-muted-foreground">
                     Selecciona el género de la persona denunciada
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
-        </div>
 
-        {/* SECCIÓN 4: Descripción Detallada */}
-        <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
-          <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
-            <Edit className="h-5 w-5 mr-3 text-primary" />
-            Descripción Detallada de la Persona
-          </h3>
-          <FormField
-            control={form.control}
-            name="personaDenunciada.descripcion"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium">Descripción de la Persona</FormLabel>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    placeholder="Ejemplo: Es una persona del área de finanzas, alto, delgado, de piel morena, ojos cafés, con bigote, un lunar en la mejilla izquierda, tenía una quemadura en la mano y vestía pantalón café con camisa azul"
-                    className="h-48 text-sm min-h-[120px]"
-                  />
-                </FormControl>
-                <FormDescription className="text-xs sm:text-sm">
-                  Proporciona los datos que pueden ayudar a identificar a la persona denunciada. Puedes mencionar: el
-                  cargo o área donde trabaja, características como altura, complexión, color de piel, color de ojos,
-                  cabello, barba, lunares, cicatrices, tatuajes, perforaciones, vestimenta o cualquier otra información
-                  que consideres relevante.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="personaDenunciada.descripcion"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold">Descripción de la Persona</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Ejemplo: Es una persona del área de finanzas, alto, delgado, de piel morena, ojos cafés, con bigote, un lunar en la mejilla izquierda, tenía una quemadura en la mano y vestía pantalón café con camisa azul"
+                      className="text-sm min-h-[120px]"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-xs text-muted-foreground">
+                    Proporciona los datos que pueden ayudar a identificar a la persona denunciada. Puedes mencionar: el
+                    cargo o área donde trabaja, características como altura, complexión, color de piel, color de ojos,
+                    cabello, barba, lunares, cicatrices, tatuajes, perforaciones, vestimenta o cualquier otra
+                    información que consideres relevante
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
       </div>
     </div>

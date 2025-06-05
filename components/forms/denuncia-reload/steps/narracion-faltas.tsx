@@ -37,17 +37,19 @@ interface CheckboxGroupProps {
 
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name, items, form }) => {
   return (
-    <div className="rounded-lg border border-primary/20 p-4 sm:p-5 shadow-sm bg-card/95 backdrop-blur">
-      <div className="space-y-3">
-        <FormLabel className="text-base block">{title}</FormLabel>
-        <FormDescription className="text-xs sm:text-sm">{description}</FormDescription>
+    <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-6 shadow-lg bg-card/95 backdrop-blur">
+      <div className="space-y-4">
+        <div className="pb-3 border-b border-primary/20">
+          <FormLabel className="text-lg font-semibold text-primary block">{title}</FormLabel>
+          <FormDescription className="text-sm text-muted-foreground mt-2">{description}</FormDescription>
+        </div>
         <FormField
           control={form.control}
           name={name}
           render={() => (
             <FormItem>
-              <ScrollArea className="h-[250px] rounded-md border mt-3">
-                <div className="space-y-3 p-5 pt-3">
+              <ScrollArea className="h-[280px] rounded-lg border border-primary/10 mt-4">
+                <div className="space-y-3 p-4">
                   {items.length > 0 ? (
                     items.map((item) => (
                       <FormField
@@ -57,7 +59,7 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name,
                         render={({ field }) => (
                           <FormItem
                             key={item.id}
-                            className="flex flex-row items-start space-x-4 space-y-0 p-3 rounded-lg border border-gray-100 hover:border-primary/30 hover:bg-gray-50/50 transition-colors"
+                            className="flex flex-row items-start space-x-4 space-y-0 p-4 rounded-lg border border-primary/10 hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 shadow-sm"
                           >
                             <FormControl>
                               <Checkbox
@@ -67,27 +69,35 @@ const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name,
                                     ? field.onChange([...(field.value || []), item.id])
                                     : field.onChange(field.value?.filter((value: number) => value !== item.id))
                                 }}
+                                className="mt-1"
                               />
                             </FormControl>
                             <div className="space-y-2 leading-none flex-1">
                               <div className="flex items-center justify-between">
-                                <FormLabel className="text-sm font-medium cursor-pointer">{item.label}</FormLabel>
+                                <FormLabel className="text-sm font-semibold cursor-pointer text-foreground">
+                                  {item.label}
+                                </FormLabel>
                                 {item.entidad === 0 || item.entidad === 33 ? (
-                                  <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 hover:bg-blue-100">
+                                  <Badge
+                                    variant="outline"
+                                    className="ml-2 bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200"
+                                  >
                                     <Flag className="h-3 w-3 mr-1" />
                                     Federal
                                   </Badge>
                                 ) : (
                                   <Badge
                                     variant="outline"
-                                    className="ml-2 bg-green-100 text-green-800 hover:bg-green-100"
+                                    className="ml-2 bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
                                   >
                                     <MapPin className="h-3 w-3 mr-1" />
                                     Entidad
                                   </Badge>
                                 )}
                               </div>
-                              <FormDescription className="text-xs leading-relaxed">{item.description}</FormDescription>
+                              <FormDescription className="text-xs leading-relaxed text-muted-foreground">
+                                {item.description}
+                              </FormDescription>
                             </div>
                           </FormItem>
                         )}
@@ -309,24 +319,24 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 p-3 sm:p-6">
-      <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg border border-primary/20 mb-6 overflow-hidden shadow-sm">
+    <div className="space-y-6 sm:space-y-8 p-4 sm:p-6">
+      <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20 mb-8 overflow-hidden shadow-lg">
         <div className="flex flex-col sm:flex-row">
-          <div className="bg-primary/20 p-3 sm:p-4 flex items-center justify-center sm:w-16">
-            <ClipboardList className="h-8 w-8 text-primary" />
+          <div className="bg-primary/20 p-4 sm:p-6 flex items-center justify-center sm:w-20">
+            <ClipboardList className="h-10 w-10 text-primary" />
           </div>
-          <div className="p-4 sm:p-5 space-y-3 flex-1">
+          <div className="p-5 sm:p-6 space-y-4 flex-1">
             <div>
-              <h4 className="text-base font-medium text-primary">Recomendaciones para narrar los hechos</h4>
-              <p className="text-sm text-muted-foreground mt-1">
+              <h4 className="text-lg font-semibold text-primary">Recomendaciones para narrar los hechos</h4>
+              <p className="text-sm text-muted-foreground mt-2">
                 Siga estas pautas para describir claramente los hechos denunciados:
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -335,14 +345,14 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Mencione <span className="font-medium">fechas, horas y lugares</span> específicos donde ocurrieron
+                  <p className="text-sm">
+                    Mencione <span className="font-semibold">fechas, horas y lugares</span> específicos donde ocurrieron
                     los hechos
                   </p>
                 </div>
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -351,15 +361,15 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Identifique <span className="font-medium">nombres completos</span> de las personas involucradas
+                  <p className="text-sm">
+                    Identifique <span className="font-semibold">nombres completos</span> de las personas involucradas
                   </p>
                 </div>
               </div>
-              <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -368,14 +378,14 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Describa los hechos en <span className="font-medium">orden cronológico</span> y con el mayor detalle
-                    posible
+                  <p className="text-sm">
+                    Describa los hechos en <span className="font-semibold">orden cronológico</span> y con el mayor
+                    detalle posible
                   </p>
                 </div>
-                <div className="flex items-start gap-2">
-                  <div className="bg-primary/10 rounded-full p-1 mt-0.5">
-                    <svg className="h-3 w-3 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary/15 rounded-full p-1.5 mt-0.5">
+                    <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -384,8 +394,8 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                       />
                     </svg>
                   </div>
-                  <p className="text-xs sm:text-sm">
-                    Evite incluir <span className="font-medium">opiniones personales</span>; céntrese en hechos
+                  <p className="text-sm">
+                    Evite incluir <span className="font-semibold">opiniones personales</span>; céntrese en hechos
                     concretos
                   </p>
                 </div>
@@ -396,11 +406,15 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
       </div>
 
       {/* Campo de narración de hechos */}
-      <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
-        <FormLabel className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
-          <ClipboardList className="h-5 w-5 mr-3 text-primary" />
-          Descripción Detallada de los Hechos <span className="text-red-500">*</span>
-        </FormLabel>
+      <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
+        <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
+          <div className="bg-primary/10 rounded-lg p-2 mr-4">
+            <ClipboardList className="h-6 w-6 text-primary" />
+          </div>
+          <h3 className="text-xl font-semibold text-primary">
+            Descripción Detallada de los Hechos <span className="text-red-500">*</span>
+          </h3>
+        </div>
         <FormField
           control={form.control}
           name="narracionHechos"
@@ -409,7 +423,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
               <FormControl>
                 <div className="relative">
                   {error && (
-                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md mb-2">
+                    <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg mb-4">
                       <div className="flex">
                         <div className="flex-shrink-0">
                           <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
@@ -431,7 +445,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                     placeholder="Ejemplo: El día 12 de abril de 2023, aproximadamente a las 14:30 horas, en las oficinas ubicadas en Av. Reforma 101, piso 3, observé que el Lic. Juan Pérez Gómez, Director de Adquisiciones, recibió un sobre de parte del representante de la empresa Construcciones XYZ. Al abrir el sobre, pude ver que contenía dinero en efectivo. Posteriormente, el día 15 de abril, se publicó la licitación LIC-2023-001 donde la empresa Construcciones XYZ resultó ganadora sin cumplir con todos los requisitos establecidos en la convocatoria..."
                     className="h-80 resize-none text-sm pr-24 min-h-[120px]"
                   />
-                  <div className="absolute bottom-2 right-2">
+                  <div className="absolute bottom-3 right-3">
                     <Button
                       type="button"
                       variant={isListening ? "destructive" : "outline"}
@@ -456,7 +470,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                   </div>
                 </div>
               </FormControl>
-              <FormDescription className="text-xs sm:text-sm">
+              <FormDescription className="text-sm text-muted-foreground">
                 Describa detalladamente los hechos que desea denunciar. Sea lo más específico posible.
               </FormDescription>
               <FormMessage />
@@ -466,33 +480,35 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
       </div>
 
       {/* Sección de clasificación de faltas */}
-      <div className="rounded-lg border-2 border-primary/20 p-4 sm:p-6 bg-card/95 backdrop-blur shadow-md">
-        <h3 className="text-lg font-semibold flex items-center mb-4 sm:mb-6 text-primary pb-3 border-b border-primary/20">
-          <ClipboardList className="h-5 w-5 mr-3 text-primary" />
-          Clasificación
-        </h3>
+      <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
+        <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
+          <div className="bg-primary/10 rounded-lg p-2 mr-4">
+            <ClipboardList className="h-6 w-6 text-primary" />
+          </div>
+          <h3 className="text-xl font-semibold text-primary">Clasificación</h3>
+        </div>
 
-        <FormDescription className="text-xs sm:text-sm mb-4">
+        <FormDescription className="text-sm text-muted-foreground mb-6">
           Seleccione las conductas que mejor describan los hechos denunciados. Tu elección nos ayudará a canalizar
           adecuadamente tu denuncia. Esta sección es opcional.
         </FormDescription>
 
         {loadingFaltas ? (
-          <div className="flex items-center justify-center p-8">
+          <div className="flex items-center justify-center p-12">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <span className="ml-3 text-sm text-muted-foreground">Cargando categorías de faltas...</span>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Información sobre el ámbito de aplicación */}
-            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <div className="bg-primary/5 p-5 rounded-xl border border-primary/10">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium">Ámbito de aplicación:</h4>
+                <h4 className="text-base font-semibold text-primary">Ámbito de aplicación:</h4>
                 <div className="flex items-center space-x-2">
                   {(!entePublicoSeleccionado ||
                     (entePublicoSeleccionado &&
                       form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00")) && (
-                    <Badge variant="outline" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                    <Badge variant="outline" className="bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200">
                       <Flag className="h-3 w-3 mr-1" />
                       Federal
                     </Badge>
@@ -500,14 +516,17 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                   {(!entePublicoSeleccionado ||
                     (entePublicoSeleccionado &&
                       form?.getValues("personaDenunciada.entePublicoData")?.entidad !== "00")) && (
-                    <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100">
+                    <Badge
+                      variant="outline"
+                      className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
+                    >
                       <MapPin className="h-3 w-3 mr-1" />
                       {getSelectedEntidadName()}
                     </Badge>
                   )}
                 </div>
               </div>
-              <p className="text-xs text-slate-600 mt-2">
+              <p className="text-sm text-muted-foreground mt-3">
                 {entePublicoSeleccionado
                   ? form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00"
                     ? "Se muestran faltas aplicables a nivel federal."
@@ -551,10 +570,10 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
 
             {/* Mensaje cuando no hay faltas disponibles */}
             {faltasGraves.length === 0 && faltasNoGraves.length === 0 && hechosCorrupcion.length === 0 && (
-              <div className="flex flex-col items-center justify-center p-8 bg-slate-50 rounded-lg border border-slate-200">
-                <Filter className="h-12 w-12 mb-3 text-slate-400" />
-                <p className="text-base font-medium text-slate-700">No hay faltas disponibles</p>
-                <p className="text-sm text-slate-500 text-center mt-2">
+              <div className="flex flex-col items-center justify-center p-12 bg-primary/5 rounded-xl border border-primary/10">
+                <Filter className="h-12 w-12 mb-4 text-primary/50" />
+                <p className="text-lg font-semibold text-primary">No hay faltas disponibles</p>
+                <p className="text-sm text-muted-foreground text-center mt-2">
                   No se encontraron faltas aplicables para la configuración actual.
                   {entePublicoSeleccionado
                     ? " Intente seleccionar otro ente público."

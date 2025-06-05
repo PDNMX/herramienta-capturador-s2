@@ -1671,13 +1671,13 @@ fields:
         enableCreate: false
       readonly: false
       required: false
-      sort: 6
+      sort: 7
       special:
         - m2o
       translations: null
       validation: null
       validation_message: null
-      width: full
+      width: half
     schema:
       name: municipioAlcaldia
       table: domicilios_denunciantes
@@ -1732,6 +1732,46 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: domicilios_denunciantes
+    field: entidad
+    type: integer
+    meta:
+      collection: domicilios_denunciantes
+      conditions: null
+      display: null
+      display_options: null
+      field: entidad
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+      readonly: false
+      required: false
+      sort: 6
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: entidad
+      table: domicilios_denunciantes
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entidades
+      foreign_key_column: id
   - collection: entidades
     field: id
     type: integer
@@ -3656,6 +3696,27 @@ relations:
       foreign_key_table: municipios
       foreign_key_column: id
       constraint_name: domicilios_denunciantes_municipioalcaldia_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: domicilios_denunciantes
+    field: entidad
+    related_collection: entidades
+    meta:
+      junction_field: null
+      many_collection: domicilios_denunciantes
+      many_field: entidad
+      one_allowed_collections: null
+      one_collection: entidades
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: domicilios_denunciantes
+      column: entidad
+      foreign_key_table: entidades
+      foreign_key_column: id
+      constraint_name: domicilios_denunciantes_entidad_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: faltas

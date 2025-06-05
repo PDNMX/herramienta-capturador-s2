@@ -6,9 +6,10 @@ import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Mic, Square, ClipboardList, Loader2 } from "lucide-react"
+import { Mic, Square, ClipboardList, Loader2, Flag, MapPin, Filter } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Badge } from "@/components/ui/badge"
 import type { UseFormReturn } from "react-hook-form"
 import { publicDirectus } from "@/lib/directus"
 import { readItems } from "@directus/sdk"
@@ -30,55 +31,83 @@ interface CheckboxGroupProps {
   title: string
   description: string
   name: string
-  items: Array<{ id: number; label: string; description: string }>
+  items: Array<{ id: number; label: string; description: string; entidad?: number }>
   form: UseFormReturn<any>
 }
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name, items, form }) => (
-  <div className="rounded-lg border border-primary/20 p-3 sm:p-4 shadow-sm bg-card/95 backdrop-blur">
-    <div className="space-y-2">
-      <FormLabel className="text-base block">{title}</FormLabel>
-      <FormDescription className="text-xs sm:text-sm">{description}</FormDescription>
-      <FormField
-        control={form.control}
-        name={name}
-        render={() => (
-          <FormItem>
-            <ScrollArea className="h-[200px] rounded-md border mt-3">
-              <div className="space-y-2 p-4 pt-2">
-                {items.map((item) => (
-                  <FormField
-                    key={item.id}
-                    control={form.control}
-                    name={name}
-                    render={({ field }) => (
-                      <FormItem key={item.id} className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...(field.value || []), item.id])
-                                : field.onChange(field.value?.filter((value: number) => value !== item.id))
-                            }}
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel className="text-sm font-medium">{item.label}</FormLabel>
-                          <FormDescription className="text-xs">{item.description}</FormDescription>
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                ))}
-              </div>
-            </ScrollArea>
-          </FormItem>
-        )}
-      />
+const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name, items, form }) => {
+  return (
+    <div className="rounded-lg border border-primary/20 p-4 sm:p-5 shadow-sm bg-card/95 backdrop-blur">
+      <div className="space-y-3">
+        <FormLabel className="text-base block">{title}</FormLabel>
+        <FormDescription className="text-xs sm:text-sm">{description}</FormDescription>
+        <FormField
+          control={form.control}
+          name={name}
+          render={() => (
+            <FormItem>
+              <ScrollArea className="h-[250px] rounded-md border mt-3">
+                <div className="space-y-3 p-5 pt-3">
+                  {items.length > 0 ? (
+                    items.map((item) => (
+                      <FormField
+                        key={item.id}
+                        control={form.control}
+                        name={name}
+                        render={({ field }) => (
+                          <FormItem
+                            key={item.id}
+                            className="flex flex-row items-start space-x-4 space-y-0 p-3 rounded-lg border border-gray-100 hover:border-primary/30 hover:bg-gray-50/50 transition-colors"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(item.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...(field.value || []), item.id])
+                                    : field.onChange(field.value?.filter((value: number) => value !== item.id))
+                                }}
+                              />
+                            </FormControl>
+                            <div className="space-y-2 leading-none flex-1">
+                              <div className="flex items-center justify-between">
+                                <FormLabel className="text-sm font-medium cursor-pointer">{item.label}</FormLabel>
+                                {item.entidad === 0 || item.entidad === 33 ? (
+                                  <Badge variant="outline" className="ml-2 bg-blue-100 text-blue-800 hover:bg-blue-100">
+                                    <Flag className="h-3 w-3 mr-1" />
+                                    Federal
+                                  </Badge>
+                                ) : (
+                                  <Badge
+                                    variant="outline"
+                                    className="ml-2 bg-green-100 text-green-800 hover:bg-green-100"
+                                  >
+                                    <MapPin className="h-3 w-3 mr-1" />
+                                    Entidad
+                                  </Badge>
+                                )}
+                              </div>
+                              <FormDescription className="text-xs leading-relaxed">{item.description}</FormDescription>
+                            </div>
+                          </FormItem>
+                        )}
+                      />
+                    ))
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-32 text-muted-foreground">
+                      <Filter className="h-8 w-8 mb-2 opacity-50" />
+                      <p className="text-sm">No hay faltas disponibles en esta categoría</p>
+                    </div>
+                  )}
+                </div>
+              </ScrollArea>
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 interface NarracionYFaltaStepProps {
   form: UseFormReturn<any> | null
@@ -95,15 +124,20 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   const [loadingFaltas, setLoadingFaltas] = useState(false)
 
   // Estados para las faltas filtradas por tipo
-  const [faltasGraves, setFaltasGraves] = useState<Array<{ id: number; label: string; description: string }>>([])
-  const [faltasNoGraves, setFaltasNoGraves] = useState<Array<{ id: number; label: string; description: string }>>([])
-  const [hechosCorrupcion, setHechosCorrupcion] = useState<Array<{ id: number; label: string; description: string }>>(
-    [],
-  )
+  const [faltasGraves, setFaltasGraves] = useState<
+    Array<{ id: number; label: string; description: string; entidad?: number }>
+  >([])
+  const [faltasNoGraves, setFaltasNoGraves] = useState<
+    Array<{ id: number; label: string; description: string; entidad?: number }>
+  >([])
+  const [hechosCorrupcion, setHechosCorrupcion] = useState<
+    Array<{ id: number; label: string; description: string; entidad?: number }>
+  >([])
 
   // Obtener el tipo de persona seleccionada
   const tipoPersona = form?.watch("personaDenunciada.tipoPersona") || "SERVIDOR_PUBLICO"
   const entidadSeleccionada = form?.watch("personaDenunciada.entidad")
+  const entePublicoSeleccionado = form?.watch("personaDenunciada.entePublico")
 
   // Cargar las faltas desde Directus
   useEffect(() => {
@@ -133,7 +167,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
     fetchFaltas()
   }, [])
 
-  // Filtrar las faltas según el tipo de persona y la entidad seleccionada
+  // Filtrar las faltas según el tipo de persona, la entidad y el ente público seleccionado
   useEffect(() => {
     if (faltas.length > 0) {
       // Filtrar por tipo de persona (servidorPublico o particular)
@@ -143,14 +177,31 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         return false
       }
 
-      // Filtrar por entidad si está seleccionada
+      // Filtrar por entidad y ente público
       const esEntidadValida = (falta: Falta) => {
+        // Si hay un ente público seleccionado
+        if (entePublicoSeleccionado) {
+          // Obtener el tipo de ente público (federal o estatal)
+          const entePublicoData = form?.getValues("personaDenunciada.entePublicoData")
+          const esFederal = entePublicoData?.entidad === "00"
+
+          if (esFederal) {
+            // Si el ente es federal, mostrar solo faltas federales
+            return falta.entidad === 0 || falta.entidad === 33
+          } else {
+            // Si el ente es de entidad, mostrar solo faltas de esa entidad específica
+            return falta.entidad === entidadSeleccionada
+          }
+        }
+
+        // Si no hay ente público pero sí hay entidad seleccionada
+        if (entidadSeleccionada) {
+          // Mostrar faltas federales y de la entidad seleccionada
+          return falta.entidad === 0 || falta.entidad === 33 || falta.entidad === entidadSeleccionada
+        }
+
         // Si no hay entidad seleccionada, mostrar todas las faltas
-        if (!entidadSeleccionada) return true
-        // Si la falta tiene entidad 0 o 33, es federal y aplica para todas las entidades
-        if (falta.entidad === 0 || falta.entidad === 33) return true
-        // Si coincide la entidad específica
-        return falta.entidad === entidadSeleccionada
+        return true
       }
 
       // Aplicar filtros y mapear a formato para checkboxes
@@ -161,6 +212,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         id: falta.id,
         label: falta.nombre,
         description: falta.descripcion,
+        entidad: falta.entidad, // Añadimos la entidad para poder filtrar
       })
 
       setFaltasGraves(faltasFiltradas.filter((f) => f.clasificacion === "faltaGrave").map(mapearFalta))
@@ -173,7 +225,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         corrupcion: hechosCorrupcion.length,
       })
     }
-  }, [faltas, tipoPersona, entidadSeleccionada])
+  }, [faltas, tipoPersona, entidadSeleccionada, entePublicoSeleccionado, form])
 
   useEffect(() => {
     // Verificar si el navegador soporta la Web Speech API
@@ -242,6 +294,14 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
     if (recognitionRef.current) {
       recognitionRef.current.stop()
     }
+  }
+
+  // Obtener el nombre de la entidad seleccionada
+  const getSelectedEntidadName = () => {
+    const entidadValue = form?.getValues("personaDenunciada.entidad")
+    // Aquí deberías tener una función o un mapeo para obtener el nombre de la entidad
+    // Por ahora, retornamos un valor genérico
+    return entidadValue ? `Entidad ${entidadValue}` : "Entidad"
   }
 
   if (!form) {
@@ -411,6 +471,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
           <ClipboardList className="h-5 w-5 mr-3 text-primary" />
           Clasificación
         </h3>
+
         <FormDescription className="text-xs sm:text-sm mb-4">
           Seleccione las conductas que mejor describan los hechos denunciados. Tu elección nos ayudará a canalizar
           adecuadamente tu denuncia. Esta sección es opcional.
@@ -422,30 +483,85 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
             <span className="ml-3 text-sm text-muted-foreground">Cargando categorías de faltas...</span>
           </div>
         ) : (
-          <div className="space-y-4">
-            <CheckboxGroup
-              title="Faltas Administrativas Graves"
-              description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."
-              name="faltaCometida.faltaGrave"
-              items={faltasGraves}
-              form={form}
-            />
+          <div className="space-y-6">
+            {/* Información sobre el ámbito de aplicación */}
+            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-medium">Ámbito de aplicación:</h4>
+                <div className="flex items-center space-x-2">
+                  {(!entePublicoSeleccionado ||
+                    (entePublicoSeleccionado &&
+                      form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00")) && (
+                    <Badge variant="outline" className="bg-blue-100 text-blue-800 hover:bg-blue-100">
+                      <Flag className="h-3 w-3 mr-1" />
+                      Federal
+                    </Badge>
+                  )}
+                  {(!entePublicoSeleccionado ||
+                    (entePublicoSeleccionado &&
+                      form?.getValues("personaDenunciada.entePublicoData")?.entidad !== "00")) && (
+                    <Badge variant="outline" className="bg-green-100 text-green-800 hover:bg-green-100">
+                      <MapPin className="h-3 w-3 mr-1" />
+                      {getSelectedEntidadName()}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-slate-600 mt-2">
+                {entePublicoSeleccionado
+                  ? form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00"
+                    ? "Se muestran faltas aplicables a nivel federal."
+                    : "Se muestran faltas aplicables a nivel estatal."
+                  : "Se muestran faltas aplicables a nivel federal y estatal."}
+              </p>
+            </div>
 
-            <CheckboxGroup
-              title="Faltas Administrativas No Graves"
-              description="Conductas que representan incumplimientos menores a la normatividad sin intención de obtener beneficios indebidos."
-              name="faltaCometida.faltaNoGrave"
-              items={faltasNoGraves}
-              form={form}
-            />
+            {/* Faltas Graves */}
+            {faltasGraves.length > 0 && (
+              <CheckboxGroup
+                title="Faltas Administrativas Graves"
+                description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."
+                name="faltaCometida.faltaGrave"
+                items={faltasGraves}
+                form={form}
+              />
+            )}
 
-            <CheckboxGroup
-              title="Hechos de Corrupción"
-              description="Conductas que implican el abuso del poder para obtener beneficios privados o ventajas indebidas."
-              name="faltaCometida.hechosCorrupcion"
-              items={hechosCorrupcion}
-              form={form}
-            />
+            {/* Faltas No Graves */}
+            {faltasNoGraves.length > 0 && (
+              <CheckboxGroup
+                title="Faltas Administrativas No Graves"
+                description="Conductas que representan incumplimientos menores a la normatividad sin intención de obtener beneficios indebidos."
+                name="faltaCometida.faltaNoGrave"
+                items={faltasNoGraves}
+                form={form}
+              />
+            )}
+
+            {/* Hechos de Corrupción */}
+            {hechosCorrupcion.length > 0 && (
+              <CheckboxGroup
+                title="Hechos de Corrupción"
+                description="Conductas que implican el abuso del poder para obtener beneficios privados o ventajas indebidas."
+                name="faltaCometida.hechosCorrupcion"
+                items={hechosCorrupcion}
+                form={form}
+              />
+            )}
+
+            {/* Mensaje cuando no hay faltas disponibles */}
+            {faltasGraves.length === 0 && faltasNoGraves.length === 0 && hechosCorrupcion.length === 0 && (
+              <div className="flex flex-col items-center justify-center p-8 bg-slate-50 rounded-lg border border-slate-200">
+                <Filter className="h-12 w-12 mb-3 text-slate-400" />
+                <p className="text-base font-medium text-slate-700">No hay faltas disponibles</p>
+                <p className="text-sm text-slate-500 text-center mt-2">
+                  No se encontraron faltas aplicables para la configuración actual.
+                  {entePublicoSeleccionado
+                    ? " Intente seleccionar otro ente público."
+                    : " Intente seleccionar otra entidad."}
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>

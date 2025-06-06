@@ -125,95 +125,110 @@ export function Landing() {
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground bg-primary/10 px-4 py-2 rounded-full shadow-sm">
                     <Clock className="h-5 w-5 text-primary" />
-                    <span className="text-sm">20 minutos aproximadamente</span>
+                    <span className="text-xs">20 minutos aproximadamente</span>
                   </div>
                 </CardHeader>
 
-                <CardContent className="pt-6">
-                  <p className="mb-8 text-lg text-muted-foreground">
-                    Ayúdanos a combatir la corrupción, tu denuncia es muy importante. Tu denuncia podrá ser anónima para
-                    garantizar la seguridad y confidencialidad de tu identidad. Podrás consultar el estado de tu
-                    denuncia con el folio de seguimiento.
-                  </p>
-
-                  <div className="grid gap-8 md:grid-cols-2">
-                    {/* Podrás denunciar - Mejorado */}
-                    <div className="p-4 rounded-lg border-2 border-primary/20 bg-card shadow-md hover:shadow-lg transition-all duration-300">
-                      <div className="flex items-center gap-3 mb-5">
-                        <div className="rounded-full bg-primary/20 p-3 shadow-sm">
-                          <CheckCircle2 className="h-6 w-6 text-primary" />
+                  <div className="p-6">
+                        <div className="flex items-start gap-4 mb-4">
+                          <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl p-3 shadow-md">
+                            <Shield className="h-6 w-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Tu denuncia es importante</h3>
+                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                              Ayúdanos a combatir la corrupción. Tu denuncia podrá ser <span className="font-semibold text-emerald-600 dark:text-emerald-400">anónima</span> para 
+                              garantizar la seguridad y confidencialidad de tu identidad.
+                            </p>
+                          </div>
                         </div>
-                        <h3 className="text-xl font-semibold text-primary">Podrás denunciar</h3>
+                        <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl p-4 border border-emerald-200/50 dark:border-emerald-700/30">
+                          <p className="text-sm md:text-base text-muted-foreground">
+                            💡 Podrás consultar el estado de tu denuncia en cualquier momento con tu <span className="font-semibold">folio de seguimiento.</span>
+                          </p>
+                        </div>
+                  </div>
+
+                  <div className="grid gap-4 md:gap-5 lg:grid-cols-2 p-6 pt-0">
+                    {/* Podrás denunciar - Diseño profesional */}
+                    <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 md:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-2.5 shadow-md">
+                          <CheckCircle2 className="h-5 w-5 text-white" />
+                        </div>
+                        <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-gray-100">Podrás denunciar</h3>
                       </div>
-                      <ul className="space-y-4 pl-2">
-                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
-                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
-                            <CheckCircle2 className="h-4 w-4 text-primary" />
+                      <ul className="space-y-3">
+                        <li className="flex items-start gap-3 bg-green-50/80 dark:bg-green-900/20 p-3 rounded-lg border border-green-200/50 dark:border-green-700/30">
+                          <div className="bg-green-100 dark:bg-green-800/50 rounded-lg p-1.5 mt-0.5 shadow-sm">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                           </div>
-                          <span className="text-foreground">Conductas de personas servidoras públicas en el ejercicio de sus funciones.</span>
-                        </li>
-                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
-                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
-                            <CheckCircle2 className="h-4 w-4 text-primary" />
-                          </div>
-                          <span className="text-foreground">
-                            Conductas de personas particulares o empresas que manejen recursos públicos, participen en
-                            contrataciones públicas o realicen transacciones comerciales internacionales.
+                          <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                            <span className="font-semibold">Servidores públicos:</span> Conductas en el ejercicio de sus funciones.
                           </span>
                         </li>
-                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
-                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
-                            <CheckCircle2 className="h-4 w-4 text-primary" />
+                        <li className="flex items-start gap-3 bg-green-50/80 dark:bg-green-900/20 p-3 rounded-lg border border-green-200/50 dark:border-green-700/30">
+                          <div className="bg-green-100 dark:bg-green-800/50 rounded-lg p-1.5 mt-0.5 shadow-sm">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                           </div>
-                          <span className="text-foreground">
-                            Conductas de candidatos a cargos de elección popular, miembros de equipos de campaña
-                            electoral o de transición, o líderes de sindicatos del sector público.
+                          <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                            <span className="font-semibold">Particulares y empresas:</span> Que manejen recursos públicos o participen en contrataciones.
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-3 bg-green-50/80 dark:bg-green-900/20 p-3 rounded-lg border border-green-200/50 dark:border-green-700/30">
+                          <div className="bg-green-100 dark:bg-green-800/50 rounded-lg p-1.5 mt-0.5 shadow-sm">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
+                          </div>
+                          <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                            <span className="font-semibold">Candidatos y líderes:</span> De elección popular, campañas electorales o sindicatos públicos.
                           </span>
                         </li>
                       </ul>
                     </div>
 
-                    {/* No podrás denunciar - Mejorado */}
-                    <div className="p-4 rounded-lg border-2 border-primary/20 bg-card shadow-md hover:shadow-lg transition-all duration-300">
-                      <div className="flex items-center gap-3 mb-5">
-                        <div className="rounded-full bg-primary/20 p-3 shadow-sm">
-                          <XCircle className="h-6 w-6 text-primary" />
+                    {/* No podrás denunciar - Diseño profesional */}
+                    <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm p-4 md:p-5 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-2.5 shadow-md">
+                          <XCircle className="h-5 w-5 text-white" />
                         </div>
-                        <h3 className="text-xl font-semibold text-primary">No podrás denunciar</h3>
+                        <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-gray-100">No podrás denunciar</h3>
                       </div>
-                      <p className="text-muted-foreground mb-4 bg-primary/5 p-3 rounded-lg">
-                        Este sistema no está diseñado para atender los siguientes casos:
-                      </p>
-                      <ul className="space-y-4 pl-2">
-                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
-                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
-                            <AlertCircle className="h-4 w-4 text-primary" />
+                      <div className="bg-orange-50/80 dark:bg-orange-900/20 p-3 rounded-lg border border-orange-200/50 dark:border-orange-700/30 mb-4">
+                        <p className="text-xs md:text-sm text-orange-800 dark:text-orange-200 font-medium">
+                          ⚠️ Este sistema no está diseñado para atender los siguientes casos:
+                        </p>
+                      </div>
+                      <ul className="space-y-3">
+                        <li className="flex items-start gap-3 bg-red-50/80 dark:bg-red-900/20 p-3 rounded-lg border border-red-200/50 dark:border-red-700/30">
+                          <div className="bg-red-100 dark:bg-red-800/50 rounded-lg p-1.5 mt-0.5 shadow-sm">
+                            <AlertCircle className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
                           </div>
                           <div>
-                            <span className="font-medium">Trámites y/o servicios.</span>
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-xs md:text-sm">Trámites y servicios</span>
+                            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                               Problemas con trámites administrativos o servicios públicos.
                             </p>
                           </div>
                         </li>
-                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
-                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
-                            <AlertCircle className="h-4 w-4 text-primary" />
+                        <li className="flex items-start gap-3 bg-red-50/80 dark:bg-red-900/20 p-3 rounded-lg border border-red-200/50 dark:border-red-700/30">
+                          <div className="bg-red-100 dark:bg-red-800/50 rounded-lg p-1.5 mt-0.5 shadow-sm">
+                            <AlertCircle className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
                           </div>
                           <div>
-                            <span className="font-medium">Asuntos laborales.</span>
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-xs md:text-sm">Asuntos laborales</span>
+                            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                               Conflictos entre empleadores y empleados, o relacionados con condiciones de trabajo.
                             </p>
                           </div>
                         </li>
-                        <li className="flex items-start gap-3 bg-primary/5 p-3 rounded-lg">
-                          <div className="rounded-full bg-primary/10 p-2 mt-0.5 shadow-sm">
-                            <AlertCircle className="h-4 w-4 text-primary" />
+                        <li className="flex items-start gap-3 bg-red-50/80 dark:bg-red-900/20 p-3 rounded-lg border border-red-200/50 dark:border-red-700/30">
+                          <div className="bg-red-100 dark:bg-red-800/50 rounded-lg p-1.5 mt-0.5 shadow-sm">
+                            <AlertCircle className="h-3.5 w-3.5 text-red-600 dark:text-red-400" />
                           </div>
                           <div>
-                            <span className="font-medium">Asuntos entre particulares.</span>
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <span className="font-semibold text-gray-900 dark:text-gray-100 text-xs md:text-sm">Asuntos entre particulares</span>
+                            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                               Conflictos civiles o mercantiles entre personas u organizaciones privadas.
                             </p>
                           </div>
@@ -221,61 +236,35 @@ export function Landing() {
                       </ul>
                     </div>
                   </div>
-                </CardContent>
 
-                <CardFooter className="flex flex-col gap-4 pt-6">
-                  <Button
-                    size="lg"
-                    className="w-full max-w-md bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground py-6 text-lg border-2 border-primary/50 shadow-lg transition-all duration-300 hover:shadow-xl relative overflow-hidden glow-effect"
-                    asChild
-                  >
-                    <Link
-                      href="/presentar-denuncia"
-                      className="flex items-center justify-center gap-3"
+                <CardFooter className="p-4 md:p-6 flex flex-col gap-4">
+                  <div className="relative group w-full max-w-md mx-auto">
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <Button
+                      size="lg"
+                      className="relative w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white py-4 md:py-5 text-sm md:text-base font-bold border-0 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl"
+                      asChild
                     >
-                      Presenta tu Denuncia
-                      <ArrowRight className="h-5 w-5" />
-                    </Link>
-                  </Button>
+                                              <Link
+                          href="/presentar-denuncia"
+                          className="flex items-center justify-center gap-3"
+                        >
+                          <FileText className="h-5 w-5 md:h-6 md:w-6" />
+                          Presenta tu Denuncia
+                          <ArrowRight className="h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-2 transition-transform duration-300" />
+                        </Link>
+                    </Button>
+                  </div>
 
-                  <Button variant="outline" onClick={() => setShowComplaintForm(false)} className="mt-2">
-                    Regresar
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setShowComplaintForm(false)} 
+                    className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/30 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-xl px-6 py-3 font-medium transition-all duration-300"
+                  >
+                  Regresar al inicio
                   </Button>
                 </CardFooter>
               </Card>
-
-              {/* <div className="mb-8 md:mb-16 grid md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setIsModalOpen(true)}
-                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-3 md:p-4 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 border-primary/30 shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="rounded-full bg-primary/20 p-2 md:p-3 shadow-sm">
-                    <Search className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-                  </div>
-                  <div className="flex flex-col items-start flex-1">
-                    <span className="font-semibold">Consultar Estatus</span>
-                    <span className="text-xs md:text-sm text-muted-foreground">Seguimiento de tu denuncia</span>
-                  </div>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-card hover:bg-accent hover:text-accent-foreground text-base md:text-lg p-3 md:p-4 h-auto flex items-center justify-center gap-2 md:gap-4 border-2 border-primary/30 shadow-md hover:shadow-lg transition-all duration-300"
-                  asChild
-                >
-                  <Link href="/estadisticas">
-                    <div className="rounded-full bg-primary/20 p-2 md:p-3 shadow-sm">
-                      <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-primary" />
-                    </div>
-                    <div className="flex flex-col items-start flex-1">
-                      <span className="font-semibold">Estadísticas Nacionales</span>
-                      <span className="text-xs md:text-sm text-muted-foreground">Transparencia en cifras</span>
-                    </div>
-                  </Link>
-                </Button>
-              </div> */}
             </motion.div>
           )}
         </AnimatePresence>

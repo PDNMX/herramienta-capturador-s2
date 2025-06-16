@@ -18,7 +18,7 @@ import { HelpContent } from "./help-content"
 import { DenunciaModal } from "@/components/modal/denuncia-modal"
 import { toast } from "@/components/ui/use-toast"
 
-// Esquema modificado con validaciones condicionales
+// Esquema modificado con validaciones mejoradas
 const formSchema = z
   .object({
     denunciante: z
@@ -26,20 +26,46 @@ const formSchema = z
         anonimo: z.boolean().default(false),
         datosDenunciante: z
           .object({
-            nombre: z.string().optional(),
-            telefono: z.string().optional(),
-            email: z.string().optional(),
+            nombre: z.string()
+              .min(2, "El nombre debe tener al menos 2 caracteres")
+              .max(100, "El nombre no puede exceder 100 caracteres")
+              .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/, "El nombre solo puede contener letras y espacios")
+              .refine(val => val.trim().split(/\s+/).length >= 2, "Debe incluir nombre y al menos un apellido")
+              .optional(),
+            telefono: z.string()
+              .regex(/^\d{10}$/, "El teléfono debe contener exactamente 10 dígitos")
+              .refine(val => !val.startsWith('0'), "El teléfono no puede comenzar con 0")
+              .optional(),
+            email: z.string()
+              .email("Ingrese un correo electrónico válido")
+              .max(254, "El correo electrónico es demasiado largo")
+              .optional(),
             proteccion: z.boolean().default(false),
-            razonesProteccion: z.string().optional(),
+            razonesProteccion: z.string()
+              .max(1000, "Las razones no pueden exceder 1000 caracteres")
+              .optional(),
             domicilioDenunciante: z
               .object({
                 entidad: z.number().optional(),
                 municipio: z.number().optional(),
-                codigoPostal: z.string().optional(),
-                calle: z.string().optional(),
-                numeroExterior: z.string().optional(),
-                numeroInterior: z.string().optional(),
-                municipioAlcaldia: z.string().optional(), // Campo legacy para compatibilidad
+                codigoPostal: z.string()
+                  .regex(/^\d{5}$/, "El código postal debe contener exactamente 5 dígitos")
+                  .optional(),
+                calle: z.string()
+                  .min(3, "La calle debe tener al menos 3 caracteres")
+                  .max(100, "La calle no puede exceder 100 caracteres")
+                  .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s\d\.\-#]+$/, "La calle contiene caracteres no válidos")
+                  .optional(),
+                numeroExterior: z.string()
+                  .min(1, "El número exterior es obligatorio")
+                  .max(10, "El número exterior no puede exceder 10 caracteres")
+                  .regex(/^[a-zA-Z\d\-#]+$/, "El número exterior contiene caracteres no válidos")
+                  .optional(),
+                numeroInterior: z.string()
+                  .max(10, "El número interior no puede exceder 10 caracteres")
+                  .regex(/^[a-zA-Z\d\-#]*$/, "El número interior contiene caracteres no válidos")
+                  .optional(),
+                municipioAlcaldia: z.string().optional(),
               })
               .optional(),
           })
@@ -49,15 +75,43 @@ const formSchema = z
 
     ubicacionHecho: z
       .object({
-        codigoPostal: z.string().optional(),
-        calle: z.string().optional(),
-        numero: z.string().optional(),
-        ciudad: z.string().optional(),
-        estado: z.string().optional(),
-        pais: z.string().optional(),
-        otrasReferencias: z.string().optional(),
-        fechaHecho: z.string().min(1, "La fecha del hecho es obligatoria"),
-        horaHecho: z.string().optional(),
+        codigoPostal: z.string()
+          .regex(/^\d{5}$/, "El código postal debe contener exactamente 5 dígitos")
+          .optional(),
+        calle: z.string()
+          .max(100, "La calle no puede exceder 100 caracteres")
+          .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s\d\.\-#]*$/, "La calle contiene caracteres no válidos")
+          .optional(),
+        numero: z.string()
+          .max(10, "El número no puede exceder 10 caracteres")
+          .regex(/^[a-zA-Z\d\-#]*$/, "El número contiene caracteres no válidos")
+          .optional(),
+        ciudad: z.string()
+          .max(50, "La ciudad no puede exceder 50 caracteres")
+          .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "La ciudad solo puede contener letras y espacios")
+          .optional(),
+        estado: z.string()
+          .max(50, "El estado no puede exceder 50 caracteres")
+          .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El estado solo puede contener letras y espacios")
+          .optional(),
+        pais: z.string()
+          .max(50, "El país no puede exceder 50 caracteres")
+          .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El país solo puede contener letras y espacios")
+          .optional(),
+        otrasReferencias: z.string()
+          .max(500, "Las referencias no pueden exceder 500 caracteres")
+          .optional(),
+        fechaHecho: z.string()
+          .min(1, "La fecha del hecho es obligatoria")
+          .refine(val => {
+            const fecha = new Date(val);
+            const hoy = new Date();
+            hoy.setHours(23, 59, 59, 999); // Permitir fechas de hoy
+            return fecha <= hoy;
+          }, "La fecha no puede ser futura"),
+        horaHecho: z.string()
+          .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:MM)")
+          .optional(),
       })
       .optional(),
 
@@ -68,10 +122,18 @@ const formSchema = z
         tipoPersona: z.enum(["SERVIDOR_PUBLICO", "PARTICULAR"], {
           required_error: "Debe seleccionar el tipo de persona",
         }),
-        nombre: z.string().optional(),
-        apellidos: z.string().optional(),
+        nombre: z.string()
+          .max(50, "El nombre no puede exceder 50 caracteres")
+          .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El nombre solo puede contener letras y espacios")
+          .optional(),
+        apellidos: z.string()
+          .max(50, "Los apellidos no pueden exceder 50 caracteres")
+          .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "Los apellidos solo pueden contener letras y espacios")
+          .optional(),
         genero: z.enum(["MASCULINO", "FEMENINO", "NO_BINARIO"]).optional(),
-        descripcion: z.string().optional(),
+        descripcion: z.string()
+          .max(1000, "La descripción no puede exceder 1000 caracteres")
+          .optional(),
       })
       .optional(),
 
@@ -83,7 +145,8 @@ const formSchema = z
       })
       .optional(),
 
-    narracionHechos: z.string().min(1, "La narración de los hechos es obligatoria"),
+    narracionHechos: z.string()
+      .max(5000, "La narración no puede exceder 5000 caracteres"),
 
     archivosEvidencia: z.array(z.any()).default([]),
 
@@ -92,8 +155,20 @@ const formSchema = z
     datosTestigos: z
       .array(
         z.object({
-          nombre: z.string().optional(),
-          contacto: z.string().optional(),
+          nombre: z.string()
+            .max(100, "El nombre del testigo no puede exceder 100 caracteres")
+            .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El nombre solo puede contener letras y espacios")
+            .optional(),
+          contacto: z.string()
+            .max(100, "El contacto no puede exceder 100 caracteres")
+            .refine(val => {
+              if (!val) return true;
+              // Validar si es teléfono (10 dígitos) o email
+              const phoneRegex = /^\d{10}$/;
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              return phoneRegex.test(val) || emailRegex.test(val);
+            }, "Debe ser un teléfono de 10 dígitos o un email válido")
+            .optional(),
         }),
       )
       .optional(),
@@ -108,16 +183,16 @@ const formSchema = z
 
         // Campos obligatorios cuando no es anónimo
         if (!datosDenunciante.nombre || datosDenunciante.nombre.trim().length < 2) return false
-        if (!datosDenunciante.telefono || datosDenunciante.telefono.trim().length < 10) return false
+        if (!datosDenunciante.telefono || !/^\d{10}$/.test(datosDenunciante.telefono)) return false
 
-        // Validar domicilio obligatorio ACTUALIZADO
+        // Validar domicilio obligatorio
         const domicilio = datosDenunciante.domicilioDenunciante
         if (!domicilio) return false
         if (!domicilio.calle || domicilio.calle.trim().length < 3) return false
         if (!domicilio.numeroExterior || domicilio.numeroExterior.trim().length < 1) return false
         if (!domicilio.entidad || domicilio.entidad <= 0) return false
         if (!domicilio.municipio || domicilio.municipio <= 0) return false
-        if (!domicilio.codigoPostal || domicilio.codigoPostal.trim().length < 5) return false
+        if (!domicilio.codigoPostal || !/^\d{5}$/.test(domicilio.codigoPostal)) return false
       }
       return true
     },

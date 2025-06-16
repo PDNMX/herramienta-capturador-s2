@@ -1,4 +1,3 @@
-swaggerS2.yaml
 # Logs
 logs
 *.log
@@ -134,5 +133,3 @@ directus_openapi.json
 objetos_ejemplo.json
 swaggerS2.yaml
 directus_openapi_s2_10_04_2025.json
-analisis_data
-analisis_exploratorio_s2.ipynb

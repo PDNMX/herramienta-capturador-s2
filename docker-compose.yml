@@ -9,10 +9,11 @@ services:
     command: >
       sh -c "node cli.js bootstrap &&
             node cli.js schema apply --yes /directus/migrations/colecciones.yaml &&
+            sh /directus/init-modificaciones-db.sh &&
             pm2-runtime start ecosystem.config.cjs"
     restart: always
     ports:
-      - 8055:8055
+      - 8057:8055
     depends_on:
       - db
     environment:
@@ -41,29 +42,17 @@ services:
       EMAIL_SMTP_PORT: ${SMTP_PORT}
       EMAIL_SMTP_USER: ${SMTP_USER}
       EMAIL_SMTP_PASSWORD: ${SMTP_PASSWORD}
-      # Variables de locale
-      LANG: es_MX.UTF-8
-      LC_ALL: es-MX-x-icu
-      TZ: America/Mexico_City
+      SECRET: ${DIRECTUS_SECRET}
 
   db:
     image: postgres:14-alpine
     restart: always
     environment:
-      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_DB: "directus"
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      LANG: es_MX.UTF-8
-      LC_COLLATE: es-MX-x-icu
-      LC_CTYPE: es_MX.UTF-8
-      # Modificamos los argumentos de inicialización
-      POSTGRES_INITDB_ARGS: "--data-checksums --encoding=UTF8 --locale=es_MX.UTF-8 --lc-collate=es-MX-x-icu --lc-ctype=es_MX.UTF-8" # Configuramos timezone
-      TZ: America/Mexico_City
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./init-locales.sh:/docker-entrypoint-initdb.d/init-locales.sh
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf
-    command: postgres -c config_file=/etc/postgresql/postgresql.conf
     ports:
       - 5432:5432
 

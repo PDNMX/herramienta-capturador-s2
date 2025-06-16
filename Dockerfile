@@ -1,32 +1,23 @@
+## Create Production Image
 FROM directus/directus:10
 
-# Cambiar a usuario root para instalar dependencias globales
 USER root
+RUN npm install -g corepack@latest && corepack enable
+RUN apk add --no-cache postgresql-client
 
-# Habilitar corepack
-RUN corepack enable
+# Crear directorio para archivos estáticos
+#RUN mkdir -p /directus/uploads
 
-# Eliminar los archivos existentes si existen
-RUN rm -f /usr/local/bin/pnpm /usr/local/bin/pnpx
+# Copiar el logo
+COPY logo-pdn-white.svg /directus/uploads/21cc850a-1c0c-4d15-aeeb-2ec0a8e98c26.svg
 
-# Instalar pnpm globalmente
-RUN npm install -g pnpm
+# Copiar el script de inicialización
+COPY init-modificaciones-db.sh /directus/init-modificaciones-db.sh
+RUN chmod +x /directus/init-modificaciones-db.sh
 
-# Limpiar la caché de pnpm solo si el directorio existe
-RUN [ ! -d /root/.local/share/pnpm/store/v3/files ] || pnpm store prune
+# Copiar las extensiones construidas
+#COPY --from=builder --chown=node:node /directus/extensions /directus/extensions
 
-# Instalar soporte para locales y ICU
-RUN apk add --no-cache --update tzdata musl-locales icu-data-full icu-libs
-
-# Configurar las variables de entorno para usar es_MX.utf8
-ENV LANG=es_MX.UTF-8 \
-    LC_ALL=es_MX.UTF-8 \
-    LC_COLLATE=es-MX-x-icu \
-    LC_CTYPE=es_MX.UTF-8 \
-    TZ=America/Mexico_City
-
-# Cambiar de nuevo al usuario node
+# Instalar módulo de gestión de esquemas para importar
 USER node
-
-# Instalar el módulo de Directus
-RUN pnpm install directus-extension-schema-management-module@1.5.0 --no-verify-store-integrity
+RUN pnpm install directus-extension-schema-management-module@1.5.0

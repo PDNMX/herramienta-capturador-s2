@@ -2,17 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  Accessibility,
   PersonStanding, 
-  ZoomIn, 
-  ZoomOut, 
-  RotateCcw, 
   Contrast, 
-  MousePointer2,
   Volume2,
   Type,
   Text,
-  ChevronUp,
   Keyboard
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';

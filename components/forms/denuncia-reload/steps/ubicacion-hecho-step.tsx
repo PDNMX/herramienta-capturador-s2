@@ -39,7 +39,15 @@ interface UbicacionHechoStepProps {
 }
 
 export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
-  const [coordinates, setCoordinates] = useState({ lat: 19.432608, lng: -99.133209 })
+  const [coordinates, setCoordinates] = useState(() => {
+    // Intentar obtener las coordenadas del formulario
+    const lat = form.getValues("ubicacionHecho.latitud")
+    const lng = form.getValues("ubicacionHecho.longitud")
+    return {
+      lat: lat || 19.432608,
+      lng: lng || -99.133209
+    }
+  })
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const markerRef = useRef<mapboxgl.Marker | null>(null)
@@ -78,13 +86,16 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         }
         setAddressDetails(address)
 
-        // Usar setValue sin activar validación
+        // Actualizar todos los campos del formulario
         form.setValue("ubicacionHecho.calle", address.street, { shouldValidate: false })
         form.setValue("ubicacionHecho.numero", address.number, { shouldValidate: false })
         form.setValue("ubicacionHecho.ciudad", address.city, { shouldValidate: false })
         form.setValue("ubicacionHecho.estado", address.state, { shouldValidate: false })
         form.setValue("ubicacionHecho.pais", address.country, { shouldValidate: false })
         form.setValue("ubicacionHecho.codigoPostal", address.postalCode, { shouldValidate: false })
+        // Guardar las coordenadas en el formulario
+        form.setValue("ubicacionHecho.latitud", lat, { shouldValidate: false })
+        form.setValue("ubicacionHecho.longitud", lng, { shouldValidate: false })
       }
     } catch (error) {
       console.error("Error en geocodificación inversa:", error)
@@ -222,6 +233,17 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         }
         reverseGeocode(lat, lng)
       })
+
+      // Si hay coordenadas guardadas, centrar el mapa en ellas sin animación
+      const savedLat = form.getValues("ubicacionHecho.latitud")
+      const savedLng = form.getValues("ubicacionHecho.longitud")
+      if (savedLat && savedLng) {
+        map.jumpTo({
+          center: [savedLng, savedLat],
+          zoom: 15,
+        })
+        marker.setLngLat([savedLng, savedLat])
+      }
 
       return () => {
         if (tempMarker) tempMarker.remove()
@@ -486,7 +508,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                       <Input
                         {...field}
                         placeholder="Ej. Av. Insurgentes"
-                        className={cn("text-sm h-12 pl-10", !manualAddressMode ? "cursor-not-allowed bg-gray-50" : "")}
+                        className={cn(
+                          "text-sm h-12 pl-10 bg-background border-input",
+                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                        )}
                         readOnly={!manualAddressMode}
                         onChange={(e) => {
                           field.onChange(e)
@@ -517,7 +542,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                       <Input
                         {...field}
                         placeholder="Ej. 123"
-                        className={cn("text-sm h-12 pl-10", !manualAddressMode ? "cursor-not-allowed bg-gray-50" : "")}
+                        className={cn(
+                          "text-sm h-12 pl-10 bg-background border-input",
+                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                        )}
                         readOnly={!manualAddressMode}
                         onChange={(e) => {
                           field.onChange(e)
@@ -550,7 +578,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                       <Input
                         {...field}
                         placeholder="Ej. Ciudad de México"
-                        className={cn("text-sm h-12 pl-10", !manualAddressMode ? "cursor-not-allowed bg-gray-50" : "")}
+                        className={cn(
+                          "text-sm h-12 pl-10 bg-background border-input",
+                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                        )}
                         readOnly={!manualAddressMode}
                         onChange={(e) => {
                           field.onChange(e)
@@ -581,7 +612,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                       <Input
                         {...field}
                         placeholder="Ej. CDMX"
-                        className={cn("text-sm h-12 pl-10", !manualAddressMode ? "cursor-not-allowed bg-gray-50" : "")}
+                        className={cn(
+                          "text-sm h-12 pl-10 bg-background border-input",
+                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                        )}
                         readOnly={!manualAddressMode}
                         onChange={(e) => {
                           field.onChange(e)
@@ -612,7 +646,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                       <Input
                         {...field}
                         placeholder="Ej. 06700"
-                        className={cn("text-sm h-12 pl-10", !manualAddressMode ? "cursor-not-allowed bg-gray-50" : "")}
+                        className={cn(
+                          "text-sm h-12 pl-10 bg-background border-input",
+                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                        )}
                         readOnly={!manualAddressMode}
                         onChange={(e) => {
                           field.onChange(e)
@@ -644,7 +681,10 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
                     <Input
                       {...field}
                       placeholder="Ej. México"
-                      className={cn("text-sm h-12 pl-10", !manualAddressMode ? "cursor-not-allowed bg-gray-50" : "")}
+                      className={cn(
+                        "text-sm h-12 pl-10 bg-background border-input",
+                        !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                      )}
                       readOnly={!manualAddressMode}
                       onChange={(e) => {
                         field.onChange(e)

@@ -47,6 +47,23 @@ const CompactChoiceBox = React.forwardRef<
 ))
 CompactChoiceBox.displayName = "CompactChoiceBox"
 
+// Funciones de validación y formateo para testigos
+const formatTestigoName = (value: string): string => {
+  // Remover caracteres especiales y números, permitir solo letras, espacios y acentos
+  return value.replace(/[^a-zA-ZÀ-ÿ\u00f1\u00d1\s]/g, '')
+}
+
+const formatTestigoContacto = (value: string): string => {
+  // Si parece ser un teléfono (solo números), formatear como teléfono
+  if (/^\d+$/.test(value.replace(/\s/g, ''))) {
+    // Remover todo lo que no sea dígito y limitar a 10
+    const numbers = value.replace(/\D/g, '')
+    return numbers.slice(0, 10)
+  }
+  // Si no, mantener como está (podría ser email)
+  return value
+}
+
 export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
   const [dragActive, setDragActive] = useState(false)
 
@@ -532,6 +549,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                   </FormItem>
                 </RadioGroup>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -571,7 +589,7 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute top-3 right-3 h-9 w-9 hover:bg-destructive/10 hover:text-destructive"
+                        className="absolute top-3 right-3 h-9 w-9 hover:bg-destructive/10 hover:text-destructive z-10"
                         onClick={() => remove(index)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -591,12 +609,18 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                                       {...field}
                                       placeholder="Ej. María López García"
                                       className="text-sm h-12 pl-10"
+                                      onChange={(e) => {
+                                        const formatted = formatTestigoName(e.target.value)
+                                        field.onChange(formatted)
+                                      }}
+                                      maxLength={100}
                                     />
                                   </div>
                                 </FormControl>
                                 <FormDescription className="text-xs text-muted-foreground">
-                                  Escriba el nombre (s), apellido (s) y/o alias de la persona que presenció los hechos
+                                  Escriba el nombre (s), apellido (s) y/o alias de la persona que presenció los hechos. Solo letras y espacios.
                                 </FormDescription>
+                                <FormMessage />
                               </FormItem>
                             )}
                           />
@@ -611,15 +635,20 @@ export function PruebasYTestigosStep({ form }: PruebasYTestigosStepProps) {
                                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                                     <Input
                                       {...field}
-                                      placeholder="Ej. 55 1234 5678 o correo@ejemplo.com"
+                                      placeholder="Ej. 5512345678 o correo@ejemplo.com"
                                       className="text-sm h-12 pl-10"
+                                      onChange={(e) => {
+                                        const formatted = formatTestigoContacto(e.target.value)
+                                        field.onChange(formatted)
+                                      }}
+                                      maxLength={100}
                                     />
                                   </div>
                                 </FormControl>
                                 <FormDescription className="text-xs text-muted-foreground">
-                                  Proporciona los datos para contactar al testigo, puede ser número telefónico, correo
-                                  electrónico o dirección
+                                  Teléfono de 10 dígitos (sin espacios) o email válido para contactar al testigo
                                 </FormDescription>
+                                <FormMessage />
                               </FormItem>
                             )}
                           />

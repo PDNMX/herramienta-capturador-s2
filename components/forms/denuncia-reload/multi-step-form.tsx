@@ -79,22 +79,27 @@ const formSchema = z
           .regex(/^\d{5}$/, "El código postal debe contener exactamente 5 dígitos")
           .optional(),
         calle: z.string()
+          .min(3, "La calle debe tener al menos 3 caracteres")
           .max(100, "La calle no puede exceder 100 caracteres")
           .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s\d\.\-#]*$/, "La calle contiene caracteres no válidos")
           .optional(),
         numero: z.string()
+          .min(1, "El número es obligatorio")
           .max(10, "El número no puede exceder 10 caracteres")
           .regex(/^[a-zA-Z\d\-#]*$/, "El número contiene caracteres no válidos")
           .optional(),
         ciudad: z.string()
+          .min(2, "La ciudad debe tener al menos 2 caracteres")
           .max(50, "La ciudad no puede exceder 50 caracteres")
           .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "La ciudad solo puede contener letras y espacios")
           .optional(),
         estado: z.string()
+          .min(2, "El estado debe tener al menos 2 caracteres")
           .max(50, "El estado no puede exceder 50 caracteres")
           .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El estado solo puede contener letras y espacios")
           .optional(),
         pais: z.string()
+          .min(2, "El país debe tener al menos 2 caracteres")
           .max(50, "El país no puede exceder 50 caracteres")
           .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El país solo puede contener letras y espacios")
           .optional(),
@@ -146,6 +151,7 @@ const formSchema = z
       .optional(),
 
     narracionHechos: z.string()
+      .min(10, "La narración debe tener al menos 10 caracteres")
       .max(5000, "La narración no puede exceder 5000 caracteres"),
 
     archivosEvidencia: z.array(z.any()).default([]),
@@ -156,13 +162,15 @@ const formSchema = z
       .array(
         z.object({
           nombre: z.string()
+            .min(2, "El nombre del testigo debe tener al menos 2 caracteres")
             .max(100, "El nombre del testigo no puede exceder 100 caracteres")
             .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El nombre solo puede contener letras y espacios")
             .optional(),
           contacto: z.string()
+            .min(10, "El contacto debe tener al menos 10 caracteres")
             .max(100, "El contacto no puede exceder 100 caracteres")
             .refine(val => {
-              if (!val) return true;
+              if (!val || val.trim().length === 0) return true;
               // Validar si es teléfono (10 dígitos) o email
               const phoneRegex = /^\d{10}$/;
               const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

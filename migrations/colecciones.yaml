@@ -61,7 +61,7 @@ collections:
       color: null
       display_template: >-
         {{contratacionAdquisisciones}}{{contratacionObra}}{{datos_contrataciones_publicas}}
-      group: servidores_intervengan_procedientos_contrataciones
+      group: servidores_intervengan_procedimientos_contrataciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -157,7 +157,7 @@ collections:
       collection: datos_generales
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: servidores_intervengan_procedimientos_contrataciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -253,7 +253,7 @@ collections:
       collection: datos_personas_beneficiarias
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: servidores_intervengan_procedimientos_contrataciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -277,7 +277,7 @@ collections:
       collection: dictaminaciones_avaluos
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: servidores_intervengan_procedimientos_contrataciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -301,7 +301,7 @@ collections:
       collection: empleos_cargos_comisiones
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: servidores_intervengan_procedimientos_contrataciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -325,7 +325,7 @@ collections:
       collection: enajenaciones_bienes
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: servidores_intervengan_procedimientos_contrataciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -493,7 +493,7 @@ collections:
       collection: otorgamientos_concesiones
       color: null
       display_template: null
-      group: servidores_intervengan_procedientos_contrataciones
+      group: servidores_intervengan_procedimientos_contrataciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -507,14 +507,14 @@ collections:
       versioning: false
     schema:
       name: otorgamientos_concesiones
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       color: null
       display_template: null
       group: null
@@ -530,7 +530,7 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: servidores_intervengan_procedientos_contrataciones
+      name: servidores_intervengan_procedimientos_contrataciones
   - collection: tipos_adquisiciones_obras
     meta:
       accountability: all
@@ -819,7 +819,7 @@ fields:
       options:
         enableSelect: false
         limit: -1
-        template: '{{tipoProcedimiento}}'
+        template: "{{tipoProcedimiento}}"
       readonly: false
       required: false
       sort: 5
@@ -848,8 +848,8 @@ fields:
         choices:
           - text: Sí
             value: SI
-          - text: 'No'
-            value: 'NO'
+          - text: "No"
+            value: "NO"
       readonly: false
       required: true
       sort: 7
@@ -1110,7 +1110,7 @@ fields:
       options:
         enableSelect: false
         limit: -1
-        template: '{{tipoProcedimiento}}'
+        template: "{{tipoProcedimiento}}"
       readonly: false
       required: false
       sort: 4
@@ -1142,8 +1142,8 @@ fields:
         choices:
           - text: Sí
             value: SI
-          - text: 'No'
-            value: 'NO'
+          - text: "No"
+            value: "NO"
       readonly: false
       required: false
       sort: 7
@@ -1781,7 +1781,7 @@ fields:
       special: null
       translations:
         - language: es-MX
-          translation: 'Otro (Especifique) '
+          translation: "Otro (Especifique) "
       validation: null
       validation_message: null
       width: full
@@ -1888,7 +1888,7 @@ fields:
           - text: Licitación pública (nacional
             value: LICITACION_NACIONAL
           - text: Licitación pública (internacional)
-            value: ' LICITACION_INTERNACIONAL'
+            value: " LICITACION_INTERNACIONAL"
           - text: Invitación a cuando menos tres personas
             value: INVITACION
           - text: Adjudicación directa
@@ -4613,8 +4613,8 @@ fields:
         choices:
           - text: Sí
             value: SI
-          - text: 'No'
-            value: 'NO'
+          - text: "No"
+            value: "NO"
       readonly: false
       required: false
       sort: 4
@@ -4658,7 +4658,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: '{{nombre}}'
+        template: "{{nombre}}"
       readonly: false
       required: false
       sort: 1
@@ -4740,69 +4740,69 @@ fields:
       options:
         choices:
           - text: Aguascalientes
-            value: '01'
+            value: "01"
           - text: Baja California
-            value: '02'
+            value: "02"
           - text: Baja California Sur
-            value: '03'
+            value: "03"
           - text: Campeche
-            value: '04'
+            value: "04"
           - text: Coahuila de Zaragoza
-            value: '05'
+            value: "05"
           - text: Colima
-            value: '06'
+            value: "06"
           - text: Chiapas
-            value: '07'
+            value: "07"
           - text: Chihuahua
-            value: '08'
+            value: "08"
           - text: Ciudad de México
-            value: '09'
+            value: "09"
           - text: Durango
-            value: '10'
+            value: "10"
           - text: Guanajuato
-            value: '11'
+            value: "11"
           - text: Guerrero
-            value: '12'
+            value: "12"
           - text: Hidalgo
-            value: '13'
+            value: "13"
           - text: Jalisco
-            value: '14'
+            value: "14"
           - text: Estado de México
-            value: '15'
+            value: "15"
           - text: Michoacán de Ocampo
-            value: '16'
+            value: "16"
           - text: Morelos
-            value: '17'
+            value: "17"
           - text: Nayarit
-            value: '18'
+            value: "18"
           - text: Nuevo León
-            value: '19'
+            value: "19"
           - text: Oaxaca
-            value: '20'
+            value: "20"
           - text: Puebla
-            value: '21'
+            value: "21"
           - text: Querétaro
-            value: '22'
+            value: "22"
           - text: Quintana Roo
-            value: '23'
+            value: "23"
           - text: San Luis Potosí
-            value: '24'
+            value: "24"
           - text: Sinaloa
-            value: '25'
+            value: "25"
           - text: Sonora
-            value: '26'
+            value: "26"
           - text: Tabasco
-            value: '27'
+            value: "27"
           - text: Tamaulipas
-            value: '28'
+            value: "28"
           - text: Tlaxcala
-            value: '29'
+            value: "29"
           - text: Veracruz de Ignacio de la Llave
-            value: '30'
+            value: "30"
           - text: Yucatán
-            value: '31'
+            value: "31"
           - text: Zacatecas
-            value: '32'
+            value: "32"
       readonly: false
       required: true
       sort: 2
@@ -5022,7 +5022,7 @@ fields:
       note: null
       options:
         enableSelect: false
-        template: '{{clave}}'
+        template: "{{clave}}"
       readonly: false
       required: true
       sort: 7
@@ -5352,8 +5352,8 @@ fields:
         choices:
           - text: Sí
             value: SI
-          - text: 'No'
-            value: 'NO'
+          - text: "No"
+            value: "NO"
       readonly: false
       required: false
       sort: 7
@@ -5568,7 +5568,7 @@ fields:
             value: SUBSECRETARIA_HOMOLOGO
           - text: Secretaría de estado u homólogo
             value: SECRETARIA_HOMOLOGO
-          - text: 'Otro (especifique):'
+          - text: "Otro (especifique):"
             value: OTRO
       readonly: false
       required: true
@@ -5904,13 +5904,13 @@ fields:
       note: null
       options:
         choices:
-          - text: ' Elaborar (A) '
+          - text: " Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
-          - text: ' Supervisar (D) '
+          - text: " Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -5959,17 +5959,17 @@ fields:
       note: null
       options:
         choices:
-          - text: ' Elaborar (A) '
+          - text: " Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
             disabled: true
           - text: Supervisar (D)
             value: D
             disabled: true
-          - text: ' Emitir o suscribir (E)'
+          - text: " Emitir o suscribir (E)"
             value: E
       readonly: false
       required: false
@@ -6092,13 +6092,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -6148,13 +6148,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
-          - text: ' Supervisar (D) '
+          - text: " Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -6204,11 +6204,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -6734,13 +6734,13 @@ fields:
       note: null
       options:
         choices:
-          - text: ' Elaborar (A) '
+          - text: " Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -6789,13 +6789,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
           - text: Revisar (B)
             value: B
-          - text: ' Firmar, autorizar o dictaminar (C) '
+          - text: " Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -6846,11 +6846,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -6897,13 +6897,13 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
-          - text: 'Revisar (B) '
+          - text: "Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -6952,11 +6952,11 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
-          - text: 'Firmar, autorizar o dictaminar (C) '
+          - text: "Firmar, autorizar o dictaminar (C) "
             value: C
-          - text: 'Supervisar (D) '
+          - text: "Supervisar (D) "
             value: D
           - text: Emitir o suscribir (E)
             value: E
@@ -7003,17 +7003,17 @@ fields:
       note: null
       options:
         choices:
-          - text: 'Elaborar (A) '
+          - text: "Elaborar (A) "
             value: A
           - text: Revisar (B)
             value: B
-          - text: ' Firmar, autorizar o dictaminar (C) '
+          - text: " Firmar, autorizar o dictaminar (C) "
             value: C
             disabled: true
           - text: Supervisar (D)
             value: D
             disabled: true
-          - text: ' Emitir o suscribir (E)'
+          - text: " Emitir o suscribir (E)"
             value: E
       readonly: false
       required: false
@@ -7059,12 +7059,12 @@ fields:
         choices:
           - text: Elaborar (A)
             value: A
-          - text: ' Revisar (B) '
+          - text: " Revisar (B) "
             value: B
           - text: Firmar, autorizar o dictaminar (C)
             value: C
             disabled: true
-          - text: ' Supervisar (D) '
+          - text: " Supervisar (D) "
             value: D
             disabled: true
           - text: Emitir o suscribir (E)
@@ -7203,7 +7203,7 @@ fields:
       special: null
       translations:
         - language: es-MX
-          translation: 'Tipo de acto jurídico:'
+          translation: "Tipo de acto jurídico:"
       validation: null
       validation_message: null
       width: full
@@ -7412,8 +7412,8 @@ fields:
         choices:
           - text: Sí
             value: SI
-          - text: 'No'
-            value: 'NO'
+          - text: "No"
+            value: "NO"
       readonly: false
       required: false
       sort: 6
@@ -7443,11 +7443,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: id
     type: uuid
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7468,7 +7468,7 @@ fields:
       width: full
     schema:
       name: id
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: uuid
       default_value: null
       max_length: null
@@ -7482,11 +7482,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: user_created
     type: uuid
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: user
       display_options: null
@@ -7496,7 +7496,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
       readonly: true
       required: false
       sort: 2
@@ -7508,7 +7508,7 @@ fields:
       width: half
     schema:
       name: user_created
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: uuid
       default_value: null
       max_length: null
@@ -7522,11 +7522,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: directus_users
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: date_created
     type: timestamp
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: datetime
       display_options:
@@ -7548,7 +7548,7 @@ fields:
       width: half
     schema:
       name: date_created
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: timestamp with time zone
       default_value: null
       max_length: null
@@ -7562,11 +7562,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: user_updated
     type: uuid
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: user
       display_options: null
@@ -7576,7 +7576,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+        template: "{{avatar.$thumbnail}} {{first_name}} {{last_name}}"
       readonly: true
       required: false
       sort: 4
@@ -7588,7 +7588,7 @@ fields:
       width: half
     schema:
       name: user_updated
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: uuid
       default_value: null
       max_length: null
@@ -7602,11 +7602,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: directus_users
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: date_updated
     type: timestamp
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: datetime
       display_options:
@@ -7628,7 +7628,7 @@ fields:
       width: half
     schema:
       name: date_updated
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: timestamp with time zone
       default_value: null
       max_length: null
@@ -7642,11 +7642,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: entePublico
     type: integer
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7657,7 +7657,7 @@ fields:
       note: null
       options:
         enableCreate: false
-        template: '{{nombre}}'
+        template: "{{nombre}}"
       readonly: false
       required: false
       sort: 6
@@ -7669,7 +7669,7 @@ fields:
       width: full
     schema:
       name: entePublico
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: integer
       default_value: null
       max_length: null
@@ -7683,11 +7683,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: divider-zcmgvb
     type: alias
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7714,11 +7714,11 @@ fields:
       validation: null
       validation_message: null
       width: full
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: notice-tyldqk
     type: alias
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7742,11 +7742,11 @@ fields:
       validation: null
       validation_message: null
       width: full
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: links-glaglb
     type: alias
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7772,11 +7772,11 @@ fields:
       validation: null
       validation_message: null
       width: full
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: fecha
     type: date
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options:
@@ -7801,7 +7801,7 @@ fields:
       width: half
     schema:
       name: fecha
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: date
       default_value: null
       max_length: null
@@ -7815,11 +7815,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: datosGenerales
     type: integer
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7833,7 +7833,7 @@ fields:
         contratación pública
       options:
         enableSelect: false
-        template: ' {{primerApellido}} {{segundoApellido}}{{nombre}}'
+        template: " {{primerApellido}} {{segundoApellido}}{{nombre}}"
       readonly: false
       required: true
       sort: 12
@@ -7847,7 +7847,7 @@ fields:
       width: full
     schema:
       name: datosGenerales
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: integer
       default_value: null
       max_length: null
@@ -7861,11 +7861,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: datos_generales
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: empleoCargoComision
     type: integer
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7879,7 +7879,7 @@ fields:
         en actos públicos
       options:
         enableSelect: false
-        template: '{{nombreEntePublico}}'
+        template: "{{nombreEntePublico}}"
       readonly: false
       required: true
       sort: 13
@@ -7895,7 +7895,7 @@ fields:
       width: full
     schema:
       name: empleoCargoComision
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: integer
       default_value: null
       max_length: null
@@ -7909,11 +7909,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: empleos_cargos_comisiones
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: ejercicio
     type: string
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7936,7 +7936,7 @@ fields:
       width: half
     schema:
       name: ejercicio
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -7950,11 +7950,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: tipoProcedimiento
     type: string
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -7995,7 +7995,7 @@ fields:
       width: full
     schema:
       name: tipoProcedimiento
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -8009,11 +8009,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: otorgamientoConcesion
     type: integer
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions:
         - rule:
             _and:
@@ -8024,7 +8024,7 @@ fields:
           options:
             enableCreate: true
             enableSelect: false
-            template: '{{tipoActo}}'
+            template: "{{tipoActo}}"
       display: null
       display_options: null
       field: otorgamientoConcesion
@@ -8034,7 +8034,7 @@ fields:
       note: null
       options:
         enableSelect: false
-        template: '{{tipoActo}}'
+        template: "{{tipoActo}}"
       readonly: false
       required: false
       sort: 16
@@ -8050,7 +8050,7 @@ fields:
       width: full
     schema:
       name: otorgamientoConcesion
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: integer
       default_value: null
       max_length: null
@@ -8064,11 +8064,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: otorgamientos_concesiones
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: Observaciones
     type: text
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
       display: null
       display_options: null
@@ -8090,7 +8090,7 @@ fields:
       width: full
     schema:
       name: Observaciones
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: text
       default_value: null
       max_length: null
@@ -8104,11 +8104,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: avaluosJustipreciacion
     type: integer
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions:
         - rule:
             _and:
@@ -8143,7 +8143,7 @@ fields:
       width: full
     schema:
       name: avaluosJustipreciacion
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: integer
       default_value: null
       max_length: null
@@ -8157,11 +8157,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: dictaminaciones_avaluos
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: enajenacionBien
     type: integer
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions:
         - rule:
             _and:
@@ -8194,7 +8194,7 @@ fields:
       width: full
     schema:
       name: enajenacionBien
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       data_type: integer
       default_value: null
       max_length: null
@@ -8208,11 +8208,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: enajenaciones_bienes
       foreign_key_column: id
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: tipoContratacion
     type: alias
     meta:
-      collection: servidores_intervengan_procedientos_contrataciones
+      collection: servidores_intervengan_procedimientos_contrataciones
       conditions:
         - rule:
             _and:
@@ -8237,7 +8237,7 @@ fields:
       options:
         enableSelect: false
         limit: -1
-        template: '{{clave}}'
+        template: "{{clave}}"
       readonly: false
       required: false
       sort: 15
@@ -8515,7 +8515,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: servidores_intervengan_procedientos_contrataciones
+      foreign_key_table: servidores_intervengan_procedimientos_contrataciones
       foreign_key_column: id
 relations:
   - collection: contrataciones_adquisiciones
@@ -9316,12 +9316,12 @@ relations:
       constraint_name: otorgamientos_concesiones_informacionperso__24a64f62_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: user_created
     related_collection: directus_users
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: user_created
       one_allowed_collections: null
       one_collection: directus_users
@@ -9330,19 +9330,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: user_created
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contrat__9c4666e_foreign
+      constraint_name: servidores_intervengan_procedimientos_contrat__9c4666e_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: user_updated
     related_collection: directus_users
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: user_updated
       one_allowed_collections: null
       one_collection: directus_users
@@ -9351,19 +9351,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: user_updated
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__570cbabf_foreign
+      constraint_name: servidores_intervengan_procedimientos_contra__570cbabf_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: entePublico
     related_collection: entes_publicos
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: entePublico
       one_allowed_collections: null
       one_collection: entes_publicos
@@ -9372,19 +9372,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: entePublico
       foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__78b06464_foreign
+      constraint_name: servidores_intervengan_procedimientos_contra__78b06464_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: datosGenerales
     related_collection: datos_generales
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: datosGenerales
       one_allowed_collections: null
       one_collection: datos_generales
@@ -9393,19 +9393,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: datosGenerales
       foreign_key_table: datos_generales
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__1ed2f60b_foreign
+      constraint_name: servidores_intervengan_procedimientos_contra__1ed2f60b_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: empleoCargoComision
     related_collection: empleos_cargos_comisiones
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: empleoCargoComision
       one_allowed_collections: null
       one_collection: empleos_cargos_comisiones
@@ -9414,19 +9414,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: empleoCargoComision
       foreign_key_table: empleos_cargos_comisiones
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__6c23847b_foreign
+      constraint_name: servidores_intervengan_procedimientos_contra__6c23847b_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: otorgamientoConcesion
     related_collection: otorgamientos_concesiones
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: otorgamientoConcesion
       one_allowed_collections: null
       one_collection: otorgamientos_concesiones
@@ -9435,19 +9435,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: otorgamientoConcesion
       foreign_key_table: otorgamientos_concesiones
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__5774f1c7_foreign
+      constraint_name: servidores_intervengan_procedimientos_contra__5774f1c7_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: avaluosJustipreciacion
     related_collection: dictaminaciones_avaluos
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: avaluosJustipreciacion
       one_allowed_collections: null
       one_collection: dictaminaciones_avaluos
@@ -9456,19 +9456,19 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: avaluosJustipreciacion
       foreign_key_table: dictaminaciones_avaluos
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__443ed5a5_foreign
+      constraint_name: servidores_intervengan_procedimientos_contra__443ed5a5_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: servidores_intervengan_procedientos_contrataciones
+  - collection: servidores_intervengan_procedimientos_contrataciones
     field: enajenacionBien
     related_collection: enajenaciones_bienes
     meta:
       junction_field: null
-      many_collection: servidores_intervengan_procedientos_contrataciones
+      many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: enajenacionBien
       one_allowed_collections: null
       one_collection: enajenaciones_bienes
@@ -9477,11 +9477,11 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: servidores_intervengan_procedientos_contrataciones
+      table: servidores_intervengan_procedimientos_contrataciones
       column: enajenacionBien
       foreign_key_table: enajenaciones_bienes
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedientos_contra__63e07575_foreign
+      constraint_name: servidores_intervengan_procedimientos_contra__63e07575_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: tipos_adquisiciones_obras
@@ -9549,13 +9549,13 @@ relations:
       on_delete: SET NULL
   - collection: tipos_adquisiciones_obras
     field: fk_id
-    related_collection: servidores_intervengan_procedientos_contrataciones
+    related_collection: servidores_intervengan_procedimientos_contrataciones
     meta:
       junction_field: null
       many_collection: tipos_adquisiciones_obras
       many_field: fk_id
       one_allowed_collections: null
-      one_collection: servidores_intervengan_procedientos_contrataciones
+      one_collection: servidores_intervengan_procedimientos_contrataciones
       one_collection_field: null
       one_deselect_action: nullify
       one_field: tipoContratacion
@@ -9563,7 +9563,7 @@ relations:
     schema:
       table: tipos_adquisiciones_obras
       column: fk_id
-      foreign_key_table: servidores_intervengan_procedientos_contrataciones
+      foreign_key_table: servidores_intervengan_procedimientos_contrataciones
       foreign_key_column: id
       constraint_name: tipos_adquisiciones_obras_fk_id_foreign
       on_update: NO ACTION

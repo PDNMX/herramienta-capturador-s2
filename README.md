@@ -11,7 +11,7 @@ Herramienta de captura para el Sistema de los servidores públicos que interveng
 La Herramienta de Captura de Información ha sido desarrollada para facilitar la recopilación, gestión y envío de datos conforme a los estándares establecidos en el Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas (Sistema 2) de la Plataforma Digital Nacional (PDN).
 
 Esta herramienta permite:
-- PENDIENTE 
+
 - Gestionar y validar datos según los estándares de la PDN
 - Facilitar la integración con el resto de los sistemas de la PDN
 - Mantener un control de acceso basado en roles
@@ -32,6 +32,7 @@ Esta herramienta permite:
 ### Prerrequisitos
 
 #### Software
+
 - Sistema Operativo: Linux (recomendado Ubuntu Server LTS)
 - Docker
 - Docker Compose
@@ -39,6 +40,7 @@ Esta herramienta permite:
 - Servicio SMTP configurado
 
 #### Hardware Recomendado
+
 - Procesador: 4 CPU
 - Memoria: 8 GB RAM
 - Almacenamiento: 50 GB libres (aplicaciones/código)
@@ -47,6 +49,7 @@ Esta herramienta permite:
 ### Instalación
 
 1. Clonar el repositorio
+
 ```bash
 git clone https://github.com/PDNMX/herramienta-capturador-s2.git
 
@@ -54,26 +57,32 @@ cd herramienta-capturador-s2
 ```
 
 2. Crear archivo de variables de entorno
+
 ```bash
 cp .env.example .env
 ```
 
 3. Configurar las variables de entorno en el archivo `.env`:
+
 ```env
 PUBLIC_URL=http://localhost:8055
 DATABASE_USERNAME=usuarioPostgres
 DATABASE_PASSWORD=passwordEjemplo
+DIRECTUS_SECRET=<GENERA_UN_NUEVO_VALOR_SEGURO>
 DIRECTUS_ADMIN_EMAIL=ejemplo@dominio.com
 DIRECTUS_ADMIN_PASSWORD=directusPassword
-EMAIL_TRANSPORT=smtp
 EMAIL_FROM=no-reply@gmail.com
+EMAIL_TRANSPORT=smtp
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=25
 SMTP_USER=correo.ejemplo@gmail.com
 SMTP_PASSWORD=passwordEjemplo
+SMTP_SECURE=false
+SMTP_IGNORE_TLS=false
 ```
 
 4. Construir y levantar los contenedores
+
 ```bash
 docker-compose -p herramienta-s2 up -d --build
 ```
@@ -85,6 +94,7 @@ docker-compose -p herramienta-s2 up -d --build
 ### Roles de Usuario
 
 1. **Administrador**
+
    - Gestión de usuarios
    - Creación de entes públicos
    - Configuración del sistema
@@ -126,4 +136,5 @@ Para soporte técnico, contactar a través del [formulario oficial de requerimie
 Este proyecto está bajo la Licencia GNU General Public License v3.0 - ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ---
+
 Desarrollado por la Plataforma Digital Nacional

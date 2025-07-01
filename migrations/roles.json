@@ -404,7 +404,7 @@
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
-      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
       "action": "create",
       "permissions": {},
       "validation": {},
@@ -800,7 +800,7 @@
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
-      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
       "action": "read",
       "permissions": {
         "_and": [
@@ -991,7 +991,7 @@
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
-      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
       "action": "update",
       "permissions": {
         "_and": [
@@ -1511,7 +1511,7 @@
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
-      "collection": "servidores_intervengan_procedientos_contrataciones",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
       "action": "read",
       "permissions": null,
       "validation": null,

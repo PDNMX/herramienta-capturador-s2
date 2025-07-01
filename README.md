@@ -101,9 +101,12 @@ docker-compose -p herramienta-s2 up -d --build
    - Acceso a todas las funcionalidades
 
 2. **Capturador**
+
    - Captura de información
    - Gestión de registros de su ente público
-   - Visualización de reportes
+
+3. ## **Interconexión**
+   - Proporciona información a la PDN
 
 ### Funcionalidades Principales
 
@@ -123,9 +126,8 @@ docker-compose -p herramienta-s2 up -d --build
 
 ## 📚 Documentación
 
-- [Manual de Usuario]()
-- [Manual de Instalación]()
-- [API Documentation]()
+- [Manual de Usuario](https://docs.google.com/document/d/12LIM8TGrI4UPKKdULLzGnFirZWOF0gS3CHVDKpc0byA/edit?usp=sharing)
+- [Manual de Instalación](https://docs.google.com/document/d/1RQFbQunsWU4kxGK1UOlqILrw3rUO1Z0YdWKe_MjASvM/edit?usp=sharing)
 
 ## ✉️ Soporte
 

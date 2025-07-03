@@ -164,7 +164,7 @@ export function Landing() {
                             <CheckCircle2 className="h-3.5 w-3.5 text-green-600 dark:text-green-400" />
                           </div>
                           <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                            <span className="font-semibold">Servidores públicos:</span> Conductas en el ejercicio de sus funciones.
+                            <span className="font-semibold">Personas Servidoras Públicas:</span> Conductas en el ejercicio de sus funciones.
                           </span>
                         </li>
                         <li className="flex items-start gap-3 bg-green-50/80 dark:bg-green-900/20 p-3 rounded-lg border border-green-200/50 dark:border-green-700/30">

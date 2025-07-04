@@ -97,7 +97,7 @@ export function Landing() {
                     </div>
                     <div className="flex flex-col items-start flex-1 justify-center">
                       <span className="font-semibold text-lg md:text-xl">Estadísticas Nacionales</span>
-                      <span className="text-xs md:text-sm text-muted-foreground">Transparencia en cifras</span>
+                      <span className="text-xs md:text-sm text-muted-foreground">Vigila y monitorea las denuncias</span>
                     </div>
                   </Link>
                 </Button>

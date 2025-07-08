@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, ArrowRight, HelpCircle, CheckCircle2, AlertCircle } from "lucide-react"
+import { ArrowLeft, ArrowRight, CheckCircle2, AlertCircle, MessageCircle } from "lucide-react"
 import { StepContent } from "./step-content"
 import { Progress } from "@/components/ui/progress"
 import { Sheet, SheetTrigger } from "@/components/ui/sheet"
@@ -296,8 +296,21 @@ export function MultiStepForm() {
     },
   })
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps - 1))
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 0))
+  const nextStep = () => {
+    setStep((prev) => Math.min(prev + 1, totalSteps - 1))
+    // Scroll suave al inicio del contenido
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }, 100)
+  }
+
+  const prevStep = () => {
+    setStep((prev) => Math.max(prev - 1, 0))
+    // Scroll suave al inicio del contenido
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }, 100)
+  }
 
   const getStepFields = (stepIndex: number): string[] => {
     switch (stepIndex) {
@@ -718,14 +731,33 @@ export function MultiStepForm() {
           <div className="container mx-auto px-4 py-4 md:py-6">
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold foregroundy">{steps[step].title}</h1>
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-full bg-transparent">
-                    <HelpCircle className="h-4 w-4 md:h-5 md:w-5" />
-                  </Button>
-                </SheetTrigger>
-                <HelpContent step={step} />
-              </Sheet>
+              {step === 3 && (
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="group relative overflow-hidden rounded-xl border border-border/60 bg-background/95 hover:bg-accent/50 backdrop-blur-sm shadow-md hover:shadow-lg dark:shadow-lg dark:hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] px-4 py-3 h-auto min-h-[48px] sm:min-h-[52px] md:px-5 md:py-3 md:min-h-[56px] hover:border-border dark:border-border/40 dark:hover:border-border/60"
+                    >
+                      {/* Contenido del botón simplificado */}
+                      <div className="relative flex items-center space-x-3">
+                        {/* Icono principal */}
+                        <div className="relative bg-gradient-to-br from-primary to-primary/90 dark:from-primary dark:to-primary/80 p-2 rounded-lg shadow-sm dark:shadow-md">
+                          <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground" />
+                        </div>
+
+                        {/* Texto */}
+                        <span className="text-sm sm:text-base font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                          Asistente IA
+                        </span>
+                      </div>
+
+                      {/* Efecto de brillo sutil */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 dark:via-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%]" />
+                    </Button>
+                  </SheetTrigger>
+                  <HelpContent step={step} />
+                </Sheet>
+              )}
             </div>
 
             <div className="space-y-4">
@@ -744,7 +776,14 @@ export function MultiStepForm() {
                               ? "bg-primary/80 text-primary-foreground hover:bg-primary"
                               : "bg-muted/90 text-muted-foreground pointer-events-none"
                         }`}
-                        onClick={() => index < step && setStep(index)}
+                        onClick={() => {
+                          if (index < step) {
+                            setStep(index)
+                            setTimeout(() => {
+                              window.scrollTo({ top: 0, behavior: "smooth" })
+                            }, 100)
+                          }
+                        }}
                         disabled={index >= step}
                       >
                         <Icon className="h-5 w-5" />
@@ -808,54 +847,74 @@ export function MultiStepForm() {
           </div>
         </div>
 
-        {/* BOTONES FLOTANTES MEJORADOS */}
+        {/* BOTONES FLOTANTES MEJORADOS - RESPONSIVOS TEMA CLARO/OSCURO */}
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
           <div className="flex items-center justify-center">
-            {/* Contenedor principal con glassmorphism mejorado */}
+            {/* Contenedor principal con glassmorphism responsivo */}
             <div
-              className="flex items-center space-x-2 bg-white/80 backdrop-blur-xl shadow-2xl rounded-2xl px-3 py-2 border border-white/20 
-                            md:space-x-4 md:px-6 md:py-3 md:rounded-3xl"
+              className="flex items-center space-x-2 
+                 bg-white/90 dark:bg-gray-900/90 
+                 backdrop-blur-xl shadow-2xl 
+                 dark:shadow-black/50
+                 rounded-2xl px-3 py-2 
+                 border border-white/30 dark:border-gray-700/50
+                 md:space-x-4 md:px-6 md:py-3 md:rounded-3xl"
             >
-              {/* Botón anterior/cancelar mejorado */}
+              {/* Botón anterior/cancelar responsivo */}
               <Button
                 type="button"
                 variant="outline"
                 className="rounded-xl shadow-lg border-2 hover:shadow-xl transition-all duration-300 
-                           bg-white/90 hover:bg-white border-gray-200 hover:border-gray-300
-                           h-11 w-11 p-0 md:h-12 md:w-auto md:px-5 md:py-3
-                           hover:scale-105 active:scale-95"
+                   bg-white/95 hover:bg-white 
+                   dark:bg-gray-800/95 dark:hover:bg-gray-800
+                   border-gray-200 hover:border-gray-300
+                   dark:border-gray-600 dark:hover:border-gray-500
+                   h-11 w-11 p-0 md:h-12 md:w-auto md:px-5 md:py-3
+                   hover:scale-105 active:scale-95"
                 onClick={step === 0 ? () => router.push("/") : prevStep}
                 disabled={isSubmitting}
               >
-                <ArrowLeft className="h-4 w-4 md:mr-2 text-gray-600" />
-                <span className="hidden md:inline font-medium text-gray-700">
+                <ArrowLeft className="h-4 w-4 md:mr-2 text-gray-600 dark:text-gray-300" />
+                <span className="hidden md:inline font-medium text-gray-700 dark:text-gray-200">
                   {step === 0 ? "Cancelar" : "Anterior"}
                 </span>
               </Button>
 
-              {/* Indicador de paso central mejorado */}
+              {/* Indicador de paso central responsivo */}
               <div
-                className="flex items-center space-x-3 bg-gradient-to-r from-primary/10 to-primary/5 
-                              px-4 py-2 rounded-xl border border-primary/20 backdrop-blur-sm
-                              md:px-6 md:py-3 md:rounded-2xl"
+                className="flex items-center space-x-3 
+                   bg-gradient-to-r from-primary/10 to-primary/5 
+                   dark:from-primary/20 dark:to-primary/10
+                   px-4 py-2 rounded-xl 
+                   border border-primary/20 dark:border-primary/30
+                   backdrop-blur-sm
+                   md:px-6 md:py-3 md:rounded-2xl"
               >
                 <div className="flex items-center space-x-2">
-                  <div className="text-sm font-bold text-primary md:text-base">{step + 1}</div>
-                  <div className="text-primary/60 font-medium">/</div>
-                  <div className="text-sm font-bold text-primary/80 md:text-base">{totalSteps}</div>
+                  <div className="text-sm font-bold text-primary dark:text-primary-foreground md:text-base">
+                    {step + 1}
+                  </div>
+                  <div className="text-primary/60 dark:text-primary-foreground/60 font-medium">/</div>
+                  <div className="text-sm font-bold text-primary/80 dark:text-primary-foreground/80 md:text-base">
+                    {totalSteps}
+                  </div>
                 </div>
-                <div className="hidden lg:block text-xs text-primary/70 font-medium max-w-32 truncate">
+                <div className="hidden lg:block text-xs text-primary/70 dark:text-primary-foreground/70 font-medium max-w-32 truncate">
                   {steps[step].title}
                 </div>
               </div>
 
-              {/* Botón siguiente/enviar mejorado */}
+              {/* Botón siguiente/enviar responsivo */}
               <Button
                 type="button"
                 className="rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 
-                           bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary
-                           h-11 w-11 p-0 md:h-12 md:w-auto md:px-5 md:py-3
-                           hover:scale-105 active:scale-95 border-0"
+                   bg-gradient-to-r from-primary to-primary/90 
+                   hover:from-primary/90 hover:to-primary
+                   dark:from-primary dark:to-primary/80
+                   dark:hover:from-primary/90 dark:hover:to-primary
+                   h-11 w-11 p-0 md:h-12 md:w-auto md:px-5 md:py-3
+                   hover:scale-105 active:scale-95 border-0
+                   text-primary-foreground dark:text-primary-foreground"
                 onClick={handleNextStep}
                 disabled={isSubmitting}
               >

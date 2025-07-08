@@ -123,10 +123,6 @@ export function Landing() {
                   <div className="space-y-2">
                     <CardTitle className="text-3xl font-bold tracking-tight text-primary">Presenta tu denuncia</CardTitle>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground bg-primary/10 px-4 py-2 rounded-full shadow-sm">
-                    <Clock className="h-5 w-5 text-primary" />
-                    <span className="text-xs">20 minutos aproximadamente</span>
-                  </div>
                 </CardHeader>
 
                   <div className="p-6">

@@ -481,16 +481,16 @@ export function MultiStepForm() {
                 ;(firstErrorElement as HTMLElement).focus()
               }
             }}
-            className="bg-amber-100/90 hover:bg-amber-200/90 text-amber-900 border-amber-300/70 shrink-0 
-           dark:bg-amber-900/30 dark:hover:bg-amber-900/50 dark:text-amber-200 dark:border-amber-700/50"
+            className="bg-red-100/90 hover:bg-red-200/90 text-red-900 border-red-300/70 shrink-0 
+       dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-200 dark:border-red-700/50"
           >
             Ver campo
           </ToastAction>
         ),
         duration: 10000,
         className:
-          "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
-       dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
+          "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
+     dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
       })
       return
     }
@@ -571,8 +571,8 @@ export function MultiStepForm() {
                 action: <ToastAction altText="Reintentar">Continuar</ToastAction>,
                 duration: 5000,
                 className:
-                  "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
-           dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
+                  "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
+           dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
               })
             }
 
@@ -587,8 +587,8 @@ export function MultiStepForm() {
               action: <ToastAction altText="Reintentar">Reintentar</ToastAction>,
               duration: 6000,
               className:
-                "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
-           dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
+                "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
+           dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
             })
           }
         }
@@ -609,8 +609,8 @@ export function MultiStepForm() {
             action: <ToastAction altText="Revisar archivos">Revisar</ToastAction>,
             duration: 6000,
             className:
-              "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
-           dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
+              "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
+           dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
           })
         }
       } else {
@@ -707,16 +707,16 @@ export function MultiStepForm() {
               setIsModalOpen(true)
               setModalMode("confirm")
             }}
-            className="bg-amber-100/90 hover:bg-amber-200/90 text-amber-900 border-amber-300/70 shrink-0 
-     dark:bg-amber-900/30 dark:hover:bg-amber-900/50 dark:text-amber-200 dark:border-amber-700/50"
+            className="bg-red-100/90 hover:bg-red-200/90 text-red-900 border-red-300/70 shrink-0 
+       dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-200 dark:border-red-700/50"
           >
             Reintentar
           </ToastAction>
         ),
         duration: 8000,
         className:
-          "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
-   dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
+          "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
+   dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
       })
 
       setIsModalOpen(false)

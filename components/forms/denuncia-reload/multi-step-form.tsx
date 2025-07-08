@@ -481,13 +481,16 @@ export function MultiStepForm() {
                 ;(firstErrorElement as HTMLElement).focus()
               }
             }}
-            className="bg-red-100/80 hover:bg-red-200/80 text-red-800 border-red-300/60 shrink-0"
+            className="bg-amber-100/90 hover:bg-amber-200/90 text-amber-900 border-amber-300/70 shrink-0 
+           dark:bg-amber-900/30 dark:hover:bg-amber-900/50 dark:text-amber-200 dark:border-amber-700/50"
           >
             Ver campo
           </ToastAction>
         ),
         duration: 10000,
-        className: "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-800",
+        className:
+          "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
+       dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
       })
       return
     }
@@ -567,7 +570,9 @@ export function MultiStepForm() {
                 description: `El archivo ${file.name} se subió pero no se pudo obtener su ID`,
                 action: <ToastAction altText="Reintentar">Continuar</ToastAction>,
                 duration: 5000,
-                className: "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-800",
+                className:
+                  "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
+           dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
               })
             }
 
@@ -581,7 +586,9 @@ export function MultiStepForm() {
               description: `No se pudo subir ${file.name}: ${error.message || "Error desconocido"}`,
               action: <ToastAction altText="Reintentar">Reintentar</ToastAction>,
               duration: 6000,
-              className: "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-800",
+              className:
+                "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
+           dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
             })
           }
         }
@@ -601,7 +608,9 @@ export function MultiStepForm() {
             description: "No se pudo procesar ningún archivo correctamente",
             action: <ToastAction altText="Revisar archivos">Revisar</ToastAction>,
             duration: 6000,
-            className: "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-800",
+            className:
+              "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
+           dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
           })
         }
       } else {
@@ -698,13 +707,16 @@ export function MultiStepForm() {
               setIsModalOpen(true)
               setModalMode("confirm")
             }}
-            className="bg-red-100/80 hover:bg-red-200/80 text-red-800 border-red-300/60 shrink-0"
+            className="bg-amber-100/90 hover:bg-amber-200/90 text-amber-900 border-amber-300/70 shrink-0 
+     dark:bg-amber-900/30 dark:hover:bg-amber-900/50 dark:text-amber-200 dark:border-amber-700/50"
           >
             Reintentar
           </ToastAction>
         ),
         duration: 8000,
-        className: "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-800",
+        className:
+          "bg-amber-50/95 backdrop-blur-sm border-amber-200/60 text-amber-900 \
+   dark:bg-amber-950/90 dark:border-amber-800/60 dark:text-amber-200",
       })
 
       setIsModalOpen(false)
@@ -736,19 +748,44 @@ export function MultiStepForm() {
                   <SheetTrigger asChild>
                     <Button
                       variant="outline"
-                      className="group relative overflow-hidden rounded-xl border border-border/60 bg-background/95 hover:bg-accent/50 backdrop-blur-sm shadow-md hover:shadow-lg dark:shadow-lg dark:hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] px-4 py-3 h-auto min-h-[48px] sm:min-h-[52px] md:px-5 md:py-3 md:min-h-[56px] hover:border-border dark:border-border/40 dark:hover:border-border/60"
+                      className="group relative overflow-hidden rounded-xl border border-border/60 bg-background/95 hover:bg-accent/50 backdrop-blur-sm shadow-md hover:shadow-lg dark:shadow-lg dark:hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-auto hover:border-border dark:border-border/40 dark:hover:border-border/60
+        px-3 py-2.5 min-h-[44px] 
+        sm:px-4 sm:py-3 sm:min-h-[48px] 
+        md:px-5 md:py-3 md:min-h-[56px]"
                     >
-                      {/* Contenido del botón simplificado */}
-                      <div className="relative flex items-center space-x-3">
-                        {/* Icono principal */}
-                        <div className="relative bg-gradient-to-br from-primary to-primary/90 dark:from-primary dark:to-primary/80 p-2 rounded-lg shadow-sm dark:shadow-md">
-                          <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground" />
+                      {/* Contenido del botón optimizado para móvil */}
+                      <div className="relative flex items-center justify-center w-full">
+                        {/* Layout móvil (pantallas pequeñas) */}
+                        <div className="flex sm:hidden items-center space-x-2">
+                          <div className="relative bg-gradient-to-br from-primary to-primary/90 dark:from-primary dark:to-primary/80 p-1.5 rounded-lg shadow-sm">
+                            <MessageCircle className="h-4 w-4 text-primary-foreground" />
+                          </div>
+                          <div className="flex flex-col items-start">
+                            <div className="flex items-center space-x-1.5">
+                              <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                                IA
+                              </span>
+                              <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-700/50">
+                                BETA
+                              </span>
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Texto */}
-                        <span className="text-sm sm:text-base font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-                          Asistente IA
-                        </span>
+                        {/* Layout tablet y desktop */}
+                        <div className="hidden sm:flex items-center space-x-3">
+                          <div className="relative bg-gradient-to-br from-primary to-primary/90 dark:from-primary dark:to-primary/80 p-2 rounded-lg shadow-sm dark:shadow-md">
+                            <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 text-primary-foreground" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm sm:text-base font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                              Asistente IA
+                            </span>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-700/50">
+                              BETA
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Efecto de brillo sutil */}

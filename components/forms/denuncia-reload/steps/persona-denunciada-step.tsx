@@ -1,6 +1,6 @@
 //@ts-nocheck
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -115,6 +115,25 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([])
   const [loading, setLoading] = useState(false)
 
+  // NUEVA: useEffect para cargar entes públicos al montar el componente si ya hay una entidad seleccionada
+  useEffect(() => {
+    if (!form) return
+
+    const entidadSeleccionada = form.getValues("personaDenunciada.entidad")
+    
+    if (entidadSeleccionada) {
+      console.log("Entidad ya seleccionada detectada:", entidadSeleccionada)
+      // Buscar la clave correspondiente a la entidad seleccionada
+      const entidad = entidadesFederativas.find((e) => e.valor === entidadSeleccionada)
+      
+      if (entidad) {
+        console.log("Cargando entes públicos para la entidad:", entidad.nombre, "clave:", entidad.clave)
+        fetchEntesPublicos(entidad.clave)
+      }
+    }
+  }, [form]) // Solo se ejecuta cuando el form cambia (al montar el componente)
+
+
   const fetchEntesPublicos = async (clave: string) => {
     setLoading(true)
     try {
@@ -159,11 +178,15 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         shouldTouch: true,
       })
 
-      form?.setValue("personaDenunciada.entePublico", undefined, {
-        shouldValidate: false,
-        shouldDirty: true,
-        shouldTouch: true,
-      })
+      // MODIFICADO: Solo limpiar el ente público si realmente cambió la entidad
+      const entidadAnterior = form?.getValues("personaDenunciada.entidad")
+      if (entidadAnterior !== entidad.valor) {
+        form?.setValue("personaDenunciada.entePublico", undefined, {
+          shouldValidate: false,
+          shouldDirty: true,
+          shouldTouch: true,
+        })
+      }
 
       form?.setValue("faltaCometida.faltaGrave", [], {
         shouldValidate: false,

@@ -35,6 +35,43 @@ interface CheckboxGroupProps {
   form: UseFormReturn<any>
 }
 
+// Array de entidades federativas para obtener los nombres
+const entidadesFederativas = [
+  { nombre: "Federal", clave: "00", valor: 33 },
+  { nombre: "Aguascalientes", clave: "01", valor: 1 },
+  { nombre: "Baja California", clave: "02", valor: 2 },
+  { nombre: "Baja California Sur", clave: "03", valor: 3 },
+  { nombre: "Campeche", clave: "04", valor: 4 },
+  { nombre: "Coahuila", clave: "05", valor: 5 },
+  { nombre: "Colima", clave: "06", valor: 6 },
+  { nombre: "Chiapas", clave: "07", valor: 7 },
+  { nombre: "Chihuahua", clave: "08", valor: 8 },
+  { nombre: "Ciudad de México", clave: "09", valor: 9 },
+  { nombre: "Durango", clave: "10", valor: 10 },
+  { nombre: "Guanajuato", clave: "11", valor: 11 },
+  { nombre: "Guerrero", clave: "12", valor: 12 },
+  { nombre: "Hidalgo", clave: "13", valor: 13 },
+  { nombre: "Jalisco", clave: "14", valor: 14 },
+  { nombre: "México", clave: "15", valor: 15 },
+  { nombre: "Michoacán", clave: "16", valor: 16 },
+  { nombre: "Morelos", clave: "17", valor: 17 },
+  { nombre: "Nayarit", clave: "18", valor: 18 },
+  { nombre: "Nuevo León", clave: "19", valor: 19 },
+  { nombre: "Oaxaca", clave: "20", valor: 20 },
+  { nombre: "Puebla", clave: "21", valor: 21 },
+  { nombre: "Querétaro", clave: "22", valor: 22 },
+  { nombre: "Quintana Roo", clave: "23", valor: 23 },
+  { nombre: "San Luis Potosí", clave: "24", valor: 24 },
+  { nombre: "Sinaloa", clave: "25", valor: 25 },
+  { nombre: "Sonora", clave: "26", valor: 26 },
+  { nombre: "Tabasco", clave: "27", valor: 27 },
+  { nombre: "Tamaulipas", clave: "28", valor: 28 },
+  { nombre: "Tlaxcala", clave: "29", valor: 29 },
+  { nombre: "Veracruz", clave: "30", valor: 30 },
+  { nombre: "Yucatán", clave: "31", valor: 31 },
+  { nombre: "Zacatecas", clave: "32", valor: 32 },
+]
+
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name, items, form }) => {
   return (
     <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-6 shadow-lg bg-card/95 backdrop-blur">
@@ -309,9 +346,8 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   // Obtener el nombre de la entidad seleccionada
   const getSelectedEntidadName = () => {
     const entidadValue = form?.getValues("personaDenunciada.entidad")
-    // Aquí deberías tener una función o un mapeo para obtener el nombre de la entidad
-    // Por ahora, retornamos un valor genérico
-    return entidadValue ? `Entidad ${entidadValue}` : "Entidad"
+    const entidad = entidadesFederativas.find((e) => e.valor === entidadValue)
+    return entidad ? entidad.nombre : "Entidad"
   }
 
   if (!form) {
@@ -505,7 +541,8 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
               <div className="flex items-center justify-between">
                 <h4 className="text-base font-semibold text-primary">Ámbito de aplicación:</h4>
                 <div className="flex items-center space-x-2">
-                  {(!entePublicoSeleccionado ||
+                  {(entidadSeleccionada === 33 ||
+                    !entePublicoSeleccionado ||
                     (entePublicoSeleccionado &&
                       form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00")) && (
                     <Badge variant="outline" className="bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200">
@@ -513,25 +550,31 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                       Federal
                     </Badge>
                   )}
-                  {(!entePublicoSeleccionado ||
-                    (entePublicoSeleccionado &&
-                      form?.getValues("personaDenunciada.entePublicoData")?.entidad !== "00")) && (
-                    <Badge
-                      variant="outline"
-                      className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
-                    >
-                      <MapPin className="h-3 w-3 mr-1" />
-                      {getSelectedEntidadName()}
-                    </Badge>
-                  )}
+                  {entidadSeleccionada &&
+                    entidadSeleccionada !== 33 &&
+                    (!entePublicoSeleccionado ||
+                      (entePublicoSeleccionado &&
+                        form?.getValues("personaDenunciada.entePublicoData")?.entidad !== "00")) && (
+                      <Badge
+                        variant="outline"
+                        className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
+                      >
+                        <MapPin className="h-3 w-3 mr-1" />
+                        {getSelectedEntidadName()}
+                      </Badge>
+                    )}
                 </div>
               </div>
               <p className="text-sm text-muted-foreground mt-3">
-                {entePublicoSeleccionado
-                  ? form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00"
-                    ? "Se muestran faltas aplicables a nivel federal."
-                    : "Se muestran faltas aplicables a nivel estatal."
-                  : "Se muestran faltas aplicables a nivel federal y estatal."}
+                {entidadSeleccionada === 33
+                  ? "Se muestran faltas aplicables a nivel federal."
+                  : entePublicoSeleccionado
+                    ? form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00"
+                      ? "Se muestran faltas aplicables a nivel federal."
+                      : "Se muestran faltas aplicables a nivel estatal."
+                    : entidadSeleccionada
+                      ? "Se muestran faltas aplicables a nivel federal y estatal."
+                      : "Seleccione una entidad para ver las faltas aplicables."}
               </p>
             </div>
 

@@ -844,12 +844,6 @@ export function MultiStepForm() {
                   ))}
                 </div>
               </div>
-
-              <div className="text-center">
-                <div className="text-sm font-medium bg-muted px-3 py-1 rounded-full inline-block">
-                  Paso {step + 1} de {totalSteps}
-                </div>
-              </div>
             </div>
           </div>
         </div>

@@ -734,7 +734,7 @@ export function MultiStepForm() {
 
   return (
     <Form {...form}>
-      <div className="w-full gradient-background shadow-md rounded-lg overflow-hidden flex flex-col min-h-screen">
+      <div className="w-full gradient-background shadow-md rounded-lg overflow-hidden flex flex-col min-h-screen pt-10">
         {/* Header simplificado */}
         <div className="border-b">
           <div className="container mx-auto px-4 py-4 md:py-6">

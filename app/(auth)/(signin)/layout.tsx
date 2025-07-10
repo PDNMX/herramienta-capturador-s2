@@ -14,7 +14,7 @@ export default function DenunciaLayout({
   return (
     <div className="flex flex-col h-screen">
       <Header />
-      <main className="flex-1 pt-16 overflow">{children}</main>
+      <main className="flex-1 overflow">{children}</main>
     </div>
   )
 }

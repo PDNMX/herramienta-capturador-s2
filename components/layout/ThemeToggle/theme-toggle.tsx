@@ -12,7 +12,7 @@ export default function ThemeToggle() {
       <Button
         variant="secondary"
         size="icon"
-        className="relative text-xs md:text-sm rounded-full"
+        className="relative text-xs md:text-sm rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95"
         onClick={() => {
           setTheme(theme === "light" ? "dark" : "light");
         }}>

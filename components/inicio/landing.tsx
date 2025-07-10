@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 /* import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card" */
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
-import { Search, Shield, AlertCircle, CheckCircle2, XCircle } from "lucide-react"
+import { Search, AlertCircle, CheckCircle2, XCircle } from "lucide-react"
 
 import { SeguimientoModal } from "@/components/modal/seguimiento-modal"
 
@@ -33,7 +33,7 @@ export function Landing() {
     <main className="relative gradient-background min-h-screen flex flex-col items-center justify-start md:justify-center">
       <div className="container relative mx-auto px-3 md:px-4 pt-1 flex flex-col items-center">
         {/* Header - Always visible */}
-        <div className="mb-8 md:mb-12 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-center md:text-left">
+        <div className="mt-20 mb-8 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-center md:text-left">
           <Image
             src={theme === "dark" ? logoS5w : theme === "high-contrast" ? logoS5h : logoS5d}
             alt="Logo Sistema 5"
@@ -95,7 +95,7 @@ export function Landing() {
                 </div>
                 <div className="flex flex-col items-start flex-1 justify-center">
                   <span className="font-semibold text-lg md:text-xl">Estadísticas Nacionales</span>
-                  <span className="text-xs text-muted-foreground">Vigila y monitorea las denuncias</span>
+                  <span className="text-xs text-muted-foreground">Consulta el trabajo de las autoridades</span>
                 </div>
               </Link>
             </Button>

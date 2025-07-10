@@ -17,7 +17,7 @@ export default function Header() {
   //console.log(theme); // Verifica si devuelve 'high-contrast'
 
   return (
-    <header className="absolute w-full h-16">
+    <header className="absolute w-full h-16 z-50">
       <nav className="h-full w-full px-6">
         <div className="flex h-full items-center justify-between">
           <Link href="https://www.plataformadigitalnacional.org" target="_blank" className="flex items-center">

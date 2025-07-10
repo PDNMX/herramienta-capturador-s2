@@ -18,6 +18,7 @@ import { SeguimientoModal } from "@/components/modal/seguimiento-modal"
 import logoS5w from "@/components/s5-logo-white.svg"
 import logoS5d from "@/components/s5-logo-color.svg"
 import logoS5h from "@/components/s5-logo-high-contrast.svg"
+import LogoSNA from "@/components/SNA-logo"
 
 export function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -98,6 +99,11 @@ export function Landing() {
                 </div>
               </Link>
             </Button>
+            <div className="mt-12 pt-8 border-t border-border/50">
+              <div className="flex items-center justify-center">
+                <LogoSNA className="h-12 md:h-16 w-auto" />                  
+              </div>
+            </div>
           </div>
         </motion.div>
 

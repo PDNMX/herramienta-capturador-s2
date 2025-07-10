@@ -1,6 +1,6 @@
 //@ts-nocheck
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -23,6 +23,7 @@ interface EntePublico {
 }
 
 const entidadesFederativas = [
+  { nombre: "Federal", clave: "00", valor: 33 }, // Nueva opción para entes federales
   { nombre: "Aguascalientes", clave: "01", valor: 1 },
   { nombre: "Baja California", clave: "02", valor: 2 },
   { nombre: "Baja California Sur", clave: "03", valor: 3 },
@@ -115,37 +116,60 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([])
   const [loading, setLoading] = useState(false)
 
+  // NUEVA: useEffect para cargar entes públicos al montar el componente si ya hay una entidad seleccionada
+  useEffect(() => {
+    if (!form) return
+
+    const entidadSeleccionada = form.getValues("personaDenunciada.entidad")
+    
+    if (entidadSeleccionada) {
+      console.log("Entidad ya seleccionada detectada:", entidadSeleccionada)
+      // Buscar la clave correspondiente a la entidad seleccionada
+      const entidad = entidadesFederativas.find((e) => e.valor === entidadSeleccionada)
+      
+      if (entidad) {
+        console.log("Cargando entes públicos para la entidad:", entidad.nombre, "clave:", entidad.clave)
+        fetchEntesPublicos(entidad.clave)
+      }
+    }
+  }, [form]) // Solo se ejecuta cuando el form cambia (al montar el componente)
+
   const fetchEntesPublicos = async (clave: string) => {
     setLoading(true)
     try {
-      // Primero obtenemos los entes federales (clave "00")
-      const federalResponse = await fetch(
-        `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=00&limit=-1`,
-      )
-      const federalData = await federalResponse.json()
+      console.log(`Fetching entes públicos para clave: ${clave}`)
+      
+      let combinedEntes: EntePublico[] = []
+      
+      if (clave === "00") {
+        // Si seleccionaron "Federal", solo obtener entes federales (clave "00")
+        const federalResponse = await fetch(
+          `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=00&limit=-1`,
+        )
+        const federalData = await federalResponse.json()
+        
+        combinedEntes = federalData.data.map((ente: EntePublico) => ({
+          ...ente,
+          entidad: "00", // Federal
+        }))
+      } else {
+        // Para entidades específicas, obtener solo los entes de esa entidad (sin federales)
+        const entidadResponse = await fetch(
+          `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=${clave}&limit=-1`,
+        )
+        const entidadData = await entidadResponse.json()
 
-      // Luego obtenemos los entes de la entidad seleccionada
-      const entidadResponse = await fetch(
-        `https://cobertura.plataformadigitalnacional.org/directus/items/entes?filter[entidad][_eq]=${clave}&limit=-1`,
-      )
-      const entidadData = await entidadResponse.json()
+        combinedEntes = entidadData.data.map((ente: EntePublico) => ({
+          ...ente,
+          entidad: clave, // Entidad específica
+        }))
+      }
 
-      // Marcamos los entes federales y de entidad para identificarlos
-      const federalEntes = federalData.data.map((ente: EntePublico) => ({
-        ...ente,
-        entidad: "00", // Federal
-      }))
-
-      const entidadEntes = entidadData.data.map((ente: EntePublico) => ({
-        ...ente,
-        entidad: clave, // Entidad específica
-      }))
-
-      // Combinamos ambos resultados, primero federales, luego de la entidad
-      const combinedEntes = [...federalEntes, ...entidadEntes]
+      console.log(`Entes públicos cargados: ${combinedEntes.length}`)
       setEntesPublicos(combinedEntes)
     } catch (error) {
       console.error("Error fetching entes públicos:", error)
+      setEntesPublicos([]) // En caso de error, establecer array vacío
     }
     setLoading(false)
   }
@@ -159,11 +183,15 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
         shouldTouch: true,
       })
 
-      form?.setValue("personaDenunciada.entePublico", undefined, {
-        shouldValidate: false,
-        shouldDirty: true,
-        shouldTouch: true,
-      })
+      // MODIFICADO: Solo limpiar el ente público si realmente cambió la entidad
+      const entidadAnterior = form?.getValues("personaDenunciada.entidad")
+      if (entidadAnterior !== entidad.valor) {
+        form?.setValue("personaDenunciada.entePublico", undefined, {
+          shouldValidate: false,
+          shouldDirty: true,
+          shouldTouch: true,
+        })
+      }
 
       form?.setValue("faltaCometida.faltaGrave", [], {
         shouldValidate: false,

@@ -7,7 +7,9 @@ import {
   Volume2,
   Type,
   Text,
-  Keyboard
+  Keyboard,
+  Heart,
+  Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -194,11 +196,11 @@ export default function AccessibilityMenu() {
       <div className="flex items-center">
         <Button
           variant="secondary"
-          className="relative text-xs md:text-sm rounded-full"
-          size="icon"
+          className="relative text-xs md:text-sm rounded-xl px-4 py-2 h-auto"
           aria-label="Opciones de accesibilidad"
         >
-          <PersonStanding className="h-[1.2rem] w-[1.2rem]" />
+          <PersonStanding className="h-5 w-5 mr-2" />
+          <span className="font-medium">Accesibilidad</span>
         </Button>
       </div>
     );
@@ -240,7 +242,7 @@ export default function AccessibilityMenu() {
           <Button
             variant="outline"
             size="icon"
-            className={`relative rounded-full ${textSizePanelVisible ? "bg-amber-100 text-amber-700 border-amber-300" : ""}`}
+            className={`relative rounded-full transition-all duration-300 ${textSizePanelVisible ? "bg-amber-100 text-amber-700 border-amber-300 shadow-lg" : "hover:scale-105"}`}
             onClick={toggleTextSizePanel}
             aria-label={textSizePanelVisible ? "Ocultar ajustes de tamaño de texto" : "Mostrar ajustes de tamaño de texto"}
             title={textSizePanelVisible ? "Ocultar ajustes de tamaño de texto" : "Mostrar ajustes de tamaño de texto"}
@@ -253,7 +255,7 @@ export default function AccessibilityMenu() {
           <Button
             variant="outline"
             size="icon"
-            className={`relative rounded-full ${textSpacingPanelVisible ? "bg-amber-100 text-amber-700 border-amber-300" : ""}`}
+            className={`relative rounded-full transition-all duration-300 ${textSpacingPanelVisible ? "bg-amber-100 text-amber-700 border-amber-300 shadow-lg" : "hover:scale-105"}`}
             onClick={toggleTextSpacingPanel}
             aria-label={textSpacingPanelVisible ? "Ocultar ajustes de espaciado" : "Mostrar ajustes de espaciado"}
             title={textSpacingPanelVisible ? "Ocultar ajustes de espaciado" : "Mostrar ajustes de espaciado"}
@@ -266,7 +268,7 @@ export default function AccessibilityMenu() {
           <Button
             variant="outline"
             size="icon"
-            className={`relative rounded-full ${keyboardNavPanelVisible ? "bg-amber-100 text-amber-700 border-amber-300" : ""}`}
+            className={`relative rounded-full transition-all duration-300 ${keyboardNavPanelVisible ? "bg-amber-100 text-amber-700 border-amber-300 shadow-lg" : "hover:scale-105"}`}
             onClick={toggleKeyboardNavPanel}
             aria-label={keyboardNavPanelVisible ? "Ocultar guía de navegación por teclado" : "Mostrar guía de navegación por teclado"}
             title={keyboardNavPanelVisible ? "Ocultar guía de navegación por teclado" : "Mostrar guía de navegación por teclado"}
@@ -276,91 +278,93 @@ export default function AccessibilityMenu() {
         )}
         
         <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant={anyFeatureActive ? "default" : "secondary"}
-            className={`relative text-xs md:text-sm rounded-full ${anyFeatureActive ? "bg-amber-500 hover:bg-amber-600 text-white" : ""}`}
-            size="icon"
-            aria-label="Opciones de accesibilidad"
-          >
-            <PersonStanding className="h-[1.2rem] w-[1.2rem]" />
-            {anyFeatureActive && (
-              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-white border-2 border-amber-600"></span>
-            )}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {/* <DropdownMenuItem 
-            onClick={increaseFontSize}
-            disabled={isSimpleTextSizeDisabled}
-          >
-            <ZoomIn className="mr-2 h-4 w-4" />
-            <span>Aumentar texto</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={decreaseFontSize}
-            disabled={isSimpleTextSizeDisabled}
-          >
-            <ZoomOut className="mr-2 h-4 w-4" />
-            <span>Disminuir texto</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={resetFontSize}
-            disabled={isSimpleTextSizeDisabled}
-          >
-            <RotateCcw className="mr-2 h-4 w-4" />
-            <span>Restablecer tamaño</span>
-          </DropdownMenuItem> */}
-          <DropdownMenuItem 
-            onClick={toggleHighContrast}
-            className={theme === 'high-contrast' ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
-          >
-            <Contrast className="mr-2 h-4 w-4" />
-            <span>{theme === 'high-contrast' ? 'Desactivar' : 'Activar'} alto contraste</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            onClick={toggleTextSize}
-            className={textSizeActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
-          >
-            <Type className="mr-2 h-4 w-4" />
-            <span>{textSizeActive ? 'Desactivar' : 'Activar'} control avanzado de texto</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          
-          {/* <DropdownMenuItem 
-            onClick={toggleReducedMotion}
-            className={reducedMotion ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
-          >
-            <MousePointer2 className="mr-2 h-4 w-4" />
-            <span>{reducedMotion ? 'Desactivar' : 'Activar'} movimiento reducido</span>
-          </DropdownMenuItem> */}
-          <DropdownMenuItem 
-            onClick={toggleTextSpacing}
-            className={textSpacingActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
-          >
-            <Text className="mr-2 h-4 w-4" />
-            <span>{textSpacingActive ? 'Desactivar' : 'Activar'} ajuste de espaciado</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            onClick={toggleTextToSpeech}
-            className={textToSpeechActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
-          >
-            <Volume2 className="mr-2 h-4 w-4" />
-            <span>{textToSpeechActive ? 'Desactivar' : 'Activar'} lector de texto</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            onClick={toggleKeyboardNav}
-            className={keyboardNavActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}
-          >
-            <Keyboard className="mr-2 h-4 w-4" />
-            <span>{keyboardNavActive ? 'Ocultar' : 'Mostrar'} guía de navegación por teclado</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant={anyFeatureActive ? "default" : "secondary"}
+              className={`
+                relative px-4 py-2 h-auto text-sm font-semibold rounded-xl
+                transition-all duration-300 ease-in-out
+                transform hover:scale-105 active:scale-95
+                shadow-lg hover:shadow-xl
+                ${anyFeatureActive 
+                  ? "bg-amber-500 hover:bg-amber-600 text-white" 
+                  : ""
+                }
+                focus:ring-4 focus:ring-offset-2 focus:ring-amber-300
+                group
+              `}
+              aria-label="Opciones de accesibilidad"
+            >
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <PersonStanding className="h-5 w-5 transition-transform group-hover:rotate-12" />
+                  {anyFeatureActive && (
+                    <>
+                      <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-amber-200 animate-bounce" />
+                      <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-amber-300 border-2 border-white animate-ping"></div>
+                    </>
+                  )}
+                </div>
+                <span className="font-semibold tracking-wide">Accesibilidad</span>
+              </div>
+              
+              {/* Efecto de brillo */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-shimmer"></div>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-72 p-2">
+            <div className="text-xs text-muted-foreground mb-2 px-2 font-medium">
+              Herramientas de Accesibilidad
+            </div>
+            
+            <DropdownMenuItem 
+              onClick={toggleHighContrast}
+              className={`rounded-lg transition-colors ${theme === 'high-contrast' ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}`}
+            >
+              <Contrast className="mr-3 h-4 w-4" />
+              <span>{theme === 'high-contrast' ? ' Desactivar' : 'Activar'} alto contraste</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem 
+              onClick={toggleTextSize}
+              className={`rounded-lg transition-colors ${textSizeActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}`}
+            >
+              <Type className="mr-3 h-4 w-4" />
+              <span>{textSizeActive ? ' Desactivar' : 'Activar'} control avanzado de texto</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuItem 
+              onClick={toggleTextSpacing}
+              className={`rounded-lg transition-colors ${textSpacingActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}`}
+            >
+              <Text className="mr-3 h-4 w-4" />
+              <span>{textSpacingActive ? ' Desactivar' : 'Activar'} ajuste de espaciado</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem 
+              onClick={toggleTextToSpeech}
+              className={`rounded-lg transition-colors ${textToSpeechActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}`}
+            >
+              <Volume2 className="mr-3 h-4 w-4" />
+              <span>{textToSpeechActive ? ' Desactivar' : 'Activar'} lector de texto</span>
+            </DropdownMenuItem>
+            
+            <DropdownMenuSeparator />
+            
+            <DropdownMenuItem 
+              onClick={toggleKeyboardNav}
+              className={`rounded-lg transition-colors ${keyboardNavActive ? "bg-amber-100 dark:bg-amber-900 font-medium" : ""}`}
+            >
+              <Keyboard className="mr-3 h-4 w-4" />
+              <span>{keyboardNavActive ? ' Ocultar' : 'Mostrar'} guía de navegación por teclado</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 }

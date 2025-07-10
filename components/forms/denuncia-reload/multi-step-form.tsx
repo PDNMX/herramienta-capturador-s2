@@ -469,23 +469,20 @@ export function MultiStepForm() {
       // Usar currentErrors directamente en lugar de validationErrors
       toast({
         variant: "destructive",
-        title: "⚠️ Campos obligatorios faltantes",
-        description: `Faltan: ${currentErrors.slice(0, 2).join(", ")}${currentErrors.length > 2 ? ` y ${currentErrors.length - 2} más` : ""}`,
-        action: (
-          <ToastAction
-            altText="Ir al campo"
-            onClick={() => {
-              const firstErrorElement = document.querySelector('[aria-invalid="true"]')
-              if (firstErrorElement) {
-                firstErrorElement.scrollIntoView({ behavior: "smooth", block: "center" })
-                ;(firstErrorElement as HTMLElement).focus()
-              }
-            }}
-            className="bg-red-100/90 hover:bg-red-200/90 text-red-900 border-red-300/70 shrink-0 
-       dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-200 dark:border-red-700/50"
-          >
-            Ver campo
-          </ToastAction>
+        description: (
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+              <span className="text-sm font-medium">Campos obligatorios faltantes:</span>
+            </div>
+            <ul className="list-disc list-inside space-y-0.5 ml-6">
+              {currentErrors.map((error, index) => (
+                <li key={index} className="text-xs text-red-700 dark:text-red-300">
+                  {error}
+                </li>
+              ))}
+            </ul>
+          </div>
         ),
         duration: 10000,
         className:
@@ -796,81 +793,20 @@ export function MultiStepForm() {
                 </Sheet>
               )}
             </div>
+            
+          {/* Aviso de campos obligatorios */}
+          <div className="flex items-center gap-2 p-3 bg-amber-50/50 dark:bg-amber-900/20 rounded-lg border border-amber-200/50 dark:border-amber-700/30">
+            <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+            <p className="text-sm text-amber-800 dark:text-amber-200">
+              Los campos marcados con (*) son obligatorios.
+            </p>
+          </div>
 
-            <div className="space-y-4">
-              <div className="hidden md:flex justify-center space-x-2 mb-2">
-                {steps.map((s, index) => {
-                  const Icon = stepIcons[s.icon as keyof typeof stepIcons]
-                  return (
-                    <div key={index} className="flex flex-col items-center group">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className={`m-3 w-12 h-12 p-0 rounded-full flex items-center justify-center transition-colors duration-200 ${
-                          index === step
-                            ? "bg-primary text-primary-foreground"
-                            : index < step
-                              ? "bg-primary/80 text-primary-foreground hover:bg-primary"
-                              : "bg-muted/90 text-muted-foreground pointer-events-none"
-                        }`}
-                        onClick={() => {
-                          if (index < step) {
-                            setStep(index)
-                            setTimeout(() => {
-                              window.scrollTo({ top: 0, behavior: "smooth" })
-                            }, 100)
-                          }
-                        }}
-                        disabled={index >= step}
-                      >
-                        <Icon className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  )
-                })}
-              </div>
-
-              <div className="relative">
-                <Progress value={progress} className="h-2" />
-
-                <div className="flex md:hidden justify-center space-x-2 mt-2">
-                  {steps.map((_, index) => (
-                    <div
-                      key={index}
-                      className={`w-2 h-2 rounded-full ${
-                        index === step ? "bg-primary" : index < step ? "bg-primary/80" : "bg-muted"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
         <div className="flex flex-col justify-between min-h-[calc(100vh-280px)] pb-28">
           <div className="container mx-auto px-4 py-6 md:py-8 overflow-y-auto">
-            {/* Aviso de campos obligatorios mejorado */}
-            <div className="mb-6 relative overflow-hidden rounded-xl border border-amber-200/60 bg-gradient-to-r from-amber-50/90 to-orange-50/90 backdrop-blur-sm shadow-sm">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-100/20 to-orange-100/20"></div>
-              <div className="relative px-4 py-4 md:px-6 md:py-5">
-                <div className="flex items-start space-x-3">
-                  <div className="flex-shrink-0">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 ring-2 ring-amber-200/50">
-                      <AlertCircle className="h-4 w-4 text-amber-700" />
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-sm font-semibold text-amber-900 mb-1">Campos obligatorios</h3>
-                    <p className="text-sm text-amber-800 leading-relaxed">
-                      Todos los campos señalados con un asterisco (*) son de carácter obligatorio y deben completarse
-                      para continuar.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-amber-400 to-orange-400"></div>
-            </div>
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
               <StepContent step={step} form={form} />

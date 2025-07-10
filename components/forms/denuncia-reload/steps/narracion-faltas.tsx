@@ -6,7 +6,21 @@ import type React from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { Mic, Square, ClipboardList, Loader2, Flag, MapPin, Filter } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import {
+  Mic,
+  Square,
+  ClipboardList,
+  Loader2,
+  Flag,
+  MapPin,
+  Filter,
+  Search,
+  X,
+  BookOpen,
+  Scale,
+  Hash,
+} from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
@@ -25,13 +39,28 @@ interface Falta {
   descripcion: string
   servidorPublico: boolean
   particular: boolean
+  ley?: string
+  articulo?: string
+  fraccion?: string
+  inciso?: string
+  letra?: string
 }
 
 interface CheckboxGroupProps {
   title: string
   description: string
   name: string
-  items: Array<{ id: number; label: string; description: string; entidad?: number }>
+  items: Array<{
+    id: number
+    label: string
+    description: string
+    entidad?: number
+    ley?: string
+    articulo?: string
+    fraccion?: string
+    inciso?: string
+    letra?: string
+  }>
   form: UseFormReturn<any>
 }
 
@@ -72,82 +101,233 @@ const entidadesFederativas = [
   { nombre: "Zacatecas", clave: "32", valor: 32 },
 ]
 
+// Función helper para formatear la referencia legal (orden invertido)
+const formatearReferenciaLegal = (item: any) => {
+  console.log("Formateando referencia legal para:", item.label, item) // Debug
+  const partes = []
+  const ley = []
+
+  // Primero los detalles específicos
+  if (item.articulo && item.articulo.trim()) partes.push(`Art. ${item.articulo.trim()}`)
+  if (item.fraccion && item.fraccion.trim()) partes.push(`Frac. ${item.fraccion.trim()}`)
+  if (item.inciso && item.inciso.trim()) partes.push(`Inc. ${item.inciso.trim()}`)
+  if (item.letra && item.letra.trim()) partes.push(`Letra ${item.letra.trim()}`)
+
+  // La ley al final
+  if (item.ley && item.ley.trim()) ley.push(item.ley.trim())
+
+  // Combinar: detalles específicos + ley
+  const detalles = partes.length > 0 ? partes.join(", ") : null
+  const leyTexto = ley.length > 0 ? ley.join("") : null
+
+  let resultado = null
+  if (detalles && leyTexto) {
+    resultado = `${detalles} - ${leyTexto}`
+  } else if (detalles) {
+    resultado = detalles
+  } else if (leyTexto) {
+    resultado = leyTexto
+  }
+
+  console.log("Referencia legal formateada:", resultado) // Debug
+  return resultado
+}
+
+// Función helper para crear un identificador más descriptivo de la falta
+const crearIdentificadorFalta = (item: any) => {
+  const partes = []
+
+  if (item.articulo && item.articulo.trim()) partes.push(`Artículo ${item.articulo.trim()}`)
+  if (item.fraccion && item.fraccion.trim()) partes.push(`Fracción ${item.fraccion.trim()}`)
+  if (item.inciso && item.inciso.trim()) partes.push(`Inciso ${item.inciso.trim()}`)
+  if (item.letra && item.letra.trim()) partes.push(`Letra ${item.letra.trim()}`)
+
+  if (partes.length > 0) {
+    return partes.join(" • ")
+  }
+
+  // Si no hay información legal, usar el ID
+  return `Falta #${item.id}`
+}
+
 const CheckboxGroup: React.FC<CheckboxGroupProps> = ({ title, description, name, items, form }) => {
+  const [searchTerm, setSearchTerm] = useState("")
+
+  // Filtrar items basado en el término de búsqueda
+  const filteredItems = items.filter((item) => {
+    if (!searchTerm) return true
+
+    const searchLower = searchTerm.toLowerCase()
+    const referenciaLegal = formatearReferenciaLegal(item)
+
+    return (
+      item.label.toLowerCase().includes(searchLower) ||
+      item.description.toLowerCase().includes(searchLower) ||
+      (item.ley && item.ley.toLowerCase().includes(searchLower)) ||
+      (referenciaLegal && referenciaLegal.toLowerCase().includes(searchLower))
+    )
+  })
+
   return (
-    <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-6 shadow-lg bg-card/95 backdrop-blur">
-      <div className="space-y-4">
-        <div className="pb-3 border-b border-primary/20">
-          <FormLabel className="text-lg font-semibold text-primary block">{title}</FormLabel>
-          <FormDescription className="text-sm text-muted-foreground mt-2">{description}</FormDescription>
+    <div className="rounded-xl border-2 border-primary/20 p-4 sm:p-6 shadow-lg bg-gradient-to-br from-background to-muted/30 backdrop-blur dark:from-background dark:to-muted/20">
+      <div className="space-y-4 sm:space-y-5">
+        <div className="pb-3 sm:pb-4 border-b border-primary/20">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2">
+            <div className="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
+              <Hash className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+            </div>
+            <FormLabel className="text-base sm:text-lg font-semibold text-primary">{title}</FormLabel>
+          </div>
+          <FormDescription className="text-xs sm:text-sm text-muted-foreground ml-7 sm:ml-10">
+            {description}
+          </FormDescription>
         </div>
+
+        {/* Buscador mejorado */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <Input
+            placeholder="Buscar por nombre, descripción o referencia legal..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-10 bg-background/80 border-border focus:border-primary/50 focus:ring-primary/20 text-sm"
+          />
+          {searchTerm && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSearchTerm("")}
+              className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-muted"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+
         <FormField
           control={form.control}
           name={name}
-          render={() => (
+          render={({ field }) => (
             <FormItem>
-              <ScrollArea className="h-[280px] rounded-lg border border-primary/10 mt-4">
-                <div className="space-y-3 p-4">
-                  {items.length > 0 ? (
-                    items.map((item) => (
-                      <FormField
-                        key={item.id}
-                        control={form.control}
-                        name={name}
-                        render={({ field }) => (
-                          <FormItem
-                            key={item.id}
-                            className="flex flex-row items-start space-x-4 space-y-0 p-4 rounded-lg border border-primary/10 hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 shadow-sm"
-                          >
+              <ScrollArea className="h-[350px] sm:h-[400px] rounded-lg border border-border bg-background/50">
+                <div className="space-y-3 sm:space-y-4 p-3 sm:p-4">
+                  {filteredItems.length > 0 ? (
+                    filteredItems.map((item) => {
+                      const referenciaLegal = formatearReferenciaLegal(item)
+
+                      return (
+                        <div
+                          key={item.id}
+                          className="group relative bg-card rounded-lg border border-border hover:border-primary/30 hover:shadow-md transition-all duration-200 overflow-hidden dark:bg-card/50"
+                        >
+                          <div className="flex items-start space-x-3 sm:space-x-4 p-4 sm:p-5">
                             <FormControl>
                               <Checkbox
                                 checked={field.value?.includes(item.id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...(field.value || []), item.id])
-                                    : field.onChange(field.value?.filter((value: number) => value !== item.id))
+                                    ? form.setValue(name, [...(field.value || []), item.id])
+                                    : form.setValue(
+                                        name,
+                                        field.value?.filter((value: number) => value !== item.id),
+                                      )
                                 }}
-                                className="mt-1"
+                                className="mt-1 flex-shrink-0 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                               />
                             </FormControl>
-                            <div className="space-y-2 leading-none flex-1">
-                              <div className="flex items-center justify-between">
-                                <FormLabel className="text-sm font-semibold cursor-pointer text-foreground">
-                                  {item.label}
-                                </FormLabel>
-                                {item.entidad === 0 || item.entidad === 33 ? (
-                                  <Badge
-                                    variant="outline"
-                                    className="ml-2 bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200"
-                                  >
-                                    <Flag className="h-3 w-3 mr-1" />
-                                    Federal
-                                  </Badge>
-                                ) : (
-                                  <Badge
-                                    variant="outline"
-                                    className="ml-2 bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
-                                  >
-                                    <MapPin className="h-3 w-3 mr-1" />
-                                    Entidad
-                                  </Badge>
+
+                            <div className="flex-1 min-w-0 space-y-3 sm:space-y-4">
+                              {/* Header con identificador */}
+                              <div className="space-y-2 sm:space-y-3">
+                                <div className="flex items-start justify-between gap-2 sm:gap-3">
+                                  <div className="flex-1 min-w-0">
+                                    {/* Identificador único */}
+                                    <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                                      <Badge
+                                        variant="secondary"
+                                        className="text-xs bg-gradient-to-r from-primary/10 to-primary/20 text-primary border-primary/20 px-2 sm:px-3 py-1 sm:py-1.5 font-medium"
+                                      >
+                                        {crearIdentificadorFalta(item)}
+                                      </Badge>
+                                    </div>
+
+                                    {/* Título de la falta */}
+                                    <FormLabel className="text-sm sm:text-base font-semibold cursor-pointer text-foreground leading-tight block group-hover:text-primary transition-colors">
+                                      {item.label}
+                                    </FormLabel>
+                                  </div>
+                                </div>
+
+                                {/* Referencia legal mejorada */}
+                                {referenciaLegal && (
+                                  <div className="bg-muted/50 border border-border rounded-lg p-3 sm:p-4 dark:bg-muted/30">
+                                    <div className="flex items-start gap-2 sm:gap-3">
+                                      <div className="p-1 sm:p-1.5 bg-muted rounded-md">
+                                        <Scale className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <div className="text-xs sm:text-sm font-medium text-foreground leading-relaxed">
+                                          {referenciaLegal}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 )}
+
+                                {/* Descripción mejorada */}
+                                <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 sm:p-4 dark:bg-primary/10">
+                                  <div className="flex items-start gap-2 sm:gap-3">
+                                    <div className="p-1 sm:p-1.5 bg-primary/20 rounded-md">
+                                      <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <FormDescription className="text-xs sm:text-sm leading-relaxed text-foreground/80 font-medium">
+                                        {item.description}
+                                      </FormDescription>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <FormDescription className="text-xs leading-relaxed text-muted-foreground">
-                                {item.description}
-                              </FormDescription>
                             </div>
-                          </FormItem>
-                        )}
-                      />
-                    ))
+                          </div>
+                        </div>
+                      )
+                    })
+                  ) : searchTerm ? (
+                    <div className="flex flex-col items-center justify-center h-32 text-muted-foreground">
+                      <Search className="h-6 w-6 sm:h-8 sm:w-8 mb-2 opacity-50" />
+                      <p className="text-xs sm:text-sm font-medium">No se encontraron resultados</p>
+                      <p className="text-xs text-center mt-1">Intenta con otros términos de búsqueda</p>
+                    </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center h-32 text-muted-foreground">
-                      <Filter className="h-8 w-8 mb-2 opacity-50" />
-                      <p className="text-sm">No hay faltas disponibles en esta categoría</p>
+                      <Filter className="h-6 w-6 sm:h-8 sm:w-8 mb-2 opacity-50" />
+                      <p className="text-xs sm:text-sm">No hay faltas disponibles en esta categoría</p>
                     </div>
                   )}
                 </div>
               </ScrollArea>
+
+              {/* Contador de resultados mejorado */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-muted-foreground mt-3 px-1">
+                <span className="font-medium">
+                  {searchTerm
+                    ? `${filteredItems.length} de ${items.length} resultados`
+                    : `${items.length} opciones disponibles`}
+                </span>
+                {searchTerm && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSearchTerm("")}
+                    className="h-6 px-2 text-xs hover:bg-muted self-start sm:self-auto"
+                  >
+                    Limpiar búsqueda
+                  </Button>
+                )}
+              </div>
             </FormItem>
           )}
         />
@@ -172,13 +352,43 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
 
   // Estados para las faltas filtradas por tipo
   const [faltasGraves, setFaltasGraves] = useState<
-    Array<{ id: number; label: string; description: string; entidad?: number }>
+    Array<{
+      id: number
+      label: string
+      description: string
+      entidad?: number
+      ley?: string
+      articulo?: string
+      fraccion?: string
+      inciso?: string
+      letra?: string
+    }>
   >([])
   const [faltasNoGraves, setFaltasNoGraves] = useState<
-    Array<{ id: number; label: string; description: string; entidad?: number }>
+    Array<{
+      id: number
+      label: string
+      description: string
+      entidad?: number
+      ley?: string
+      articulo?: string
+      fraccion?: string
+      inciso?: string
+      letra?: string
+    }>
   >([])
   const [hechosCorrupcion, setHechosCorrupcion] = useState<
-    Array<{ id: number; label: string; description: string; entidad?: number }>
+    Array<{
+      id: number
+      label: string
+      description: string
+      entidad?: number
+      ley?: string
+      articulo?: string
+      fraccion?: string
+      inciso?: string
+      letra?: string
+    }>
   >([])
 
   // Obtener el tipo de persona seleccionada
@@ -191,17 +401,33 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
     const fetchFaltas = async () => {
       setLoadingFaltas(true)
       try {
-        // Consultar todas las faltas de la colección
+        // Consultar todas las faltas de la colección con los nuevos campos
         const response = await publicDirectus.request(
           readItems("faltas", {
             limit: -1,
-            fields: ["id", "entidad", "clasificacion", "nombre", "descripcion", "servidorPublico", "particular"],
+            fields: [
+              "id",
+              "entidad",
+              "clasificacion",
+              "nombre",
+              "descripcion",
+              "servidorPublico",
+              "particular",
+              "ley",
+              "articulo",
+              "fraccion",
+              "inciso",
+              "letra",
+            ],
           }),
         )
 
         if (response && Array.isArray(response)) {
           setFaltas(response)
           console.log("Faltas cargadas:", response)
+          // Debug: verificar qué campos están llegando
+          console.log("Ejemplo de falta con todos los campos:", response[0])
+          console.log("Campos disponibles:", Object.keys(response[0] || {}))
         }
       } catch (err) {
         console.error("Error al cargar las faltas:", err)
@@ -224,7 +450,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         return false
       }
 
-      // Filtrar por entidad y ente público
+      // LÓGICA CORREGIDA: Filtrar por entidad y ente público
       const esEntidadValida = (falta: Falta) => {
         // Si hay un ente público seleccionado
         if (entePublicoSeleccionado) {
@@ -241,25 +467,34 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
           }
         }
 
-        // Si no hay ente público pero sí hay entidad seleccionada
+        // CORRECCIÓN: Si no hay ente público pero sí hay entidad seleccionada
         if (entidadSeleccionada) {
-          // Mostrar faltas federales y de la entidad seleccionada
-          return falta.entidad === 0 || falta.entidad === 33 || falta.entidad === entidadSeleccionada
+          if (entidadSeleccionada === 33) {
+            // Si seleccionó Federal, mostrar solo faltas federales
+            return falta.entidad === 0 || falta.entidad === 33
+          } else {
+            // Si seleccionó una entidad específica, mostrar SOLO faltas de esa entidad
+            return falta.entidad === entidadSeleccionada
+          }
         }
 
-        // Si no hay entidad seleccionada, mostrar todas las faltas
-        return true
+        // Si no hay entidad seleccionada, no mostrar nada
+        return false
       }
 
       // Aplicar filtros y mapear a formato para checkboxes
       const faltasFiltradas = faltas.filter((falta) => esTipoPersonaValido(falta) && esEntidadValida(falta))
 
-      // Separar por clasificación
       const mapearFalta = (falta: Falta) => ({
         id: falta.id,
         label: falta.nombre,
         description: falta.descripcion,
-        entidad: falta.entidad, // Añadimos la entidad para poder filtrar
+        entidad: falta.entidad,
+        ley: falta.ley,
+        articulo: falta.articulo,
+        fraccion: falta.fraccion,
+        inciso: falta.inciso,
+        letra: falta.letra,
       })
 
       setFaltasGraves(faltasFiltradas.filter((f) => f.clasificacion === "faltaGrave").map(mapearFalta))
@@ -355,7 +590,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8 p-4 sm:p-6">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8 p-2 sm:p-4 lg:p-6">
       <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20 mb-8 overflow-hidden shadow-lg">
         <div className="flex flex-col sm:flex-row">
           <div className="bg-primary/20 p-4 sm:p-6 flex items-center justify-center sm:w-20">
@@ -537,44 +772,36 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
         ) : (
           <div className="space-y-8">
             {/* Información sobre el ámbito de aplicación */}
-            <div className="bg-primary/5 p-5 rounded-xl border border-primary/10">
-              <div className="flex items-center justify-between">
-                <h4 className="text-base font-semibold text-primary">Ámbito de aplicación:</h4>
-                <div className="flex items-center space-x-2">
-                  {(entidadSeleccionada === 33 ||
-                    !entePublicoSeleccionado ||
-                    (entePublicoSeleccionado &&
-                      form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00")) && (
-                    <Badge variant="outline" className="bg-blue-100 text-blue-800 hover:bg-blue-100 border-blue-200">
+            <div className="bg-primary/5 p-4 sm:p-5 rounded-xl border border-primary/10 dark:bg-primary/10">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <h4 className="text-sm sm:text-base font-semibold text-primary">Ámbito de aplicación:</h4>
+                <div className="flex items-center flex-wrap gap-2">
+                  {entidadSeleccionada === 33 && (
+                    <Badge
+                      variant="outline"
+                      className="bg-primary/10 text-primary hover:bg-primary/10 border-primary/20 text-xs"
+                    >
                       <Flag className="h-3 w-3 mr-1" />
                       Federal
                     </Badge>
                   )}
-                  {entidadSeleccionada &&
-                    entidadSeleccionada !== 33 &&
-                    (!entePublicoSeleccionado ||
-                      (entePublicoSeleccionado &&
-                        form?.getValues("personaDenunciada.entePublicoData")?.entidad !== "00")) && (
-                      <Badge
-                        variant="outline"
-                        className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
-                      >
-                        <MapPin className="h-3 w-3 mr-1" />
-                        {getSelectedEntidadName()}
-                      </Badge>
-                    )}
+                  {entidadSeleccionada && entidadSeleccionada !== 33 && (
+                    <Badge
+                      variant="outline"
+                      className="bg-primary/10 text-primary hover:bg-primary/10 border-primary/20 text-xs"
+                    >
+                      <MapPin className="h-3 w-3 mr-1" />
+                      {getSelectedEntidadName()}
+                    </Badge>
+                  )}
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground mt-3">
+              <p className="text-xs sm:text-sm text-muted-foreground mt-3">
                 {entidadSeleccionada === 33
                   ? "Se muestran faltas aplicables a nivel federal."
-                  : entePublicoSeleccionado
-                    ? form?.getValues("personaDenunciada.entePublicoData")?.entidad === "00"
-                      ? "Se muestran faltas aplicables a nivel federal."
-                      : "Se muestran faltas aplicables a nivel estatal."
-                    : entidadSeleccionada
-                      ? "Se muestran faltas aplicables a nivel federal y estatal."
-                      : "Seleccione una entidad para ver las faltas aplicables."}
+                  : entidadSeleccionada
+                    ? `Se muestran faltas aplicables para ${getSelectedEntidadName()}.`
+                    : "Seleccione una entidad para ver las faltas aplicables."}
               </p>
             </div>
 
@@ -617,10 +844,9 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
                 <Filter className="h-12 w-12 mb-4 text-primary/50" />
                 <p className="text-lg font-semibold text-primary">No hay faltas disponibles</p>
                 <p className="text-sm text-muted-foreground text-center mt-2">
-                  No se encontraron faltas aplicables para la configuración actual.
-                  {entePublicoSeleccionado
-                    ? " Intente seleccionar otro ente público."
-                    : " Intente seleccionar otra entidad."}
+                  {entidadSeleccionada
+                    ? "No se encontraron faltas aplicables para la entidad seleccionada."
+                    : "Seleccione una entidad para ver las faltas aplicables."}
                 </p>
               </div>
             )}

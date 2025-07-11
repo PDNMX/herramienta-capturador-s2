@@ -101,7 +101,7 @@ export function Landing() {
             </Button>
             <div className="mt-12 pt-8 border-t border-border/50">
               <div className="flex items-center justify-center">
-                <LogoSNA className="h-12 md:h-16 w-auto" />
+                <LogoSNA className="h-12 md:h-20 w-auto" />
               </div>
             </div>
           </div>

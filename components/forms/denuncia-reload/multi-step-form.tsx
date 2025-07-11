@@ -477,7 +477,7 @@ export function MultiStepForm() {
             </div>
             <ul className="list-disc list-inside space-y-0.5 ml-6">
               {currentErrors.map((error, index) => (
-                <li key={index} className="text-xs text-red-700 dark:text-red-300">
+                <li key={index} className="text-sm text-red-700 dark:text-red-100">
                   {error}
                 </li>
               ))}
@@ -486,8 +486,7 @@ export function MultiStepForm() {
         ),
         duration: 10000,
         className:
-          "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
-     dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
+          "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
       })
       return
     }
@@ -543,7 +542,7 @@ export function MultiStepForm() {
           title: "📤 Subiendo archivos",
           description: `${archivosParaSubir.length} archivo(s) en proceso...`,
           duration: 3000,
-          className: "bg-blue-50/95 backdrop-blur-sm border-blue-200/60 text-blue-800",
+          className: "backdrop-blur(32px) saturate(250%) bg-blue-100/80 dark:bg-blue-600/60 border-blue-200/60 dark:border-blue-600/50 text-blue-800 dark:text-white rounded-2xl shadow-2xl",
         })
 
         setUploadProgress(0)
@@ -567,9 +566,7 @@ export function MultiStepForm() {
                 description: `El archivo ${file.name} se subió pero no se pudo obtener su ID`,
                 action: <ToastAction altText="Reintentar">Continuar</ToastAction>,
                 duration: 5000,
-                className:
-                  "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
-           dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
+                className: "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
               })
             }
 
@@ -583,9 +580,7 @@ export function MultiStepForm() {
               description: `No se pudo subir ${file.name}: ${error.message || "Error desconocido"}`,
               action: <ToastAction altText="Reintentar">Reintentar</ToastAction>,
               duration: 6000,
-              className:
-                "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
-           dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
+              className: "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
             })
           }
         }
@@ -596,7 +591,7 @@ export function MultiStepForm() {
             title: "✅ Archivos procesados",
             description: `${archivoIds.length}/${archivosParaSubir.length} archivos subidos exitosamente`,
             duration: 4000,
-            className: "bg-green-50/95 backdrop-blur-sm border-green-200/60 text-green-800",
+            className: "backdrop-blur(32px) saturate(250%) bg-green-500/60 dark:bg-green-600/60 border-green-500/50 dark:border-green-600/50 text-white rounded-2xl shadow-2xl",
           })
         } else {
           toast({
@@ -605,9 +600,7 @@ export function MultiStepForm() {
             description: "No se pudo procesar ningún archivo correctamente",
             action: <ToastAction altText="Revisar archivos">Revisar</ToastAction>,
             duration: 6000,
-            className:
-              "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
-           dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
+            className: "backdrop-blur(32px) saturate(250%) bg-red-500/60 dark:bg-red-600/60 border-red-500/50 dark:border-red-600/50 text-white rounded-2xl shadow-2xl",
           })
         }
       } else {
@@ -675,7 +668,7 @@ export function MultiStepForm() {
         title: "📤 Enviando denuncia",
         description: "Su denuncia está siendo procesada. Por favor espere...",
         duration: 3000,
-        className: "bg-blue-50/95 backdrop-blur-sm border-blue-200/60 text-blue-800",
+        className: "backdrop-blur(32px) saturate(250%) bg-blue-500/60 dark:bg-blue-600/60 border-blue-500/50 dark:border-blue-600/50 text-white rounded-2xl shadow-2xl",
       })
 
       const result = await denunciasPublicService.createDenuncia(validatedValues)
@@ -685,7 +678,7 @@ export function MultiStepForm() {
         title: "🎉 Denuncia enviada",
         description: "Su denuncia ha sido recibida correctamente y será procesada por las autoridades.",
         duration: 5000,
-        className: "bg-green-50/95 backdrop-blur-sm border-green-200/60 text-green-800",
+        className: "backdrop-blur(32px) saturate(250%) bg-green-500/60 dark:bg-green-600/60 border-green-500/50 dark:border-green-600/50 text-white rounded-2xl shadow-2xl",
       })
 
       setDenunciaId(result.id)
@@ -704,16 +697,13 @@ export function MultiStepForm() {
               setIsModalOpen(true)
               setModalMode("confirm")
             }}
-            className="bg-red-100/90 hover:bg-red-200/90 text-red-900 border-red-300/70 shrink-0 
-       dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-200 dark:border-red-700/50"
+            className="backdrop-blur(28px) saturate(220%) bg-white/70 hover:bg-white/80 dark:bg-gray-800/70 dark:hover:bg-gray-800/80 border-white/50 hover:border-white/60 dark:border-gray-600/50 dark:hover:border-gray-600/60 text-foreground rounded-xl transition-all hover:scale-105"
           >
             Reintentar
           </ToastAction>
         ),
         duration: 8000,
-        className:
-          "bg-red-50/95 backdrop-blur-sm border-red-200/60 text-red-900 \
-   dark:bg-red-950/90 dark:border-red-800/60 dark:text-red-200",
+        className: "backdrop-blur(32px) saturate(250%) bg-red-500/60 dark:bg-red-600/60 border-red-500/50 dark:border-red-600/50 text-white rounded-2xl shadow-2xl",
       })
 
       setIsModalOpen(false)
@@ -793,20 +783,20 @@ export function MultiStepForm() {
                 </Sheet>
               )}
             </div>
-            
-          {/* Aviso de campos obligatorios */}
-          <div className="flex items-center gap-2 p-3 bg-amber-50/50 dark:bg-amber-900/20 rounded-lg border border-amber-200/50 dark:border-amber-700/30">
-            <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
-            <p className="text-sm text-amber-800 dark:text-amber-200">
-              Los campos marcados con (*) son obligatorios.
-            </p>
-          </div>
+
+            {/* Aviso de campos obligatorios */}
+            <div className="flex items-center gap-2 p-3 bg-amber-50/50 dark:bg-amber-900/20 rounded-lg border border-amber-200/50 dark:border-amber-700/30">
+              <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+              <p className="text-sm text-amber-800 dark:text-amber-200">
+                Los campos marcados con (*) son obligatorios.
+              </p>
+            </div>
 
           </div>
         </div>
 
         <div className="flex flex-col justify-between min-h-[calc(100vh-280px)] pb-28">
-          <div className="container mx-auto px-4 py-6 md:py-8 overflow-y-auto">
+          <div className="container mx-auto px-0 py-6 md:6 overflow-y-auto">
 
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
               <StepContent step={step} form={form} />
@@ -817,25 +807,27 @@ export function MultiStepForm() {
         {/* BOTONES FLOTANTES MEJORADOS - RESPONSIVOS TEMA CLARO/OSCURO */}
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
           <div className="flex items-center justify-center">
-            {/* Contenedor principal con glassmorphism responsivo */}
+            {/* Contenedor principal con glassmorphism mejorado */}
             <div
               className="flex items-center space-x-2 
-                 bg-white/90 dark:bg-gray-900/90 
-                 backdrop-blur-xl shadow-2xl 
+                 backdrop-blur(32px) saturate(250%)
+                 bg-white/60 dark:bg-gray-900/60
+                 shadow-2xl 
                  dark:shadow-black/50
                  rounded-2xl px-3 py-2 
-                 border border-white/30 dark:border-gray-700/50
+                 border border-white/40 dark:border-gray-700/50
                  md:space-x-4 md:px-6 md:py-3 md:rounded-3xl"
             >
-              {/* Botón anterior/cancelar responsivo */}
+              {/* Botón anterior/cancelar con glassmorphism */}
               <Button
                 type="button"
                 variant="outline"
-                className="rounded-xl shadow-lg border-2 hover:shadow-xl transition-all duration-300 
-                   bg-white/95 hover:bg-white 
-                   dark:bg-gray-800/95 dark:hover:bg-gray-800
-                   border-gray-200 hover:border-gray-300
-                   dark:border-gray-600 dark:hover:border-gray-500
+                className="rounded-xl shadow-lg border hover:shadow-xl transition-all duration-300 
+                   backdrop-blur(28px) saturate(220%)
+                   bg-white/70 hover:bg-white/80 
+                   dark:bg-gray-800/70 dark:hover:bg-gray-800/80
+                   border-white/50 hover:border-white/60
+                   dark:border-gray-600/50 dark:hover:border-gray-600/60
                    h-11 w-11 p-0 md:h-12 md:w-auto md:px-5 md:py-3
                    hover:scale-105 active:scale-95"
                 onClick={step === 0 ? () => router.push("/") : prevStep}
@@ -847,38 +839,36 @@ export function MultiStepForm() {
                 </span>
               </Button>
 
-              {/* Indicador de paso central responsivo */}
+              {/* Indicador de paso central con glassmorphism mejorado */}
               <div
-                className="flex items-center space-x-3 
-                   bg-gradient-to-r from-primary/10 to-primary/5 
-                   dark:from-primary/20 dark:to-primary/10
+                className="flex items-center 
+                   backdrop-blur(28px) saturate(220%)
+                   bg-primary/40 dark:bg-primary/50
                    px-4 py-2 rounded-xl 
-                   border border-primary/20 dark:border-primary/30
-                   backdrop-blur-sm
+                   border border-primary/50 dark:border-primary/60
                    md:px-6 md:py-3 md:rounded-2xl"
               >
-                <div className="flex items-center space-x-2">
-                  <div className="text-sm font-bold text-primary dark:text-primary-foreground md:text-base">
+                <div className="flex items-center space-x-1 md:space-x-2">
+                  <div className="text-xs font-bold text-primary dark:text-primary-foreground">
                     {step + 1}
                   </div>
                   <div className="text-primary/60 dark:text-primary-foreground/60 font-medium">/</div>
-                  <div className="text-sm font-bold text-primary/80 dark:text-primary-foreground/80 md:text-base">
+                  <div className="text-xs font-bold text-primary/80 dark:text-primary-foreground/80">
                     {totalSteps}
                   </div>
-                </div>
-                <div className="hidden lg:block text-xs text-primary/70 dark:text-primary-foreground/70 font-medium max-w-32 truncate">
-                  {steps[step].title}
+                  <div className="hidden sm:block text-xs text-primary/70 dark:text-primary-foreground/70 font-medium ml-2 md:ml-3">
+                    {steps[step].title}
+                  </div>
                 </div>
               </div>
 
-              {/* Botón siguiente/enviar responsivo */}
+              {/* Botón siguiente/enviar con glassmorphism */}
               <Button
                 type="button"
                 className="rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 
-                   bg-gradient-to-r from-primary to-primary/90 
-                   hover:from-primary/90 hover:to-primary
-                   dark:from-primary dark:to-primary/80
-                   dark:hover:from-primary/90 dark:hover:to-primary
+                   backdrop-blur(28px) saturate(220%)
+                   bg-primary/90 hover:bg-primary/100 
+                   dark:bg-primary/85 dark:hover:bg-primary/95
                    h-11 w-11 p-0 md:h-12 md:w-auto md:px-5 md:py-3
                    hover:scale-105 active:scale-95 border-0
                    text-primary-foreground dark:text-primary-foreground"

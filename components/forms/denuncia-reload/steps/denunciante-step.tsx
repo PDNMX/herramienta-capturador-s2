@@ -20,10 +20,10 @@ const CompactChoiceBox = React.forwardRef<
     className={`relative w-full p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
       checked
         ? "border-primary bg-primary/10 text-primary shadow-lg transform scale-[1.02]"
-        : "border-input bg-card text-muted-foreground hover:border-primary/50 hover:bg-accent hover:shadow-md hover:transform hover:scale-[1.01] opacity-70 hover:opacity-90"
+        : "border-input bg-card text-muted-foreground hover:border-primary/50 hover:shadow-md hover:transform hover:scale-[1.01]"
     }`}
   >
-    <div className={checked ? "opacity-100" : "opacity-60"}>{children}</div>
+    <div>{children}</div>
     {checked && (
       <div className="absolute top-4 right-4 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <Check className="h-4 w-4 text-primary-foreground" />
@@ -211,7 +211,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
-                    <CompactChoiceBox checked={field.value} onChange={() => field.onChange(true)}>
+                    <CompactChoiceBox checked={field.value === true} onChange={() => field.onChange(true)}>
                       <div className="flex items-start space-x-4">
                         <div className="flex-shrink-0 mt-1">
                           <Shield className="h-7 w-7 text-current" />
@@ -225,7 +225,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                       </div>
                     </CompactChoiceBox>
 
-                    <CompactChoiceBox checked={!field.value} onChange={() => field.onChange(false)}>
+                    <CompactChoiceBox checked={field.value === false} onChange={() => field.onChange(false)}>
                       <div className="flex items-start space-x-4">
                         <div className="flex-shrink-0 mt-1">
                           <User className="h-7 w-7 text-current" />
@@ -241,7 +241,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   </div>
 
                   <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
-                    <FormDescription className="text-sm text-muted-foreground">
+                    <FormDescription className="text-sm">
                       En ambos casos, tu denuncia será confidencial y se protegerá toda la información proporcionada.
                     </FormDescription>
                   </div>
@@ -251,7 +251,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
           )}
         />
 
-        {!isAnonymous && (
+        {isAnonymous === false && (
           <div className="space-y-6 sm:space-y-8">
             <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
               <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
@@ -268,7 +268,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-sm font-semibold">
-                        Nombre completo {!isAnonymous && <span className="text-red-500">*</span>}
+                        Nombre completo {isAnonymous === false && <span className="text-red-500">*</span>}
                       </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Ej. Juan Pérez García" className="text-sm h-12" />
@@ -293,7 +293,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-sm font-semibold">
-                            Teléfono {!isAnonymous && <span className="text-red-500">*</span>}
+                            Teléfono {isAnonymous === false && <span className="text-red-500">*</span>}
                           </FormLabel>
                           <FormControl>
                             <div className="relative">
@@ -359,7 +359,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-semibold">
-                          Entidad Federativa {!isAnonymous && <span className="text-red-500">*</span>}
+                          Entidad Federativa {isAnonymous === false && <span className="text-red-500">*</span>}
                         </FormLabel>
                         <Select
                           onValueChange={(value) => field.onChange(Number.parseInt(value))}
@@ -398,7 +398,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-semibold">
-                          Municipio o Alcaldía {!isAnonymous && <span className="text-red-500">*</span>}
+                          Municipio o Alcaldía {isAnonymous === false && <span className="text-red-500">*</span>}
                         </FormLabel>
                         <Select
                           onValueChange={(value) => field.onChange(Number.parseInt(value))}
@@ -444,7 +444,7 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-sm font-semibold">
-                        Calle {!isAnonymous && <span className="text-red-500">*</span>}
+                        Calle {isAnonymous === false && <span className="text-red-500">*</span>}
                       </FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="Ej. Av. Insurgentes" className="text-sm h-12" />
@@ -463,9 +463,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     name="denunciante.datosDenunciante.domicilioDenunciante.numeroExterior"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-semibold">
-                          Número Exterior {!isAnonymous && <span className="text-red-500">*</span>}
-                        </FormLabel>
+                                              <FormLabel className="text-sm font-semibold">
+                        Número Exterior {isAnonymous === false && <span className="text-red-500">*</span>}
+                      </FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
@@ -505,9 +505,9 @@ export function DenuncianteStep({ form }: DenuncianteStepProps) {
                     name="denunciante.datosDenunciante.domicilioDenunciante.codigoPostal"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-sm font-semibold">
-                          Código Postal {!isAnonymous && <span className="text-red-500">*</span>}
-                        </FormLabel>
+                                              <FormLabel className="text-sm font-semibold">
+                        Código Postal {isAnonymous === false && <span className="text-red-500">*</span>}
+                      </FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="Ej. 06700" className="text-sm h-12" />
                         </FormControl>

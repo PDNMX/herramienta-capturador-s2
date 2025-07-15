@@ -24,7 +24,7 @@ const formSchema = z
   .object({
     denunciante: z
       .object({
-        anonimo: z.boolean().default(false),
+        anonimo: z.boolean().optional(),
         datosDenunciante: z
           .object({
             nombre: z
@@ -197,7 +197,18 @@ const formSchema = z
   })
   .refine(
     (data) => {
-      if (data.denunciante && !data.denunciante.anonimo) {
+      // Si no hay denunciante o anonimo es undefined, no es válido
+      if (!data.denunciante || data.denunciante.anonimo === undefined) {
+        return false
+      }
+      
+      // Si es anónimo, no necesita datos adicionales
+      if (data.denunciante.anonimo === true) {
+        return true
+      }
+      
+      // Si no es anónimo, debe tener todos los datos requeridos
+      if (data.denunciante.anonimo === false) {
         const datosDenunciante = data.denunciante.datosDenunciante
         if (!datosDenunciante) return false
 
@@ -216,7 +227,7 @@ const formSchema = z
     },
     {
       message:
-        "Cuando no es anónimo, los campos de nombre completo, teléfono, calle, número exterior, entidad, municipio y código postal son obligatorios",
+        "Debe seleccionar si desea presentar la denuncia de forma anónima o no. Si no es anónimo, los campos de nombre completo, teléfono, calle, número exterior, entidad, municipio y código postal son obligatorios",
       path: ["denunciante"],
     },
   )
@@ -246,7 +257,7 @@ export function MultiStepForm() {
     mode: "onChange",
     defaultValues: {
       denunciante: {
-        anonimo: false,
+        anonimo: undefined,
         datosDenunciante: {
           nombre: "",
           telefono: "",
@@ -316,9 +327,9 @@ export function MultiStepForm() {
     switch (stepIndex) {
       case 0:
         const isAnonymous = form.getValues("denunciante.anonimo")
-        if (isAnonymous) {
+        if (isAnonymous === true) {
           return ["denunciante.anonimo"]
-        } else {
+        } else if (isAnonymous === false) {
           return [
             "denunciante.anonimo",
             "denunciante.datosDenunciante.nombre",
@@ -329,6 +340,9 @@ export function MultiStepForm() {
             "denunciante.datosDenunciante.domicilioDenunciante.numeroExterior",
             "denunciante.datosDenunciante.domicilioDenunciante.codigoPostal",
           ]
+        } else {
+          // Si anonimo es undefined, solo validar que se seleccione una opción
+          return ["denunciante.anonimo"]
         }
       case 1:
         return ["ubicacionHecho.fechaHecho"]
@@ -345,6 +359,7 @@ export function MultiStepForm() {
 
   const getFieldDisplayName = (fieldPath: string): string => {
     const fieldNames: Record<string, string> = {
+      "denunciante.anonimo": "Tipo de denuncia (anónima o con datos)",
       "denunciante.datosDenunciante.nombre": "Nombre completo",
       "denunciante.datosDenunciante.telefono": "Teléfono",
       "denunciante.datosDenunciante.domicilioDenunciante.entidad": "Entidad federativa",
@@ -372,7 +387,18 @@ export function MultiStepForm() {
 
     if (stepIndex === 0) {
       const isAnonymous = form.getValues("denunciante.anonimo")
-      if (!isAnonymous) {
+      
+      // Si anonimo es undefined, mostrar error
+      if (isAnonymous === undefined) {
+        form.setError("denunciante.anonimo", {
+          message: "Debe seleccionar si desea presentar la denuncia de forma anónima o no",
+        })
+        errors.push("Tipo de denuncia (anónima o con datos)")
+        return { isValid: false, errors }
+      }
+      
+      // Si no es anónimo, validar todos los campos requeridos
+      if (isAnonymous === false) {
         const nombre = form.getValues("denunciante.datosDenunciante.nombre")
         const telefono = form.getValues("denunciante.datosDenunciante.telefono")
         const entidad = form.getValues("denunciante.datosDenunciante.domicilioDenunciante.entidad")
@@ -520,7 +546,7 @@ export function MultiStepForm() {
       const formValues = form.getValues()
 
       if (formValues.denunciante) {
-        formValues.denunciante.anonimo = Boolean(formValues.denunciante.anonimo || false)
+        formValues.denunciante.anonimo = Boolean(formValues.denunciante.anonimo)
       }
 
       if (formValues.personaDenunciada) {
@@ -788,7 +814,7 @@ export function MultiStepForm() {
             <div className="flex items-center gap-2 p-3 bg-amber-50/50 dark:bg-amber-900/20 rounded-lg border border-amber-200/50 dark:border-amber-700/30">
               <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
               <p className="text-sm text-amber-800 dark:text-amber-200">
-                Los campos marcados con (*) son obligatorios.
+              Los campos marcados con un asterisco (*) son obligatorios.
               </p>
             </div>
 

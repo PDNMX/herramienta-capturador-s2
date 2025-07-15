@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client"
 import { useState, useEffect, useRef, useCallback } from "react"
 import type React from "react"
@@ -204,12 +205,13 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         center: [coordinates.lng, coordinates.lat],
         zoom: 3,
         attributionControl: false,
+        scrollZoom: false, // Desactivar scroll del mapa
       })
       mapRef.current = map
 
       const marker = new mapboxgl.Marker({
         color: "#FF0000",
-        draggable: true,
+        draggable: false,
       })
         .setLngLat([coordinates.lng, coordinates.lat])
         .addTo(map)

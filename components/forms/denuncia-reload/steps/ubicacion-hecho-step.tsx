@@ -70,20 +70,52 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
   const reverseGeocode = async (lat: number, lng: number) => {
     try {
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es&country=mx`,
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxgl.accessToken}&language=es`,
       )
       const data = await response.json()
       const features = data.features[0]
 
       if (features) {
         const context = features.context || []
+        
+        // Extraer información de la dirección
+        let street = features.text || ""
+        let number = features.address || ""
+        let city = ""
+        let state = ""
+        let country = ""
+        let postalCode = ""
+
+        // Buscar en el contexto
+        context.forEach((c: any) => {
+          if (c.id.includes("place")) {
+            city = c.text
+          } else if (c.id.includes("region")) {
+            state = c.text
+          } else if (c.id.includes("country")) {
+            country = c.text
+          } else if (c.id.includes("postcode")) {
+            postalCode = c.text
+          }
+        })
+
+        // Caso especial para CDMX
+        if (city === "Ciudad de México" && !state) {
+          state = "Ciudad de México"
+        }
+
+        // Si no encontramos ciudad en el contexto, usar el nombre del feature
+        if (!city && features.place_type && features.place_type.includes("place")) {
+          city = features.text
+        }
+
         const address: AddressDetails = {
-          street: features.text || "",
-          number: features.address || "",
-          city: context.find((c: any) => c.id.includes("place"))?.text || "",
-          state: context.find((c: any) => c.id.includes("region"))?.text || "",
-          country: context.find((c: any) => c.id.includes("country"))?.text || "",
-          postalCode: context.find((c: any) => c.id.includes("postcode"))?.text || "",
+          street,
+          number,
+          city,
+          state,
+          country,
+          postalCode,
         }
         setAddressDetails(address)
 
@@ -138,7 +170,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
     setIsLoading(true)
     try {
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgl.accessToken}&country=mx&language=es&types=place,address,poi,neighborhood,postcode`,
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgl.accessToken}&language=es&types=place,address,poi,neighborhood,postcode`,
       )
       const data = await response.json()
       if (data && data.features) {

@@ -9,9 +9,7 @@ import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, ArrowRight, CheckCircle2, AlertCircle, MessageCircle } from "lucide-react"
 import { StepContent } from "./step-content"
-import { Progress } from "@/components/ui/progress"
 import { Sheet, SheetTrigger } from "@/components/ui/sheet"
-import { stepIcons } from "./step-icons"
 import { Form } from "@/components/ui/form"
 import { denunciasPublicService } from "@/lib/directus"
 import { HelpContent } from "./help-content"
@@ -116,9 +114,7 @@ const formSchema = z
           .regex(/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]*$/, "El país solo puede contener letras y espacios")
           .optional(),
         otrasReferencias: z.string().max(500, "Las referencias no pueden exceder 500 caracteres").optional(),
-        fechaHecho: z
-          .string()
-          .min(1, "La fecha del hecho es obligatoria"),
+        fechaHecho: z.string().min(1, "La fecha del hecho es obligatoria"),
         horaHecho: z
           .string()
           .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:MM)")
@@ -195,12 +191,12 @@ const formSchema = z
       if (!data.denunciante || data.denunciante.anonimo === undefined) {
         return false
       }
-      
+
       // Si es anónimo, no necesita datos adicionales
       if (data.denunciante.anonimo === true) {
         return true
       }
-      
+
       // Si no es anónimo, debe tener todos los datos requeridos
       if (data.denunciante.anonimo === false) {
         const datosDenunciante = data.denunciante.datosDenunciante
@@ -241,7 +237,7 @@ export function MultiStepForm() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [modalMode, setModalMode] = React.useState<"confirm" | "success">("confirm")
   const [isModalOpen, setIsModalOpen] = React.useState(false)
-  const [denunciaId, setDenunciaId] = React.useState<string | undefined>(undefined)
+  const [denunciaFolio, setDenunciaFolio] = React.useState<string | undefined>(undefined) // CAMBIO: denunciaId -> denunciaFolio
   const [uploadProgress, setUploadProgress] = React.useState(0)
   const [validationErrors, setValidationErrors] = React.useState<string[]>([])
   const [showCustomToast, setShowCustomToast] = React.useState(false)
@@ -381,7 +377,7 @@ export function MultiStepForm() {
 
     if (stepIndex === 0) {
       const isAnonymous = form.getValues("denunciante.anonimo")
-      
+
       // Si anonimo es undefined, mostrar error
       if (isAnonymous === undefined) {
         form.setError("denunciante.anonimo", {
@@ -390,7 +386,7 @@ export function MultiStepForm() {
         errors.push("Tipo de denuncia (anónima o con datos)")
         return { isValid: false, errors }
       }
-      
+
       // Si no es anónimo, validar todos los campos requeridos
       if (isAnonymous === false) {
         const nombre = form.getValues("denunciante.datosDenunciante.nombre")
@@ -516,14 +512,6 @@ export function MultiStepForm() {
       setModalMode("confirm")
     } else {
       nextStep()
-      // Eliminar completamente este toast de "Paso completado"
-      // toast({
-      //   variant: "default",
-      //   title: "✅ Paso completado",
-      //   description: `Paso ${step + 2}: ${steps[step + 1]?.title}`,
-      //   duration: 3000,
-      //   className: "bg-green-50/95 backdrop-blur-sm border-green-200/60 text-green-800",
-      // })
     }
   }
 
@@ -562,7 +550,8 @@ export function MultiStepForm() {
           title: "📤 Subiendo archivos",
           description: `${archivosParaSubir.length} archivo(s) en proceso...`,
           duration: 3000,
-          className: "backdrop-blur(32px) saturate(250%) bg-blue-100/80 dark:bg-blue-600/60 border-blue-200/60 dark:border-blue-600/50 text-blue-800 dark:text-white rounded-2xl shadow-2xl",
+          className:
+            "backdrop-blur(32px) saturate(250%) bg-blue-100/80 dark:bg-blue-600/60 border-blue-200/60 dark:border-blue-600/50 text-blue-800 dark:text-white rounded-2xl shadow-2xl",
         })
 
         setUploadProgress(0)
@@ -586,7 +575,8 @@ export function MultiStepForm() {
                 description: `El archivo ${file.name} se subió pero no se pudo obtener su ID`,
                 action: <ToastAction altText="Reintentar">Continuar</ToastAction>,
                 duration: 5000,
-                className: "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
+                className:
+                  "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
               })
             }
 
@@ -600,7 +590,8 @@ export function MultiStepForm() {
               description: `No se pudo subir ${file.name}: ${error.message || "Error desconocido"}`,
               action: <ToastAction altText="Reintentar">Reintentar</ToastAction>,
               duration: 6000,
-              className: "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
+              className:
+                "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
             })
           }
         }
@@ -611,7 +602,8 @@ export function MultiStepForm() {
             title: "✅ Archivos procesados",
             description: `${archivoIds.length}/${archivosParaSubir.length} archivos subidos exitosamente`,
             duration: 4000,
-            className: "backdrop-blur(32px) saturate(250%) bg-green-500/60 dark:bg-green-600/60 border-green-500/50 dark:border-green-600/50 text-white rounded-2xl shadow-2xl",
+            className:
+              "backdrop-blur(32px) saturate(250%) bg-green-500/60 dark:bg-green-600/60 border-green-500/50 dark:border-green-600/50 text-white rounded-2xl shadow-2xl",
           })
         } else {
           toast({
@@ -620,7 +612,8 @@ export function MultiStepForm() {
             description: "No se pudo procesar ningún archivo correctamente",
             action: <ToastAction altText="Revisar archivos">Revisar</ToastAction>,
             duration: 6000,
-            className: "backdrop-blur(32px) saturate(250%) bg-red-500/60 dark:bg-red-600/60 border-red-500/50 dark:border-red-600/50 text-white rounded-2xl shadow-2xl",
+            className:
+              "backdrop-blur(32px) saturate(250%) bg-red-500/60 dark:bg-red-600/60 border-red-500/50 dark:border-red-600/50 text-white rounded-2xl shadow-2xl",
           })
         }
       } else {
@@ -688,7 +681,8 @@ export function MultiStepForm() {
         title: "📤 Enviando denuncia",
         description: "Su denuncia está siendo procesada. Por favor espere...",
         duration: 3000,
-        className: "backdrop-blur(32px) saturate(250%) bg-blue-500/60 dark:bg-blue-600/60 border-blue-500/50 dark:border-blue-600/50 text-white rounded-2xl shadow-2xl",
+        className:
+          "backdrop-blur(32px) saturate(250%) bg-blue-500/60 dark:bg-blue-600/60 border-blue-500/50 dark:border-blue-600/50 text-white rounded-2xl shadow-2xl",
       })
 
       const result = await denunciasPublicService.createDenuncia(validatedValues)
@@ -698,10 +692,12 @@ export function MultiStepForm() {
         title: "🎉 Denuncia enviada",
         description: "Su denuncia ha sido recibida correctamente y será procesada por las autoridades.",
         duration: 5000,
-        className: "backdrop-blur(32px) saturate(250%) bg-green-500/60 dark:bg-green-600/60 border-green-500/50 dark:border-green-600/50 text-white rounded-2xl shadow-2xl",
+        className:
+          "backdrop-blur(32px) saturate(250%) bg-green-500/60 dark:bg-green-600/60 border-green-500/50 dark:border-green-600/50 text-white rounded-2xl shadow-2xl",
       })
 
-      setDenunciaId(result.id)
+      // CAMBIO: Usar el folio en lugar del ID
+      setDenunciaFolio(result.folio || result.id) // Fallback al ID si no hay folio
       setModalMode("success")
     } catch (error) {
       console.error("Error al enviar el formulario:", error)
@@ -723,10 +719,9 @@ export function MultiStepForm() {
           </ToastAction>
         ),
         duration: 8000,
-        className: "backdrop-blur(32px) saturate(250%) bg-red-500/60 dark:bg-red-600/60 border-red-500/50 dark:border-red-600/50 text-white rounded-2xl shadow-2xl",
+        className:
+          "backdrop-blur(32px) saturate(250%) bg-red-100/80 dark:bg-red-600/60 border-red-200/60 dark:border-red-600/50 text-red-800 dark:text-white rounded-2xl shadow-2xl",
       })
-
-      setIsModalOpen(false)
     } finally {
       setIsSubmitting(false)
       setUploadProgress(0)
@@ -808,16 +803,14 @@ export function MultiStepForm() {
             <div className="flex items-center gap-2 p-3 bg-amber-50/50 dark:bg-amber-900/20 rounded-lg border border-amber-200/50 dark:border-amber-700/30">
               <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
               <p className="text-sm text-amber-800 dark:text-amber-200">
-              Los campos marcados con un asterisco (*) son obligatorios.
+                Los campos marcados con un asterisco (*) son obligatorios.
               </p>
             </div>
-
           </div>
         </div>
 
         <div className="flex flex-col justify-between min-h-[calc(100vh-280px)] pb-28">
           <div className="container mx-auto px-0 py-6 md:6 overflow-y-auto">
-
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
               <StepContent step={step} form={form} />
             </form>
@@ -869,13 +862,9 @@ export function MultiStepForm() {
                    md:px-6 md:py-3 md:rounded-2xl"
               >
                 <div className="flex items-center space-x-1 md:space-x-2">
-                  <div className="text-xs font-bold text-primary dark:text-primary-foreground">
-                    {step + 1}
-                  </div>
+                  <div className="text-xs font-bold text-primary dark:text-primary-foreground">{step + 1}</div>
                   <div className="text-primary/60 dark:text-primary-foreground/60 font-medium">/</div>
-                  <div className="text-xs font-bold text-primary/80 dark:text-primary-foreground/80">
-                    {totalSteps}
-                  </div>
+                  <div className="text-xs font-bold text-primary/80 dark:text-primary-foreground/80">{totalSteps}</div>
                   <div className="hidden sm:block text-xs text-primary/70 dark:text-primary-foreground/70 font-medium ml-2 md:ml-3">
                     {steps[step].title}
                   </div>
@@ -918,7 +907,7 @@ export function MultiStepForm() {
         isOpen={isModalOpen}
         onOpenChange={setIsModalOpen}
         mode={modalMode}
-        denunciaId={denunciaId}
+        denunciaFolio={denunciaFolio} // CAMBIO: denunciaId -> denunciaFolio
         onConfirm={handleConfirmSubmit}
         onCancel={() => setIsModalOpen(false)}
         onClose={handleModalClose}

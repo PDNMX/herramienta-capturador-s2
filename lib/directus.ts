@@ -1,23 +1,93 @@
 //@ts-nocheck
-import {
-  createDirectus,
-  rest,
-  authentication,
-  createItem,
-  readItems,
-  updateItem,
-} from "@directus/sdk";
+import { createDirectus, rest, authentication, createItem, readItems } from "@directus/sdk"
 
-const BACKEND_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8056";
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8056"
 
 // Instancia autenticada (para usuarios del sistema)
 const directus = createDirectus(BACKEND_URL)
   .with(authentication("cookie", { credentials: "include", autoRefresh: true }))
-  .with(rest());
+  .with(rest())
 
 // Instancia pública (para el formulario de denuncias)
-export const publicDirectus = createDirectus(BACKEND_URL).with(rest());
+export const publicDirectus = createDirectus(BACKEND_URL).with(rest())
+
+// Servicio para generar folios únicos
+export const folioService = {
+  /**
+   * Genera un folio único con formato DEN-XXXXX (5 dígitos aleatorios)
+   * @returns Promise<string> - Folio único generado
+   */
+  async generarFolioUnico(): Promise<string> {
+    const maxIntentos = 20 // Aumentamos los intentos por el rango más pequeño
+    let intento = 0
+
+    while (intento < maxIntentos) {
+      try {
+        // Generar 5 dígitos aleatorios (00001-99999)
+        const numeroAleatorio = Math.floor(Math.random() * 99999) + 1
+        const numeroFormateado = numeroAleatorio.toString().padStart(5, "0")
+
+        // Construir el folio: DEN-XXXXX
+        const folio = `DEN-${numeroFormateado}`
+
+        console.log(`Intento ${intento + 1}: Generando folio ${folio}`)
+
+        // Verificar que el folio no exista en la base de datos
+        const folioExistente = await this.verificarFolioExiste(folio)
+
+        if (!folioExistente) {
+          console.log(`Folio único generado: ${folio}`)
+          return folio
+        }
+
+        console.log(`Folio ${folio} ya existe, generando nuevo...`)
+        intento++
+      } catch (error) {
+        console.error(`Error en intento ${intento + 1} de generación de folio:`, error)
+        intento++
+      }
+    }
+
+    // Si después de todos los intentos no se pudo generar un folio único
+    throw new Error("No se pudo generar un folio único después de múltiples intentos")
+  },
+
+  /**
+   * Verifica si un folio ya existe en la base de datos
+   * @param folio - Folio a verificar
+   * @returns Promise<boolean> - true si existe, false si no existe
+   */
+  async verificarFolioExiste(folio: string): Promise<boolean> {
+    try {
+      const denuncias = await publicDirectus.request(
+        readItems("denuncias", {
+          filter: {
+            folio: { _eq: folio },
+          },
+          fields: ["id"],
+          limit: 1,
+        }),
+      )
+
+      return denuncias && denuncias.length > 0
+    } catch (error) {
+      console.error("Error al verificar folio existente:", error)
+      // En caso de error, asumimos que no existe para no bloquear el proceso
+      return false
+    }
+  },
+
+  /**
+   * Valida el formato de un folio
+   * @param folio - Folio a validar
+   * @returns boolean - true si el formato es válido
+   */
+  validarFormatoFolio(folio: string): boolean {
+    // Formato esperado: DEN-XXXXX (9 caracteres exactos)
+    const regex = /^DEN-\d{5}$/
+    return regex.test(folio)
+  },
+}
 
 // Servicio para manejar catálogos de entidades y municipios
 export const catalogosUbicacionService = {
@@ -27,45 +97,36 @@ export const catalogosUbicacionService = {
       const entidades = await publicDirectus.request(
         readItems("entidades", {
           limit: -1,
-          fields: [
-            'id',
-            'nombre',
-            'claveAGEE'
-          ],
-          sort: ['nombre']
-        })
-      );
-      return entidades;
+          fields: ["id", "nombre", "claveAGEE"],
+          sort: ["nombre"],
+        }),
+      )
+      return entidades
     } catch (error) {
-      console.error("Error al obtener catálogo de entidades:", error);
-      throw error;
+      console.error("Error al obtener catálogo de entidades:", error)
+      throw error
     }
   },
 
   // Obtener municipios por ID de entidad (no por claveAGEE)
   async getMunicipiosPorEntidad(entidadId: number) {
     try {
-      if (!entidadId) return [];
-      
+      if (!entidadId) return []
+
       const municipios = await publicDirectus.request(
         readItems("municipios", {
           limit: -1,
           filter: {
-            claveAGEE: { _eq: entidadId } // claveAGEE en municipios = id de entidades
+            claveAGEE: { _eq: entidadId }, // claveAGEE en municipios = id de entidades
           },
-          fields: [
-            'id',
-            'nombre',
-            'claveAGEM',
-            'claveAGEE'
-          ],
-          sort: ['nombre']
-        })
-      );
-      return municipios;
+          fields: ["id", "nombre", "claveAGEM", "claveAGEE"],
+          sort: ["nombre"],
+        }),
+      )
+      return municipios
     } catch (error) {
-      console.error("Error al obtener municipios por entidad:", error);
-      throw error;
+      console.error("Error al obtener municipios por entidad:", error)
+      throw error
     }
   },
 
@@ -75,22 +136,17 @@ export const catalogosUbicacionService = {
       const municipios = await publicDirectus.request(
         readItems("municipios", {
           limit: -1,
-          fields: [
-            'id',
-            'nombre',
-            'claveAGEM',
-            'claveAGEE'
-          ],
-          sort: ['nombre']
-        })
-      );
-      return municipios;
+          fields: ["id", "nombre", "claveAGEM", "claveAGEE"],
+          sort: ["nombre"],
+        }),
+      )
+      return municipios
     } catch (error) {
-      console.error("Error al obtener todos los municipios:", error);
-      throw error;
+      console.error("Error al obtener todos los municipios:", error)
+      throw error
     }
-  }
-};
+  },
+}
 
 // Servicio para manejar catálogos de faltas
 export const catalogosService = {
@@ -101,25 +157,25 @@ export const catalogosService = {
         readItems("faltas", {
           limit: -1,
           fields: [
-            'id',
-            'entidad',
-            'clasificacion',
-            'ley',
-            'articulo',
-            'fraccion',
-            'incisio',
-            'letra',
-            'nombre',
-            'descripcion',
-            'servidorPublico',
-            'particular'
-          ]
-        })
-      );
-      return faltas;
+            "id",
+            "entidad",
+            "clasificacion",
+            "ley",
+            "articulo",
+            "fraccion",
+            "incisio",
+            "letra",
+            "nombre",
+            "descripcion",
+            "servidorPublico",
+            "particular",
+          ],
+        }),
+      )
+      return faltas
     } catch (error) {
-      console.error("Error al obtener catálogo de faltas:", error);
-      throw error;
+      console.error("Error al obtener catálogo de faltas:", error)
+      throw error
     }
   },
 
@@ -127,14 +183,14 @@ export const catalogosService = {
   async getFaltasFiltradas(tipoPersona, entidad, clasificacion) {
     try {
       const filter = {
-        _and: []
-      };
+        _and: [],
+      }
 
       // Filtrar por tipo de persona
       if (tipoPersona === "SERVIDOR_PUBLICO") {
-        filter._and.push({ servidorPublico: { _eq: true } });
+        filter._and.push({ servidorPublico: { _eq: true } })
       } else if (tipoPersona === "PARTICULAR") {
-        filter._and.push({ particular: { _eq: true } });
+        filter._and.push({ particular: { _eq: true } })
       }
 
       // Filtrar por entidad (considerando que 0 o 33 son federales y aplican a todas)
@@ -144,78 +200,75 @@ export const catalogosService = {
             { entidad: { _eq: entidad } },
             { entidad: { _eq: 0 } },
             { entidad: { _eq: 33 } },
-            { entidad: { _null: true } }
-          ]
-        });
+            { entidad: { _null: true } },
+          ],
+        })
       }
 
       // Filtrar por clasificación
       if (clasificacion) {
-        filter._and.push({ clasificacion: { _eq: clasificacion } });
+        filter._and.push({ clasificacion: { _eq: clasificacion } })
       }
 
       // Si no hay condiciones, quitar _and
       if (filter._and.length === 0) {
-        delete filter._and;
+        delete filter._and
       }
 
       const faltas = await publicDirectus.request(
         readItems("faltas", {
           limit: -1,
           filter,
-          fields: [
-            'id',
-            'entidad',
-            'clasificacion',
-            'nombre',
-            'descripcion',
-            'servidorPublico',
-            'particular'
-          ]
-        })
-      );
-      return faltas;
+          fields: ["id", "entidad", "clasificacion", "nombre", "descripcion", "servidorPublico", "particular"],
+        }),
+      )
+      return faltas
     } catch (error) {
-      console.error("Error al obtener faltas filtradas:", error);
-      throw error;
+      console.error("Error al obtener faltas filtradas:", error)
+      throw error
     }
-  }
-};
+  },
+}
 
 // Servicio para manejar las denuncias públicas
 export const denunciasPublicService = {
   async createDenuncia(formData: any) {
     try {
-      console.log("------------------- INICIANDO CREACIÓN DE DENUNCIA -------------------");
-      console.log("Datos recibidos:", JSON.stringify(formData, null, 2));
+      console.log("------------------- INICIANDO CREACIÓN DE DENUNCIA -------------------")
+      console.log("Datos recibidos:", JSON.stringify(formData, null, 2))
+
+      // PASO 0: Generar folio único ANTES de crear cualquier registro
+      console.log("Generando folio único...")
+      const folioUnico = await folioService.generarFolioUnico()
+      console.log("Folio generado:", folioUnico)
 
       // 1. Crear denunciante (siempre, ya sea anónimo o no)
-      let denuncianteId = null;
+      let denuncianteId = null
 
       try {
         // Verificar que denunciante existe en el objeto
         if (!formData.denunciante) {
-          formData.denunciante = { anonimo: false };
+          formData.denunciante = { anonimo: false }
         }
 
         // Preparar datos del denunciante
         const denuncianteData: any = {
           anonimo: Boolean(formData.denunciante.anonimo),
-        };
+        }
 
-        console.log("Preparando datos del denunciante:", denuncianteData);
+        console.log("Preparando datos del denunciante:", denuncianteData)
 
         // Solo agregamos datos adicionales si no es anónimo
         if (!formData.denunciante.anonimo && formData.denunciante.datosDenunciante) {
-          console.log("El denunciante no es anónimo, procesando datos adicionales");
+          console.log("El denunciante no es anónimo, procesando datos adicionales")
 
           // 1.1 Crear domicilio del denunciante
-          let domicilioDenuncianteId = null;
+          let domicilioDenuncianteId = null
           try {
             // Intentamos crear el domicilio solo si existe el objeto
             if (formData.denunciante.datosDenunciante.domicilioDenunciante) {
               // Extraer datos de domicilio
-              const domicilioData = formData.denunciante.datosDenunciante.domicilioDenunciante;
+              const domicilioData = formData.denunciante.datosDenunciante.domicilioDenunciante
 
               // Crear objeto para la inserción, asegurando que ningún campo sea undefined
               const domicilioObj = {
@@ -226,24 +279,24 @@ export const denunciasPublicService = {
                 numeroExterior: domicilioData.numeroExterior || null,
                 numeroInterior: domicilioData.numeroInterior || null,
                 municipioAlcaldia: domicilioData.municipioAlcaldia || null, // Campo legacy para compatibilidad
-              };
+              }
 
-              console.log("Creando domicilio con datos:", JSON.stringify(domicilioObj, null, 2));
+              console.log("Creando domicilio con datos:", JSON.stringify(domicilioObj, null, 2))
 
               // Crear el domicilio en Directus
               const domicilioDenunciante = await publicDirectus.request(
-                createItem("domicilios_denunciantes", domicilioObj)
-              );
+                createItem("domicilios_denunciantes", domicilioObj),
+              )
 
-              domicilioDenuncianteId = domicilioDenunciante.id;
-              console.log("Domicilio creado con ID:", domicilioDenuncianteId);
+              domicilioDenuncianteId = domicilioDenunciante.id
+              console.log("Domicilio creado con ID:", domicilioDenuncianteId)
             } else {
-              console.log("No hay datos de domicilio para procesar");
+              console.log("No hay datos de domicilio para procesar")
             }
           } catch (domicilioError) {
-            console.error("Error al crear domicilio:", domicilioError);
+            console.error("Error al crear domicilio:", domicilioError)
             if (domicilioError.response) {
-              console.error("Respuesta del servidor:", domicilioError.response.data);
+              console.error("Respuesta del servidor:", domicilioError.response.data)
             }
             // Continuamos sin domicilio
           }
@@ -257,50 +310,46 @@ export const denunciasPublicService = {
               email: formData.denunciante.datosDenunciante.email || null,
               proteccion: Boolean(formData.denunciante.datosDenunciante.proteccion),
               razonesProteccion: formData.denunciante.datosDenunciante.razonesProteccion || null,
-            };
+            }
 
             // Agregar domicilio solo si se creó correctamente
             if (domicilioDenuncianteId) {
-              datosDenuncianteObj.domicilioDenunciante = domicilioDenuncianteId;
+              datosDenuncianteObj.domicilioDenunciante = domicilioDenuncianteId
             }
 
-            console.log("Creando datos del denunciante:", JSON.stringify(datosDenuncianteObj, null, 2));
+            console.log("Creando datos del denunciante:", JSON.stringify(datosDenuncianteObj, null, 2))
 
             // Crear datos del denunciante en Directus
-            const datosDenunciante = await publicDirectus.request(
-              createItem("datos_denunciantes", datosDenuncianteObj)
-            );
+            const datosDenunciante = await publicDirectus.request(createItem("datos_denunciantes", datosDenuncianteObj))
 
             // Guardar referencia en el objeto denunciante
-            denuncianteData.datosDenunciante = datosDenunciante.id;
-            console.log("Datos del denunciante creados con ID:", datosDenunciante.id);
+            denuncianteData.datosDenunciante = datosDenunciante.id
+            console.log("Datos del denunciante creados con ID:", datosDenunciante.id)
           } catch (datosError) {
-            console.error("Error al crear datos del denunciante:", datosError);
+            console.error("Error al crear datos del denunciante:", datosError)
             if (datosError.response) {
-              console.error("Respuesta del servidor:", datosError.response.data);
+              console.error("Respuesta del servidor:", datosError.response.data)
             }
             // Continuamos sin datos adicionales
           }
         }
 
         // Crear el registro de denunciante
-        console.log("Creando registro de denunciante con:", JSON.stringify(denuncianteData, null, 2));
-        const denunciante = await publicDirectus.request(
-          createItem("denunciantes", denuncianteData)
-        );
-        denuncianteId = denunciante.id;
-        console.log("Denunciante creado con ID:", denuncianteId);
+        console.log("Creando registro de denunciante con:", JSON.stringify(denuncianteData, null, 2))
+        const denunciante = await publicDirectus.request(createItem("denunciantes", denuncianteData))
+        denuncianteId = denunciante.id
+        console.log("Denunciante creado con ID:", denuncianteId)
       } catch (denuncianteError) {
-        console.error("Error al crear denunciante:", denuncianteError);
+        console.error("Error al crear denunciante:", denuncianteError)
         if (denuncianteError.response) {
-          console.error("Respuesta del servidor:", denuncianteError.response.data);
+          console.error("Respuesta del servidor:", denuncianteError.response.data)
         }
         // Si no se puede crear el denunciante, no podemos continuar
-        throw new Error("No se pudo crear el denunciante");
+        throw new Error("No se pudo crear el denunciante")
       }
 
       // 2. Crear ubicación del hecho
-      let ubicacionHechoId = null;
+      let ubicacionHechoId = null
       try {
         // Crear ubicación solo si hay datos
         if (formData.ubicacionHecho) {
@@ -315,32 +364,30 @@ export const denunciasPublicService = {
             otrasReferencias: formData.ubicacionHecho.otrasReferencias || null,
             fechaHecho: formData.ubicacionHecho.fechaHecho || null,
             horaHecho: formData.ubicacionHecho.horaHecho || null,
-          };
+          }
 
-          console.log("Creando ubicación del hecho con:", JSON.stringify(ubicacionHechoData, null, 2));
+          console.log("Creando ubicación del hecho con:", JSON.stringify(ubicacionHechoData, null, 2))
 
-          const ubicacionHecho = await publicDirectus.request(
-            createItem("ubicaciones_hechos", ubicacionHechoData)
-          );
+          const ubicacionHecho = await publicDirectus.request(createItem("ubicaciones_hechos", ubicacionHechoData))
 
-          ubicacionHechoId = ubicacionHecho.id;
-          console.log("Ubicación del hecho creada con ID:", ubicacionHechoId);
+          ubicacionHechoId = ubicacionHecho.id
+          console.log("Ubicación del hecho creada con ID:", ubicacionHechoId)
 
           // Verificamos los datos retornados para confirmar que otrasReferencias se guardó
-          console.log("Datos retornados de la ubicación creada:", JSON.stringify(ubicacionHecho, null, 2));
+          console.log("Datos retornados de la ubicación creada:", JSON.stringify(ubicacionHecho, null, 2))
         } else {
-          console.log("No hay datos de ubicación para procesar");
+          console.log("No hay datos de ubicación para procesar")
         }
       } catch (ubicacionError) {
-        console.error("Error al crear ubicación del hecho:", ubicacionError);
+        console.error("Error al crear ubicación del hecho:", ubicacionError)
         if (ubicacionError.response) {
-          console.error("Respuesta del servidor:", ubicacionError.response.data);
+          console.error("Respuesta del servidor:", ubicacionError.response.data)
         }
         // Continuamos sin ubicación
       }
 
       // 3. Crear persona denunciada
-      let personaDenunciadaId = null;
+      let personaDenunciadaId = null
       try {
         if (formData.personaDenunciada) {
           // Asegurarnos de que todos los campos estén definidos o sean null
@@ -352,29 +399,29 @@ export const denunciasPublicService = {
             apellidos: formData.personaDenunciada.apellidos || null,
             genero: formData.personaDenunciada.genero || null,
             descripcion: formData.personaDenunciada.descripcion || null,
-          };
+          }
 
-          console.log("Creando persona denunciada con:", JSON.stringify(personaDenunciadaData, null, 2));
+          console.log("Creando persona denunciada con:", JSON.stringify(personaDenunciadaData, null, 2))
 
           const personaDenunciada = await publicDirectus.request(
-            createItem("personas_denunciadas", personaDenunciadaData)
-          );
+            createItem("personas_denunciadas", personaDenunciadaData),
+          )
 
-          personaDenunciadaId = personaDenunciada.id;
-          console.log("Persona denunciada creada con ID:", personaDenunciadaId);
+          personaDenunciadaId = personaDenunciada.id
+          console.log("Persona denunciada creada con ID:", personaDenunciadaId)
         } else {
-          console.log("No hay datos de persona denunciada para procesar");
+          console.log("No hay datos de persona denunciada para procesar")
         }
       } catch (personaError) {
-        console.error("Error al crear persona denunciada:", personaError);
+        console.error("Error al crear persona denunciada:", personaError)
         if (personaError.response) {
-          console.error("Respuesta del servidor:", personaError.response.data);
+          console.error("Respuesta del servidor:", personaError.response.data)
         }
         // Continuamos sin persona denunciada
       }
 
       // 4. Crear falta cometida
-      let faltaCometidaId = null;
+      let faltaCometidaId = null
       try {
         if (formData.faltaCometida) {
           // Asegurarnos de que los arrays siempre existan o sean vacíos
@@ -382,116 +429,119 @@ export const denunciasPublicService = {
             faltaGrave: formData.faltaCometida.faltaGrave || [],
             faltaNoGrave: formData.faltaCometida.faltaNoGrave || [],
             hechosCorrupcion: formData.faltaCometida.hechosCorrupcion || [],
-          };
+          }
 
-          console.log("Creando falta cometida con:", JSON.stringify(faltaCometidaData, null, 2));
+          console.log("Creando falta cometida con:", JSON.stringify(faltaCometidaData, null, 2))
 
-          const faltaCometida = await publicDirectus.request(
-            createItem("falta_cometida", faltaCometidaData)
-          );
+          const faltaCometida = await publicDirectus.request(createItem("falta_cometida", faltaCometidaData))
 
-          faltaCometidaId = faltaCometida.id;
-          console.log("Falta cometida creada con ID:", faltaCometidaId);
+          faltaCometidaId = faltaCometida.id
+          console.log("Falta cometida creada con ID:", faltaCometidaId)
         } else {
-          console.log("No hay datos de falta cometida para procesar");
+          console.log("No hay datos de falta cometida para procesar")
         }
       } catch (faltaError) {
-        console.error("Error al crear falta cometida:", faltaError);
+        console.error("Error al crear falta cometida:", faltaError)
         if (faltaError.response) {
-          console.error("Respuesta del servidor:", faltaError.response.data);
+          console.error("Respuesta del servidor:", faltaError.response.data)
         }
         // Continuamos sin falta cometida
       }
 
-      // 6. Crear la denuncia principal (sin incluir archivos directamente)
+      // 6. Crear la denuncia principal CON EL FOLIO GENERADO
       try {
-        // Crear objeto base de la denuncia
+        // Crear objeto base de la denuncia CON FOLIO
         const denunciaData = {
+          folio: folioUnico, // ¡NUEVO CAMPO FOLIO!
           status: "REGISTRADA",
           narracionHechos: formData.narracionHechos || "",
           testigo: Boolean(formData.testigo),
           datosTestigos: formData.datosTestigos || null,
-        };
+        }
 
         // Añadir relaciones solo si existen los IDs
-        if (denuncianteId) denunciaData.denunciante = denuncianteId;
-        if (ubicacionHechoId) denunciaData.ubicacionHecho = ubicacionHechoId;
-        if (personaDenunciadaId) denunciaData.personaDenunciada = personaDenunciadaId;
-        if (faltaCometidaId) denunciaData.faltaCometida = faltaCometidaId;
+        if (denuncianteId) denunciaData.denunciante = denuncianteId
+        if (ubicacionHechoId) denunciaData.ubicacionHecho = ubicacionHechoId
+        if (personaDenunciadaId) denunciaData.personaDenunciada = personaDenunciadaId
+        if (faltaCometidaId) denunciaData.faltaCometida = faltaCometidaId
 
-        console.log("Creando denuncia principal con:", JSON.stringify(denunciaData, null, 2));
+        console.log("Creando denuncia principal con folio:", JSON.stringify(denunciaData, null, 2))
 
         // Crear la denuncia en Directus
-        const denuncia = await publicDirectus.request(
-          createItem("denuncias", denunciaData)
-        );
+        const denuncia = await publicDirectus.request(createItem("denuncias", denunciaData))
 
-        console.log("Denuncia creada con ID:", denuncia.id);
+        console.log("Denuncia creada con ID:", denuncia.id, "y folio:", denuncia.folio)
 
         // 7. Crear relaciones con archivos de evidencia
-        if (formData.archivosEvidencia && Array.isArray(formData.archivosEvidencia) && formData.archivosEvidencia.length > 0) {
+        if (
+          formData.archivosEvidencia &&
+          Array.isArray(formData.archivosEvidencia) &&
+          formData.archivosEvidencia.length > 0
+        ) {
           try {
-            console.log(`Procesando ${formData.archivosEvidencia.length} IDs de archivos de evidencia:`, formData.archivosEvidencia);
-
-            // Saltamos la actualización directa que causa error 500 y confiamos solo en la tabla de unión
+            console.log(
+              `Procesando ${formData.archivosEvidencia.length} IDs de archivos de evidencia:`,
+              formData.archivosEvidencia,
+            )
 
             // Crear relaciones en la tabla de unión denuncias_files para cada archivo
             for (const fileId of formData.archivosEvidencia) {
               if (!fileId) {
-                console.warn("ID de archivo no válido:", fileId);
-                continue;
+                console.warn("ID de archivo no válido:", fileId)
+                continue
               }
 
-              console.log(`Creando relación para archivo ${fileId} con denuncia ${denuncia.id}`);
+              console.log(`Creando relación para archivo ${fileId} con denuncia ${denuncia.id}`)
 
               try {
                 // Crear la relación many-to-many en la tabla de unión denuncias_files
                 const relationData = {
                   denuncias_id: denuncia.id,
                   directus_files_id: fileId,
-                };
+                }
 
-                console.log("Enviando datos de relación:", JSON.stringify(relationData, null, 2));
+                console.log("Enviando datos de relación:", JSON.stringify(relationData, null, 2))
 
-                const relation = await publicDirectus.request(
-                  createItem("denuncias_files", relationData)
-                );
+                const relation = await publicDirectus.request(createItem("denuncias_files", relationData))
 
-                console.log("Relación creada exitosamente:", relation);
+                console.log("Relación creada exitosamente:", relation)
               } catch (relationError) {
-                console.error(`Error al crear la relación para el archivo ${fileId}:`, relationError);
+                console.error(`Error al crear la relación para el archivo ${fileId}:`, relationError)
                 if (relationError.response) {
-                  console.error("Respuesta del servidor:", relationError.response.data);
+                  console.error("Respuesta del servidor:", relationError.response.data)
                 }
               }
             }
-            console.log("Relaciones de archivos creadas correctamente");
+            console.log("Relaciones de archivos creadas correctamente")
           } catch (archivosError) {
-            console.error("Error al crear relaciones de archivos:", archivosError);
+            console.error("Error al crear relaciones de archivos:", archivosError)
             if (archivosError.response) {
-              console.error("Respuesta del servidor:", archivosError.response.data);
+              console.error("Respuesta del servidor:", archivosError.response.data)
             }
             // Continuamos incluso si fallan los archivos
           }
         } else {
-          console.log("No hay archivos de evidencia para procesar");
+          console.log("No hay archivos de evidencia para procesar")
         }
 
+        console.log("------------------- DENUNCIA CREADA EXITOSAMENTE -------------------")
+        console.log("Resultado:", JSON.stringify(denuncia, null, 2))
 
-        console.log("------------------- DENUNCIA CREADA EXITOSAMENTE -------------------");
-        console.log("Resultado:", JSON.stringify(denuncia, null, 2));
-
-        return denuncia;
+        // IMPORTANTE: Retornar el folio en lugar del ID
+        return {
+          ...denuncia,
+          id: denuncia.folio, // Para compatibilidad, devolvemos el folio como ID
+        }
       } catch (denunciaError) {
-        console.error("Error al crear la denuncia principal:", denunciaError);
+        console.error("Error al crear la denuncia principal:", denunciaError)
         if (denunciaError.response) {
-          console.error("Respuesta del servidor:", denunciaError.response.data);
+          console.error("Respuesta del servidor:", denunciaError.response.data)
         }
-        throw denunciaError;
+        throw denunciaError
       }
     } catch (error) {
-      console.error("Error general al crear la denuncia:", error);
-      throw error;
+      console.error("Error general al crear la denuncia:", error)
+      throw error
     }
   },
 
@@ -500,139 +550,155 @@ export const denunciasPublicService = {
     try {
       // Verificamos si tenemos un objeto File válido
       if (!(file instanceof File)) {
-        throw new Error("El parámetro proporcionado no es un objeto File válido");
+        throw new Error("El parámetro proporcionado no es un objeto File válido")
       }
 
-      console.log(`Preparando subida de archivo: ${file.name} (${file.size} bytes, tipo: ${file.type})`);
+      console.log(`Preparando subida de archivo: ${file.name} (${file.size} bytes, tipo: ${file.type})`)
 
       // Creamos un FormData para subir el archivo
-      const formData = new FormData();
-      formData.append("file", file);
+      const formData = new FormData()
+      formData.append("file", file)
 
       // Hacemos la petición directamente al endpoint /files de Directus
-      console.log(`Enviando archivo a ${BACKEND_URL}/files`);
+      console.log(`Enviando archivo a ${BACKEND_URL}/files`)
       const response = await fetch(`${BACKEND_URL}/files`, {
         method: "POST",
         body: formData,
-      });
+      })
 
       // Si la respuesta no es exitosa, lanzamos un error
       if (!response.ok) {
-        const errorBody = await response.text();
-        console.error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`);
-        console.error(`Cuerpo del error: ${errorBody}`);
-        throw new Error(`Error al subir archivo: ${response.status} ${response.statusText}`);
+        const errorBody = await response.text()
+        console.error(`Error en la respuesta del servidor: ${response.status} ${response.statusText}`)
+        console.error(`Cuerpo del error: ${errorBody}`)
+        throw new Error(`Error al subir archivo: ${response.status} ${response.statusText}`)
       }
 
       // Parseamos la respuesta JSON
-      const data = await response.json();
+      const data = await response.json()
 
       // Agregar un log para ver toda la respuesta y entender su estructura
-      console.log("Respuesta completa del servidor:", JSON.stringify(data, null, 2));
+      console.log("Respuesta completa del servidor:", JSON.stringify(data, null, 2))
 
       // MODIFICACIÓN: La API de Directus devuelve la respuesta en un objeto data
       // Verificamos primero si existe data y luego accedemos a las propiedades
       if (!data) {
-        console.error("La respuesta del servidor está vacía:", data);
-        throw new Error("No se pudo obtener el ID del archivo subido");
+        console.error("La respuesta del servidor está vacía:", data)
+        throw new Error("No se pudo obtener el ID del archivo subido")
       }
 
       // La respuesta de Directus tiene el formato { data: { id: "..." } }
-      const fileData = data.data || data; // Intentamos ambos formatos
+      const fileData = data.data || data // Intentamos ambos formatos
 
       if (!fileData || !fileData.id) {
-        console.error("La respuesta del servidor no contiene un ID de archivo válido:", data);
-        throw new Error("No se pudo obtener el ID del archivo subido");
+        console.error("La respuesta del servidor no contiene un ID de archivo válido:", data)
+        throw new Error("No se pudo obtener el ID del archivo subido")
       }
 
-      console.log(`Archivo subido exitosamente. ID asignado por Directus: ${fileData.id}`);
+      console.log(`Archivo subido exitosamente. ID asignado por Directus: ${fileData.id}`)
 
       // Retornamos el ID del archivo y opcionalmente el nombre
-      return { id: fileData.id, filename: fileData.filename_download || file.name };
+      return { id: fileData.id, filename: fileData.filename_download || file.name }
     } catch (error) {
-      console.error("Error al subir evidencia:", error);
-      throw error;
+      console.error("Error al subir evidencia:", error)
+      throw error
     }
-  }
-};
+  },
+}
 
-// Servicio para consultar denuncias - VERSIÓN SEGURA
+// Servicio para consultar denuncias - MODIFICADO PARA USAR FOLIO
 export const seguimientoService = {
   /**
-   * Consulta una denuncia por su ID/folio
+   * Consulta una denuncia por su folio
    * Solo retorna información básica por protección de datos
-   * @param folio - ID de la denuncia a consultar
+   * @param folio - Folio de la denuncia a consultar
    * @returns Datos básicos y seguros de la denuncia
    */
   async consultarDenuncia(folio: string) {
     try {
-      console.log(`Consultando denuncia con folio: ${folio}`);
+      console.log(`Consultando denuncia con folio: ${folio}`)
 
       // Validar que el folio no esté vacío
-      if (!folio || folio.trim() === '') {
-        throw new Error("El folio no puede estar vacío");
+      if (!folio || folio.trim() === "") {
+        throw new Error("El folio no puede estar vacío")
       }
 
       // Limpiar el folio (remover espacios y convertir a uppercase si es necesario)
-      const folioLimpio = folio.trim().toUpperCase();
+      const folioLimpio = folio.trim().toUpperCase()
 
-      // Buscar la denuncia por ID - SOLO CAMPOS SEGUROS
+      // Validar formato del folio
+      if (!folioService.validarFormatoFolio(folioLimpio)) {
+        throw new Error("El formato del folio no es válido. Debe tener el formato DEN-2025xxxxx")
+      }
+
+      // Buscar la denuncia por FOLIO - SOLO CAMPOS SEGUROS
       const denuncias = await publicDirectus.request(
         readItems("denuncias", {
           filter: {
-            id: { _eq: folioLimpio }
+            folio: { _eq: folioLimpio },
           },
           fields: [
             "id",
+            "folio", // ¡NUEVO CAMPO!
             "status",
             "date_created",
-            "date_updated"
+            "date_updated",
           ],
-          limit: 1
-        })
-      );
+          limit: 1,
+        }),
+      )
 
-      console.log("Resultado de la consulta:", JSON.stringify(denuncias, null, 2));
+      console.log("Resultado de la consulta:", JSON.stringify(denuncias, null, 2))
 
       // Verificar si se encontró la denuncia
       if (!denuncias || denuncias.length === 0) {
-        throw new Error("No se encontró ninguna denuncia con el folio proporcionado. Verifique que el número sea correcto.");
+        throw new Error(
+          "No se encontró ninguna denuncia con el folio proporcionado. Verifique que el número sea correcto.",
+        )
       }
 
-      const denuncia = denuncias[0];
+      const denuncia = denuncias[0]
 
       // Retornar solo datos seguros y básicos
       const denunciaSegura = {
         id: denuncia.id,
-        folio: denuncia.id, // El ID es el folio
-        status: denuncia.status || 'REGISTRADA',
+        folio: denuncia.folio, // Usar el folio real de la base de datos
+        status: denuncia.status || "REGISTRADA",
         date_created: denuncia.date_created,
         fecha_actualizacion: denuncia.date_updated || null,
 
         // Información contextual sin datos personales
         observaciones: this.generarObservacionesSeguras(denuncia.status),
-        tiempo_transcurrido: this.calcularTiempoTranscurrido(denuncia.date_created)
-      };
+        tiempo_transcurrido: this.calcularTiempoTranscurrido(denuncia.date_created),
 
-      console.log("Denuncia procesada (versión segura):", JSON.stringify(denunciaSegura, null, 2));
+        // Información adicional segura
+        autoridad_resolutora: this.obtenerAutoridadPorStatus(denuncia.status),
+        ubicacion: "Información protegida por privacidad",
+        es_anonima: null, // No revelamos si es anónima o no
+        tiene_evidencia: null, // No revelamos si tiene evidencia
+      }
 
-      return denunciaSegura;
+      console.log("Denuncia procesada (versión segura):", JSON.stringify(denunciaSegura, null, 2))
 
+      return denunciaSegura
     } catch (error) {
-      console.error("Error al consultar la denuncia:", error);
+      console.error("Error al consultar la denuncia:", error)
 
       // Personalizar mensajes de error
       if (error instanceof Error) {
         if (error.message.includes("not found") || error.message.includes("No se encontró")) {
-          throw new Error("La denuncia no fue encontrada. Verifique que el folio sea correcto.");
+          throw new Error("La denuncia no fue encontrada. Verifique que el folio sea correcto.")
+        }
+        if (error.message.includes("formato") || error.message.includes("válido")) {
+          throw error // Mantener mensaje de formato
         }
         if (error.message.includes("network") || error.message.includes("fetch")) {
-          throw new Error("Error de conexión. Inténtelo nuevamente en unos momentos.");
+          throw new Error("Error de conexión. Inténtelo nuevamente en unos momentos.")
         }
-        throw error;
+        throw error
       }
 
-      throw new Error("Error inesperado al consultar la denuncia. Inténtelo nuevamente.");
+      throw new Error("Error inesperado al consultar la denuncia. Inténtelo nuevamente.")
     }
   },
 
@@ -645,10 +711,10 @@ export const seguimientoService = {
       // Consultar solo campos seguros para estadísticas
       const denuncias = await publicDirectus.request(
         readItems("denuncias", {
-          fields: ["status", "date_created"],
-          limit: -1 // Todas las denuncias
-        })
-      );
+          fields: ["status", "date_created", "folio"],
+          limit: -1, // Todas las denuncias
+        }),
+      )
 
       const estadisticas = {
         total: denuncias.length,
@@ -656,73 +722,88 @@ export const seguimientoService = {
           REGISTRADA: 0,
           TURNADA: 0,
           PROCESO: 0,
-          ATENDIDA: 0
+          ATENDIDA: 0,
         },
         este_mes: 0,
-        este_ano: 0
-      };
+        este_ano: 0,
+        folios_generados_hoy: 0,
+      }
 
-      const ahora = new Date();
-      const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
-      const inicioAno = new Date(ahora.getFullYear(), 0, 1);
+      const ahora = new Date()
+      const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1)
+      const inicioAno = new Date(ahora.getFullYear(), 0, 1)
+      const inicioHoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate())
 
-      denuncias.forEach(denuncia => {
+      denuncias.forEach((denuncia) => {
         // Contar por status
         if (estadisticas.por_status.hasOwnProperty(denuncia.status)) {
-          estadisticas.por_status[denuncia.status]++;
+          estadisticas.por_status[denuncia.status]++
         }
 
         // Contar por período
-        const fechaCreacion = new Date(denuncia.date_created);
+        const fechaCreacion = new Date(denuncia.date_created)
         if (fechaCreacion >= inicioMes) {
-          estadisticas.este_mes++;
+          estadisticas.este_mes++
         }
         if (fechaCreacion >= inicioAno) {
-          estadisticas.este_ano++;
+          estadisticas.este_ano++
         }
-      });
+        if (fechaCreacion >= inicioHoy) {
+          estadisticas.folios_generados_hoy++
+        }
+      })
 
-      return estadisticas;
-
+      return estadisticas
     } catch (error) {
-      console.error("Error al obtener estadísticas:", error);
-      throw error;
+      console.error("Error al obtener estadísticas:", error)
+      throw error
     }
   },
 
   // Métodos auxiliares seguros (sin datos personales)
   generarObservacionesSeguras(status: string): string {
     const observacionesMap: Record<string, string> = {
-      'REGISTRADA': 'Su denuncia ha sido recibida correctamente y será revisada por el área correspondiente.',
-      'TURNADA': 'Su denuncia ha sido asignada al área competente para su investigación.',
-      'PROCESO': 'Su denuncia se encuentra en proceso de investigación activa.',
-      'ATENDIDA': 'Su denuncia ha sido procesada y se han tomado las medidas correspondientes.'
-    };
+      REGISTRADA: "Su denuncia ha sido recibida correctamente y será revisada por el área correspondiente.",
+      TURNADA: "Su denuncia ha sido asignada al área competente para su investigación.",
+      PROCESO: "Su denuncia se encuentra en proceso de investigación activa.",
+      ATENDIDA: "Su denuncia ha sido procesada y se han tomado las medidas correspondientes.",
+    }
 
-    return observacionesMap[status] || 'Su denuncia está siendo procesada conforme a los procedimientos establecidos.';
+    return observacionesMap[status] || "Su denuncia está siendo procesada conforme a los procedimientos establecidos."
+  },
+
+  obtenerAutoridadPorStatus(status: string): string {
+    const autoridadMap: Record<string, string> = {
+      REGISTRADA: "Área de Recepción de Denuncias",
+      TURNADA: "Autoridad Competente Asignada",
+      PROCESO: "Área de Investigación",
+      ATENDIDA: "Autoridad Resolutora",
+    }
+
+    return autoridadMap[status] || "Sistema de Denuncias"
   },
 
   calcularTiempoTranscurrido(fechaCreacion: string): string {
-    const ahora = new Date();
-    const fecha = new Date(fechaCreacion);
-    const diferencia = ahora.getTime() - fecha.getTime();
+    const ahora = new Date()
+    const fecha = new Date(fechaCreacion)
+    const diferencia = ahora.getTime() - fecha.getTime()
 
-    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24))
 
     if (dias === 0) {
-      return 'Hoy';
+      return "Hoy"
     } else if (dias === 1) {
-      return 'Hace 1 día';
+      return "Hace 1 día"
     } else if (dias < 30) {
-      return `Hace ${dias} días`;
+      return `Hace ${dias} días`
     } else if (dias < 365) {
-      const meses = Math.floor(dias / 30);
-      return meses === 1 ? 'Hace 1 mes' : `Hace ${meses} meses`;
+      const meses = Math.floor(dias / 30)
+      return meses === 1 ? "Hace 1 mes" : `Hace ${meses} meses`
     } else {
-      const anos = Math.floor(dias / 365);
-      return anos === 1 ? 'Hace 1 año' : `Hace ${anos} años`;
+      const anos = Math.floor(dias / 365)
+      return anos === 1 ? "Hace 1 año" : `Hace ${anos} años`
     }
-  }
-};
+  },
+}
 
-export default directus;
+export default directus

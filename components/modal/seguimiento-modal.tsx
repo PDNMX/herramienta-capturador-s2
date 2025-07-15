@@ -124,6 +124,7 @@ export function SeguimientoModal({ isOpen, onOpenChange }: SeguimientoModalProps
     setDenunciaData(null)
 
     try {
+      // CAMBIO: Ahora consultamos por folio en lugar de ID
       const denuncia = await seguimientoService.consultarDenuncia(folio.trim())
       setDenunciaData(denuncia)
     } catch (err) {
@@ -297,12 +298,15 @@ export function SeguimientoModal({ isOpen, onOpenChange }: SeguimientoModalProps
                       value={folio}
                       onChange={(e) => setFolio(e.target.value.toUpperCase())}
                       className="w-full pr-10 h-11 text-base"
-                      placeholder="Ej: DEN-2024-001234"
+                      placeholder="Ej: DEN-12345"
                       required
                       disabled={isLoading}
                     />
                     <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   </div>
+                  <p className="text-xs text-muted-foreground">
+                    Ingrese el folio completo que recibió al enviar su denuncia
+                  </p>
                 </div>
 
                 <div className="flex gap-3 pt-2">
@@ -326,7 +330,7 @@ export function SeguimientoModal({ isOpen, onOpenChange }: SeguimientoModalProps
                       variant="outline"
                       onClick={handleReset}
                       disabled={isLoading}
-                      className="h-11 border-2"
+                      className="h-11 border-2 bg-transparent"
                     >
                       Nueva Consulta
                     </Button>
@@ -423,24 +427,12 @@ export function SeguimientoModal({ isOpen, onOpenChange }: SeguimientoModalProps
                         <div className="flex items-center justify-between py-2">
                           <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <User className="h-4 w-4" />
-                            <span>Tipo:</span>
+                            <span>Tiempo transcurrido:</span>
                           </div>
                           <Badge variant="outline" className="text-xs">
-                            {denunciaData.es_anonima ? "Anónima" : "Con datos del denunciante"}
+                            {denunciaData.tiempo_transcurrido}
                           </Badge>
                         </div>
-
-                        {denunciaData.tiene_evidencia && (
-                          <div className="flex items-center justify-between py-2">
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <FileText className="h-4 w-4" />
-                              <span>Evidencia:</span>
-                            </div>
-                            <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                              Con archivos adjuntos
-                            </Badge>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>

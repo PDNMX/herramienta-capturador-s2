@@ -96,13 +96,13 @@ interface DenunciaModalProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   mode: "confirm" | "success"
-  denunciaId?: string
+  denunciaFolio?: string // CAMBIO: denunciaId -> denunciaFolio
   onConfirm?: () => void
   onCancel?: () => void
   onClose?: () => void
   uploadProgress?: number
   isUploading?: boolean
-  formData?: DenunciaData // Nuevos datos del formulario
+  formData?: DenunciaData
 }
 
 const entidadesFederativas = {
@@ -146,7 +146,7 @@ export function DenunciaModal({
   isOpen,
   onOpenChange,
   mode,
-  denunciaId,
+  denunciaFolio, // CAMBIO: denunciaId -> denunciaFolio
   onConfirm,
   onCancel,
   onClose,
@@ -183,10 +183,11 @@ export function DenunciaModal({
   }
 
   useEffect(() => {
-    if (mode === "success" && denunciaId) {
+    if (mode === "success" && denunciaFolio) {
+      // CAMBIO: denunciaId -> denunciaFolio
       setDownloadReady(true)
     }
-  }, [mode, denunciaId])
+  }, [mode, denunciaFolio]) // CAMBIO: denunciaId -> denunciaFolio
 
   useEffect(() => {
     if (isOpen && mode === "confirm") {
@@ -224,25 +225,28 @@ export function DenunciaModal({
   }
 
   const handleDownloadFolio = () => {
-    if (!denunciaId) return
+    if (!denunciaFolio) return // CAMBIO: denunciaId -> denunciaFolio
 
     const content = `
 FOLIO DE DENUNCIA
 ================
-Número de Folio: ${denunciaId}
+Número de Folio: ${denunciaFolio}
 
 IMPORTANTE: 
 Por favor, guarde este número de folio en un lugar seguro.
 Lo necesitará para dar seguimiento al estado de su denuncia.
 
 Fecha de generación: ${new Date().toLocaleString()}
+
+Para consultar el estado de su denuncia, visite nuestro portal
+y utilice este folio en la sección de "Seguimiento de Denuncias".
     `.trim()
 
     const blob = new Blob([content], { type: "text/plain" })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `folio-denuncia-${denunciaId}.txt`
+    a.download = `folio-denuncia-${denunciaFolio}.txt` // CAMBIO: denunciaId -> denunciaFolio
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -373,11 +377,21 @@ Fecha de generación: ${new Date().toLocaleString()}
                   Resumen de la Información
                 </h3>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={expandAllSections} className="text-xs h-8">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={expandAllSections}
+                    className="text-xs h-8 bg-transparent"
+                  >
                     <ChevronDown className="h-3 w-3 mr-1" />
                     Expandir todo
                   </Button>
-                  <Button variant="outline" size="sm" onClick={collapseAllSections} className="text-xs h-8">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={collapseAllSections}
+                    className="text-xs h-8 bg-transparent"
+                  >
                     <ChevronUp className="h-3 w-3 mr-1" />
                     Colapsar todo
                   </Button>
@@ -641,7 +655,7 @@ Fecha de generación: ${new Date().toLocaleString()}
               <Button
                 variant="outline"
                 onClick={onCancel}
-                className="border-2 hover:bg-muted/50 transition-all duration-200"
+                className="border-2 hover:bg-muted/50 transition-all duration-200 bg-transparent"
                 disabled={isUploading}
               >
                 Cancelar
@@ -720,7 +734,7 @@ Fecha de generación: ${new Date().toLocaleString()}
                       "dark:bg-blue-950/50 dark:border-blue-800/50 dark:text-blue-200",
                     )}
                   >
-                    {denunciaId}
+                    {denunciaFolio}
                   </span>
                 </AlertDescription>
               </Alert>
@@ -747,7 +761,7 @@ Fecha de generación: ${new Date().toLocaleString()}
               </Button>
               <Button
                 variant="outline"
-                className="w-full border-2 hover:bg-muted/50 transition-all duration-200"
+                className="w-full border-2 hover:bg-muted/50 transition-all duration-200 bg-transparent"
                 onClick={handleClose}
               >
                 Cerrar

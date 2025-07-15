@@ -118,13 +118,7 @@ const formSchema = z
         otrasReferencias: z.string().max(500, "Las referencias no pueden exceder 500 caracteres").optional(),
         fechaHecho: z
           .string()
-          .min(1, "La fecha del hecho es obligatoria")
-          .refine((val) => {
-            const fecha = new Date(val)
-            const hoy = new Date()
-            hoy.setHours(23, 59, 59, 999)
-            return fecha <= hoy
-          }, "La fecha no puede ser futura"),
+          .min(1, "La fecha del hecho es obligatoria"),
         horaHecho: z
           .string()
           .regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:MM)")

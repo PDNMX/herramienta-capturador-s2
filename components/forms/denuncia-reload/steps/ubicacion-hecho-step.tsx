@@ -9,7 +9,8 @@ import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css"
 import { Input } from "@/components/ui/input"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Button } from "@/components/ui/button"
-import { MapPin, Search, Locate, Edit, Hash, Building, Calendar, Globe } from "lucide-react"
+import { MapPin, Search, Locate, Edit, Hash, Building, Calendar, Globe, ChevronDown, ChevronUp } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import debounce from "lodash/debounce"
 import { cn } from "@/lib/utils"
 import { Textarea } from "@/components/ui/textarea"
@@ -66,6 +67,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
     country: "",
     postalCode: "",
   })
+  const [isLocationExpanded, setIsLocationExpanded] = useState(false)
 
   const reverseGeocode = async (lat: number, lng: number) => {
     try {
@@ -230,7 +232,7 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
   }
 
   useEffect(() => {
-    if (mapContainer.current) {
+    if (mapContainer.current && isLocationExpanded) {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v12",
@@ -285,10 +287,11 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
         map.remove()
       }
     }
-  }, [])
+  }, [isLocationExpanded])
 
   return (
     <div className="space-y-6 sm:space-y-8 p-4 sm:p-6">
+
       <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl border border-primary/20 mb-8 overflow-hidden shadow-lg">
         <div className="flex flex-col sm:flex-row">
           <div className="bg-primary/20 p-4 sm:p-6 flex items-center justify-center sm:w-20">
@@ -382,399 +385,6 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
       <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
         <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
           <div className="bg-primary/10 rounded-lg p-2 mr-4">
-            <MapPin className="h-6 w-6 text-primary" />
-          </div>
-          <h3 className="text-xl font-semibold text-primary">Ubicación del Hecho</h3>
-        </div>
-
-        <div className="space-y-6">
-          <div className="relative">
-            <div className="flex gap-3 mb-6">
-              <div className="flex-1 relative">
-                <Input
-                  type="text"
-                  placeholder="Buscar dirección (calle, número, colonia, ciudad...)"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pr-20 text-sm h-12 pl-10"
-                />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                  disabled={isLoading}
-                  type="button" // Importante: especificar type="button"
-                >
-                  {isLoading ? (
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                  ) : (
-                    <Search className="h-4 w-4" />
-                  )}
-                </Button>
-              </div>
-              <Button
-                variant="outline"
-                onClick={getCurrentLocation}
-                title="Obtener ubicación actual"
-                className="h-12 px-4"
-                type="button" // Importante: especificar type="button"
-              >
-                <Locate className="h-4 w-4 mr-2" />
-                Mi Ubicación
-              </Button>
-            </div>
-
-            {showResults && searchResults && searchResults.length > 0 && (
-              <div className="absolute z-10 w-full bg-white shadow-xl rounded-lg mt-1 border border-primary/20 max-h-60 overflow-y-auto">
-                {searchResults.map((result, index) => (
-                  <div
-                    key={index}
-                    className="p-3 hover:bg-primary/5 cursor-pointer flex items-center border-b border-gray-100 last:border-b-0 transition-colors"
-                    onClick={() => {
-                      if (mapRef.current) {
-                        if (tempMarker) tempMarker.remove()
-                        const [lng, lat] = result.center
-
-                        mapRef.current.flyTo({
-                          center: [lng, lat],
-                          zoom: 15,
-                          speed: 1.5,
-                        })
-
-                        setCoordinates({ lat, lng })
-                        reverseGeocode(lat, lng)
-                      }
-                      setShowResults(false)
-                      setSearchQuery("")
-                    }}
-                  >
-                    <span className="mr-3 text-lg" role="img" aria-label="location type">
-                      {getIconForPlaceType(result)}
-                    </span>
-                    <span className="text-sm">{result.place_name}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="relative">
-            <div
-              style={{ height: "450px", width: "100%" }}
-              ref={mapContainer}
-              className="rounded-xl overflow-hidden border-2 border-primary/20 shadow-md"
-            />
-
-            <div
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
-              style={{ marginTop: "-20px" }}
-            >
-              <div className="flex flex-col items-center">
-                <MapPin size={45} color="#FF4444" fill="#404040" strokeWidth={1.6} />
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-6 border-2 border-primary/20">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center mb-2">
-                  <Edit className="h-5 w-5 mr-3 text-primary" />
-                  <h4 className="text-lg font-semibold text-primary">Edición manual de dirección</h4>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {manualAddressMode
-                    ? "Modo manual activado: Puedes editar todos los campos de dirección libremente"
-                    : "Los campos se llenan automáticamente desde el mapa. Activa el modo manual para editarlos"}
-                </p>
-              </div>
-              <Button
-                onClick={toggleManualMode}
-                variant={manualAddressMode ? "default" : "outline"}
-                size="lg"
-                className={cn(
-                  "min-w-[140px] h-12 font-semibold transition-all duration-300",
-                  manualAddressMode
-                    ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
-                    : "border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground",
-                )}
-                type="button" // Importante: especificar type="button"
-              >
-                <Edit className="h-4 w-4 mr-2" />
-                {manualAddressMode ? "Desactivar" : "Activar"}
-              </Button>
-            </div>
-
-            {manualAddressMode && (
-              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <div className="flex items-center">
-                  <div className="h-2 w-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                  <p className="text-sm text-green-700 font-medium">
-                    Modo manual activado - Ahora puedes editar todos los campos de dirección
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
-        <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
-          <div className="bg-primary/10 rounded-lg p-2 mr-4">
-            <Building className="h-6 w-6 text-primary" />
-          </div>
-          <h3 className="text-xl font-semibold text-primary">Datos de la Dirección</h3>
-        </div>
-
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.calle"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">Calle</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <Input
-                        {...field}
-                        placeholder="Ej. Av. Insurgentes"
-                        className={cn(
-                          "text-sm h-12 pl-10 bg-background border-input",
-                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
-                        )}
-                        readOnly={!manualAddressMode}
-                        onChange={(e) => {
-                          field.onChange(e)
-                          if (manualAddressMode) {
-                            setAddressDetails((prev) => ({ ...prev, street: e.target.value }))
-                          }
-                        }}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Nombre de la calle donde ocurrieron los hechos
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.numero"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">Número Exterior</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <Input
-                        {...field}
-                        placeholder="Ej. 123"
-                        className={cn(
-                          "text-sm h-12 pl-10 bg-background border-input",
-                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
-                        )}
-                        readOnly={!manualAddressMode}
-                        onChange={(e) => {
-                          field.onChange(e)
-                          if (manualAddressMode) {
-                            setAddressDetails((prev) => ({ ...prev, number: e.target.value }))
-                          }
-                        }}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Número exterior del inmueble donde ocurrieron los hechos
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.ciudad"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">Ciudad</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <Input
-                        {...field}
-                        placeholder="Ej. Ciudad de México"
-                        className={cn(
-                          "text-sm h-12 pl-10 bg-background border-input",
-                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
-                        )}
-                        readOnly={!manualAddressMode}
-                        onChange={(e) => {
-                          field.onChange(e)
-                          if (manualAddressMode) {
-                            setAddressDetails((prev) => ({ ...prev, city: e.target.value }))
-                          }
-                        }}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Ciudad donde ocurrieron los hechos
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.estado"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">Estado</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <Input
-                        {...field}
-                        placeholder="Ej. CDMX"
-                        className={cn(
-                          "text-sm h-12 pl-10 bg-background border-input",
-                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
-                        )}
-                        readOnly={!manualAddressMode}
-                        onChange={(e) => {
-                          field.onChange(e)
-                          if (manualAddressMode) {
-                            setAddressDetails((prev) => ({ ...prev, state: e.target.value }))
-                          }
-                        }}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Estado o entidad federativa donde ocurrieron los hechos
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="ubicacionHecho.codigoPostal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">Código Postal</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                      <Input
-                        {...field}
-                        placeholder="Ej. 06700"
-                        className={cn(
-                          "text-sm h-12 pl-10 bg-background border-input",
-                          !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
-                        )}
-                        readOnly={!manualAddressMode}
-                        onChange={(e) => {
-                          field.onChange(e)
-                          if (manualAddressMode) {
-                            setAddressDetails((prev) => ({ ...prev, postalCode: e.target.value }))
-                          }
-                        }}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Código postal de la ubicación donde ocurrieron los hechos
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <FormField
-            control={form.control}
-            name="ubicacionHecho.pais"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold">País</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                    <Input
-                      {...field}
-                      placeholder="Ej. México"
-                      className={cn(
-                        "text-sm h-12 pl-10 bg-background border-input",
-                        !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
-                      )}
-                      readOnly={!manualAddressMode}
-                      onChange={(e) => {
-                        field.onChange(e)
-                        if (manualAddressMode) {
-                          setAddressDetails((prev) => ({ ...prev, country: e.target.value }))
-                        }
-                      }}
-                    />
-                  </div>
-                </FormControl>
-                <FormDescription className="text-xs text-muted-foreground">
-                  País donde ocurrieron los hechos
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-      </div>
-
-      <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
-        <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
-          <div className="bg-primary/10 rounded-lg p-2 mr-4">
-            <Edit className="h-6 w-6 text-primary" />
-          </div>
-          <h3 className="text-xl font-semibold text-primary">Referencias adicionales del lugar</h3>
-        </div>
-
-        <FormField
-          control={form.control}
-          name="ubicacionHecho.otrasReferencias"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm font-semibold">Descripción de referencias</FormLabel>
-              <FormControl>
-                <Textarea
-                  {...field}
-                  placeholder="Ej. Edificio de color azul, frente al parque, cerca de la estación del metro..."
-                  className="text-sm min-h-[120px]"
-                  onChange={(e) => {
-                    field.onChange(e)
-                  }}
-                />
-              </FormControl>
-              <FormDescription className="text-xs text-muted-foreground">
-                Proporciona referencias adicionales que ayuden a identificar el lugar donde ocurrieron los hechos
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </div>
-
-      <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
-        <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
-          <div className="bg-primary/10 rounded-lg p-2 mr-4">
             <Calendar className="h-6 w-6 text-primary" />
           </div>
           <h3 className="text-xl font-semibold text-primary">Fecha y Hora del Hecho Denunciado</h3>
@@ -818,6 +428,424 @@ export function UbicacionHechoStep({ form }: UbicacionHechoStepProps) {
           />
         </div>
       </div>
+
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="ubicacion-hecho" className="border-2 border-primary/20 rounded-xl bg-card/95 backdrop-blur shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/30">
+          <AccordionTrigger 
+            className="px-5 sm:px-7 py-6 hover:no-underline group"
+            onClick={() => setIsLocationExpanded(!isLocationExpanded)}
+          >
+            <div className="flex items-center">
+              <div className="bg-primary/10 rounded-lg p-2 mr-4 group-hover:bg-primary/20 transition-colors duration-300">
+                <MapPin className="h-6 w-6 text-primary" />
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-semibold text-primary group-hover:text-primary/90 transition-colors duration-300">Ubicación del Hecho</h3>
+                <p className="text-sm text-muted-foreground mt-1 group-hover:text-muted-foreground/90 transition-colors duration-300">
+                  Información opcional para ubicar con precisión el lugar de los hechos
+                </p>
+              </div>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="px-5 sm:px-7 pb-7">
+            <div className="space-y-6">
+              <div className="relative">
+                <div className="flex gap-3 mb-6">
+                  <div className="flex-1 relative">
+                    <Input
+                      type="text"
+                      placeholder="Buscar dirección (calle, número, colonia, ciudad...)"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pr-20 text-sm h-12 pl-10"
+                    />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                      disabled={isLoading}
+                      type="button"
+                    >
+                      {isLoading ? (
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                      ) : (
+                        <Search className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={getCurrentLocation}
+                    title="Obtener ubicación actual"
+                    className="h-12 px-4"
+                    type="button"
+                  >
+                    <Locate className="h-4 w-4 mr-2" />
+                    Mi Ubicación
+                  </Button>
+                </div>
+
+                {showResults && searchResults && searchResults.length > 0 && (
+                  <div className="absolute z-10 w-full bg-white shadow-xl rounded-lg mt-1 border border-primary/20 max-h-60 overflow-y-auto">
+                    {searchResults.map((result, index) => (
+                      <div
+                        key={index}
+                        className="p-3 hover:bg-primary/5 cursor-pointer flex items-center border-b border-gray-100 last:border-b-0 transition-colors"
+                        onClick={() => {
+                          if (mapRef.current) {
+                            if (tempMarker) tempMarker.remove()
+                            const [lng, lat] = result.center
+
+                            mapRef.current.flyTo({
+                              center: [lng, lat],
+                              zoom: 15,
+                              speed: 1.5,
+                            })
+
+                            setCoordinates({ lat, lng })
+                            reverseGeocode(lat, lng)
+                          }
+                          setShowResults(false)
+                          setSearchQuery("")
+                        }}
+                      >
+                        <span className="mr-3 text-lg" role="img" aria-label="location type">
+                          {getIconForPlaceType(result)}
+                        </span>
+                        <span className="text-sm">{result.place_name}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="relative">
+                <div
+                  style={{ height: "450px", width: "100%" }}
+                  ref={mapContainer}
+                  className="rounded-xl overflow-hidden border-2 border-primary/20 shadow-md"
+                />
+
+                <div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none"
+                  style={{ marginTop: "-20px" }}
+                >
+                  <div className="flex flex-col items-center">
+                    <MapPin size={45} color="#FF4444" fill="#404040" strokeWidth={1.6} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-6 border-2 border-primary/20">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center mb-2">
+                      <Edit className="h-5 w-5 mr-3 text-primary" />
+                      <h4 className="text-lg font-semibold text-primary">Edición manual de dirección</h4>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      {manualAddressMode
+                        ? "Modo manual activado: Puedes editar todos los campos de dirección libremente"
+                        : "Los campos se llenan automáticamente desde el mapa. Activa el modo manual para editarlos"}
+                    </p>
+                  </div>
+                  <Button
+                    onClick={toggleManualMode}
+                    variant={manualAddressMode ? "default" : "outline"}
+                    size="lg"
+                    className={cn(
+                      "min-w-[140px] h-12 font-semibold transition-all duration-300",
+                      manualAddressMode
+                        ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+                        : "border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground",
+                    )}
+                    type="button"
+                  >
+                    <Edit className="h-4 w-4 mr-2" />
+                    {manualAddressMode ? "Desactivar" : "Activar"}
+                  </Button>
+                </div>
+
+                {manualAddressMode && (
+                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div className="flex items-center">
+                      <div className="h-2 w-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                      <p className="text-sm text-green-700 font-medium">
+                        Modo manual activado - Ahora puedes editar todos los campos de dirección
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Sección de Datos de la Dirección y Referencias */}
+              <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-6 bg-card/95 backdrop-blur shadow-lg">
+                <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
+                  <div className="bg-primary/10 rounded-lg p-2 mr-4">
+                    <Building className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-primary">Datos de la Dirección y Referencias</h3>
+                </div>
+
+                <div className="space-y-8">
+                  {/* Sección de Datos de la Dirección */}
+                  <div>
+                    <div className="flex items-center mb-4">
+                      <MapPin className="h-5 w-5 text-primary mr-2" />
+                      <h4 className="text-lg font-semibold text-primary">Información de la Dirección</h4>
+                    </div>
+                    
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <FormField
+                          control={form.control}
+                          name="ubicacionHecho.calle"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm font-semibold">Calle</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                  <Input
+                                    {...field}
+                                    placeholder="Ej. Av. Insurgentes"
+                                    className={cn(
+                                      "text-sm h-12 pl-10 bg-background border-input",
+                                      !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                                    )}
+                                    readOnly={!manualAddressMode}
+                                    onChange={(e) => {
+                                      field.onChange(e)
+                                      if (manualAddressMode) {
+                                        setAddressDetails((prev) => ({ ...prev, street: e.target.value }))
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </FormControl>
+                              <FormDescription className="text-xs text-muted-foreground">
+                                Nombre de la calle donde ocurrieron los hechos
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="ubicacionHecho.numero"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm font-semibold">Número Exterior</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                  <Input
+                                    {...field}
+                                    placeholder="Ej. 123"
+                                    className={cn(
+                                      "text-sm h-12 pl-10 bg-background border-input",
+                                      !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                                    )}
+                                    readOnly={!manualAddressMode}
+                                    onChange={(e) => {
+                                      field.onChange(e)
+                                      if (manualAddressMode) {
+                                        setAddressDetails((prev) => ({ ...prev, number: e.target.value }))
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </FormControl>
+                              <FormDescription className="text-xs text-muted-foreground">
+                                Número exterior del inmueble donde ocurrieron los hechos
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <FormField
+                          control={form.control}
+                          name="ubicacionHecho.ciudad"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm font-semibold">Ciudad</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                  <Input
+                                    {...field}
+                                    placeholder="Ej. Ciudad de México"
+                                    className={cn(
+                                      "text-sm h-12 pl-10 bg-background border-input",
+                                      !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                                    )}
+                                    readOnly={!manualAddressMode}
+                                    onChange={(e) => {
+                                      field.onChange(e)
+                                      if (manualAddressMode) {
+                                        setAddressDetails((prev) => ({ ...prev, city: e.target.value }))
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </FormControl>
+                              <FormDescription className="text-xs text-muted-foreground">
+                                Ciudad donde ocurrieron los hechos
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="ubicacionHecho.estado"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm font-semibold">Estado</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                  <Input
+                                    {...field}
+                                    placeholder="Ej. CDMX"
+                                    className={cn(
+                                      "text-sm h-12 pl-10 bg-background border-input",
+                                      !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                                    )}
+                                    readOnly={!manualAddressMode}
+                                    onChange={(e) => {
+                                      field.onChange(e)
+                                      if (manualAddressMode) {
+                                        setAddressDetails((prev) => ({ ...prev, state: e.target.value }))
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </FormControl>
+                              <FormDescription className="text-xs text-muted-foreground">
+                                Estado o entidad federativa donde ocurrieron los hechos
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="ubicacionHecho.codigoPostal"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-sm font-semibold">Código Postal</FormLabel>
+                              <FormControl>
+                                <div className="relative">
+                                  <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                  <Input
+                                    {...field}
+                                    placeholder="Ej. 06700"
+                                    className={cn(
+                                      "text-sm h-12 pl-12 bg-background border-input",
+                                      !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                                    )}
+                                    readOnly={!manualAddressMode}
+                                    onChange={(e) => {
+                                      field.onChange(e)
+                                      if (manualAddressMode) {
+                                        setAddressDetails((prev) => ({ ...prev, postalCode: e.target.value }))
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </FormControl>
+                              <FormDescription className="text-xs text-muted-foreground">
+                                Código postal de la ubicación donde ocurrieron los hechos
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <FormField
+                        control={form.control}
+                        name="ubicacionHecho.pais"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm font-semibold">País</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                <Input
+                                  {...field}
+                                  placeholder="Ej. México"
+                                  className={cn(
+                                    "text-sm h-12 pl-10 bg-background border-input",
+                                    !manualAddressMode ? "cursor-not-allowed opacity-50" : ""
+                                  )}
+                                  readOnly={!manualAddressMode}
+                                  onChange={(e) => {
+                                    field.onChange(e)
+                                    if (manualAddressMode) {
+                                      setAddressDetails((prev) => ({ ...prev, country: e.target.value }))
+                                    }
+                                  }}
+                                />
+                              </div>
+                            </FormControl>
+                            <FormDescription className="text-xs text-muted-foreground">
+                              País donde ocurrieron los hechos
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Separador visual */}
+                  <div className="border-t border-primary/20 pt-6">
+                    <div className="flex items-center mb-4">
+                      <Edit className="h-5 w-5 text-primary mr-2" />
+                      <h4 className="text-lg font-semibold text-primary">Referencias adicionales del lugar</h4>
+                    </div>
+
+                    <FormField
+                      control={form.control}
+                      name="ubicacionHecho.otrasReferencias"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-sm font-semibold">Descripción de referencias</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Ej. Edificio de color azul, frente al parque, cerca de la estación del metro..."
+                              className="text-sm min-h-[120px]"
+                              onChange={(e) => {
+                                field.onChange(e)
+                              }}
+                            />
+                          </FormControl>
+                          <FormDescription className="text-xs text-muted-foreground">
+                            Proporciona referencias adicionales que ayuden a identificar el lugar donde ocurrieron los hechos
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+
+      
     </div>
   )
 }

@@ -7,6 +7,7 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescripti
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import {
   Mic,
   Square,
@@ -345,6 +346,7 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
   const [error, setError] = useState<string | null>(null)
   const [isSpeechSupported, setIsSpeechSupported] = useState(true)
   const recognitionRef = useRef<any>(null)
+  const [isClassificationExpanded, setIsClassificationExpanded] = useState(false)
 
   // Estados para las faltas cargadas desde Directus
   const [faltas, setFaltas] = useState<Falta[]>([])
@@ -751,108 +753,116 @@ export function NarracionYFaltaStep({ form }: NarracionYFaltaStepProps) {
       </div>
 
       {/* Sección de clasificación de faltas */}
-      <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
-        <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
-          <div className="bg-primary/10 rounded-lg p-2 mr-4">
-            <ClipboardList className="h-6 w-6 text-primary" />
-          </div>
-          <h3 className="text-xl font-semibold text-primary">Clasificación</h3>
-        </div>
-
-        <FormDescription className="text-sm text-muted-foreground mb-6">
-          Seleccione las conductas que mejor describan los hechos denunciados. Tu elección nos ayudará a canalizar
-          adecuadamente tu denuncia. Esta sección es opcional.
-        </FormDescription>
-
-        {loadingFaltas ? (
-          <div className="flex items-center justify-center p-12">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-3 text-sm text-muted-foreground">Cargando categorías de faltas...</span>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {/* Información sobre el ámbito de aplicación */}
-            <div className="bg-primary/5 p-4 sm:p-5 rounded-xl border border-primary/10 dark:bg-primary/10">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <h4 className="text-sm sm:text-base font-semibold text-primary">Ámbito de aplicación:</h4>
-                <div className="flex items-center flex-wrap gap-2">
-                  {entidadSeleccionada === 33 && (
-                    <Badge
-                      variant="outline"
-                      className="bg-primary/10 text-primary hover:bg-primary/10 border-primary/20 text-xs"
-                    >
-                      <Flag className="h-3 w-3 mr-1" />
-                      Federal
-                    </Badge>
-                  )}
-                  {entidadSeleccionada && entidadSeleccionada !== 33 && (
-                    <Badge
-                      variant="outline"
-                      className="bg-primary/10 text-primary hover:bg-primary/10 border-primary/20 text-xs"
-                    >
-                      <MapPin className="h-3 w-3 mr-1" />
-                      {getSelectedEntidadName()}
-                    </Badge>
-                  )}
-                </div>
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="clasificacion" className="border-2 border-primary/20 rounded-xl bg-card/95 backdrop-blur shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/30">
+          <AccordionTrigger 
+            className="px-5 sm:px-6 py-4 hover:no-underline group"
+            onClick={() => setIsClassificationExpanded(!isClassificationExpanded)}
+          >
+            <div className="flex items-center">
+              <div className="bg-primary/10 rounded-lg p-2 mr-4 group-hover:bg-primary/20 transition-colors duration-300">
+                <ClipboardList className="h-5 w-5 text-primary" />
               </div>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-3">
-                {entidadSeleccionada === 33
-                  ? "Se muestran faltas aplicables a nivel federal."
-                  : entidadSeleccionada
-                    ? `Se muestran faltas aplicables para ${getSelectedEntidadName()}.`
-                    : "Seleccione una entidad para ver las faltas aplicables."}
-              </p>
-            </div>
-
-            {/* Faltas Graves */}
-            {faltasGraves.length > 0 && (
-              <CheckboxGroup
-                title="Faltas Administrativas Graves"
-                description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."
-                name="faltaCometida.faltaGrave"
-                items={faltasGraves}
-                form={form}
-              />
-            )}
-
-            {/* Faltas No Graves */}
-            {faltasNoGraves.length > 0 && (
-              <CheckboxGroup
-                title="Faltas Administrativas No Graves"
-                description="Conductas que representan incumplimientos menores a la normatividad sin intención de obtener beneficios indebidos."
-                name="faltaCometida.faltaNoGrave"
-                items={faltasNoGraves}
-                form={form}
-              />
-            )}
-
-            {/* Hechos de Corrupción */}
-            {hechosCorrupcion.length > 0 && (
-              <CheckboxGroup
-                title="Hechos de Corrupción"
-                description="Conductas que implican el abuso del poder para obtener beneficios privados o ventajas indebidas."
-                name="faltaCometida.hechosCorrupcion"
-                items={hechosCorrupcion}
-                form={form}
-              />
-            )}
-
-            {/* Mensaje cuando no hay faltas disponibles */}
-            {faltasGraves.length === 0 && faltasNoGraves.length === 0 && hechosCorrupcion.length === 0 && (
-              <div className="flex flex-col items-center justify-center p-12 bg-primary/5 rounded-xl border border-primary/10">
-                <Filter className="h-12 w-12 mb-4 text-primary/50" />
-                <p className="text-lg font-semibold text-primary">No hay faltas disponibles</p>
-                <p className="text-sm text-muted-foreground text-center mt-2">
-                  {entidadSeleccionada
-                    ? "No se encontraron faltas aplicables para la entidad seleccionada."
-                    : "Seleccione una entidad para ver las faltas aplicables."}
+              <div className="text-left">
+                <h3 className="text-lg font-semibold text-primary group-hover:text-primary/90 transition-colors duration-300">Clasificación</h3>
+                <p className="text-sm text-muted-foreground mt-1 group-hover:text-muted-foreground/90 transition-colors duration-300">
+                  Selecciona las conductas que mejor describan los hechos denunciados. Esta sección es opcional.
                 </p>
               </div>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent className="px-5 sm:px-6 pb-6">
+            {loadingFaltas ? (
+              <div className="flex items-center justify-center p-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <span className="ml-3 text-sm text-muted-foreground">Cargando categorías de faltas...</span>
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {/* Información sobre el ámbito de aplicación */}
+                <div className="bg-primary/5 p-4 sm:p-5 rounded-xl border border-primary/10 dark:bg-primary/10">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <h4 className="text-sm sm:text-base font-semibold text-primary">Ámbito de aplicación:</h4>
+                    <div className="flex items-center flex-wrap gap-2">
+                      {entidadSeleccionada === 33 && (
+                        <Badge
+                          variant="outline"
+                          className="bg-primary/10 text-primary hover:bg-primary/10 border-primary/20 text-xs"
+                        >
+                          <Flag className="h-3 w-3 mr-1" />
+                          Federal
+                        </Badge>
+                      )}
+                      {entidadSeleccionada && entidadSeleccionada !== 33 && (
+                        <Badge
+                          variant="outline"
+                          className="bg-primary/10 text-primary hover:bg-primary/10 border-primary/20 text-xs"
+                        >
+                          <MapPin className="h-3 w-3 mr-1" />
+                          {getSelectedEntidadName()}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-3">
+                    {entidadSeleccionada === 33
+                      ? "Se muestran faltas aplicables a nivel federal."
+                      : entidadSeleccionada
+                        ? `Se muestran faltas aplicables para ${getSelectedEntidadName()}.`
+                        : "Seleccione una entidad para ver las faltas aplicables."}
+                  </p>
+                </div>
+
+                {/* Faltas Graves */}
+                {faltasGraves.length > 0 && (
+                  <CheckboxGroup
+                    title="Faltas Administrativas Graves"
+                    description="Acciones que implican abuso de autoridad, uso indebido de recursos públicos o enriquecimiento ilícito."
+                    name="faltaCometida.faltaGrave"
+                    items={faltasGraves}
+                    form={form}
+                  />
+                )}
+
+                {/* Faltas No Graves */}
+                {faltasNoGraves.length > 0 && (
+                  <CheckboxGroup
+                    title="Faltas Administrativas No Graves"
+                    description="Conductas que representan incumplimientos menores a la normatividad sin intención de obtener beneficios indebidos."
+                    name="faltaCometida.faltaNoGrave"
+                    items={faltasNoGraves}
+                    form={form}
+                  />
+                )}
+
+                {/* Hechos de Corrupción */}
+                {hechosCorrupcion.length > 0 && (
+                  <CheckboxGroup
+                    title="Hechos de Corrupción"
+                    description="Conductas que implican el abuso del poder para obtener beneficios privados o ventajas indebidas."
+                    name="faltaCometida.hechosCorrupcion"
+                    items={hechosCorrupcion}
+                    form={form}
+                  />
+                )}
+
+                {/* Mensaje cuando no hay faltas disponibles */}
+                {faltasGraves.length === 0 && faltasNoGraves.length === 0 && hechosCorrupcion.length === 0 && (
+                  <div className="flex flex-col items-center justify-center p-12 bg-primary/5 rounded-xl border border-primary/10">
+                    <Filter className="h-12 w-12 mb-4 text-primary/50" />
+                    <p className="text-lg font-semibold text-primary">No hay faltas disponibles</p>
+                    <p className="text-sm text-muted-foreground text-center mt-2">
+                      {entidadSeleccionada
+                        ? "No se encontraron faltas aplicables para la entidad seleccionada."
+                        : "Seleccione una entidad para ver las faltas aplicables."}
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
-          </div>
-        )}
-      </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   )
 }

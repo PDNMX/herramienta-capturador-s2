@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Check, Building, Loader2, User, Globe, Flag, MapPin } from "lucide-react"
+import { Check, Building, Loader2, User, Globe, Flag, MapPin, ChevronDown, ChevronUp } from "lucide-react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { UseFormReturn } from "react-hook-form"
 import Image from "next/image"
@@ -68,10 +69,10 @@ const CustomCheckbox = React.forwardRef<
     className={`relative w-full p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
       checked
         ? "border-primary bg-primary/10 text-primary shadow-lg transform scale-[1.02]"
-        : "border-input bg-card text-muted-foreground hover:border-primary/50 hover:bg-accent hover:shadow-md hover:transform hover:scale-[1.01] opacity-70 hover:opacity-90"
+        : "border-input bg-card hover:border-primary/50 hover:transform hover:scale-[1.01] hover:opacity-90"
     }`}
   >
-    <div className={checked ? "opacity-100" : "opacity-60"}>{children}</div>
+    <div>{children}</div>
     {checked && (
       <div className="absolute top-4 right-4 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
         <Check className="h-4 w-4 text-primary-foreground" />
@@ -96,7 +97,7 @@ const GenderOption = React.forwardRef<
     className={`relative w-full py-3 px-4 rounded-lg border-2 transition-all duration-300 cursor-pointer
       ${
         checked
-          ? "border-primary bg-primary text-primary-foreground font-medium shadow-md"
+          ? "border-primary bg-primary text-primary-foreground font-medium"
           : "border-gray-300 bg-gray-100 text-gray-600 hover:border-primary/50 hover:bg-gray-200"
       }`}
   >
@@ -115,6 +116,7 @@ GenderOption.displayName = "GenderOption"
 export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
   const [entesPublicos, setEntesPublicos] = useState<EntePublico[]>([])
   const [loading, setLoading] = useState(false)
+  const [isPersonDataExpanded, setIsPersonDataExpanded] = useState(false)
 
   // NUEVA: useEffect para cargar entes públicos al montar el componente si ya hay una entidad seleccionada
   useEffect(() => {
@@ -418,8 +420,8 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     />
                   </FormControl>
                   <FormDescription className="text-xs text-muted-foreground">
-                    Busca y selecciona la institución donde ocurrieron los hechos. Se muestran instituciones federales{" "}
-                    <span className="inline-flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium mx-1">
+                    Selecciona la institución donde ocurrieron los hechos.
+                    {/* <span className="inline-flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium mx-1">
                       <Flag className="h-3 w-3 mr-1" />
                       Federal
                     </span>{" "}
@@ -427,7 +429,7 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
                     <span className="inline-flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium mx-1">
                       <MapPin className="h-3 w-3 mr-1" />
                       Entidad
-                    </span>
+                    </span> */}
                   </FormDescription>
                   {loading && (
                     <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
@@ -444,194 +446,265 @@ export function PersonaDenunciadaStep({ form }: PersonaDenunciadaStepProps) {
 
         <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
           <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
-            <div className="bg-primary/10 rounded-lg p-2 mr-4">
-              <User className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-primary">
-              Persona o personas denunciadas <span className="text-red-500">*</span>
-            </h3>
+            <div className="bg-primary/10 rounded-lg p-2 mr-4 group-hover:bg-primary/20 transition-colors duration-300">
+            <User className="h-6 w-6 text-primary" />
+              </div>
+              <div className="text-left">
+                <h3 className="text-xl font-semibold text-primary group-hover:text-primary/90 transition-colors duration-300">Ubicación del Hecho</h3>
+                <p className="text-sm text-muted-foreground mt-1 group-hover:text-muted-foreground/90 transition-colors duration-300">
+                  Selecciona si la persona denunciada pertenece al servicio público o es un particular. Este campo es obligatorio.
+                </p>
+              </div>
           </div>
 
-          <FormField
-            control={form.control}
-            name="personaDenunciada.tipoPersona"
-            render={({ field }) => (
-              <FormItem className="space-y-5">
-                <FormControl>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <CustomCheckbox
-                      checked={field.value === "SERVIDOR_PUBLICO"}
-                      onChange={() => {
-                        handleTipoPersonaChange("SERVIDOR_PUBLICO")
-                      }}
-                    >
-                      <div className="flex flex-col items-center text-center pt-2 pb-4">
-                        <div
-                          className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "scale-110" : ""}`}
+          <div className="space-y-8">
+            {/* Sección de Tipo de Persona */}
+            <div>
+              <FormField
+                control={form.control}
+                name="personaDenunciada.tipoPersona"
+                render={({ field }) => (
+                  <FormItem className="space-y-5">
+                    <FormControl>
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <CustomCheckbox
+                          checked={field.value === "SERVIDOR_PUBLICO"}
+                          onChange={() => {
+                            handleTipoPersonaChange("SERVIDOR_PUBLICO")
+                          }}
                         >
-                          <div className="relative">
-                            <Image
-                              src={iconServidorPublico || "/placeholder.svg"}
-                              alt="Icono de servidor público"
-                              className={`h-16 w-16 transition-opacity duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
-                            />
+                          <div className="flex flex-col items-center text-center pt-2 pb-4">
+                            <div
+                              className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "scale-110" : ""}`}
+                            >
+                              <div className="relative">
+                                <Image
+                                  src={iconServidorPublico || "/placeholder.svg"}
+                                  alt="Icono de servidor público"
+                                  className={`h-16 w-16 transition-opacity duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
+                                />
+                              </div>
+                            </div>
+                            <h3
+                              className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "text-primary" : ""}`}
+                            >
+                              Persona servidora pública
+                            </h3>
+                            <p className="text-sm opacity-80">
+                              Desempeña un empleo, cargo o comisión en una institución pública
+                            </p>
                           </div>
-                        </div>
-                        <h3
-                          className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "SERVIDOR_PUBLICO" ? "text-primary" : ""}`}
+                        </CustomCheckbox>
+                        <CustomCheckbox
+                          checked={field.value === "PARTICULAR"}
+                          onChange={() => {
+                            handleTipoPersonaChange("PARTICULAR")
+                          }}
                         >
-                          Persona servidora pública
-                        </h3>
-                        <p className="text-sm opacity-80">
-                          Desempeña un empleo, cargo o comisión en una institución pública
-                        </p>
-                      </div>
-                    </CustomCheckbox>
-                    <CustomCheckbox
-                      checked={field.value === "PARTICULAR"}
-                      onChange={() => {
-                        handleTipoPersonaChange("PARTICULAR")
-                      }}
-                    >
-                      <div className="flex flex-col items-center text-center pt-2 pb-4">
-                        <div
-                          className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "PARTICULAR" ? "scale-110" : ""}`}
-                        >
-                          <Image
-                            src={iconParticular || "/placeholder.svg"}
-                            alt="Icono de particular"
-                            className={`h-16 w-16 transition-opacity duration-300 ${field.value === "PARTICULAR" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
-                          />
-                        </div>
-                        <h3
-                          className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : ""}`}
-                        >
-                          Particular
-                        </h3>
-                        <p className="text-sm opacity-80">
-                          Persona física o empresa del sector privado vinculada con actividades en la administración
-                          pública
-                        </p>
-                      </div>
-                    </CustomCheckbox>
-                  </div>
-                </FormControl>
-
-                <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
-                  <FormDescription className="text-sm text-muted-foreground">
-                    Selecciona si la persona denunciada pertenece al servicio público o es un particular. Este campo es
-                    obligatorio.
-                  </FormDescription>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="rounded-xl border-2 border-primary/20 p-5 sm:p-7 bg-card/95 backdrop-blur shadow-lg">
-          <div className="flex items-center mb-6 pb-4 border-b border-primary/20">
-            <div className="bg-primary/10 rounded-lg p-2 mr-4">
-              <User className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-primary">Datos de la Persona Denunciada</h3>
-          </div>
-
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormField
-                control={form.control}
-                name="personaDenunciada.nombre"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-semibold">Nombre(s) o alias</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                        <Input {...field} placeholder="Ej. Juan" className="text-sm h-12 pl-10" />
+                          <div className="flex flex-col items-center text-center pt-2 pb-4">
+                            <div
+                              className={`relative mb-5 flex items-center justify-center transition-transform duration-300 ${field.value === "PARTICULAR" ? "scale-110" : ""}`}
+                            >
+                              <Image
+                                src={iconParticular || "/placeholder.svg"}
+                                alt="Icono de particular"
+                                className={`h-16 w-16 transition-opacity duration-300 ${field.value === "PARTICULAR" ? "opacity-100" : "opacity-50"} dark:brightness-200`}
+                              />
+                            </div>
+                            <h3
+                              className={`font-semibold mb-2 text-lg transition-colors duration-300 ${field.value === "PARTICULAR" ? "text-primary" : ""}`}
+                            >
+                              Particular
+                            </h3>
+                            <p className="text-sm opacity-80">
+                              Persona física o empresa del sector privado vinculada con actividades en la administración
+                              pública
+                            </p>
+                          </div>
+                        </CustomCheckbox>
                       </div>
                     </FormControl>
-                    <FormDescription className="text-xs text-muted-foreground">
-                      Nombre, nombres o alias de la persona denunciada
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="personaDenunciada.apellidos"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-semibold">Apellidos</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
-                        <Input {...field} placeholder="Ej. Pérez García" className="text-sm h-12 pl-10" />
-                      </div>
-                    </FormControl>
-                    <FormDescription className="text-xs text-muted-foreground">
-                      Apellidos de la persona denunciada
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="personaDenunciada.genero"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">Género</FormLabel>
-                  <FormControl>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <GenderOption checked={field.value === "FEMENINO"} onChange={() => field.onChange("FEMENINO")}>
-                        <h3 className="font-medium text-base">Femenino</h3>
-                      </GenderOption>
-                      <GenderOption checked={field.value === "MASCULINO"} onChange={() => field.onChange("MASCULINO")}>
-                        <h3 className="font-medium text-base">Masculino</h3>
-                      </GenderOption>
-                      <GenderOption
-                        checked={field.value === "NO_BINARIO"}
-                        onChange={() => field.onChange("NO_BINARIO")}
-                      >
-                        <h3 className="font-medium text-base">No binario</h3>
-                      </GenderOption>
+            {/* Acordeón para Datos de la Persona Denunciada */}
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="datos-persona" className="border-2 border-primary/20 rounded-xl bg-card/95 backdrop-blur shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/30">
+                <AccordionTrigger 
+                  className="px-5 sm:px-6 py-4 hover:no-underline group"
+                  onClick={() => setIsPersonDataExpanded(!isPersonDataExpanded)}
+                >
+                  <div className="flex items-center">
+                    <div className="bg-primary/10 rounded-lg p-2 mr-4 group-hover:bg-primary/20 transition-colors duration-300">
+                      <User className="h-5 w-5 text-primary" />
                     </div>
-                  </FormControl>
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Selecciona el género de la persona denunciada
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <div className="text-left">
+                      <h4 className="text-lg font-semibold text-primary group-hover:text-primary/90 transition-colors duration-300">Datos de la Persona Denunciada</h4>
+                      <p className="text-sm text-muted-foreground mt-1 group-hover:text-muted-foreground/90 transition-colors duration-300">
+                        Información opcional para identificar a la persona denunciada
+                      </p>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-5 sm:px-6 pb-6">
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="personaDenunciada.nombre"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm font-semibold">Nombre(s) o alias</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                <Input {...field} placeholder="Ej. Juan" className="text-sm h-12 pl-10" />
+                              </div>
+                            </FormControl>
+                            <FormDescription className="text-xs text-muted-foreground">
+                              Nombre, nombres o alias de la persona denunciada
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="personaDenunciada.apellidos"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-sm font-semibold">Apellidos</FormLabel>
+                            <FormControl>
+                              <div className="relative">
+                                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
+                                <Input {...field} placeholder="Ej. Pérez García" className="text-sm h-12 pl-10" />
+                              </div>
+                            </FormControl>
+                            <FormDescription className="text-xs text-muted-foreground">
+                              Apellidos de la persona denunciada
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
-            <FormField
-              control={form.control}
-              name="personaDenunciada.descripcion"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">Descripción de la Persona</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      {...field}
-                      placeholder="Ejemplo: Es una persona del área de finanzas, alto, delgado, de piel morena, ojos cafés, con bigote, un lunar en la mejilla izquierda, tenía una quemadura en la mano y vestía pantalón café con camisa azul"
-                      className="text-sm min-h-[120px]"
+                    <FormField
+                      control={form.control}
+                      name="personaDenunciada.genero"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-sm font-semibold">Género</FormLabel>
+                          <FormControl>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                              <div
+                                onClick={() => field.onChange("FEMENINO")}
+                                className={`relative w-full p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+                                  field.value === "FEMENINO"
+                                    ? "border-primary bg-primary/10 text-primary shadow-lg transform scale-[1.02]"
+                                    : "border-input bg-card hover:border-primary/50 hover:transform hover:scale-[1.01] hover:opacity-90"
+                                }`}
+                              >
+                                <div className="flex items-center justify-center">
+                                  <h3 className="font-medium text-base">Femenino</h3>
+                                </div>
+                                {field.value === "FEMENINO" && (
+                                  <div className="absolute top-4 right-4 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
+                                    <Check className="h-4 w-4 text-primary-foreground" />
+                                  </div>
+                                )}
+                                <div
+                                  className={`absolute bottom-0 left-0 right-0 h-2 bg-primary transition-transform duration-300 ${
+                                    field.value === "FEMENINO" ? "transform translate-y-0" : "transform translate-y-full"
+                                  }`}
+                                ></div>
+                              </div>
+
+                              <div
+                                onClick={() => field.onChange("MASCULINO")}
+                                className={`relative w-full p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+                                  field.value === "MASCULINO"
+                                    ? "border-primary bg-primary/10 text-primary shadow-lg transform scale-[1.02]"
+                                    : "border-input bg-card hover:border-primary/50 hover:transform hover:scale-[1.01] hover:opacity-90"
+                                }`}
+                              >
+                                <div className="flex items-center justify-center">
+                                  <h3 className="font-medium text-base">Masculino</h3>
+                                </div>
+                                {field.value === "MASCULINO" && (
+                                  <div className="absolute top-4 right-4 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
+                                    <Check className="h-4 w-4 text-primary-foreground" />
+                                  </div>
+                                )}
+                                <div
+                                  className={`absolute bottom-0 left-0 right-0 h-2 bg-primary transition-transform duration-300 ${
+                                    field.value === "MASCULINO" ? "transform translate-y-0" : "transform translate-y-full"
+                                  }`}
+                                ></div>
+                              </div>
+
+                              <div
+                                onClick={() => field.onChange("NO_BINARIO")}
+                                className={`relative w-full p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden ${
+                                  field.value === "NO_BINARIO"
+                                    ? "border-primary bg-primary/10 text-primary shadow-lg transform scale-[1.02]"
+                                    : "border-input bg-card hover:border-primary/50 hover:transform hover:scale-[1.01] hover:opacity-90"
+                                }`}
+                              >
+                                <div className="flex items-center justify-center">
+                                  <h3 className="font-medium text-base">No binario</h3>
+                                </div>
+                                {field.value === "NO_BINARIO" && (
+                                  <div className="absolute top-4 right-4 h-7 w-7 bg-primary rounded-full flex items-center justify-center animate-in fade-in zoom-in duration-300">
+                                    <Check className="h-4 w-4 text-primary-foreground" />
+                                  </div>
+                                )}
+                                <div
+                                  className={`absolute bottom-0 left-0 right-0 h-2 bg-primary transition-transform duration-300 ${
+                                    field.value === "NO_BINARIO" ? "transform translate-y-0" : "transform translate-y-full"
+                                  }`}
+                                ></div>
+                              </div>
+                            </div>
+                          </FormControl>
+                          <FormDescription className="text-xs text-muted-foreground">
+                            Selecciona el género de la persona denunciada
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  </FormControl>
-                  <FormDescription className="text-xs text-muted-foreground">
-                    Proporciona los datos que pueden ayudar a identificar a la persona denunciada. Puedes mencionar: el
-                    cargo o área donde trabaja, características como altura, complexión, color de piel, color de ojos,
-                    cabello, barba, lunares, cicatrices, tatuajes, perforaciones, vestimenta o cualquier otra
-                    información que consideres relevante
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+                    <FormField
+                      control={form.control}
+                      name="personaDenunciada.descripcion"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-sm font-semibold">Descripción de la Persona</FormLabel>
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Ejemplo: Es una persona del área de finanzas, alto, delgado, de piel morena, ojos cafés, con bigote, un lunar en la mejilla izquierda, tenía una quemadura en la mano y vestía pantalón café con camisa azul"
+                              className="text-sm min-h-[240px]"
+                            />
+                          </FormControl>
+                          <FormDescription className="text-xs text-muted-foreground">
+                            Proporciona los datos que pueden ayudar a identificar a la persona denunciada. Puedes mencionar: el
+                            cargo o área donde trabaja, características como altura, complexión, color de piel, color de ojos,
+                            cabello, barba, lunares, cicatrices, tatuajes, perforaciones, vestimenta o cualquier otra
+                            información que consideres relevante
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </div>

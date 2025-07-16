@@ -279,7 +279,7 @@ export function MultiStepForm() {
       personaDenunciada: {
         entidad: undefined,
         entePublico: undefined,
-        tipoPersona: "SERVIDOR_PUBLICO",
+        tipoPersona: undefined,
         nombre: "",
         apellidos: "",
         genero: null,

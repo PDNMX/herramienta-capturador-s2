@@ -14,7 +14,6 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
   AlertCircle,
   CheckCircle2,
@@ -39,6 +38,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { jsPDF } from "jspdf"
 
 interface DenunciaData {
   denunciante?: {
@@ -96,7 +96,7 @@ interface DenunciaModalProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   mode: "confirm" | "success"
-  denunciaFolio?: string // CAMBIO: denunciaId -> denunciaFolio
+  denunciaFolio?: string
   onConfirm?: () => void
   onCancel?: () => void
   onClose?: () => void
@@ -146,7 +146,7 @@ export function DenunciaModal({
   isOpen,
   onOpenChange,
   mode,
-  denunciaFolio, // CAMBIO: denunciaId -> denunciaFolio
+  denunciaFolio,
   onConfirm,
   onCancel,
   onClose,
@@ -184,10 +184,9 @@ export function DenunciaModal({
 
   useEffect(() => {
     if (mode === "success" && denunciaFolio) {
-      // CAMBIO: denunciaId -> denunciaFolio
       setDownloadReady(true)
     }
-  }, [mode, denunciaFolio]) // CAMBIO: denunciaId -> denunciaFolio
+  }, [mode, denunciaFolio])
 
   useEffect(() => {
     if (isOpen && mode === "confirm") {
@@ -224,12 +223,218 @@ export function DenunciaModal({
     })
   }
 
-  const handleDownloadFolio = () => {
-    if (!denunciaFolio) return // CAMBIO: denunciaId -> denunciaFolio
+  const generateFolioPDF = () => {
+    if (!denunciaFolio) return
 
-    const content = `
-FOLIO DE DENUNCIA
-================
+    try {
+      // Crear nuevo documento PDF
+      const doc = new jsPDF()
+
+      // Configuración de colores
+      const primaryColor = [59, 130, 246] // Azul
+      const secondaryColor = [107, 114, 128] // Gris
+      const successColor = [34, 197, 94] // Verde
+      const backgroundColor = [248, 250, 252] // Gris claro
+
+      // Configurar fuente
+      doc.setFont("helvetica")
+
+      // ENCABEZADO CON LOGOS
+      // Fondo del encabezado
+      doc.setFillColor(...backgroundColor)
+      doc.rect(0, 0, 210, 50, "F")
+
+      // Línea decorativa superior
+      doc.setFillColor(...primaryColor)
+      doc.rect(0, 0, 210, 3, "F")
+
+      // Logo PDN (izquierda) - simulado con texto por ahora
+      // REMOVE START
+      // Logo SNA (derecha) - simulado con texto
+
+      // REMOVE END
+
+      // Título principal centrado
+      doc.setFontSize(18)
+      doc.setTextColor(...primaryColor)
+      doc.setFont("helvetica", "bold")
+      doc.text("COMPROBANTE DE DENUNCIA", 105, 25, { align: "center" })
+
+      // Subtítulo del sistema
+      doc.setFontSize(10)
+      doc.setTextColor(...secondaryColor)
+      doc.setFont("helvetica", "normal")
+      doc.text("Sistema de Denuncias Públicas de Faltas", 105, 32, { align: "center" })
+      doc.text("Administrativas y Hechos de Corrupción", 105, 38, { align: "center" })
+
+      // Logo SNA (derecha) - simulado con texto
+      // REMOVE START
+      // REMOVE END
+
+      // SECCIÓN DEL FOLIO
+      let yPosition = 70
+
+      // Marco del folio más elegante
+      doc.setFillColor(255, 255, 255)
+      doc.setDrawColor(...primaryColor)
+      doc.setLineWidth(2)
+      doc.roundedRect(20, yPosition - 10, 170, 35, 5, 5, "FD")
+
+      // Etiqueta "FOLIO"
+      doc.setFontSize(12)
+      doc.setTextColor(...secondaryColor)
+      doc.setFont("helvetica", "bold")
+      doc.text("NÚMERO DE FOLIO:", 30, yPosition)
+
+      // Número de folio destacado
+      doc.setFontSize(24)
+      doc.setTextColor(...primaryColor)
+      doc.setFont("helvetica", "bold")
+      doc.text(denunciaFolio, 105, yPosition + 15, { align: "center" })
+
+      yPosition += 50
+
+      // ESTADO DE LA DENUNCIA (sin paloma)
+      doc.setFillColor(...successColor)
+      doc.rect(20, yPosition, 170, 3, "F")
+      yPosition += 15
+
+      doc.setFontSize(14)
+      doc.setTextColor(...successColor)
+      doc.setFont("helvetica", "bold")
+      doc.text("DENUNCIA REGISTRADA EXITOSAMENTE", 105, yPosition, { align: "center" })
+
+      yPosition += 25
+
+      // DETALLES DE LA DENUNCIA
+      doc.setFontSize(12)
+      doc.setTextColor(0, 0, 0)
+      doc.setFont("helvetica", "bold")
+      doc.text("DETALLES DEL REGISTRO:", 20, yPosition)
+
+      yPosition += 10
+      doc.setFont("helvetica", "normal")
+
+      // Fecha y hora de generación
+      const now = new Date()
+      const fechaGeneracion = now.toLocaleDateString("es-MX", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+      const horaGeneracion = now.toLocaleTimeString("es-MX", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      })
+
+      doc.text(`• Fecha de registro: ${fechaGeneracion}`, 25, yPosition)
+      yPosition += 8
+      doc.text(`• Hora de registro: ${horaGeneracion}`, 25, yPosition)
+      yPosition += 8
+      doc.text(`• Estado inicial: REGISTRADA`, 25, yPosition)
+
+      yPosition += 25
+
+      // INSTRUCCIONES
+      doc.setFillColor(...backgroundColor)
+      doc.rect(20, yPosition - 5, 170, 50, "F")
+      doc.setDrawColor(...secondaryColor)
+      doc.setLineWidth(1)
+      doc.rect(20, yPosition - 5, 170, 50, "D")
+
+      doc.setFontSize(12)
+      doc.setTextColor(...primaryColor)
+      doc.setFont("helvetica", "bold")
+      doc.text("INSTRUCCIONES IMPORTANTES:", 25, yPosition + 5)
+
+      yPosition += 15
+      doc.setFontSize(10)
+      doc.setTextColor(0, 0, 0)
+      doc.setFont("helvetica", "normal")
+
+      const instrucciones = [
+        "1. Conserve este comprobante como evidencia de su denuncia",
+        "2. Use el número de folio para consultar el estado de su caso",
+        "3. Consulte en: https://dev-denuncias.plataformadigitalnacional.org/",
+        "4. Su denuncia será procesada conforme a los procedimientos legales",
+      ]
+
+      instrucciones.forEach((instruccion, index) => {
+        doc.text(instruccion, 25, yPosition + index * 6)
+      })
+
+      yPosition += 35
+
+      // INFORMACIÓN LEGAL
+      doc.setFillColor(...primaryColor)
+      doc.rect(20, yPosition, 170, 3, "F")
+      yPosition += 15
+
+      doc.setFontSize(11)
+      doc.setTextColor(...primaryColor)
+      doc.setFont("helvetica", "bold")
+      doc.text("MARCO LEGAL:", 20, yPosition)
+
+      yPosition += 10
+      doc.setFontSize(9)
+      doc.setTextColor(...secondaryColor)
+      doc.setFont("helvetica", "normal")
+
+      doc.text("Este sistema opera conforme a la Ley General del Sistema Nacional", 25, yPosition)
+      yPosition += 5
+      doc.text("Anticorrupción y demás normatividad aplicable en materia de", 25, yPosition)
+      yPosition += 5
+      doc.text("responsabilidades administrativas.", 25, yPosition)
+
+      // PIE DE PÁGINA
+      yPosition = 270
+
+      // Línea separadora
+      doc.setDrawColor(...secondaryColor)
+      doc.setLineWidth(0.5)
+      doc.line(20, yPosition, 190, yPosition)
+
+      yPosition += 8
+      doc.setFontSize(8)
+      doc.setTextColor(...secondaryColor)
+      doc.setFont("helvetica", "italic")
+      doc.text("Este documento es generado automáticamente por el Sistema de Denuncias Públicas", 105, yPosition, {
+        align: "center",
+      })
+
+      yPosition += 4
+      doc.text(`Generado el ${fechaGeneracion} a las ${horaGeneracion}`, 105, yPosition, { align: "center" })
+
+      // MARCA DE AGUA DE FONDO "OFICIAL"
+      doc.setGState(new doc.GState({ opacity: 0.1 }))
+      doc.setFontSize(60)
+      doc.setTextColor(100, 100, 100)
+      doc.setFont("helvetica", "bold")
+
+      // Posicionar la marca de agua en el centro, rotada
+      const pageWidth = doc.internal.pageSize.width
+      const pageHeight = doc.internal.pageSize.height
+
+      doc.text("OFICIAL", pageWidth / 2, pageHeight / 2, {
+        align: "center",
+        angle: 45,
+      })
+
+      // Restaurar opacidad normal
+      doc.setGState(new doc.GState({ opacity: 1 }))
+
+      // Guardar el PDF
+      doc.save(`Comprobante-Denuncia-${denunciaFolio}.pdf`)
+    } catch (error) {
+      console.error("Error al generar PDF:", error)
+
+      // Fallback al método anterior si falla el PDF
+      const content = `
+COMPROBANTE DE DENUNCIA
+=======================
+Sistema de Denuncias Públicas de Faltas Administrativas y Hechos de Corrupción
+
 Número de Folio: ${denunciaFolio}
 
 IMPORTANTE: 
@@ -238,19 +443,20 @@ Lo necesitará para dar seguimiento al estado de su denuncia.
 
 Fecha de generación: ${new Date().toLocaleString()}
 
-Para consultar el estado de su denuncia, visite nuestro portal
-y utilice este folio en la sección de "Seguimiento de Denuncias".
+Para consultar el estado de su denuncia, utilice este folio 
+en la sección de "Consultar Estatus" del sistema.
     `.trim()
 
-    const blob = new Blob([content], { type: "text/plain" })
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `folio-denuncia-${denunciaFolio}.txt` // CAMBIO: denunciaId -> denunciaFolio
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    window.URL.revokeObjectURL(url)
+      const blob = new Blob([content], { type: "text/plain" })
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `folio-denuncia-${denunciaFolio}.txt`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+    }
   }
 
   const handleClose = () => {
@@ -350,7 +556,7 @@ y utilice este folio en la sección de "Seguimiento de Denuncias".
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={() => {}} modal>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] p-0 overflow-hidden rounded-lg border-0 shadow-lg">
         {mode === "confirm" ? (
           <>
@@ -713,34 +919,54 @@ y utilice este folio en la sección de "Seguimiento de Denuncias".
             </div>
 
             <div className="p-6 space-y-4">
-              <Alert
-                className={cn(
-                  "border-2 shadow-sm",
-                  "bg-blue-50 border-blue-200 text-blue-800",
-                  "dark:bg-blue-900/20 dark:border-blue-800/30 dark:text-blue-300",
-                )}
-              >
-                <div className={cn("p-1.5 rounded-full", "bg-blue-100 dark:bg-blue-800/40")}>
-                  <FileText className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              {/* Sección del folio mejorada */}
+              <div className="relative">
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 border-2 border-blue-200/50 dark:border-blue-700/30 shadow-lg">
+                  {/* Decoración superior */}
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full p-3 shadow-lg">
+                      <FileText className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+
+                  {/* Contenido */}
+                  <div className="text-center pt-4">
+                    <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">Folio de Seguimiento</h3>
+                    <p className="text-sm text-blue-700 dark:text-blue-300 mb-4">
+                      Guarde este número para consultar el estado de su denuncia
+                    </p>
+
+                    {/* Folio destacado */}
+                    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border-2 border-blue-300 dark:border-blue-600 shadow-inner">
+                      <div className="font-mono text-2xl font-bold text-blue-800 dark:text-blue-200 tracking-wider">
+                        {denunciaFolio}
+                      </div>
+                    </div>
+
+                    {/* Botón de copiar */}
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(denunciaFolio || "")
+                        // Aquí podrías agregar un toast de confirmación
+                      }}
+                      className="mt-3 inline-flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                        />
+                      </svg>
+                      Copiar folio
+                    </button>
+                  </div>
                 </div>
-                <AlertDescription className="mt-2">
-                  <span className={cn("font-semibold text-base block mb-1", "text-blue-800 dark:text-blue-300")}>
-                    Su número de folio es:
-                  </span>
-                  <span
-                    className={cn(
-                      "text-lg font-mono px-3 py-1 rounded border inline-block",
-                      "bg-white border-blue-200 text-blue-800",
-                      "dark:bg-blue-950/50 dark:border-blue-800/50 dark:text-blue-200",
-                    )}
-                  >
-                    {denunciaFolio}
-                  </span>
-                </AlertDescription>
-              </Alert>
+              </div>
 
               <p className="text-sm text-muted-foreground">
-                Guarde este número de folio para dar seguimiento a su denuncia.
+                Descargue su comprobante oficial en formato PDF para conservar como evidencia.
               </p>
             </div>
 
@@ -753,11 +979,11 @@ y utilice este folio en la sección de "Seguimiento de Denuncias".
                   "bg-green-600 hover:bg-green-700 text-white",
                   "dark:bg-green-700 dark:hover:bg-green-600 dark:text-white",
                 )}
-                onClick={handleDownloadFolio}
+                onClick={generateFolioPDF}
                 disabled={!downloadReady}
               >
                 <Download className="mr-2 h-4 w-4" />
-                Descargar Folio
+                Descargar Comprobante PDF
               </Button>
               <Button
                 variant="outline"

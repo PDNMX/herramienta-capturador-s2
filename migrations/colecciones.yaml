@@ -387,30 +387,6 @@ collections:
       versioning: false
     schema:
       name: niveles_jerarquicos
-  - collection: niveles_responsabilidad_concesiones
-    meta:
-      accountability: all
-      archive_app_filter: true
-      archive_field: null
-      archive_value: null
-      collapse: open
-      collection: niveles_responsabilidad_concesiones
-      color: null
-      display_template: null
-      group: otorgamientos_concesiones
-      hidden: true
-      icon: null
-      item_duplication_fields: null
-      note: null
-      preview_url: null
-      singleton: false
-      sort: 3
-      sort_field: null
-      translations: null
-      unarchive_value: null
-      versioning: false
-    schema:
-      name: niveles_responsabilidad_concesiones
   - collection: niveles_responsabilidades_avaluos
     meta:
       accountability: all
@@ -435,6 +411,30 @@ collections:
       versioning: false
     schema:
       name: niveles_responsabilidades_avaluos
+  - collection: niveles_responsabilidades_concesiones
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: niveles_responsabilidades_concesiones
+      color: null
+      display_template: null
+      group: otorgamientos_concesiones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 3
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: niveles_responsabilidades_concesiones
   - collection: niveles_responsabilidades_contrataciones
     meta:
       accountability: all
@@ -483,6 +483,54 @@ collections:
       versioning: false
     schema:
       name: niveles_responsabilidades_enajenaciones
+  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      color: null
+      display_template: null
+      group: niveles_responsabilidades_contrataciones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 2
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: niveles_responsabilidades_otro_adquisiciones_obras
+  - collection: niveles_responsabilidades_otro_concesiones
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: niveles_responsabilidades_otro_concesiones
+      color: null
+      display_template: null
+      group: niveles_responsabilidades_concesiones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: niveles_responsabilidades_otro_concesiones
   - collection: otorgamientos_concesiones
     meta:
       accountability: all
@@ -941,6 +989,8 @@ fields:
             value: AREA_TECNICA
           - text: Área requirente
             value: AREA_REQUIRENTE
+          - text: Integrante del comité de adquisiciones, arrendamientos y servicios
+            value: INTEGRANTE_COMITE
           - text: Órgano de revisión
             value: ORGANO_REVISION
           - text: Participante en junta de aclaraciones
@@ -1029,7 +1079,8 @@ fields:
       hidden: false
       interface: select-dropdown-m2o
       note: null
-      options: null
+      options:
+        enableSelect: false
       readonly: false
       required: false
       sort: 5
@@ -1071,7 +1122,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 6
+      sort: 7
       special:
         - m2o
       translations: null
@@ -1145,8 +1196,8 @@ fields:
           - text: "No"
             value: "NO"
       readonly: false
-      required: false
-      sort: 7
+      required: true
+      sort: 6
       special: null
       translations:
         - language: es-MX
@@ -1598,7 +1649,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 10
+      sort: 9
       special:
         - m2o
       translations: null
@@ -1636,8 +1687,8 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
-      sort: 8
+      required: true
+      sort: 7
       special: null
       translations:
         - language: es-MX
@@ -1676,8 +1727,8 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
-      sort: 4
+      required: true
+      sort: 3
       special: null
       translations:
         - language: es-MX
@@ -1725,8 +1776,8 @@ fields:
           - text: Otro (Especifique)
             value: OTRO
       readonly: false
-      required: false
-      sort: 6
+      required: true
+      sort: 5
       special: null
       translations: null
       validation: null
@@ -1777,7 +1828,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 7
+      sort: 6
       special: null
       translations:
         - language: es-MX
@@ -1817,7 +1868,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 9
+      sort: 8
       special: null
       translations:
         - language: es-MX
@@ -1895,7 +1946,7 @@ fields:
             value: ADJUDICACION
       readonly: false
       required: true
-      sort: 3
+      sort: 4
       special: null
       translations: null
       validation: null
@@ -1933,7 +1984,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 11
+      sort: 10
       special: null
       translations: null
       validation: null
@@ -2820,7 +2871,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations:
@@ -2860,10 +2911,12 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 3
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Denominación
       validation: null
       validation_message: null
       width: full
@@ -2901,7 +2954,9 @@ fields:
       required: false
       sort: 4
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Obtejo
       validation: null
       validation_message: null
       width: full
@@ -2936,10 +2991,14 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 5
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Motivos o fundamentos legales aplicados para realizar el
+            procedimiento
       validation: null
       validation_message: null
       width: full
@@ -2977,7 +3036,11 @@ fields:
       required: false
       sort: 6
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Nombre de la persona física que solicita o se le otorga el acto
+            jurídico
       validation: null
       validation_message: null
       width: full
@@ -3015,7 +3078,11 @@ fields:
       required: false
       sort: 7
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: >-
+            Denominación o razón social de la persona moral que solicita o se le
+            otorga el acto jurídico
       validation: null
       validation_message: null
       width: full
@@ -3059,7 +3126,9 @@ fields:
       sort: 8
       special:
         - cast-json
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Sector al cual se otorgó el acto jurídico
       validation: null
       validation_message: null
       width: full
@@ -3094,10 +3163,12 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 9
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de inicio de la vigencia
       validation: null
       validation_message: null
       width: full
@@ -3135,7 +3206,9 @@ fields:
       required: false
       sort: 10
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Fecha de conclusión de la vigencia
       validation: null
       validation_message: null
       width: full
@@ -3173,7 +3246,9 @@ fields:
       required: false
       sort: 11
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Monto
       validation: null
       validation_message: null
       width: full
@@ -3211,7 +3286,9 @@ fields:
       required: false
       sort: 12
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Hipervínculo de la información del acto jurídico
       validation: null
       validation_message: null
       width: full
@@ -3323,7 +3400,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 2
       special: null
       translations:
@@ -3370,7 +3447,7 @@ fields:
           - text: Otro (especifique)
             value: OTRO
       readonly: false
-      required: false
+      required: true
       sort: 4
       special: null
       translations: null
@@ -3408,7 +3485,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 5
       special: null
       translations:
@@ -4259,7 +4336,9 @@ fields:
       required: false
       sort: 2
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Razón social
       validation: null
       validation_message: null
       width: full
@@ -4297,7 +4376,9 @@ fields:
       required: false
       sort: 3
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Nombre(s)
       validation: null
       validation_message: null
       width: full
@@ -4335,7 +4416,9 @@ fields:
       required: false
       sort: 4
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Primer apellido
       validation: null
       validation_message: null
       width: full
@@ -4373,7 +4456,9 @@ fields:
       required: false
       sort: 5
       special: null
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Segundo apellido
       validation: null
       validation_message: null
       width: full
@@ -5690,355 +5775,6 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: niveles_responsabilidad_concesiones
-    field: id
-    type: integer
-    meta:
-      collection: niveles_responsabilidad_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: id
-      group: null
-      hidden: true
-      interface: input
-      note: null
-      options: null
-      readonly: true
-      required: false
-      sort: 1
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: id
-      table: niveles_responsabilidad_concesiones
-      data_type: integer
-      default_value: nextval('niveles_responsabilidad_concesiones_id_seq'::regclass)
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: false
-      is_unique: true
-      is_primary_key: true
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: true
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: niveles_responsabilidad_concesiones
-    field: convocatoria
-    type: json
-    meta:
-      collection: niveles_responsabilidad_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: convocatoria
-      group: null
-      hidden: false
-      interface: select-multiple-checkbox
-      note: null
-      options:
-        choices:
-          - text: Elaborar (A)
-            value: A
-          - text: Revisar (B)
-            value: B
-          - text: Firmar, autorizar o dictaminar (C)
-            value: C
-          - text: Supervisar (D)
-            value: D
-          - text: Emitir o suscribir  (E)
-            value: E
-            disabled: true
-      readonly: false
-      required: false
-      sort: 2
-      special:
-        - cast-json
-      translations:
-        - language: es-MX
-          translation: >-
-            1. Convocatoria a concurso o licitación o excitativa a presentar la
-            solicitud de autorización
-      validation: null
-      validation_message: null
-      width: fill
-    schema:
-      name: convocatoria
-      table: niveles_responsabilidad_concesiones
-      data_type: json
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: niveles_responsabilidad_concesiones
-    field: dictamenes
-    type: json
-    meta:
-      collection: niveles_responsabilidad_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: dictamenes
-      group: null
-      hidden: false
-      interface: select-multiple-checkbox
-      note: null
-      options:
-        choices:
-          - text: Elaborar ( A )
-            value: A
-          - text: Revisar  ( B )
-            value: B
-          - text: Firmar, Autorizar o Dictaminar ( C )
-            value: C
-          - text: Supervisar ( D )
-            value: D
-          - text: Emitir o suscribir  ( E )
-            value: E
-            disabled: true
-      readonly: false
-      required: false
-      sort: 3
-      special:
-        - cast-json
-      translations:
-        - language: es-MX
-          translation: 2. Dictámenes u opiniones previos
-      validation: null
-      validation_message: null
-      width: fill
-    schema:
-      name: dictamenes
-      table: niveles_responsabilidad_concesiones
-      data_type: json
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: niveles_responsabilidad_concesiones
-    field: visitas
-    type: json
-    meta:
-      collection: niveles_responsabilidad_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: visitas
-      group: null
-      hidden: false
-      interface: select-multiple-checkbox
-      note: null
-      options:
-        choices:
-          - text: Elaborar ( A )
-            value: A
-          - text: Revisar ( B )
-            value: B
-          - text: Firmar, autorizar o dictaminar ( C )
-            value: C
-          - text: Supervisar ( D )
-            value: D
-          - text: Emitir o suscribir ( E )
-            value: E
-            disabled: true
-      readonly: false
-      required: false
-      sort: 4
-      special:
-        - cast-json
-      translations:
-        - language: es-MX
-          translation: 3. Visitas de verificación
-      validation: null
-      validation_message: null
-      width: fill
-    schema:
-      name: visitas
-      table: niveles_responsabilidad_concesiones
-      data_type: json
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: niveles_responsabilidad_concesiones
-    field: evaluacion
-    type: json
-    meta:
-      collection: niveles_responsabilidad_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: evaluacion
-      group: null
-      hidden: false
-      interface: select-multiple-checkbox
-      note: null
-      options:
-        choices:
-          - text: " Elaborar (A) "
-            value: A
-          - text: "Revisar (B) "
-            value: B
-          - text: Firmar, autorizar o dictaminar (C)
-            value: C
-          - text: " Supervisar (D) "
-            value: D
-          - text: Emitir o suscribir (E)
-            value: E
-            disabled: true
-      readonly: false
-      required: false
-      sort: 5
-      special:
-        - cast-json
-      translations:
-        - language: es-MX
-          translation: >-
-            4. Evaluación del cumplimiento de los requisitos para el
-            otorgamiento de la concesión, licencia, autorización o permiso
-      validation: null
-      validation_message: null
-      width: fill
-    schema:
-      name: evaluacion
-      table: niveles_responsabilidad_concesiones
-      data_type: json
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: niveles_responsabilidad_concesiones
-    field: determinacion
-    type: json
-    meta:
-      collection: niveles_responsabilidad_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: determinacion
-      group: null
-      hidden: false
-      interface: select-multiple-checkbox
-      note: null
-      options:
-        choices:
-          - text: " Elaborar (A) "
-            value: A
-          - text: "Revisar (B) "
-            value: B
-          - text: "Firmar, autorizar o dictaminar (C) "
-            value: C
-            disabled: true
-          - text: Supervisar (D)
-            value: D
-            disabled: true
-          - text: " Emitir o suscribir (E)"
-            value: E
-      readonly: false
-      required: false
-      sort: 6
-      special:
-        - cast-json
-      translations:
-        - language: es-MX
-          translation: >-
-            5. Determinación sobre el otorgamiento de la concesión, licencia,
-            autorización o permiso
-      validation: null
-      validation_message: null
-      width: fill
-    schema:
-      name: determinacion
-      table: niveles_responsabilidad_concesiones
-      data_type: json
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: niveles_responsabilidad_concesiones
-    field: entePublico
-    type: integer
-    meta:
-      collection: niveles_responsabilidad_concesiones
-      conditions: null
-      display: null
-      display_options: null
-      field: entePublico
-      group: null
-      hidden: true
-      interface: select-dropdown-m2o
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 7
-      special:
-        - m2o
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: entePublico
-      table: niveles_responsabilidad_concesiones
-      data_type: integer
-      default_value: null
-      max_length: null
-      numeric_precision: 32
-      numeric_scale: 0
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: entes_publicos
-      foreign_key_column: id
   - collection: niveles_responsabilidades_avaluos
     field: id
     type: integer
@@ -6280,6 +6016,381 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: niveles_responsabilidades_concesiones
+    field: id
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: niveles_responsabilidades_concesiones
+      data_type: integer
+      default_value: nextval('niveles_responsabilidades_concesiones_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_concesiones
+    field: convocatoria
+    type: json
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: convocatoria
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: Elaborar (A)
+            value: A
+          - text: Revisar (B)
+            value: B
+          - text: Firmar, autorizar o dictaminar (C)
+            value: C
+          - text: Supervisar (D)
+            value: D
+          - text: Emitir o suscribir  (E)
+            value: E
+            disabled: true
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - cast-json
+      translations:
+        - language: es-MX
+          translation: >-
+            1. Convocatoria a concurso o licitación o excitativa a presentar la
+            solicitud de autorización
+      validation: null
+      validation_message: null
+      width: fill
+    schema:
+      name: convocatoria
+      table: niveles_responsabilidades_concesiones
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_concesiones
+    field: dictamenes
+    type: json
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: dictamenes
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: Elaborar ( A )
+            value: A
+          - text: Revisar  ( B )
+            value: B
+          - text: Firmar, Autorizar o Dictaminar ( C )
+            value: C
+          - text: Supervisar ( D )
+            value: D
+          - text: Emitir o suscribir  ( E )
+            value: E
+            disabled: true
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - cast-json
+      translations:
+        - language: es-MX
+          translation: 2. Dictámenes u opiniones previos
+      validation: null
+      validation_message: null
+      width: fill
+    schema:
+      name: dictamenes
+      table: niveles_responsabilidades_concesiones
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_concesiones
+    field: visitas
+    type: json
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: visitas
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: Elaborar ( A )
+            value: A
+          - text: Revisar ( B )
+            value: B
+          - text: Firmar, autorizar o dictaminar ( C )
+            value: C
+          - text: Supervisar ( D )
+            value: D
+          - text: Emitir o suscribir ( E )
+            value: E
+            disabled: true
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - cast-json
+      translations:
+        - language: es-MX
+          translation: 3. Visitas de verificación
+      validation: null
+      validation_message: null
+      width: fill
+    schema:
+      name: visitas
+      table: niveles_responsabilidades_concesiones
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_concesiones
+    field: evaluacion
+    type: json
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: evaluacion
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: " Elaborar (A) "
+            value: A
+          - text: "Revisar (B) "
+            value: B
+          - text: Firmar, autorizar o dictaminar (C)
+            value: C
+          - text: " Supervisar (D) "
+            value: D
+          - text: Emitir o suscribir (E)
+            value: E
+            disabled: true
+      readonly: false
+      required: false
+      sort: 5
+      special:
+        - cast-json
+      translations:
+        - language: es-MX
+          translation: >-
+            4. Evaluación del cumplimiento de los requisitos para el
+            otorgamiento de la concesión, licencia, autorización o permiso
+      validation: null
+      validation_message: null
+      width: fill
+    schema:
+      name: evaluacion
+      table: niveles_responsabilidades_concesiones
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_concesiones
+    field: determinacion
+    type: json
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: determinacion
+      group: null
+      hidden: false
+      interface: select-multiple-checkbox
+      note: null
+      options:
+        choices:
+          - text: " Elaborar (A) "
+            value: A
+          - text: "Revisar (B) "
+            value: B
+          - text: "Firmar, autorizar o dictaminar (C) "
+            value: C
+            disabled: true
+          - text: Supervisar (D)
+            value: D
+            disabled: true
+          - text: " Emitir o suscribir (E)"
+            value: E
+      readonly: false
+      required: false
+      sort: 6
+      special:
+        - cast-json
+      translations:
+        - language: es-MX
+          translation: >-
+            5. Determinación sobre el otorgamiento de la concesión, licencia,
+            autorización o permiso
+      validation: null
+      validation_message: null
+      width: fill
+    schema:
+      name: determinacion
+      table: niveles_responsabilidades_concesiones
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_concesiones
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 8
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_concesiones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_concesiones
+    field: otroEspecifique
+    type: alias
+    meta:
+      collection: niveles_responsabilidades_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: otroEspecifique
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        enableSelect: false
+        limit: -1
+        template: "{{otroEspecifique}}"
+      readonly: false
+      required: true
+      sort: 7
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
   - collection: niveles_responsabilidades_contrataciones
     field: id
     type: integer
@@ -6658,7 +6769,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 8
+      sort: 9
       special:
         - m2o
       translations: null
@@ -6681,6 +6792,32 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: niveles_responsabilidades_contrataciones
+    field: otro_especifique
+    type: alias
+    meta:
+      collection: niveles_responsabilidades_contrataciones
+      conditions: null
+      display: null
+      display_options: null
+      field: otro_especifique
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        enableSelect: false
+        limit: -1
+        template: "{{especifique_otro}}"
+      readonly: false
+      required: true
+      sort: 8
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
   - collection: niveles_responsabilidades_enajenaciones
     field: id
     type: integer
@@ -7136,6 +7273,323 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+    field: id
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: niveles_responsabilidades_otro_adquisiciones_obras
+      data_type: integer
+      default_value: >-
+        nextval('niveles_responsabilidades_otro_adquisiciones_obras_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+    field: fk_otro_niveles_responsabilidades_contrataciones
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      conditions: null
+      display: null
+      display_options: null
+      field: fk_otro_niveles_responsabilidades_contrataciones
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fk_otro_niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_otro_adquisiciones_obras
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_otro_adquisiciones_obras
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+    field: especifiqueOtro
+    type: string
+    meta:
+      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      conditions: null
+      display: null
+      display_options: null
+      field: especifiqueOtro
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: especifiqueOtro
+      table: niveles_responsabilidades_otro_adquisiciones_obras
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_otro_concesiones
+    field: id
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: niveles_responsabilidades_otro_concesiones
+      data_type: integer
+      default_value: nextval('niveles_responsabilidades_otro_concesiones_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_otro_concesiones
+    field: fk_otro_niveles_responsabilidad_concesiones
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: fk_otro_niveles_responsabilidad_concesiones
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fk_otro_niveles_responsabilidad_concesiones
+      table: niveles_responsabilidades_otro_concesiones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_concesiones
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_concesiones
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_otro_concesiones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_concesiones
+    field: otroEspecifique
+    type: string
+    meta:
+      collection: niveles_responsabilidades_otro_concesiones
+      conditions: null
+      display: null
+      display_options: null
+      field: otroEspecifique
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: otroEspecifique
+      table: niveles_responsabilidades_otro_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: otorgamientos_concesiones
     field: id
     type: integer
@@ -7265,7 +7719,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidad_concesiones
+      foreign_key_table: niveles_responsabilidades_concesiones
       foreign_key_column: id
   - collection: otorgamientos_concesiones
     field: entePublico
@@ -7911,7 +8365,7 @@ fields:
       foreign_key_column: id
   - collection: servidores_intervengan_procedimientos_contrataciones
     field: ejercicio
-    type: string
+    type: integer
     meta:
       collection: servidores_intervengan_procedimientos_contrataciones
       conditions: null
@@ -7923,6 +8377,7 @@ fields:
       interface: input
       note: Registrar el ejercicio presupuestal en que se realizó el acto público
       options:
+        min: 2017
         placeholder: null
       readonly: false
       required: true
@@ -7937,11 +8392,11 @@ fields:
     schema:
       name: ejercicio
       table: servidores_intervengan_procedimientos_contrataciones
-      data_type: character varying
+      data_type: integer
       default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
       is_nullable: true
       is_unique: false
       is_primary_key: false
@@ -9148,27 +9603,6 @@ relations:
       constraint_name: niveles_jerarquicos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: niveles_responsabilidad_concesiones
-    field: entePublico
-    related_collection: entes_publicos
-    meta:
-      junction_field: null
-      many_collection: niveles_responsabilidad_concesiones
-      many_field: entePublico
-      one_allowed_collections: null
-      one_collection: entes_publicos
-      one_collection_field: null
-      one_deselect_action: nullify
-      one_field: null
-      sort_field: null
-    schema:
-      table: niveles_responsabilidad_concesiones
-      column: entePublico
-      foreign_key_table: entes_publicos
-      foreign_key_column: id
-      constraint_name: niveles_responsabilidad_concesiones_entepublico_foreign
-      on_update: NO ACTION
-      on_delete: SET NULL
   - collection: niveles_responsabilidades_avaluos
     field: entePublico
     related_collection: entes_publicos
@@ -9188,6 +9622,27 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_avaluos_entepublico_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_concesiones
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_concesiones
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_concesiones
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_contrataciones
@@ -9232,15 +9687,99 @@ relations:
       constraint_name: niveles_responsabilidades_enajenaciones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+    field: fk_otro_niveles_responsabilidades_contrataciones
+    related_collection: niveles_responsabilidades_contrataciones
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_adquisiciones_obras
+      many_field: fk_otro_niveles_responsabilidades_contrataciones
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_contrataciones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: otro_especifique
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_adquisiciones_obras
+      column: fk_otro_niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_adquisicion__741190e8_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_adquisiciones_obras
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_adquisiciones_obras
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_adquisicion__74636c04_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_concesiones
+    field: fk_otro_niveles_responsabilidad_concesiones
+    related_collection: niveles_responsabilidades_concesiones
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_concesiones
+      many_field: fk_otro_niveles_responsabilidad_concesiones
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_concesiones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: otroEspecifique
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_concesiones
+      column: fk_otro_niveles_responsabilidad_concesiones
+      foreign_key_table: niveles_responsabilidades_concesiones
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_concesiones___f6cb736_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_concesiones
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_concesiones
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_concesiones
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_concesiones_e__56c086_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
   - collection: otorgamientos_concesiones
     field: nivelResponsabilidadConcesiones
-    related_collection: niveles_responsabilidad_concesiones
+    related_collection: niveles_responsabilidades_concesiones
     meta:
       junction_field: null
       many_collection: otorgamientos_concesiones
       many_field: nivelResponsabilidadConcesiones
       one_allowed_collections: null
-      one_collection: niveles_responsabilidad_concesiones
+      one_collection: niveles_responsabilidades_concesiones
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9248,7 +9787,7 @@ relations:
     schema:
       table: otorgamientos_concesiones
       column: nivelResponsabilidadConcesiones
-      foreign_key_table: niveles_responsabilidad_concesiones
+      foreign_key_table: niveles_responsabilidades_concesiones
       foreign_key_column: id
       constraint_name: otorgamientos_concesiones_nivelresponsabil__74f1abee_foreign
       on_update: NO ACTION
@@ -9334,7 +9873,7 @@ relations:
       column: user_created
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contrat__9c4666e_foreign
+      constraint_name: servidores_intervengan_procedimientos_cont__3731416e_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
   - collection: servidores_intervengan_procedimientos_contrataciones
@@ -9355,7 +9894,7 @@ relations:
       column: user_updated
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contra__570cbabf_foreign
+      constraint_name: servidores_intervengan_procedimientos_cont__67fd9d65_foreign
       on_update: NO ACTION
       on_delete: NO ACTION
   - collection: servidores_intervengan_procedimientos_contrataciones
@@ -9376,7 +9915,7 @@ relations:
       column: entePublico
       foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contra__78b06464_foreign
+      constraint_name: servidores_intervengan_procedimientos_cont__38b85108_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedimientos_contrataciones
@@ -9397,7 +9936,7 @@ relations:
       column: datosGenerales
       foreign_key_table: datos_generales
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contra__1ed2f60b_foreign
+      constraint_name: servidores_intervengan_procedimientos_contr__701e919_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedimientos_contrataciones
@@ -9418,7 +9957,7 @@ relations:
       column: empleoCargoComision
       foreign_key_table: empleos_cargos_comisiones
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contra__6c23847b_foreign
+      constraint_name: servidores_intervengan_procedimientos_cont__6f0f8429_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedimientos_contrataciones
@@ -9439,7 +9978,7 @@ relations:
       column: otorgamientoConcesion
       foreign_key_table: otorgamientos_concesiones
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contra__5774f1c7_foreign
+      constraint_name: servidores_intervengan_procedimientos_cont__7ce18223_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedimientos_contrataciones
@@ -9460,7 +9999,7 @@ relations:
       column: avaluosJustipreciacion
       foreign_key_table: dictaminaciones_avaluos
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contra__443ed5a5_foreign
+      constraint_name: servidores_intervengan_procedimientos_cont__43e6a57f_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedimientos_contrataciones
@@ -9481,7 +10020,7 @@ relations:
       column: enajenacionBien
       foreign_key_table: enajenaciones_bienes
       foreign_key_column: id
-      constraint_name: servidores_intervengan_procedimientos_contra__63e07575_foreign
+      constraint_name: servidores_intervengan_procedimientos_cont__30e68fe7_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: tipos_adquisiciones_obras

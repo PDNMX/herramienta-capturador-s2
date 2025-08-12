@@ -21,4 +21,3 @@ RUN chmod +x /directus/init-modificaciones-db.sh
 # Instalar módulo de gestión de esquemas para importar
 USER node
 RUN pnpm install directus-extension-schema-management-module@1.5.0
-#ejemplo para el taller de la jornada interconexion

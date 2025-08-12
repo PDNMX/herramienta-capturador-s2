@@ -134,7 +134,7 @@ BEGIN
         1,
         'Herramienta de Captura del S2',
         'https://www.plataformadigitalnacional.org',
-        '#3da5f3',
+        '#b25fac',
         '21cc850a-1c0c-4d15-aeeb-2ec0a8e98c26',
         25,
         'all',

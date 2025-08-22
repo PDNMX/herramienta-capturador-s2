@@ -435,14 +435,14 @@ collections:
       versioning: false
     schema:
       name: niveles_responsabilidades_concesiones
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       color: null
       display_template: null
       group: contrataciones_publicas
@@ -458,7 +458,7 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: niveles_responsabilidades_contrataciones
+      name: niveles_responsabilidades_contrataciones_adquisiciones
   - collection: niveles_responsabilidades_enajenaciones
     meta:
       accountability: all
@@ -483,17 +483,17 @@ collections:
       versioning: false
     schema:
       name: niveles_responsabilidades_enajenaciones
-  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+  - collection: niveles_responsabilidades_otro_adquisiciones
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      collection: niveles_responsabilidades_otro_adquisiciones
       color: null
       display_template: null
-      group: niveles_responsabilidades_contrataciones
+      group: niveles_responsabilidades_contrataciones_adquisiciones
       hidden: true
       icon: null
       item_duplication_fields: null
@@ -506,7 +506,31 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: niveles_responsabilidades_otro_adquisiciones_obras
+      name: niveles_responsabilidades_otro_adquisiciones
+  - collection: niveles_responsabilidades_otro_avaluos
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: niveles_responsabilidades_otro_avaluos
+      color: null
+      display_template: null
+      group: niveles_responsabilidades_avaluos
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: niveles_responsabilidades_otro_avaluos
   - collection: niveles_responsabilidades_otro_concesiones
     meta:
       accountability: all
@@ -531,6 +555,30 @@ collections:
       versioning: false
     schema:
       name: niveles_responsabilidades_otro_concesiones
+  - collection: niveles_responsabilidades_otro_enajecaciones
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: niveles_responsabilidades_otro_enajecaciones
+      color: null
+      display_template: null
+      group: niveles_responsabilidades_enajenaciones
+      hidden: true
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: 1
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: niveles_responsabilidades_otro_enajecaciones
   - collection: otorgamientos_concesiones
     meta:
       accountability: all
@@ -766,7 +814,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
   - collection: contrataciones_adquisiciones
     field: informacionPersonasBeneficiarias
@@ -1064,7 +1112,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
   - collection: contrataciones_obras
     field: informacionPersonasBeneficiarias
@@ -1593,7 +1641,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
   - collection: datos_contrataciones_publicas
     field: id
@@ -1936,7 +1984,7 @@ fields:
       options:
         allowOther: true
         choices:
-          - text: Licitación pública (nacional
+          - text: Licitación pública (nacional)
             value: LICITACION_NACIONAL
           - text: Licitación pública (internacional)
             value: " LICITACION_INTERNACIONAL"
@@ -2626,8 +2674,7 @@ fields:
       validation:
         _and:
           - curp:
-              _regex: >-
-                ^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$
+              _regex: ^[A-Za-z]{4}\d{6}[A-Za-z]{6}[A-Za-z\d]{2}$
       validation_message: Formato no valido, revisa el CURP dentro de los datos personales
       width: full
     schema:
@@ -2672,7 +2719,7 @@ fields:
       validation:
         _and:
           - rfc:
-              _regex: ^([A-ZÑ&]{3,4})([0-9]{6})([A-Z0-9]{3})$
+              _regex: ^[A-Za-z]{4}\d{6}[A-Za-z\d]{3}$
       validation_message: Formato no valido, revisa el RFC dentro de los datos personales
       width: full
     schema:
@@ -3203,7 +3250,7 @@ fields:
       note: null
       options: null
       readonly: false
-      required: false
+      required: true
       sort: 10
       special: null
       translations:
@@ -3218,46 +3265,6 @@ fields:
       data_type: date
       default_value: null
       max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: datos_generales_conceciones
-    field: monto
-    type: string
-    meta:
-      collection: datos_generales_conceciones
-      conditions: null
-      display: null
-      display_options: null
-      field: monto
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 11
-      special: null
-      translations:
-        - language: es-MX
-          translation: Monto
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: monto
-      table: datos_generales_conceciones
-      data_type: character varying
-      default_value: null
-      max_length: 255
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -3347,6 +3354,46 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: datos_generales_conceciones
+    field: monto
+    type: decimal
+    meta:
+      collection: datos_generales_conceciones
+      conditions: null
+      display: null
+      display_options: null
+      field: monto
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 11
+      special: null
+      translations:
+        - language: es-MX
+          translation: Monto
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: monto
+      table: datos_generales_conceciones
+      data_type: numeric
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 5
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: datos_generales_obras
     field: id
     type: integer
@@ -4146,7 +4193,7 @@ fields:
       table: datos_otorgamientos_concesiones
       data_type: character varying
       default_value: null
-      max_length: 255
+      max_length: 20
       numeric_precision: null
       numeric_scale: null
       is_nullable: true
@@ -4610,6 +4657,7 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: "{{propuestas}}{{asignacion}}{{emision}}"
       readonly: false
       required: false
       sort: 2
@@ -4652,6 +4700,7 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: "{{numeroExpedienteFolio}}{{descripcion}}"
       readonly: false
       required: false
       sort: 3
@@ -4701,7 +4750,7 @@ fields:
           - text: "No"
             value: "NO"
       readonly: false
-      required: false
+      required: true
       sort: 4
       special: null
       translations:
@@ -4749,7 +4798,9 @@ fields:
       sort: 1
       special:
         - m2o
-      translations: null
+      translations:
+        - language: es-MX
+          translation: Ente público
       validation: null
       validation_message: null
       width: full
@@ -5314,6 +5365,8 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: >-
+          {{autorizaciones}}{{analisis}}{{modificaciones}}{{presentacion}}{{evaluacion}}{{adjudicacion}}{{formalizacoin}}
       readonly: false
       required: false
       sort: 2
@@ -5356,9 +5409,10 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: "{{numeroExpedienteFolio}}{{descripcion}}"
       readonly: false
       required: false
-      sort: 5
+      sort: 3
       special:
         - m2o
       translations: null
@@ -5397,7 +5451,7 @@ fields:
       options: null
       readonly: false
       required: false
-      sort: 6
+      sort: 5
       special:
         - m2o
       translations: null
@@ -5441,7 +5495,7 @@ fields:
             value: "NO"
       readonly: false
       required: false
-      sort: 7
+      sort: 4
       special: null
       translations:
         - language: es-MX
@@ -6016,6 +6070,31 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
+  - collection: niveles_responsabilidades_avaluos
+    field: otroEspecifique
+    type: alias
+    meta:
+      collection: niveles_responsabilidades_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: otroEspecifique
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        enableSelect: false
+        template: "{{otroEspecifique}}"
+      readonly: false
+      required: false
+      sort: 6
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
   - collection: niveles_responsabilidades_concesiones
     field: id
     type: integer
@@ -6391,11 +6470,11 @@ fields:
       validation: null
       validation_message: null
       width: full
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: id
     type: integer
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6415,9 +6494,10 @@ fields:
       width: full
     schema:
       name: id
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: integer
-      default_value: nextval('niveles_responsabilidades_contrataciones_id_seq'::regclass)
+      default_value: >-
+        nextval('niveles_responsabilidades_contrataciones_adquisiciones_id_seq'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -6429,11 +6509,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: autorizacion
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6470,7 +6550,7 @@ fields:
       width: full
     schema:
       name: autorizacion
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: json
       default_value: null
       max_length: null
@@ -6484,11 +6564,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: justificacion
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6523,7 +6603,7 @@ fields:
       width: full
     schema:
       name: justificacion
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: json
       default_value: null
       max_length: null
@@ -6537,11 +6617,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: convocatoria
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6578,7 +6658,7 @@ fields:
       width: full
     schema:
       name: convocatoria
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: json
       default_value: null
       max_length: null
@@ -6592,11 +6672,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: evaluacion
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6631,7 +6711,7 @@ fields:
       width: full
     schema:
       name: evaluacion
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: json
       default_value: null
       max_length: null
@@ -6645,11 +6725,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: adjudicacion
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6685,7 +6765,7 @@ fields:
       width: full
     schema:
       name: adjudicacion
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: json
       default_value: null
       max_length: null
@@ -6699,11 +6779,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: formalizacion
     type: json
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6739,7 +6819,7 @@ fields:
       width: full
     schema:
       name: formalizacion
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: json
       default_value: null
       max_length: null
@@ -6753,11 +6833,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: entePublico
     type: integer
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6778,7 +6858,7 @@ fields:
       width: full
     schema:
       name: entePublico
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       data_type: integer
       default_value: null
       max_length: null
@@ -6792,11 +6872,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: otro_especifique
     type: alias
     meta:
-      collection: niveles_responsabilidades_contrataciones
+      collection: niveles_responsabilidades_contrataciones_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -6808,9 +6888,9 @@ fields:
       options:
         enableSelect: false
         limit: -1
-        template: "{{especifique_otro}}"
+        template: "{{especifiqueOtro}}"
       readonly: false
-      required: true
+      required: false
       sort: 8
       special:
         - o2m
@@ -7273,11 +7353,37 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+  - collection: niveles_responsabilidades_enajenaciones
+    field: otroEspecifique
+    type: alias
+    meta:
+      collection: niveles_responsabilidades_enajenaciones
+      conditions: null
+      display: null
+      display_options: null
+      field: otroEspecifique
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: null
+      options:
+        enableSelect: false
+        limit: -1
+        template: "{{otroEspecifique}}"
+      readonly: false
+      required: false
+      sort: 10
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: niveles_responsabilidades_otro_adquisiciones
     field: id
     type: integer
     meta:
-      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      collection: niveles_responsabilidades_otro_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -7297,10 +7403,9 @@ fields:
       width: full
     schema:
       name: id
-      table: niveles_responsabilidades_otro_adquisiciones_obras
+      table: niveles_responsabilidades_otro_adquisiciones
       data_type: integer
-      default_value: >-
-        nextval('niveles_responsabilidades_otro_adquisiciones_obras_id_seq'::regclass)
+      default_value: nextval('niveles_responsabilidades_otro_adquisiciones_id_seq'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -7312,15 +7417,15 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: niveles_responsabilidades_otro_adquisiciones_obras
-    field: fk_otro_niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_otro_adquisiciones
+    field: fk_otro_niveles_responsabilidades_contrataciones_adquisiciones
     type: integer
     meta:
-      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      collection: niveles_responsabilidades_otro_adquisiciones
       conditions: null
       display: null
       display_options: null
-      field: fk_otro_niveles_responsabilidades_contrataciones
+      field: fk_otro_niveles_responsabilidades_contrataciones_adquisiciones
       group: null
       hidden: true
       interface: select-dropdown-m2o
@@ -7338,8 +7443,8 @@ fields:
       validation_message: null
       width: full
     schema:
-      name: fk_otro_niveles_responsabilidades_contrataciones
-      table: niveles_responsabilidades_otro_adquisiciones_obras
+      name: fk_otro_niveles_responsabilidades_contrataciones_adquisiciones
+      table: niveles_responsabilidades_otro_adquisiciones
       data_type: integer
       default_value: null
       max_length: null
@@ -7351,13 +7456,13 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
-  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+  - collection: niveles_responsabilidades_otro_adquisiciones
     field: entePublico
     type: integer
     meta:
-      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      collection: niveles_responsabilidades_otro_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -7380,7 +7485,7 @@ fields:
       width: full
     schema:
       name: entePublico
-      table: niveles_responsabilidades_otro_adquisiciones_obras
+      table: niveles_responsabilidades_otro_adquisiciones
       data_type: integer
       default_value: null
       max_length: null
@@ -7394,11 +7499,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: entes_publicos
       foreign_key_column: id
-  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+  - collection: niveles_responsabilidades_otro_adquisiciones
     field: especifiqueOtro
     type: string
     meta:
-      collection: niveles_responsabilidades_otro_adquisiciones_obras
+      collection: niveles_responsabilidades_otro_adquisiciones
       conditions: null
       display: null
       display_options: null
@@ -7418,7 +7523,165 @@ fields:
       width: full
     schema:
       name: especifiqueOtro
-      table: niveles_responsabilidades_otro_adquisiciones_obras
+      table: niveles_responsabilidades_otro_adquisiciones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_otro_avaluos
+    field: id
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: niveles_responsabilidades_otro_avaluos
+      data_type: integer
+      default_value: nextval('niveles_responsabilidades_otro_avaluos_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_otro_avaluos
+    field: fk_otro_niveles_responsabilidades_avaluos
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: fk_otro_niveles_responsabilidades_avaluos
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fk_otro_niveles_responsabilidades_avaluos
+      table: niveles_responsabilidades_otro_avaluos
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_avaluos
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_avaluos
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_otro_avaluos
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_avaluos
+    field: otroEspecifique
+    type: string
+    meta:
+      collection: niveles_responsabilidades_otro_avaluos
+      conditions: null
+      display: null
+      display_options: null
+      field: otroEspecifique
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: otroEspecifique
+      table: niveles_responsabilidades_otro_avaluos
       data_type: character varying
       default_value: null
       max_length: 255
@@ -7577,6 +7840,164 @@ fields:
     schema:
       name: otroEspecifique
       table: niveles_responsabilidades_otro_concesiones
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_otro_enajecaciones
+    field: id
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_enajecaciones
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: niveles_responsabilidades_otro_enajecaciones
+      data_type: integer
+      default_value: nextval('niveles_responsabilidades_otro_enajecaciones_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: niveles_responsabilidades_otro_enajecaciones
+    field: fk_otro_niveles_responsabilidades_enajenaciones
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_enajecaciones
+      conditions: null
+      display: null
+      display_options: null
+      field: fk_otro_niveles_responsabilidades_enajenaciones
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: fk_otro_niveles_responsabilidades_enajenaciones
+      table: niveles_responsabilidades_otro_enajecaciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: niveles_responsabilidades_enajenaciones
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_enajecaciones
+    field: entePublico
+    type: integer
+    meta:
+      collection: niveles_responsabilidades_otro_enajecaciones
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        enableCreate: false
+        enableSelect: false
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: niveles_responsabilidades_otro_enajecaciones
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+  - collection: niveles_responsabilidades_otro_enajecaciones
+    field: otroEspecifique
+    type: string
+    meta:
+      collection: niveles_responsabilidades_otro_enajecaciones
+      conditions: null
+      display: null
+      display_options: null
+      field: otroEspecifique
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: otroEspecifique
+      table: niveles_responsabilidades_otro_enajecaciones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -7775,6 +8196,8 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: >-
+          {{numeroExpedienteFolio}}{{denominacion}}{{fundamento}}{{nombrePersonaFisica}}
       readonly: false
       required: false
       sort: 4
@@ -7820,6 +8243,7 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: "{{razonSocial}}{{nombre}}{{primerApellido}}{{segundoApellido}}"
       readonly: false
       required: false
       sort: 5
@@ -7869,7 +8293,7 @@ fields:
           - text: "No"
             value: "NO"
       readonly: false
-      required: false
+      required: true
       sort: 6
       special: null
       translations:
@@ -8333,7 +8757,8 @@ fields:
         en actos públicos
       options:
         enableSelect: false
-        template: "{{nombreEntePublico}}"
+        template: >-
+          {{nombreEntePublico}}{{nivelJerarquico}}{{nivelJerarquico}}{{denominacion}}
       readonly: false
       required: true
       sort: 13
@@ -8343,7 +8768,7 @@ fields:
         - language: es-MX
           translation: >-
             4. Datos del empleo, cargo o comisión de la persona servidora
-            pública sancionada
+            pública
       validation: null
       validation_message: null
       width: full
@@ -8583,6 +9008,8 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: >-
+          {{datosDictaminacionesAvaluos.numeroExpedienteFolio}}{{datosDictaminacionesAvaluos.descripcion}}
       readonly: false
       required: false
       sort: 18
@@ -8636,6 +9063,8 @@ fields:
       note: null
       options:
         enableSelect: false
+        template: >-
+          {{datosEnajenacionesBienes.numeroExpedienteFolio}}{{datosEnajenacionesBienes.descripcion}}
       readonly: false
       required: false
       sort: 17
@@ -8692,7 +9121,7 @@ fields:
       options:
         enableSelect: false
         limit: -1
-        template: "{{clave}}"
+        template: "{{clave}}{{contratacionAdquisicion.tipoArea}}"
       readonly: false
       required: false
       sort: 15
@@ -8902,11 +9331,11 @@ fields:
       options:
         choices:
           - text: >-
-              Contratación de adquisiciones y arrendamientos de bienesmuebles y
+              Contratación de adquisiciones y arrendamientos de bienes muebles y
               servicios de cualquier naturaleza
             value: CONTRATACION_ADQUISICIONES
           - text: >-
-              Contratación de obra pública y los servicios relaionados con la
+              Contratación de obra pública y los servicios relacionados con la
               misma
             value: CONTRATACION_OBRAS
       readonly: false
@@ -8975,13 +9404,13 @@ fields:
 relations:
   - collection: contrataciones_adquisiciones
     field: nivelResponsabilidadContratacion
-    related_collection: niveles_responsabilidades_contrataciones
+    related_collection: niveles_responsabilidades_contrataciones_adquisiciones
     meta:
       junction_field: null
       many_collection: contrataciones_adquisiciones
       many_field: nivelResponsabilidadContratacion
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_contrataciones
+      one_collection: niveles_responsabilidades_contrataciones_adquisiciones
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -8989,7 +9418,7 @@ relations:
     schema:
       table: contrataciones_adquisiciones
       column: nivelResponsabilidadContratacion
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
       constraint_name: contrataciones_adquisiciones_nivelresponsa__538ef87e_foreign
       on_update: NO ACTION
@@ -9038,13 +9467,13 @@ relations:
       on_delete: SET NULL
   - collection: contrataciones_obras
     field: nivelResponsabilidadObra
-    related_collection: niveles_responsabilidades_contrataciones
+    related_collection: niveles_responsabilidades_contrataciones_adquisiciones
     meta:
       junction_field: null
       many_collection: contrataciones_obras
       many_field: nivelResponsabilidadObra
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_contrataciones
+      one_collection: niveles_responsabilidades_contrataciones_adquisiciones
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9052,7 +9481,7 @@ relations:
     schema:
       table: contrataciones_obras
       column: nivelResponsabilidadObra
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
       constraint_name: contrataciones_obras_nivelresponsabilidadobra_foreign
       on_update: NO ACTION
@@ -9143,13 +9572,13 @@ relations:
       on_delete: SET NULL
   - collection: contrataciones_publicas
     field: nivelesResponsabilidadesContrataciones
-    related_collection: niveles_responsabilidades_contrataciones
+    related_collection: niveles_responsabilidades_contrataciones_adquisiciones
     meta:
       junction_field: null
       many_collection: contrataciones_publicas
       many_field: nivelesResponsabilidadesContrataciones
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_contrataciones
+      one_collection: niveles_responsabilidades_contrataciones_adquisiciones
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9157,7 +9586,7 @@ relations:
     schema:
       table: contrataciones_publicas
       column: nivelesResponsabilidadesContrataciones
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
       constraint_name: contrataciones_publicas_nivelesresponsabil__52737260_foreign
       on_update: NO ACTION
@@ -9645,12 +10074,12 @@ relations:
       constraint_name: niveles_responsabilidades_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: entePublico
     related_collection: entes_publicos
     meta:
       junction_field: null
-      many_collection: niveles_responsabilidades_contrataciones
+      many_collection: niveles_responsabilidades_contrataciones_adquisiciones
       many_field: entePublico
       one_allowed_collections: null
       one_collection: entes_publicos
@@ -9659,11 +10088,11 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_contrataciones_adquisiciones
       column: entePublico
       foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: niveles_responsabilidades_contrataciones_entepublico_foreign
+      constraint_name: niveles_responsabilidades_contrataciones_ad__fcd6029_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_enajenaciones
@@ -9687,33 +10116,33 @@ relations:
       constraint_name: niveles_responsabilidades_enajenaciones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: niveles_responsabilidades_otro_adquisiciones_obras
-    field: fk_otro_niveles_responsabilidades_contrataciones
-    related_collection: niveles_responsabilidades_contrataciones
+  - collection: niveles_responsabilidades_otro_adquisiciones
+    field: fk_otro_niveles_responsabilidades_contrataciones_adquisiciones
+    related_collection: niveles_responsabilidades_contrataciones_adquisiciones
     meta:
       junction_field: null
-      many_collection: niveles_responsabilidades_otro_adquisiciones_obras
-      many_field: fk_otro_niveles_responsabilidades_contrataciones
+      many_collection: niveles_responsabilidades_otro_adquisiciones
+      many_field: fk_otro_niveles_responsabilidades_contrataciones_adquisiciones
       one_allowed_collections: null
-      one_collection: niveles_responsabilidades_contrataciones
+      one_collection: niveles_responsabilidades_contrataciones_adquisiciones
       one_collection_field: null
       one_deselect_action: nullify
       one_field: otro_especifique
       sort_field: null
     schema:
-      table: niveles_responsabilidades_otro_adquisiciones_obras
-      column: fk_otro_niveles_responsabilidades_contrataciones
-      foreign_key_table: niveles_responsabilidades_contrataciones
+      table: niveles_responsabilidades_otro_adquisiciones
+      column: fk_otro_niveles_responsabilidades_contrataciones_adquisiciones
+      foreign_key_table: niveles_responsabilidades_contrataciones_adquisiciones
       foreign_key_column: id
-      constraint_name: niveles_responsabilidades_otro_adquisicion__741190e8_foreign
+      constraint_name: niveles_responsabilidades_otro_adquisicion__55818daa_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: niveles_responsabilidades_otro_adquisiciones_obras
+  - collection: niveles_responsabilidades_otro_adquisiciones
     field: entePublico
     related_collection: entes_publicos
     meta:
       junction_field: null
-      many_collection: niveles_responsabilidades_otro_adquisiciones_obras
+      many_collection: niveles_responsabilidades_otro_adquisiciones
       many_field: entePublico
       one_allowed_collections: null
       one_collection: entes_publicos
@@ -9722,11 +10151,53 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: niveles_responsabilidades_otro_adquisiciones_obras
+      table: niveles_responsabilidades_otro_adquisiciones
       column: entePublico
       foreign_key_table: entes_publicos
       foreign_key_column: id
-      constraint_name: niveles_responsabilidades_otro_adquisicion__74636c04_foreign
+      constraint_name: niveles_responsabilidades_otro_adquisicion__5dfa7976_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_avaluos
+    field: fk_otro_niveles_responsabilidades_avaluos
+    related_collection: niveles_responsabilidades_avaluos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_avaluos
+      many_field: fk_otro_niveles_responsabilidades_avaluos
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_avaluos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: otroEspecifique
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_avaluos
+      column: fk_otro_niveles_responsabilidades_avaluos
+      foreign_key_table: niveles_responsabilidades_avaluos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_avaluos_fk___3ea50188_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_avaluos
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_avaluos
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_avaluos
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_avaluos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_otro_concesiones
@@ -9769,6 +10240,48 @@ relations:
       foreign_key_table: entes_publicos
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_otro_concesiones_e__56c086_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_enajecaciones
+    field: fk_otro_niveles_responsabilidades_enajenaciones
+    related_collection: niveles_responsabilidades_enajenaciones
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_enajecaciones
+      many_field: fk_otro_niveles_responsabilidades_enajenaciones
+      one_allowed_collections: null
+      one_collection: niveles_responsabilidades_enajenaciones
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: otroEspecifique
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_enajecaciones
+      column: fk_otro_niveles_responsabilidades_enajenaciones
+      foreign_key_table: niveles_responsabilidades_enajenaciones
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_enajecacion__520e2733_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: niveles_responsabilidades_otro_enajecaciones
+    field: entePublico
+    related_collection: entes_publicos
+    meta:
+      junction_field: null
+      many_collection: niveles_responsabilidades_otro_enajecaciones
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: entes_publicos
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: niveles_responsabilidades_otro_enajecaciones
+      column: entePublico
+      foreign_key_table: entes_publicos
+      foreign_key_column: id
+      constraint_name: niveles_responsabilidades_otro_enajecacion__18768363_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: otorgamientos_concesiones

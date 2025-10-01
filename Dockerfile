@@ -1,38 +1,23 @@
-FROM node:22-alpine AS base
+## Create Production Image
+FROM directus/directus:10
 
-FROM base AS deps
+USER root
+RUN npm install -g corepack@latest && corepack enable
+RUN apk add --no-cache postgresql-client
 
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
+# Crear directorio para archivos estáticos
+#RUN mkdir -p /directus/uploads
 
-COPY package.json ./
+# Copiar el logo
+COPY logo-pdn-white.svg /directus/uploads/21cc850a-1c0c-4d15-aeeb-2ec0a8e98c26.svg
 
-RUN npm update && npm install
+# Copiar el script de inicialización
+COPY init-modificaciones-db.sh /directus/init-modificaciones-db.sh
+RUN chmod +x /directus/init-modificaciones-db.sh
 
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# Copiar las extensiones construidas
+#COPY --from=builder --chown=node:node /directus/extensions /directus/extensions
 
-RUN npm run build
-
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT 3000
-
-CMD ["node", "server.js"]
+# Instalar módulo de gestión de esquemas para importar
+USER node
+RUN pnpm install directus-extension-schema-management-module@1.5.0

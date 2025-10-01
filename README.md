@@ -1,173 +1,142 @@
-# S5 - Sistema de denuncias públicas
+# Herramienta Capturadora S2 - Sistema de los Servidores Públicos que Intervengan en Procedimientos de Contrataciones Públicas
 
-## Descripción
+[![PDN](https://img.shields.io/badge/PDN-S2-pink)](https://www.plataformadigitalnacional.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-brightgreen)]()
+[![License](https://img.shields.io/badge/license-GNU%20General%20Public%20License%20v3.0-blue)]()
 
-S5 es una aplicación web diseñada para gestionar denuncias públicas de faltas administrativas y hechos de corrupción. El sistema está construido con una arquitectura moderna utilizando Next.js y Directus como backend headless CMS.
+Herramienta de captura para el Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas (S2) de la Plataforma Digital Nacional.
 
-## Tecnologías Utilizadas
+## 📋 Descripción
 
-- Frontend: 
-  - Next.js
-  - Tailwind CSS para estilos
-  - shadcn/ui para componentes de UI
-  - TypeScript
-- Backend: 
-  - Directus (Headless CMS)
-  - PostgreSQL 14
-- Despliegue:
-  - Docker
-  - Docker Compose
+La Herramienta de Captura de Información ha sido desarrollada para facilitar la recopilación, gestión y envío de datos conforme a los estándares establecidos en el Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas (Sistema 2) de la Plataforma Digital Nacional (PDN).
 
-## Requisitos Previos
+Esta herramienta permite:
 
-- Docker y Docker Compose
-- Node.js (para desarrollo local)
-- OpenSSL (para generar secretos)
+- Gestionar y validar datos según los estándares de la PDN
+- Facilitar la integración con el resto de los sistemas de la PDN
+- Mantener un control de acceso basado en roles
+- Generar reportes y visualizaciones de la información capturada
 
-## Stack Frontend
+## ⭐ Características principales
 
-El frontend está construido con:
-- **Next.js**: Framework de React para producción
-- **TypeScript**: Para tipado estático
-- **Tailwind CSS**: Para estilos utilitarios
-- **shadcn/ui**: Colección de componentes reutilizables
-  - Componentes accesibles y personalizables
-  - Basados en Radix UI
-  - Estilizados con Tailwind CSS
-  - Totalmente tipados
+- Sistema de autenticación y gestión de usuarios
+- Roles diferenciados (administrador y capturador)
+- Formularios de captura con validación de datos
+- Asignación de entes públicos a usuarios
+- Interfaz intuitiva para la gestión de información
+- Sistema de notificaciones por correo electrónico
+- Compatibilidad con múltiples navegadores web
 
-## Configuración Inicial
+## 📦 Inicio rápido
 
-1. Clona el repositorio:
+### Prerrequisitos
+
+#### Software
+
+- Sistema Operativo: Linux (recomendado Ubuntu Server LTS)
+- Docker
+- Docker Compose
+- Git
+- Servicio SMTP configurado
+
+#### Hardware Recomendado
+
+- Procesador: 4 CPU
+- Memoria: 8 GB RAM
+- Almacenamiento: 50 GB libres (aplicaciones/código)
+- Almacenamiento BD: 200 GB (inicial e incremental)
+
+### Instalación
+
+1. Clonar el repositorio
+
 ```bash
-git clone https://github.com/PDNMX/s5-reload.git
-cd s5-reload
+git clone https://github.com/PDNMX/herramienta-capturador-s2.git
+
+cd herramienta-capturador-s2
 ```
 
-2. Copia el archivo `.env-EXAMPLE` a `.env`:
+2. Crear archivo de variables de entorno
+
 ```bash
-cp .env-EXAMPLE .env
+cp .env.example .env
 ```
 
-3. Configura las variables en tu archivo `.env`:
+3. Configurar las variables de entorno en el archivo `.env`:
 
 ```env
-# Información de la aplicación
-NEXT_PUBLIC_APP_NAME="S5"
-NEXT_PUBLIC_APP_VER="2.0"
-NEXT_PUBLIC_APP_INFO="Sistema de denuncias públicas de faltas administrativas y hechos de corrupción"
-
-# URLs de la aplicación
-NEXT_PUBLIC_BACKEND_URL=http://localhost:8055
-NEXT_PUBLIC_URL=http://localhost:3000
-
-# Configuración de NextAuth
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=<GENERA_UN_NUEVO_VALOR_CON_OPENSSL>
-NEXT_TELEMETRY_DISABLED=1
-
-# Configuración de la base de datos
-DATABASE_NAME=directus
-DATABASE_USERNAME=userpg
-DATABASE_PASSWORD=<GENERA_UN_NUEVO_VALOR_SEGURO>
-
-# Configuración de Directus
+PUBLIC_URL=http://localhost:8055
+DATABASE_USERNAME=usuarioPostgres
+DATABASE_PASSWORD=passwordEjemplo
+DIRECTUS_SECRET=<GENERA_UN_NUEVO_VALOR_SEGURO>
 DIRECTUS_ADMIN_EMAIL=ejemplo@dominio.com
 DIRECTUS_ADMIN_PASSWORD=directusPassword
-DIRECTUS_KEY=<GENERA_UN_NUEVO_VALOR_SEGURO>
-DIRECTUS_SECRET=<GENERA_UN_NUEVO_VALOR_SEGURO>
+EMAIL_FROM=no-reply@gmail.com
+EMAIL_TRANSPORT=smtp
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=25
+SMTP_USER=correo.ejemplo@gmail.com
+SMTP_PASSWORD=passwordEjemplo
+SMTP_SECURE=false
+SMTP_IGNORE_TLS=false
 ```
 
-**Importante**: 
-- Reemplaza todos los valores de ejemplo por valores seguros en producción
-- Nunca compartas o expongas los valores de tu archivo `.env`
+4. Construir y levantar los contenedores
 
-
-## Instalación y Ejecución
-
-1. Construye e inicia todos los servicios con un solo comando:
 ```bash
-docker-compose -p s5 up -d --build
+docker-compose -p herramienta-s2 up -d --build
 ```
 
-Este comando:
-- `-p s5`: Asigna un nombre al proyecto (puedes cambiarlo según prefieras)
-- `up`: Inicia los servicios
-- `-d`: Ejecuta en modo detached (background)
-- `--build`: Reconstruye las imágenes si hay cambios
+5. Acceder a la aplicación en `http://localhost:8055`
 
-2. Los servicios estarán disponibles en:
-   - Aplicación: http://localhost:3060
-   - API (Directus): http://localhost:8055
+## 💻 Uso
 
-## Desarrollo Local
+### Roles de Usuario
 
-Para desarrollo local, tienes dos opciones:
+1. **Administrador**
 
-1. **Opción A: Todo en Docker** (recomendado para consistencia):
-```bash
-docker-compose -p s5 up -d --build
-```
+   - Gestión de usuarios
+   - Creación de entes públicos
+   - Configuración del sistema
+   - Acceso a todas las funcionalidades
 
-2. **Opción B: Desarrollo híbrido**:
-   - Si prefieres ejecutar solo el frontend en modo desarrollo mientras mantienes el resto de servicios en Docker:
-```bash
-# Primero inicia los servicios de base de datos y API
-docker-compose -p s5 up -d --build
-# Luego inicia el servidor de desarrollo de Next.js
-npm install
-npm run dev
-```
+2. **Capturador**
 
-## Desarrollo de Componentes
+   - Captura de información
+   - Gestión de registros de su ente público
 
-Este proyecto utiliza shadcn/ui para los componentes de la interfaz. Para agregar nuevos componentes:
+3. ## **Interconexión**
+   - Proporciona información a la PDN
 
-1. Usa el CLI de shadcn/ui:
-```bash
-npx shadcn-ui@latest add [component-name]
-```
+### Funcionalidades Principales
 
-2. Los componentes se agregarán en `components/ui/`
+- Captura de faltas administrativas
+- Gestión de servidores públicos sancionados
+- Administración de particulares sancionados
+- Generación de reportes
+- Gestión de catálogos
 
-3. Puedes personalizar los componentes modificando:
-   - Los estilos en `components/ui/[component-name].tsx`
-   - Las variables de Tailwind en `tailwind.config.js`
-   - Los temas en `app/globals.css`
+## 🛠️ Tecnologías utilizadas
 
-## Scripts Disponibles
+- Directus (CMS y API)
+- PostgreSQL
+- Docker
+- Node.js
+- React
 
-- `npm run dev` - Inicia el servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
-- `npm run start` - Inicia la aplicación en modo producción
-- `npm run lint` - Ejecuta el linter
+## 📚 Documentación
 
-## Servicios Docker
+- [Manual de Usuario](https://docs.google.com/document/d/12LIM8TGrI4UPKKdULLzGnFirZWOF0gS3CHVDKpc0byA/edit?usp=sharing)
+- [Manual de Instalación](https://docs.google.com/document/d/1RQFbQunsWU4kxGK1UOlqILrw3rUO1Z0YdWKe_MjASvM/edit?usp=sharing)
 
-1. **Aplicación Next.js** (Puerto: 3060)
-   - Aplicación principal
-   - Construida desde el Dockerfile en la raíz
+## ✉️ Soporte
 
-2. **API Directus** (Puerto: 8055)
-   - Panel de administración
-   - API REST y GraphQL
-   - Requiere autenticación
+Para soporte técnico, contactar a través del [formulario oficial de requerimientos de la SESNA](https://docs.google.com/forms/d/e/1FAIpQLSeaX8fdDP-XJpjazsDB9Utwthqsh-tUkykf7o_dJ99U45MIRQ/viewform).
 
-3. **PostgreSQL** (No expuesto)
-   - Base de datos principal
-   - Datos persistentes mediante volumen Docker
+## ⚖️ Licencia
 
-## Seguridad
+Este proyecto está bajo la Licencia GNU General Public License v3.0 - ver el archivo [LICENSE](LICENSE) para más detalles.
 
-- Genera nuevos valores seguros para todos los secretos y contraseñas
-- No expongas el archivo `.env` ni sus valores
-- Cambia las credenciales por defecto de Directus
-- Los puertos de la base de datos no están expuestos por seguridad
+---
 
-## Soporte
-
-Para reportar problemas o solicitar ayuda, por favor crea un issue en el repositorio.
-
-## Licencia
-
-[Especificar la licencia del proyecto]
+Desarrollado por la Plataforma Digital Nacional

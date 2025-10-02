@@ -18,7 +18,7 @@ export const NavItems: NavItem[] = [
         title: 'Submenú 1',
         icon: File,
         color: 'text-green-500',
-        href: '/submenu1/',
+        href: '/submenu1',
       },
       {
         title: 'Submenú 2',

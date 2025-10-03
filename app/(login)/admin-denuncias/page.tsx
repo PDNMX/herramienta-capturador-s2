@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Metadata } from "next";
 import UserAuthForm from "@/components/forms/user-auth-form";
-import LogoS5 from "@/components/s5-logo-color.svg"; // Ruta a tu logo PDN
+import LogoS2 from "@/components/s2-logo-color.svg"; // Ruta a tu logo PDN
 import Image from "next/image"; // Import Image component from Next.js
 import {
   Card,
@@ -24,8 +24,8 @@ export default function AuthenticationPage() {
             <CardHeader>
               <CardTitle className="text-2xl text-center font-semibold tracking-tight">
                 <Image
-                  src={LogoS5}
-                  alt="Logo S3"
+                  src={LogoS2}
+                  alt="Logo S2"
                   width={140}
                   className="m-auto"
                 />

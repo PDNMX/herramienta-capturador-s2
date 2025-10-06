@@ -6,9 +6,11 @@ services:
       - ./extensions:/directus/extensions
       - ./migrations:/directus/migrations
       - ./templates:/directus/templates
+      - ./colecciones.yaml:/directus/colecciones.yaml
+      - ./init-modificaciones-db.sh:/directus/init-modificaciones-db.sh
     command: >
       sh -c "node cli.js bootstrap &&
-            node cli.js schema apply --yes /directus/migrations/colecciones.yaml &&
+            node cli.js schema apply --yes /directus/colecciones.yaml &&
             sh /directus/init-modificaciones-db.sh &&
             pm2-runtime start ecosystem.config.cjs"
     restart: always
@@ -54,7 +56,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - 5433:5432
 
 volumes:
   postgres: {}

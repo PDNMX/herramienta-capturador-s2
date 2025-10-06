@@ -13,7 +13,7 @@ services:
             pm2-runtime start ecosystem.config.cjs"
     restart: always
     ports:
-      - 8057:8055
+      - 8055:8055
     depends_on:
       - db
     environment:

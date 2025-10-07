@@ -3,24 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --background: 171 100% 95%;
+  --background: 279 25% 96%;
   --foreground: 171 5% 0%;
-  --card: 171 100% 98%;
+  --card: 293 100% 98%;
   --card-foreground: 171 5% 10%;
   --popover: 171 100% 95%;
   --popover-foreground: 171 100% 0%;
-  --primary: 176 96% 20%;
+  --primary: 304 35% 54%;
   --primary-foreground: 0 0% 100%;
-  --contrast: 171 71% 36%;
+  --contrast: 304 71% 36%;
   --secondary: 171 30% 70%;
   --secondary-foreground: 0 0% 0%;
   --muted: 133 30% 85%;
   --muted-foreground: 176 8% 18%;
-  --accent: 171 64% 53%;
+  --accent: 303 46% 66%;
   --accent-foreground: 171 5% 10%;
   --destructive: 0 100% 30%;
   --destructive-foreground: 171 5% 90%;
-  --border: 171 30% 50%;
+  --border: 304 71% 36%;
   --input: 171 30% 18%;
   --ring: 171 58.9% 49.6%;
   --radius: 1.5rem;
@@ -30,7 +30,7 @@
   --color-graph-base: 171, 59%, 50%;  /* Verde*/
   
 
-  --gradient-background: radial-gradient(125% 125% at 50% 10%, #fff 40%, #34c9b2 100%);
+  --gradient-background: radial-gradient(125% 125% at 50% 10%, #fff 40%, #b25fac 100%);
 
   .rounded-lg {
     border-radius: var(--radius);
@@ -84,7 +84,7 @@
   --color-graph-3: 170, 66%, 48%; 
   --color-graph-base: 171, 59%, 50%;  /* Verde*/
 
-  --gradient-background: radial-gradient(125% 125% at 50% 10%, #1a1a1a 40%, #34c9b2 100%);
+  --gradient-background: radial-gradient(125% 125% at 50% 10%, #1a1a1a 40%, #b25fac 100%);
 }
 
 .high-contrast {

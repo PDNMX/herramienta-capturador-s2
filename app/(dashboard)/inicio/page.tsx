@@ -24,9 +24,9 @@ export default function Page() {
     faltasGravesPersonasMorales: 0,
     faltasGravesPersonasFisicas: 0,
     totalFaltas: 0,
-    ultimaActualizacion: new Date().toLocaleDateString('es-MX'),
+    ultimaActualizacion: new Date().toLocaleDateString("es-MX"),
   });
-  
+
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -44,14 +44,17 @@ export default function Page() {
             faltasGravesPersonasFisicas: 67,
           };
 
-          const total = Object.values(mockData).reduce((acc, val) => acc + val, 0);
+          const total = Object.values(mockData).reduce(
+            (acc, val) => acc + val,
+            0
+          );
 
           setData({
             ...mockData,
             totalFaltas: total,
-            ultimaActualizacion: new Date().toLocaleDateString('es-MX'),
+            ultimaActualizacion: new Date().toLocaleDateString("es-MX"),
           });
-          
+
           // Activar animaciones después de cargar datos
           setTimeout(() => setIsLoaded(true), 100);
         } catch (error) {
@@ -119,7 +122,8 @@ export default function Page() {
             Sistema 3
           </h1>
           <p className="text-lg text-muted-foreground">
-            Sistema Nacional de Servidores Públicos y Particulares Sancionados
+            Sistema de los servidores públicos que intervengan en procedimientos
+            de contrataciones pública
           </p>
         </div>
 
@@ -127,7 +131,7 @@ export default function Page() {
         <Card className="border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/5">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl">
-              <span>👋</span> Bienvenido, {session?.user?.name || 'Usuario'}
+              <span>👋</span> Bienvenido, {session?.user?.name || "Usuario"}
             </CardTitle>
             <CardDescription className="text-base">
               Herramienta de captura y gestión de sanciones administrativas
@@ -160,34 +164,41 @@ export default function Page() {
         {/* Sanctions Grid - Creative Layout */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {categoryCards.map((category, index) => {
-            const percentage = data.totalFaltas > 0 
-              ? ((category.value / data.totalFaltas) * 100).toFixed(1)
-              : 0;
-            
+            const percentage =
+              data.totalFaltas > 0
+                ? ((category.value / data.totalFaltas) * 100).toFixed(1)
+                : 0;
+
             return (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className={`group relative overflow-hidden border-2 ${category.borderColor} hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer animate-in fade-in slide-in-from-bottom-4`}
-                style={{ 
+                style={{
                   animationDelay: `${index * 150}ms`,
-                  animationDuration: '600ms',
-                  animationFillMode: 'backwards'
+                  animationDuration: "600ms",
+                  animationFillMode: "backwards",
                 }}
               >
                 {/* Background gradient on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
-                
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+                ></div>
+
                 <CardHeader className="pb-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
-                      <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 ${category.bgColor} ${category.textColor}`}>
+                      <div
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-3 ${category.bgColor} ${category.textColor}`}
+                      >
                         {category.subtitle}
                       </div>
                       <CardTitle className="text-base leading-tight">
                         {category.title}
                       </CardTitle>
                     </div>
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${category.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <div
+                      className={`p-3 rounded-xl bg-gradient-to-br ${category.color} shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                    >
                       <category.icon className="h-6 w-6 text-white" />
                     </div>
                   </div>
@@ -205,16 +216,18 @@ export default function Page() {
                       <span className="text-xs font-medium text-muted-foreground">
                         Del total
                       </span>
-                      <span className={`text-sm font-bold ${category.textColor}`}>
+                      <span
+                        className={`text-sm font-bold ${category.textColor}`}
+                      >
                         {percentage}%
                       </span>
                     </div>
                     <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className={`h-full ${category.progressColor} rounded-full transition-all duration-1000 ease-out`}
-                        style={{ 
-                          width: isLoaded ? `${percentage}%` : '0%',
-                          transitionDelay: `${index * 150 + 300}ms`
+                        style={{
+                          width: isLoaded ? `${percentage}%` : "0%",
+                          transitionDelay: `${index * 150 + 300}ms`,
                         }}
                       ></div>
                     </div>
@@ -225,14 +238,16 @@ export default function Page() {
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-muted-foreground">Categoría</span>
                       <span className={`font-semibold ${category.textColor}`}>
-                        {index < 2 ? 'Servidores Públicos' : 'Particulares'}
+                        {index < 2 ? "Servidores Públicos" : "Particulares"}
                       </span>
                     </div>
                   </div>
                 </CardContent>
 
                 {/* Corner decoration */}
-                <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${category.color} opacity-10 rounded-bl-full`}></div>
+                <div
+                  className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${category.color} opacity-10 rounded-bl-full`}
+                ></div>
               </Card>
             );
           })}

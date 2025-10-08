@@ -2,8 +2,9 @@ import Header from "@/components/layout/header";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_APP_NAME || "S3",
-  description: "Sistema Nacional de Servidores Públicos y Particulares Sancionados",
+  title: process.env.NEXT_PUBLIC_APP_NAME || "S2",
+  description:
+    "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones pública",
 };
 
 export default function DashboardLayout({
@@ -15,7 +16,9 @@ export default function DashboardLayout({
     <>
       <Header />
       <div>
-        <main className="w-full pt-16"><div className="max-w-screen-2xl mx-auto">{children}</div></main>
+        <main className="w-full pt-16">
+          <div className="max-w-screen-2xl mx-auto">{children}</div>
+        </main>
       </div>
     </>
   );

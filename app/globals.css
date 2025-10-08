@@ -10,7 +10,7 @@
     --card-foreground: 250 50% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 250 50% 15%;
-    --primary: 250 54% 68%;
+    --primary: 280 60% 60%; /* Cambiado a #b25fac */
     --primary-foreground: 0 0% 100%;
     --secondary: 250 30% 95%;
     --secondary-foreground: 250 50% 20%;
@@ -22,7 +22,7 @@
     --destructive-foreground: 0 0% 100%;
     --border: 250 20% 88%;
     --input: 250 20% 88%;
-    --ring: 250 54% 68%;
+    --ring: 280 60% 60%; /* También actualizado para coherencia */
     --radius: 0.5rem;
   }
 
@@ -33,7 +33,7 @@
     --card-foreground: 250 20% 95%;
     --popover: 250 35% 12%;
     --popover-foreground: 250 20% 95%;
-    --primary: 250 54% 68%;
+    --primary: 280 60% 66%; /* Cambiado a #b25fac */
     --primary-foreground: 250 50% 10%;
     --secondary: 250 30% 18%;
     --secondary-foreground: 250 20% 95%;
@@ -45,7 +45,7 @@
     --destructive-foreground: 250 20% 95%;
     --border: 250 25% 25%;
     --input: 250 25% 25%;
-    --ring: 250 54% 68%;
+    --ring: 280 60% 60%; /* También actualizado para coherencia */
   }
 }
 
@@ -68,14 +68,15 @@
     height: 100dvh;
   }
   .header-gradient {
-    background: transparent linear-gradient(230deg, #9085DA 0%, #9085DA 4%, #B8A9E8 49%, #7B6B9D 100%) 0% 0% no-repeat padding-box;
+    background: transparent
+      linear-gradient(230deg, #b25fac 0%, #b25fac 4%, #d4b3f0 49%, #8a4d9d 100%)
+      0% 0% no-repeat padding-box;
   }
   .disabled {
     opacity: 0.5;
     pointer-events: none;
     position: relative;
   }
-
   .disabled::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -90,22 +91,23 @@
     white-space: nowrap;
     display: none;
   }
-
   .disabled:hover::after {
     display: block;
   }
-  
+
   @keyframes float {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0px);
     }
     50% {
       transform: translateY(-20px);
     }
   }
-  
+
   @keyframes pulse-glow {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 0.4;
       transform: scale(1);
     }
@@ -114,7 +116,7 @@
       transform: scale(1.05);
     }
   }
-  
+
   @keyframes shimmer {
     0% {
       background-position: -1000px 0;
@@ -123,15 +125,15 @@
       background-position: 1000px 0;
     }
   }
-  
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-  
+
   .animate-pulse-glow {
     animation: pulse-glow 3s ease-in-out infinite;
   }
-  
+
   .animate-shimmer {
     animation: shimmer 3s linear infinite;
   }

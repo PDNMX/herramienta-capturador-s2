@@ -2,7 +2,7 @@
 "use client";
 
 import BreadCrumb from "@/components/breadcrumb";
-import { FaltasGravesPMForm } from "@/components/forms/faltas-graves-pm-form";
+import { ServidoresContratacionesForm } from "@/components/forms/servidores-contrataciones-form";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCurrentSession } from "@/hooks/useCurrentSession";
@@ -21,13 +21,13 @@ export default function Page({ params }) {
     {
       title:
         "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas",
-      link: "/dashboard/faltas-graves-pm",
+      link: "/inicio/entes",
     },
     {
       title: faltaId ? "Editar" : "Nueva",
       link: faltaId
-        ? `/dashboard/faltas-graves-pm/${faltaId}`
-        : "/dashboard/faltas-graves-pm/nueva",
+        ? `/inicio/entes/${faltaId}`
+        : "/inicio/entes/create",
     },
   ];
 
@@ -88,7 +88,7 @@ export default function Page({ params }) {
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-5">
         <BreadCrumb items={breadcrumbItems} />
-        <FaltasGravesPMForm initialData={falta} key={faltaId || "new"} />
+        <ServidoresContratacionesForm initialData={falta} key={faltaId || "new"} />
       </div>
     </ScrollArea>
   );

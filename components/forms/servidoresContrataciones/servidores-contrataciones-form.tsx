@@ -118,6 +118,7 @@ export const ServidoresContratacionesForm: React.FC<
   });
 
   const tipoProcedimiento = form.watch("tipoProcedimiento");
+  const tipoContratacion = form.watch("tipoContratacion");
 
   // Establecer los datos cuando carga el componente
   useEffect(() => {
@@ -364,10 +365,58 @@ export const ServidoresContratacionesForm: React.FC<
             />
           </div>
 
-          {/* Secciones condicionales basadas en el tipo de procedimiento */}
+          {/* Sección 5.1: Tipo de Contratación Pública (solo si tipoProcedimiento === CONTRATACION_PUBLICA) */}
           {tipoProcedimiento === "CONTRATACION_PUBLICA" && (
+            <div className="rounded-xl border-2 border-primary/20 p-6 bg-card/95 backdrop-blur shadow-lg">
+              <div className="flex items-center mb-6">
+                <div className="bg-primary/10 rounded-lg p-2 mr-4">
+                  <FileText className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold text-primary">
+                  5.1 Participación en procedimientos de contratación pública
+                </h3>
+              </div>
+
+              <FormField
+                control={form.control}
+                name="tipoContratacion"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-semibold">
+                      Tipo de Contratación Pública <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={loading}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-12">
+                          <SelectValue placeholder="Seleccione el tipo de contratación pública" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="CONTRATACION_ADQUISICIONES">
+                          Contratación de adquisiciones y arrendamientos de bienes muebles y servicios de cualquier naturaleza
+                        </SelectItem>
+                        <SelectItem value="CONTRATACION_OBRA">
+                          Contratación de obra pública y los servicios relacionados con la misma
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormDescription className="text-xs text-muted-foreground">
+                      Seleccione el tipo de contratación pública en el que participa
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
+
+          {/* Sección 5.1.1: Contratación de Adquisiciones (solo si tipoContratacion === CONTRATACION_ADQUISICIONES) */}
+          {tipoProcedimiento === "CONTRATACION_PUBLICA" && tipoContratacion === "CONTRATACION_ADQUISICIONES" && (
             <Accordion type="multiple" className="w-full space-y-4">
-              {/* 5.1.1 Contratación de Adquisiciones */}
               <AccordionItem
                 value="contratacion-adquisiciones"
                 className="rounded-xl border-2 border-primary/20 overflow-hidden bg-card/95 backdrop-blur shadow-lg"
@@ -390,8 +439,12 @@ export const ServidoresContratacionesForm: React.FC<
                   />
                 </AccordionContent>
               </AccordionItem>
+            </Accordion>
+          )}
 
-              {/* 5.1.2 Obras Públicas */}
+          {/* Sección 5.1.2: Obras Públicas (solo si tipoContratacion === CONTRATACION_OBRA) */}
+          {tipoProcedimiento === "CONTRATACION_PUBLICA" && tipoContratacion === "CONTRATACION_OBRA" && (
+            <Accordion type="multiple" className="w-full space-y-4">
               <AccordionItem
                 value="obras-publicas"
                 className="rounded-xl border-2 border-primary/20 overflow-hidden bg-card/95 backdrop-blur shadow-lg"

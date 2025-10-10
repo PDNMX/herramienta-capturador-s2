@@ -6,11 +6,31 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Heading } from "@/components/ui/heading";
@@ -24,9 +44,6 @@ const servidoresContratacionesSchema = z.object({
   entePublico: z.string().min(1, {
     message: "Ente público es requerido.",
   }),
-  status: z.enum(["NO_FIRME", "FIRME", "EN_PROCESO"], {
-    message: "Selecciona un estatus válido",
-  }),
   fecha: z.string().min(1, {
     message: "La fecha es requerida.",
   }),
@@ -35,19 +52,28 @@ const servidoresContratacionesSchema = z.object({
   }),
   datosGenerales: z.string().optional(),
   empleoCargoComision: z.string().optional(),
-  tipoProcedimiento: z.enum(
-    ["CONTRATACION_PUBLICA", "OTORGAMIENTO_CONCECIONES", "ENAJENACION_BIENES", "DICTAMEN_VALUATORIO"],
-    {
-      required_error: "Debe seleccionar un tipo de procedimiento",
-    }
-  ).optional(),
+  tipoProcedimiento: z
+    .enum(
+      [
+        "CONTRATACION_PUBLICA",
+        "OTORGAMIENTO_CONCECIONES",
+        "ENAJENACION_BIENES",
+        "DICTAMEN_VALUATORIO",
+      ],
+      {
+        required_error: "Debe seleccionar un tipo de procedimiento",
+      }
+    )
+    .optional(),
   otorgamientoConcesion: z.string().optional(),
   enajenacionBien: z.string().optional(),
   avaluosJustipreciacion: z.string().optional(),
   observaciones: z.string().nullable().optional(),
 });
 
-type ServidoresContratacionesFormValues = z.infer<typeof servidoresContratacionesSchema>;
+type ServidoresContratacionesFormValues = z.infer<
+  typeof servidoresContratacionesSchema
+>;
 
 interface ServidoresContratacionesFormProps {
   initialData: any | null;
@@ -56,11 +82,13 @@ interface ServidoresContratacionesFormProps {
 const tipoProcedimientoOptions = [
   {
     value: "CONTRATACION_PUBLICA",
-    label: "Contratación pública, de tramitación, atención y resolución para la adjudicación de un contrato",
+    label:
+      "Contratación pública, de tramitación, atención y resolución para la adjudicación de un contrato",
   },
   {
     value: "OTORGAMIENTO_CONCECIONES",
-    label: "Otorgamiento de concesiones, licencias, permisos, autorizaciones y sus prórrogas",
+    label:
+      "Otorgamiento de concesiones, licencias, permisos, autorizaciones y sus prórrogas",
   },
   {
     value: "ENAJENACION_BIENES",
@@ -72,9 +100,9 @@ const tipoProcedimientoOptions = [
   },
 ];
 
-export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesFormProps> = ({
-  initialData
-}) => {
+export const ServidoresContratacionesForm: React.FC<
+  ServidoresContratacionesFormProps
+> = ({ initialData }) => {
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -94,8 +122,7 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
   const defaultValues = useMemo(
     () => ({
       entePublico: initialData?.entePublico ?? session?.user?.entidad ?? "",
-      status: initialData?.status ?? "NO_FIRME",
-      fecha: initialData?.fecha ?? new Date().toISOString().split('T')[0],
+      fecha: initialData?.fecha ?? new Date().toISOString().split("T")[0],
       ejercicio: initialData?.ejercicio ?? new Date().getFullYear().toString(),
       datosGenerales: initialData?.datosGenerales ?? "",
       empleoCargoComision: initialData?.empleoCargoComision ?? "",
@@ -105,7 +132,7 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
       avaluosJustipreciacion: initialData?.avaluosJustipreciacion ?? "",
       observaciones: initialData?.observaciones ?? "",
     }),
-    [initialData, session?.user?.entidad],
+    [initialData, session?.user?.entidad]
   );
 
   const form = useForm<ServidoresContratacionesFormValues>({
@@ -140,7 +167,6 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
       // Preparar los datos del registro principal
       const mainData = {
         entePublico: data.entePublico,
-        status: data.status,
         fecha: data.fecha,
         ejercicio: data.ejercicio,
         datosGenerales: data.datosGenerales,
@@ -156,15 +182,22 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
         await directus.request(
           withToken(
             session?.access_token,
-            updateItem("servidores_intervengan_procedimientos_contrataciones", initialData.id, mainData),
-          ),
+            updateItem(
+              "servidores_intervengan_procedimientos_contrataciones",
+              initialData.id,
+              mainData
+            )
+          )
         );
       } else {
         await directus.request(
           withToken(
             session?.access_token,
-            createItem("servidores_intervengan_procedimientos_contrataciones", mainData),
-          ),
+            createItem(
+              "servidores_intervengan_procedimientos_contrataciones",
+              mainData
+            )
+          )
         );
       }
 
@@ -198,8 +231,8 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 w-full">
-
+          className="space-y-8 w-full"
+        >
           {/* Campo oculto para entePublico */}
           <FormField
             control={form.control}
@@ -223,40 +256,12 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
           {/* Nota de campos obligatorios */}
           <div className="rounded-lg border border-blue-200 bg-blue-50 dark:bg-blue-950/20 dark:border-blue-800 p-4">
             <p className="text-sm text-blue-800 dark:text-blue-300">
-              <span className="font-semibold">Nota:</span> Todos los campos señalados con un asterisco (*) son de carácter obligatorio.
+              <span className="font-semibold">Nota:</span> Todos los campos
+              señalados con un asterisco (*) son de carácter obligatorio.
             </p>
           </div>
 
           <div className="space-y-6">
-            {/* Estatus - Campo sin enumerar */}
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Estatus <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecciona un estatus" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="NO_FIRME">No Firme</SelectItem>
-                      <SelectItem value="FIRME">Firme</SelectItem>
-                      <SelectItem value="EN_PROCESO">En Proceso</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <div className="md:grid md:grid-cols-2 gap-6">
               {/* Campo 1: Fecha */}
               <FormField
@@ -265,14 +270,11 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      1. Fecha (DD-MM-AAAA) <span className="text-red-500">*</span>
+                      1. Fecha (DD-MM-AAAA){" "}
+                      <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        type="date"
-                        disabled={loading}
-                        {...field}
-                      />
+                      <Input type="date" disabled={loading} {...field} />
                     </FormControl>
                     <FormDescription>
                       Indicar la fecha en la que se registra la información
@@ -288,8 +290,7 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                 name="ejercicio"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>
-                      2. Ejercicio *</FormLabel>
+                    <FormLabel>2. Ejercicio *</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -299,7 +300,8 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                       />
                     </FormControl>
                     <FormDescription>
-                      Registrar el ejercicio presupuestal en que se realizó el acto público
+                      Registrar el ejercicio presupuestal en que se realizó el
+                      acto público
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -313,8 +315,14 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
               name="datosGenerales"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>3. Datos generales de la persona servidora pública</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                  <FormLabel>
+                    3. Datos generales de la persona servidora pública
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={loading}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccione una persona servidora pública" />
@@ -322,11 +330,15 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                     </FormControl>
                     <SelectContent>
                       {/* TODO: Cargar desde datos_generales en Directus */}
-                      <SelectItem value="placeholder">Sin datos disponibles</SelectItem>
+                      <SelectItem value="placeholder">
+                        Sin datos disponibles
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    En el presente apartado se establecen los datos concernientes a la persona servidora pública que intervenga en procedimientos de contratación pública
+                    En el presente apartado se establecen los datos
+                    concernientes a la persona servidora pública que intervenga
+                    en procedimientos de contratación pública
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -339,8 +351,15 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
               name="empleoCargoComision"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>4. Datos del empleo, cargo o comisión de la persona servidora pública</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                  <FormLabel>
+                    4. Datos del empleo, cargo o comisión de la persona
+                    servidora pública
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={loading}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccione un empleo, cargo o comisión" />
@@ -348,17 +367,20 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                     </FormControl>
                     <SelectContent>
                       {/* TODO: Cargar desde empleos_cargos_comisiones en Directus */}
-                      <SelectItem value="placeholder">Sin datos disponibles</SelectItem>
+                      <SelectItem value="placeholder">
+                        Sin datos disponibles
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    En el presente apartado se establecen los datos concernientes al empleo, cargo o comisión que ostenta la persona servidora pública al intervenir en actos públicos
+                    En el presente apartado se establecen los datos
+                    concernientes al empleo, cargo o comisión que ostenta la
+                    persona servidora pública al intervenir en actos públicos
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
           </div>
 
           <Separator />
@@ -371,9 +393,14 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    5. Tipo de procedimiento en el que participa la persona servidora pública
+                    5. Tipo de procedimiento en el que participa la persona
+                    servidora pública
                   </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={loading}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={loading}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccione un tipo de procedimiento" />
@@ -388,7 +415,8 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    Seleccione el tipo de procedimiento en el que participa la persona servidora pública
+                    Seleccione el tipo de procedimiento en el que participa la
+                    persona servidora pública
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -402,8 +430,15 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                 name="otorgamientoConcesion"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>5.2 Participación en el otorgamiento de concesiones, licencias, permisos ó autorizaciones</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                    <FormLabel>
+                      5.2 Participación en el otorgamiento de concesiones,
+                      licencias, permisos ó autorizaciones
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={loading}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Seleccione un otorgamiento de concesión" />
@@ -411,7 +446,9 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                       </FormControl>
                       <SelectContent>
                         {/* TODO: Cargar desde otorgamientos_concesiones en Directus */}
-                        <SelectItem value="placeholder">Sin datos disponibles</SelectItem>
+                        <SelectItem value="placeholder">
+                          Sin datos disponibles
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -426,8 +463,14 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                 name="enajenacionBien"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>5.3 Participación en la enajenación de bienes muebles</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                    <FormLabel>
+                      5.3 Participación en la enajenación de bienes muebles
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={loading}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Seleccione una enajenación de bien" />
@@ -435,7 +478,9 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                       </FormControl>
                       <SelectContent>
                         {/* TODO: Cargar desde enajenaciones_bienes en Directus */}
-                        <SelectItem value="placeholder">Sin datos disponibles</SelectItem>
+                        <SelectItem value="placeholder">
+                          Sin datos disponibles
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -450,8 +495,15 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                 name="avaluosJustipreciacion"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>5.4 Participación en la dictaminación en materia de avalúos y justipreciación de rentas</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={loading}>
+                    <FormLabel>
+                      5.4 Participación en la dictaminación en materia de
+                      avalúos y justipreciación de rentas
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={loading}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Seleccione un avalúo o justipreciación" />
@@ -459,7 +511,9 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                       </FormControl>
                       <SelectContent>
                         {/* TODO: Cargar desde dictaminaciones_avaluos en Directus */}
-                        <SelectItem value="placeholder">Sin datos disponibles</SelectItem>
+                        <SelectItem value="placeholder">
+                          Sin datos disponibles
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -488,7 +542,9 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
                   />
                 </FormControl>
                 <FormDescription>
-                  En este espacio podrá realizar las aclaraciones u observaciones que considere pertinentes respecto de alguno o algunos de los apartados del documento.
+                  En este espacio podrá realizar las aclaraciones u
+                  observaciones que considere pertinentes respecto de alguno o
+                  algunos de los apartados del documento.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -503,7 +559,8 @@ export const ServidoresContratacionesForm: React.FC<ServidoresContratacionesForm
               type="button"
               variant="outline"
               onClick={() => router.back()}
-              disabled={loading}>
+              disabled={loading}
+            >
               Cancelar
             </Button>
             <Button disabled={loading} type="submit">

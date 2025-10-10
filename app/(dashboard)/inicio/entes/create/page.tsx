@@ -2,7 +2,7 @@
 "use client";
 
 import BreadCrumb from "@/components/breadcrumb";
-import { ServidoresContratacionesForm } from "@/components/forms/servidores-contrataciones-form";
+import { ServidoresContratacionesForm } from "@/components/forms/servidoresContrataciones/servidores-contrataciones-form";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCurrentSession } from "@/hooks/useCurrentSession";
@@ -25,9 +25,7 @@ export default function Page({ params }) {
     },
     {
       title: faltaId ? "Editar" : "Nueva",
-      link: faltaId
-        ? `/inicio/entes/${faltaId}`
-        : "/inicio/entes/create",
+      link: faltaId ? `/inicio/entes/${faltaId}` : "/inicio/entes/create",
     },
   ];
 
@@ -39,15 +37,18 @@ export default function Page({ params }) {
           const result = await directus.request(
             withToken(
               session?.access_token,
-              readItems("faltas_graves_personas_morales", {
-                limit: 1,
-                fields: ["*"],
-                filter: {
-                  id: {
-                    _eq: faltaId,
+              readItems(
+                "servidores_intervengan_en_procedimientos_de_contrataciones",
+                {
+                  limit: 1,
+                  fields: ["*", "datosGenerales.*"],
+                  filter: {
+                    id: {
+                      _eq: j,
+                    },
                   },
-                },
-              })
+                }
+              )
             )
           );
 
@@ -88,7 +89,10 @@ export default function Page({ params }) {
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-5">
         <BreadCrumb items={breadcrumbItems} />
-        <ServidoresContratacionesForm initialData={falta} key={faltaId || "new"} />
+        <ServidoresContratacionesForm
+          initialData={falta}
+          key={faltaId || "new"}
+        />
       </div>
     </ScrollArea>
   );

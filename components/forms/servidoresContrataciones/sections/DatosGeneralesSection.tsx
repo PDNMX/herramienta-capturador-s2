@@ -17,14 +17,46 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { User } from "lucide-react";
+import { User, CheckCircle2, XCircle } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface DatosGeneralesSectionProps {
   form: any;
   loading: boolean;
 }
 
+// Regex para validación de CURP y RFC
+const CURP_REGEX = /^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z][0-9]$/;
+const RFC_REGEX = /^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/;
+
 export function DatosGeneralesSection({ form, loading }: DatosGeneralesSectionProps) {
+  const [curpValidationState, setCurpValidationState] = useState<'idle' | 'valid' | 'invalid'>('idle');
+  const [rfcValidationState, setRfcValidationState] = useState<'idle' | 'valid' | 'invalid'>('idle');
+
+  // Watch CURP field changes
+  const curpValue = form.watch("datosGenerales.curp");
+  useEffect(() => {
+    if (!curpValue || curpValue.length === 0) {
+      setCurpValidationState('idle');
+    } else if (curpValue.length === 18 && CURP_REGEX.test(curpValue)) {
+      setCurpValidationState('valid');
+    } else {
+      setCurpValidationState('invalid');
+    }
+  }, [curpValue]);
+
+  // Watch RFC field changes
+  const rfcValue = form.watch("datosGenerales.rfc");
+  useEffect(() => {
+    if (!rfcValue || rfcValue.length === 0) {
+      setRfcValidationState('idle');
+    } else if (rfcValue.length === 13 && RFC_REGEX.test(rfcValue)) {
+      setRfcValidationState('valid');
+    } else {
+      setRfcValidationState('invalid');
+    }
+  }, [rfcValue]);
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -127,19 +159,43 @@ export function DatosGeneralesSection({ form, loading }: DatosGeneralesSectionPr
                 CURP <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  disabled={loading}
-                  placeholder="AAAA000000HAAAAAAA"
-                  {...field}
-                  value={field.value || ""}
-                  className="h-12 uppercase"
-                  maxLength={18}
-                  onChange={(e) => field.onChange(e.target.value.toUpperCase())}
-                />
+                <div className="relative">
+                  <Input
+                    disabled={loading}
+                    placeholder="AAAA000000HAAAAAAA"
+                    {...field}
+                    value={field.value || ""}
+                    className={`h-12 uppercase pr-10 ${
+                      curpValidationState === 'valid'
+                        ? 'border-green-500 focus-visible:ring-green-500'
+                        : curpValidationState === 'invalid'
+                        ? 'border-red-500 focus-visible:ring-red-500'
+                        : ''
+                    }`}
+                    maxLength={18}
+                    onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                  />
+                  {curpValidationState === 'valid' && (
+                    <CheckCircle2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-green-500" />
+                  )}
+                  {curpValidationState === 'invalid' && (
+                    <XCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-red-500" />
+                  )}
+                </div>
               </FormControl>
-              <FormDescription className="text-xs text-muted-foreground bg-green-50 dark:bg-green-900/20 p-2 rounded border border-green-200 dark:border-green-700">
-                🔒 Este campo NO será público (18 caracteres)
-              </FormDescription>
+              {curpValidationState === 'valid' ? (
+                <FormDescription className="text-xs text-muted-foreground bg-green-50 dark:bg-green-900/20 p-2 rounded border border-green-200 dark:border-green-700">
+                  ✓ Formato de CURP válido. 🔒 Este campo NO será público
+                </FormDescription>
+              ) : curpValidationState === 'invalid' ? (
+                <FormDescription className="text-xs text-red-600 bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-200 dark:border-red-700">
+                  ✗ Formato de CURP inválido (debe tener 18 caracteres)
+                </FormDescription>
+              ) : (
+                <FormDescription className="text-xs text-muted-foreground">
+                  🔒 Este campo NO será público (18 caracteres)
+                </FormDescription>
+              )}
               <FormMessage />
             </FormItem>
           )}
@@ -155,19 +211,43 @@ export function DatosGeneralesSection({ form, loading }: DatosGeneralesSectionPr
                 RFC con Homoclave <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  disabled={loading}
-                  placeholder="AAAA000000AAA"
-                  {...field}
-                  value={field.value || ""}
-                  className="h-12 uppercase"
-                  maxLength={13}
-                  onChange={(e) => field.onChange(e.target.value.toUpperCase())}
-                />
+                <div className="relative">
+                  <Input
+                    disabled={loading}
+                    placeholder="AAAA000000AAA"
+                    {...field}
+                    value={field.value || ""}
+                    className={`h-12 uppercase pr-10 ${
+                      rfcValidationState === 'valid'
+                        ? 'border-green-500 focus-visible:ring-green-500'
+                        : rfcValidationState === 'invalid'
+                        ? 'border-red-500 focus-visible:ring-red-500'
+                        : ''
+                    }`}
+                    maxLength={13}
+                    onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                  />
+                  {rfcValidationState === 'valid' && (
+                    <CheckCircle2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-green-500" />
+                  )}
+                  {rfcValidationState === 'invalid' && (
+                    <XCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-red-500" />
+                  )}
+                </div>
               </FormControl>
-              <FormDescription className="text-xs text-muted-foreground">
-                RFC con homoclave (13 caracteres)
-              </FormDescription>
+              {rfcValidationState === 'valid' ? (
+                <FormDescription className="text-xs text-muted-foreground bg-green-50 dark:bg-green-900/20 p-2 rounded border border-green-200 dark:border-green-700">
+                  ✓ Formato de RFC válido
+                </FormDescription>
+              ) : rfcValidationState === 'invalid' ? (
+                <FormDescription className="text-xs text-red-600 bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-200 dark:border-red-700">
+                  ✗ Formato de RFC inválido (debe tener 13 caracteres)
+                </FormDescription>
+              ) : (
+                <FormDescription className="text-xs text-muted-foreground">
+                  RFC con homoclave (13 caracteres)
+                </FormDescription>
+              )}
               <FormMessage />
             </FormItem>
           )}

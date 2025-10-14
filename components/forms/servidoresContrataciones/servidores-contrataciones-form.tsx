@@ -140,7 +140,11 @@ export const ServidoresContratacionesForm: React.FC<
   const onSubmit = async (data: ServidoresContratacionesFormValues) => {
     try {
       setLoading(true);
-      console.log(data);
+
+      // Mostrar en consola el objeto completo que se forma con los campos del formulario
+      console.log("=== DATOS DEL FORMULARIO ===");
+      console.log(JSON.stringify(data, null, 2));
+      console.log("============================");
 
       await saveServidorContratacion(data, initialData, session?.access_token);
 

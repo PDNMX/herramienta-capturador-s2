@@ -138,13 +138,15 @@ export const ServidoresContratacionesForm: React.FC<
   }, [initialData, form, session]);
 
   const onSubmit = async (data: ServidoresContratacionesFormValues) => {
+    // Mostrar en consola el objeto completo que se forma con los campos del formulario
+    console.log("=== DATOS DEL FORMULARIO (onSubmit) ===");
+    console.log("Objeto completo:", data);
+    console.log("JSON formateado:");
+    console.log(JSON.stringify(data, null, 2));
+    console.log("========================================");
+
     try {
       setLoading(true);
-
-      // Mostrar en consola el objeto completo que se forma con los campos del formulario
-      console.log("=== DATOS DEL FORMULARIO ===");
-      console.log(JSON.stringify(data, null, 2));
-      console.log("============================");
 
       await saveServidorContratacion(data, initialData, session?.access_token);
 
@@ -591,7 +593,17 @@ export const ServidoresContratacionesForm: React.FC<
             >
               Cancelar
             </Button>
-            <Button disabled={loading} type="submit" className="h-12 px-6">
+            <Button
+              disabled={loading}
+              type="submit"
+              className="h-12 px-6"
+              onClick={() => {
+                console.log("=== BOTÓN GUARDAR PRESIONADO ===");
+                console.log("Valores actuales del formulario:", form.getValues());
+                console.log("Errores de validación:", form.formState.errors);
+                console.log("=================================");
+              }}
+            >
               {action}
             </Button>
           </div>

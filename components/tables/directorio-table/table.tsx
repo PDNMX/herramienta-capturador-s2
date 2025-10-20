@@ -28,7 +28,7 @@ export const DirectorioTable = () => {
               session.access_token,
               readItems("directorio", {
                 filter: {
-                  entidad: { _eq: session.user.entidad },
+                  entidad: { _eq: session.user.entePublico },
                 },
                 fields: [
                   "*",

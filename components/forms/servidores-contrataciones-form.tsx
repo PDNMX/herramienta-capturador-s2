@@ -41,8 +41,8 @@ import { createItem, updateItem, withToken } from "@directus/sdk";
 
 // Schema de validación basado en los campos de Directus
 const servidoresContratacionesSchema = z.object({
-  entePublico: z.string().min(1, {
-    message: "Ente público es requerido.",
+  entePublico: z.number({
+    required_error: "Ente público es requerido.",
   }),
   fecha: z.string().min(1, {
     message: "La fecha es requerida.",
@@ -121,7 +121,7 @@ export const ServidoresContratacionesForm: React.FC<
 
   const defaultValues = useMemo(
     () => ({
-      entePublico: initialData?.entePublico ?? session?.user?.entidad ?? "",
+      entePublico: initialData?.entePublico ?? session?.user?.entePublico ?? 0,
       fecha: initialData?.fecha ?? new Date().toISOString().split("T")[0],
       ejercicio: initialData?.ejercicio ?? new Date().getFullYear().toString(),
       datosGenerales: initialData?.datosGenerales ?? "",
@@ -132,7 +132,7 @@ export const ServidoresContratacionesForm: React.FC<
       avaluosJustipreciacion: initialData?.avaluosJustipreciacion ?? "",
       observaciones: initialData?.observaciones ?? "",
     }),
-    [initialData, session?.user?.entidad]
+    [initialData, session?.user?.entePublico]
   );
 
   const form = useForm<ServidoresContratacionesFormValues>({
@@ -153,8 +153,8 @@ export const ServidoresContratacionesForm: React.FC<
       }
     } else {
       // Si es nuevo registro, establecer el entePublico del usuario
-      if (session && session.user?.entidad) {
-        form.setValue("entePublico", session.user.entidad);
+      if (session && session.user?.entePublico) {
+        form.setValue("entePublico", session.user.entePublico);
       }
     }
   }, [initialData, form.setValue, session]);

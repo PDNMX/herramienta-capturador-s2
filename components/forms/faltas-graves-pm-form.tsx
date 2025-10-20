@@ -33,8 +33,8 @@ import { createItem, updateItem, withToken } from "@directus/sdk";
 import { DatosGeneralesPMSection } from "@/components/forms/sections/DatosGeneralesPMSection";
 
 const formSchema = z.object({
-  entePublico: z.string().min(1, {
-    message: "Ente público es requerido.",
+  entePublico: z.number({
+    required_error: "Ente público es requerido.",
   }),
   fecha: z.string().min(1, {
     message: "La fecha es requerida.",
@@ -96,7 +96,7 @@ export const FaltasGravesPMForm: React.FC<FaltasGravesPMFormProps> = ({
 
   const defaultValues = useMemo(
     () => ({
-      entePublico: initialData?.entePublico ?? session?.user?.entePublico ?? "",
+      entePublico: initialData?.entePublico ?? session?.user?.entePublico ?? 0,
       fecha: initialData?.fecha ?? new Date().toISOString().split("T")[0],
       expediente: initialData?.expediente ?? "",
       observaciones: initialData?.observaciones ?? "",

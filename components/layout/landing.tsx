@@ -1,4 +1,9 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { LogIn } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import logoS3 from "./ico_s2.svg";
 
 export default function Landing() {
@@ -86,6 +91,24 @@ export default function Landing() {
             </span>
           </span>
         </h1>
+
+        {/* Subtítulo */}
+        <p className="mt-8 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+          Transparencia, control y seguimiento efectivo en el uso de recursos públicos
+        </p>
+
+        {/* Botón de Login */}
+        <div className="mt-12 flex justify-center">
+          <Link href="/signin">
+            <Button
+              size="lg"
+              className="group relative overflow-hidden bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            >
+              <LogIn className="mr-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              Iniciar Sesión
+            </Button>
+          </Link>
+        </div>
 
         {/* Línea decorativa mejorada */}
         <div className="relative mx-auto mt-12 h-1 w-32 overflow-hidden rounded-full">

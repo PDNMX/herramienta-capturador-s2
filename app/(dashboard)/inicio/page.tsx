@@ -119,11 +119,11 @@ export default function Page() {
         {/* Header Section */}
         <div className="space-y-2">
           <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-100 dark:to-slate-300 bg-clip-text text-transparent">
-            Sistema 3
+            Sistema 2
           </h1>
           <p className="text-lg text-muted-foreground">
             Sistema de los servidores públicos que intervengan en procedimientos
-            de contrataciones pública
+            de contrataciones públicas
           </p>
         </div>
 

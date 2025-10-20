@@ -88,10 +88,10 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
       sistema2: initialData?.sistema2 ?? false,
       sistema3: initialData?.sistema3 ?? false,
       sistema6: initialData?.sistema6 ?? false,
-      entidad: session?.user?.entidad || "",
+      entidad: session?.user?.entePublico || 0,
       municipio: initialData?.municipio ?? "", // Define como cadena vacía o null
     }),
-    [initialData, session?.user?.entidad],
+    [initialData, session?.user?.entePublico],
   );
 
   const form = useForm<EnteFormValues>({
@@ -109,14 +109,14 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
       setAmbito(initialData.ambitoGobierno);
     } else {
       // Set entidad from session for new entries
-      if (session && session.user?.entidad) {
-        form.setValue("entidad", session.user.entidad);
+      if (session && session.user?.entePublico) {
+        form.setValue("entidad", session.user.entePublico);
       }
     }
   }, [initialData, form.setValue, session]);
 
   useEffect(() => {
-    // Check if session and session.user.entidad exist before fetching
+    // Check if session and session.user.entePublico exist before fetching
     if (session) {
       const fetchMunicipiosData = async () => {
         try {
@@ -129,7 +129,7 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                 fields: ["*"],
                 filter: {
                   id_entidad: {
-                    _eq: session?.user?.entidad,
+                    _eq: session?.user?.entePublico,
                   },
                 },
               }),

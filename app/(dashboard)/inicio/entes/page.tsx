@@ -25,10 +25,15 @@ export default function Page() {
           const result = await directus.request(
             withToken(
               session?.access_token,
-              readItems("entes", {
+              readItems("entes_publicos", {
                 sort: ["nombre"],
                 limit: "-1",
                 fields: ["*"],
+                filter: {
+                  id: {
+                    _eq: session?.user?.entePublico,
+                  },
+                },
               }),
             ),
           );

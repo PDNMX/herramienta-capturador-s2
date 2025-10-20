@@ -96,7 +96,7 @@ export const DirectorioForm: React.FC<DirectorioFormProps> = ({
     correoElectronico: initialData?.correoElectronico ?? "",
     telefono: initialData?.telefono ?? "",
     direccion: initialData?.direccion ?? "",
-    entidad: session?.user?.entidad || "",
+    entidad: session?.user?.entePublico || 0,
   };
 
   const form = useForm<DirectorioFormValues>({
@@ -205,8 +205,8 @@ export const DirectorioForm: React.FC<DirectorioFormProps> = ({
           form.setValue(key as keyof DirectorioFormValues, initialData[key]);
         }
       });
-    } else if (session?.user?.entidad) {
-      form.setValue("entidad", session.user.entidad);
+    } else if (session?.user?.entePublico) {
+      form.setValue("entidad", session.user.entePublico);
     }
   }, [session, initialData, form]);
 

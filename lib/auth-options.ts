@@ -13,7 +13,7 @@ const userParams = (user: UserSession): UserParams => {
     first_name: user.first_name,
     last_name: user.last_name,
     name: `${user.first_name} ${user.last_name}`,
-    entidad: user.entidad
+    entePublico: user.entePublico
   }
 }
 
@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
           const apiAuth = directus(auth.access_token ?? "")
           const loggedInUser = await apiAuth.request(
             readMe({
-              fields: ["id", "email", "first_name", "last_name", "entidad"],
+              fields: ["id", "email", "first_name", "last_name", "entePublico"],
             })
           )
           const user: Awaitable<User> = {
@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
             first_name: loggedInUser.first_name ?? "",
             last_name: loggedInUser.last_name ?? "",
             email: loggedInUser.email ?? "",
-            entidad: loggedInUser.entidad ?? "",
+            entePublico: loggedInUser.entePublico ?? 0,
             access_token: auth.access_token ?? "",
             expires: Math.floor(Date.now() + (auth.expires ?? 0)),
             refresh_token: auth.refresh_token ?? "",
@@ -115,8 +115,8 @@ export const authOptions: NextAuthOptions = {
           new Date().setDate(new Date().getDate() - 1)
         ).toISOString()
       } else {
-        const { id, name, email, entidad } = token.user as UserParams
-        session.user = { id, name, email, entidad }
+        const { id, name, email, entePublico } = token.user as UserParams
+        session.user = { id, name, email, entePublico }
         session.access_token = token.access_token
         session.tokenIsRefreshed = token?.tokenIsRefreshed ?? false
         session.expires_at = token.expires_at

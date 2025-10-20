@@ -6,8 +6,8 @@ const RFC_REGEX = /^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/;
 
 export const servidoresContratacionesSchema = z.object({
   // Campos generales
-  entePublico: z.string().min(1, {
-    message: "Ente público es requerido.",
+  entePublico: z.number({
+    required_error: "Ente público es requerido.",
   }),
 
   // Campo 1: Fecha*

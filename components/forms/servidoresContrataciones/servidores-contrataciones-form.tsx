@@ -108,8 +108,8 @@ export const ServidoresContratacionesForm: React.FC<
   // Valores por defecto usando la función separada
   const defaultValues = useMemo(
     () =>
-      getServidoresContratacionesDefaults(initialData, session?.user?.entidad),
-    [initialData, session?.user?.entidad]
+      getServidoresContratacionesDefaults(initialData, session?.user?.entePublico),
+    [initialData, session?.user?.entePublico]
   );
 
   const form = useForm<ServidoresContratacionesFormValues>({
@@ -131,8 +131,8 @@ export const ServidoresContratacionesForm: React.FC<
       }
     } else {
       // Si es nuevo registro, establecer el entePublico del usuario
-      if (session && session.user?.entidad) {
-        form.setValue("entePublico", session.user.entidad);
+      if (session && session.user?.entePublico) {
+        form.setValue("entePublico", session.user.entePublico);
       }
     }
   }, [initialData, form, session]);

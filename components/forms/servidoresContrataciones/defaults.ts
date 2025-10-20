@@ -2,10 +2,10 @@ import { ServidoresContratacionesFormValues } from "./schema";
 
 export function getServidoresContratacionesDefaults(
   initialData: any | null,
-  userEntePublico?: string
+  userEntePublico?: number
 ): Partial<ServidoresContratacionesFormValues> {
   return {
-    entePublico: initialData?.entePublico ?? userEntePublico ?? "",
+    entePublico: initialData?.entePublico ?? userEntePublico ?? 0,
     fecha: initialData?.fecha ?? new Date().toISOString().split("T")[0],
     ejercicio: initialData?.ejercicio ?? new Date().getFullYear().toString(),
 

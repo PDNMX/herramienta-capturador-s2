@@ -9,13 +9,13 @@ declare module "next-auth" {
     access_token: string
     expires: number
     refresh_token: string
-    entidad: string
+    entePublico: number
   }
 
   interface Session {
     user: DefaultSession["user"] & {
       id?: string
-      entidad?: string
+      entePublico?: number
     }
     access_token?: string
     expires_at?: number
@@ -50,7 +50,7 @@ export type UserSession = {
   access_token?: string;
   expires?: number;
   refresh_token?: string;
-  entidad?: string;
+  entePublico?: number;
 }
 
 export type UserParams = {
@@ -59,7 +59,7 @@ export type UserParams = {
   first_name?: string;
   last_name?: string;
   email?: string;
-  entidad?: string;
+  entePublico?: number;
 }
 
 

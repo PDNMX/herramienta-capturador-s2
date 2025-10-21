@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   FormControl,
   FormDescription,
@@ -20,6 +21,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Calendar, FileText } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ContratacionAdquisicionesSectionProps {
   form: any;
@@ -120,6 +122,69 @@ const responsabilidades = [
 ];
 
 export function ContratacionAdquisicionesSection({ form, loading }: ContratacionAdquisicionesSectionProps) {
+  const { toast } = useToast();
+
+  // Estado para manejar la visibilidad de campos condicionales
+  const [mostrarTipoAreaOtro, setMostrarTipoAreaOtro] = useState(false);
+  const [mostrarTipoProcedimientoOtro, setMostrarTipoProcedimientoOtro] = useState(false);
+  const [mostrarMateriaOtro, setMostrarMateriaOtro] = useState(false);
+  const [mostrarResponsabilidad7Input, setMostrarResponsabilidad7Input] = useState(false);
+
+  // Watch para detectar cambios en los selects y checkboxes
+  const watchTipoArea = form.watch("contratacionAdquisiciones.0.tipoArea");
+  const watchTipoProcedimiento = form.watch("contratacionAdquisiciones.0.tipoProcedimiento");
+  const watchMateria = form.watch("contratacionAdquisiciones.0.materia");
+  const watchFechaInicio = form.watch("contratacionAdquisiciones.0.fechaInicio");
+  const watchFechaConclusion = form.watch("contratacionAdquisiciones.0.fechaConclusion");
+
+  // Efecto para mostrar/ocultar campo "Otro" en Tipo de Área
+  useEffect(() => {
+    const tieneOtro = watchTipoArea?.includes("OTRO");
+    setMostrarTipoAreaOtro(tieneOtro);
+    if (!tieneOtro) {
+      form.setValue("contratacionAdquisiciones.0.tipoAreaOtro", "");
+    }
+  }, [watchTipoArea, form]);
+
+  // Efecto para mostrar/ocultar campo "Otro" en Tipo de Procedimiento
+  useEffect(() => {
+    setMostrarTipoProcedimientoOtro(watchTipoProcedimiento === "OTRO");
+    if (watchTipoProcedimiento !== "OTRO") {
+      form.setValue("contratacionAdquisiciones.0.tipoProcedimientoOtro", "");
+    }
+  }, [watchTipoProcedimiento, form]);
+
+  // Efecto para mostrar/ocultar campo "Otro" en Materia
+  useEffect(() => {
+    setMostrarMateriaOtro(watchMateria === "OTRO");
+    if (watchMateria !== "OTRO") {
+      form.setValue("contratacionAdquisiciones.0.materiaOtro", "");
+    }
+  }, [watchMateria, form]);
+
+  // Efecto para validar fechas
+  useEffect(() => {
+    if (watchFechaInicio && watchFechaConclusion) {
+      const fechaInicio = new Date(watchFechaInicio);
+      const fechaConclusion = new Date(watchFechaConclusion);
+
+      if (fechaConclusion < fechaInicio) {
+        form.setError("contratacionAdquisiciones.0.fechaConclusion", {
+          type: "manual",
+          message: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+        });
+
+        toast({
+          variant: "destructive",
+          title: "Error en fechas",
+          description: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+        });
+      } else {
+        form.clearErrors("contratacionAdquisiciones.0.fechaConclusion");
+      }
+    }
+  }, [watchFechaInicio, watchFechaConclusion, form, toast]);
+
   return (
     <div className="space-y-8">
       {/* TIPO DE ÁREA */}
@@ -127,23 +192,84 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
         <h4 className="text-sm font-semibold mb-4 text-blue-900 dark:text-blue-100">
           Tipo de Área <span className="text-xs text-muted-foreground">(Esta sección se podrá actualizar quincenalmente)</span>
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {tiposArea.map((tipo) => (
-            <div key={tipo.value} className="flex items-start space-x-2">
-              <Checkbox
-                id={`tipo-${tipo.value}`}
-                disabled={loading}
-                className="mt-1"
-              />
-              <Label
-                htmlFor={`tipo-${tipo.value}`}
-                className="text-sm font-normal cursor-pointer leading-tight"
-              >
-                {tipo.label}
-              </Label>
-            </div>
-          ))}
-        </div>
+        <FormField
+          control={form.control}
+          name="contratacionAdquisiciones.0.tipoArea"
+          render={() => (
+            <FormItem>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {tiposArea.map((tipo) => (
+                  <FormField
+                    key={tipo.value}
+                    control={form.control}
+                    name="contratacionAdquisiciones.0.tipoArea"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={tipo.value}
+                          className="flex items-start space-x-2"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              id={`tipo-${tipo.value}`}
+                              disabled={loading}
+                              className="mt-1"
+                              checked={field.value?.includes(tipo.value)}
+                              onCheckedChange={(checked) => {
+                                const currentValue = field.value || [];
+                                if (checked) {
+                                  field.onChange([...currentValue, tipo.value]);
+                                } else {
+                                  field.onChange(
+                                    currentValue.filter((value) => value !== tipo.value)
+                                  );
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <Label
+                            htmlFor={`tipo-${tipo.value}`}
+                            className="text-sm font-normal cursor-pointer leading-tight"
+                          >
+                            {tipo.label}
+                          </Label>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Campo condicional: Tipo de Área - Otro (Especifique) */}
+        {mostrarTipoAreaOtro && (
+          <div className="mt-4">
+            <FormField
+              control={form.control}
+              name="contratacionAdquisiciones.0.tipoAreaOtro"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold">
+                    Especifique el Tipo de Área <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Ingrese el tipo de área"
+                      {...field}
+                      value={field.value || ""}
+                      className="h-12"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
       </div>
 
       {/* NIVELES DE RESPONSABILIDAD */}
@@ -166,7 +292,36 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                 <span className="text-sm font-medium">{resp.pregunta}</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
+              {/* Para la pregunta 7, solo mostrar el campo de input */}
+              {resp.id === 7 ? (
+                <div className="ml-8">
+                  <FormField
+                    control={form.control}
+                    name={`contratacionAdquisiciones.0.responsabilidades.${resp.id - 1}.objetoResponsabilidad`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-semibold">
+                          Especifique el objeto de responsabilidad
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Ingrese el objeto de responsabilidad"
+                            {...field}
+                            value={field.value || ""}
+                            className="h-10"
+                          />
+                        </FormControl>
+                        <FormDescription className="text-xs text-muted-foreground">
+                          Describa el objeto de responsabilidad específico (opcional)
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
                 {/* Elaborar (A) */}
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -247,6 +402,7 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                   </Label>
                 </div>
               </div>
+              )}
             </div>
           ))}
         </div>
@@ -345,6 +501,56 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
               )}
             />
           </div>
+
+          {/* Campo condicional: Tipo de Procedimiento - Otro (Especifique) */}
+          {mostrarTipoProcedimientoOtro && (
+            <FormField
+              control={form.control}
+              name="contratacionAdquisiciones.0.tipoProcedimientoOtro"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold">
+                    Especifique el Tipo de Procedimiento <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Ingrese el tipo de procedimiento"
+                      {...field}
+                      value={field.value || ""}
+                      className="h-12"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {/* Campo condicional: Materia - Otro (Especifique) */}
+          {mostrarMateriaOtro && (
+            <FormField
+              control={form.control}
+              name="contratacionAdquisiciones.0.materiaOtro"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold">
+                    Especifique la Materia <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder="Ingrese la materia"
+                      {...field}
+                      value={field.value || ""}
+                      className="h-12"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Fecha de Inicio */}

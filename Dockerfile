@@ -15,9 +15,17 @@ COPY logo-pdn-white.svg /directus/uploads/21cc850a-1c0c-4d15-aeeb-2ec0a8e98c26.s
 COPY init-modificaciones-db.sh /directus/init-modificaciones-db.sh
 RUN chmod +x /directus/init-modificaciones-db.sh
 
-# Copiar las extensiones construidas
-#COPY --from=builder --chown=node:node /directus/extensions /directus/extensions
+# Crear directorio de extensiones
+RUN mkdir -p /directus/extensions/directus-extension-schema-management-module
 
-# Instalar módulo de gestión de esquemas para importar
+# Instalar módulo de gestión de esquemas
 USER node
 RUN pnpm install directus-extension-schema-management-module@1.5.0
+
+# Copiar el módulo manteniendo la estructura dist/
+USER root
+RUN cp -r /directus/node_modules/directus-extension-schema-management-module/dist /directus/extensions/directus-extension-schema-management-module/ && \
+    cp /directus/node_modules/directus-extension-schema-management-module/package.json /directus/extensions/directus-extension-schema-management-module/ && \
+    chown -R node:node /directus/extensions
+
+USER node

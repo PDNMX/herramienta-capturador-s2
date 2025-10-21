@@ -4,6 +4,13 @@ import * as z from "zod";
 const CURP_REGEX = /^[A-Z]{4}[0-9]{6}[HM][A-Z]{5}[0-9A-Z][0-9]$/;
 const RFC_REGEX = /^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/;
 
+// Regex para validación de campos sin números
+// Permite: letras (con tildes, ñ), espacios y signos de puntuación comunes
+const NO_NUMEROS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s.,;:\-()\/]+$/;
+
+// Regex para validación de solo números enteros positivos
+const SOLO_NUMEROS_REGEX = /^\d+$/;
+
 export const servidoresContratacionesSchema = z.object({
   // Campos generales
   entePublico: z.number({
@@ -16,17 +23,31 @@ export const servidoresContratacionesSchema = z.object({
   }),
 
   // Campo 2: Ejercicio*
-  ejercicio: z.string().min(4, {
-    message: "El ejercicio es requerido (4 dígitos).",
-  }).max(4, {
-    message: "El ejercicio debe tener exactamente 4 dígitos.",
-  }),
+  ejercicio: z.string()
+    .min(1, { message: "El ejercicio es requerido." })
+    .regex(SOLO_NUMEROS_REGEX, { message: "El ejercicio solo debe contener números." })
+    .refine((val) => val.length === 4, {
+      message: "El ejercicio debe tener exactamente 4 dígitos.",
+    })
+    .refine((val) => {
+      const num = parseInt(val, 10);
+      return !isNaN(num) && num > 0;
+    }, {
+      message: "El ejercicio debe ser un número entero positivo válido.",
+    }),
 
   // Campo 3: Datos generales de la persona servidora pública*
   datosGenerales: z.object({
-    nombre: z.string().min(1, { message: "El nombre es obligatorio." }),
-    primerApellido: z.string().min(1, { message: "El primer apellido es obligatorio." }),
-    segundoApellido: z.string().optional(),
+    nombre: z.string()
+      .min(1, { message: "El nombre es obligatorio." })
+      .regex(NO_NUMEROS_REGEX, { message: "El nombre no debe contener números." }),
+    primerApellido: z.string()
+      .min(1, { message: "El primer apellido es obligatorio." })
+      .regex(NO_NUMEROS_REGEX, { message: "El primer apellido no debe contener números." }),
+    segundoApellido: z.string()
+      .regex(NO_NUMEROS_REGEX, { message: "El segundo apellido no debe contener números." })
+      .optional()
+      .or(z.literal("")),
     curp: z.string()
       .min(1, { message: "La CURP es obligatoria." })
       .regex(CURP_REGEX, { message: "Formato de CURP inválido." }),
@@ -47,8 +68,13 @@ export const servidoresContratacionesSchema = z.object({
     ambitoPublico: z.enum(["EJECUTIVO", "LEGISLATIVO", "JUDICIAL", "ORGANO_AUTONOMO"], {
       required_error: "El ámbito público es obligatorio.",
     }),
-    nombreEntePublico: z.string().min(1, { message: "El nombre del ente público es obligatorio." }),
-    siglasEntePublico: z.string().optional(),
+    nombreEntePublico: z.string()
+      .min(1, { message: "El nombre del ente público es obligatorio." })
+      .regex(NO_NUMEROS_REGEX, { message: "El nombre del ente público no debe contener números." }),
+    siglasEntePublico: z.string()
+      .regex(NO_NUMEROS_REGEX, { message: "Las siglas del ente público no deben contener números." })
+      .optional()
+      .or(z.literal("")),
     nivelJerarquico: z.enum([
       "OPERATIVO",
       "ENLACE",
@@ -64,8 +90,12 @@ export const servidoresContratacionesSchema = z.object({
       required_error: "El nivel jerárquico es obligatorio.",
     }),
     nivelJerarquicoOtro: z.string().optional(),
-    denominacion: z.string().min(1, { message: "La denominación del empleo es obligatoria." }),
-    areaAdscripcion: z.string().min(1, { message: "El área de adscripción es obligatoria." }),
+    denominacion: z.string()
+      .min(1, { message: "La denominación del empleo es obligatoria." })
+      .regex(NO_NUMEROS_REGEX, { message: "La denominación del empleo no debe contener números." }),
+    areaAdscripcion: z.string()
+      .min(1, { message: "El área de adscripción es obligatoria." })
+      .regex(NO_NUMEROS_REGEX, { message: "El área de adscripción no debe contener números." }),
   }).optional(),
 
   // Campo 5: Tipo de procedimiento*
@@ -101,7 +131,7 @@ export const servidoresContratacionesSchema = z.object({
       "PARTICIPANTE_JUNTA",
       "OTRO"
     ])).optional(),
-    tipoAreaOtro: z.string().optional(),
+    tipoAreaOtro: z.string().min(1, { message: "Debe especificar el tipo de área." }).optional(),
 
     // Niveles de responsabilidad para cada objeto
     responsabilidades: z.array(z.object({
@@ -123,14 +153,14 @@ export const servidoresContratacionesSchema = z.object({
       "ADJUDICACION_DIRECTA",
       "OTRO"
     ]).optional(),
-    tipoProcedimientoOtro: z.string().optional(),
+    tipoProcedimientoOtro: z.string().min(1, { message: "Debe especificar el tipo de procedimiento." }).optional(),
     materia: z.enum([
       "ARRENDAMIENTO",
       "ADQUISICION",
       "SERVICIOS",
       "OTRO"
     ]).optional(),
-    materiaOtro: z.string().optional(),
+    materiaOtro: z.string().min(1, { message: "Debe especificar la materia." }).optional(),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 
@@ -155,7 +185,7 @@ export const servidoresContratacionesSchema = z.object({
       "PARTICIPANTE_JUNTA",
       "OTRO"
     ])).optional(),
-    tipoAreaOtro: z.string().optional(),
+    tipoAreaOtro: z.string().min(1, { message: "Debe especificar el tipo de área." }).optional(),
 
     // Niveles de responsabilidad
     responsabilidades: z.array(z.object({
@@ -177,13 +207,13 @@ export const servidoresContratacionesSchema = z.object({
       "ADJUDICACION_DIRECTA",
       "OTRO"
     ]).optional(),
-    tipoProcedimientoOtro: z.string().optional(),
+    tipoProcedimientoOtro: z.string().min(1, { message: "Debe especificar el tipo de procedimiento." }).optional(),
     materia: z.enum([
       "OBRA_PUBLICA",
       "SERVICIOS_RELACIONADOS",
       "OTRO"
     ]).optional(),
-    materiaOtro: z.string().optional(),
+    materiaOtro: z.string().min(1, { message: "Debe especificar la materia." }).optional(),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 

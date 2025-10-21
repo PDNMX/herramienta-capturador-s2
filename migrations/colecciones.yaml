@@ -171,14 +171,14 @@ collections:
       versioning: false
     schema:
       name: datos_generales
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       color: null
       display_template: null
       group: otorgamientos_concesiones
@@ -194,7 +194,7 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: datos_generales_conceciones
+      name: datos_generales_concesiones
   - collection: datos_generales_obras
     meta:
       accountability: all
@@ -339,14 +339,14 @@ collections:
       versioning: false
     schema:
       name: enajenaciones_bienes
-  - collection: entes_publicos
+  - collection: ente_publico
     meta:
       accountability: all
       archive_app_filter: true
       archive_field: null
       archive_value: null
       collapse: open
-      collection: entes_publicos
+      collection: ente_publico
       color: null
       display_template: null
       group: null
@@ -362,7 +362,7 @@ collections:
       unarchive_value: null
       versioning: false
     schema:
-      name: entes_publicos
+      name: ente_publico
   - collection: niveles_jerarquicos
     meta:
       accountability: all
@@ -897,7 +897,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: contrataciones_adquisiciones
     field: datosGeneralesProcedimientos
@@ -1191,7 +1191,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: contrataciones_obras
     field: datosGeneralesProcedimientos
@@ -1349,7 +1349,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: contrataciones_publicas
     field: contratacionesAdquisiciones
@@ -1718,7 +1718,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: datos_contrataciones_publicas
     field: fechaInicioProcedimiento
@@ -2289,7 +2289,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: datos_enajenaciones_bienes
     field: id
@@ -2526,7 +2526,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: datos_generales
     field: id
@@ -2863,13 +2863,13 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: id
     type: integer
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2889,9 +2889,9 @@ fields:
       width: full
     schema:
       name: id
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: integer
-      default_value: nextval('datos_generales_conceciones_id_seq'::regclass)
+      default_value: nextval('datos_generales_concesiones_id_seq'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -2903,11 +2903,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: numeroExpedienteFolio
     type: string
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2929,7 +2929,7 @@ fields:
       width: full
     schema:
       name: numeroExpedienteFolio
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -2943,11 +2943,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: denominacion
     type: string
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -2969,7 +2969,7 @@ fields:
       width: full
     schema:
       name: denominacion
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -2983,11 +2983,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: objeto
     type: string
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3009,7 +3009,7 @@ fields:
       width: full
     schema:
       name: objeto
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -3023,11 +3023,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: fundamento
     type: string
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3051,7 +3051,7 @@ fields:
       width: full
     schema:
       name: fundamento
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -3065,11 +3065,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: nombrePersonaFisica
     type: string
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3093,7 +3093,7 @@ fields:
       width: full
     schema:
       name: nombrePersonaFisica
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -3107,11 +3107,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: denominacionPersonaMoral
     type: string
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3135,7 +3135,7 @@ fields:
       width: full
     schema:
       name: denominacionPersonaMoral
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -3149,11 +3149,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: sectorActoJuridico
     type: json
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3181,7 +3181,7 @@ fields:
       width: full
     schema:
       name: sectorActoJuridico
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: json
       default_value: null
       max_length: null
@@ -3195,11 +3195,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: fechaInicioVigencia
     type: date
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3221,7 +3221,7 @@ fields:
       width: full
     schema:
       name: fechaInicioVigencia
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: date
       default_value: null
       max_length: null
@@ -3235,11 +3235,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: fechaConclusionVigencia
     type: date
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3261,7 +3261,7 @@ fields:
       width: full
     schema:
       name: fechaConclusionVigencia
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: date
       default_value: null
       max_length: null
@@ -3275,11 +3275,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: urlActoJuridico
     type: string
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3301,7 +3301,7 @@ fields:
       width: full
     schema:
       name: urlActoJuridico
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: character varying
       default_value: null
       max_length: 255
@@ -3315,11 +3315,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: entePublico
     type: integer
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3340,7 +3340,7 @@ fields:
       width: full
     schema:
       name: entePublico
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: integer
       default_value: null
       max_length: null
@@ -3352,13 +3352,13 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: monto
     type: decimal
     meta:
-      collection: datos_generales_conceciones
+      collection: datos_generales_concesiones
       conditions: null
       display: null
       display_options: null
@@ -3380,7 +3380,7 @@ fields:
       width: full
     schema:
       name: monto
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       data_type: numeric
       default_value: null
       max_length: null
@@ -3634,7 +3634,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: datos_generales_obras
     field: fk_fatos_procedimientos_obras
@@ -4325,7 +4325,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: datos_personas_beneficiarias
     field: id
@@ -4562,7 +4562,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: dictaminaciones_avaluos
     field: id
@@ -4640,7 +4640,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: dictaminaciones_avaluos
     field: nivelesResponsabilidadesAvaluos
@@ -4818,7 +4818,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: empleos_cargos_comisiones
     field: id
@@ -5310,7 +5310,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: enajenaciones_bienes
     field: id
@@ -5472,7 +5472,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: enajenaciones_bienes
     field: continuaParticipando
@@ -5522,11 +5522,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: entes_publicos
+  - collection: ente_publico
     field: id
     type: integer
     meta:
-      collection: entes_publicos
+      collection: ente_publico
       conditions: null
       display: null
       display_options: null
@@ -5546,9 +5546,9 @@ fields:
       width: full
     schema:
       name: id
-      table: entes_publicos
+      table: ente_publico
       data_type: integer
-      default_value: nextval('entes_publicos_id_seq'::regclass)
+      default_value: nextval('ente_publico_id_seq'::regclass)
       max_length: null
       numeric_precision: 32
       numeric_scale: 0
@@ -5560,11 +5560,11 @@ fields:
       has_auto_increment: true
       foreign_key_table: null
       foreign_key_column: null
-  - collection: entes_publicos
+  - collection: ente_publico
     field: nombre
     type: string
     meta:
-      collection: entes_publicos
+      collection: ente_publico
       conditions: null
       display: null
       display_options: null
@@ -5584,7 +5584,7 @@ fields:
       width: full
     schema:
       name: nombre
-      table: entes_publicos
+      table: ente_publico
       data_type: character varying
       default_value: null
       max_length: 255
@@ -5598,11 +5598,11 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: entes_publicos
+  - collection: ente_publico
     field: fk_ente_publico
     type: uuid
     meta:
-      collection: entes_publicos
+      collection: ente_publico
       conditions: null
       display: null
       display_options: null
@@ -5622,7 +5622,7 @@ fields:
       width: full
     schema:
       name: fk_ente_publico
-      table: entes_publicos
+      table: ente_publico
       data_type: uuid
       default_value: null
       max_length: null
@@ -5827,7 +5827,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_avaluos
     field: id
@@ -6068,7 +6068,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_avaluos
     field: otroEspecifique
@@ -6442,7 +6442,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_concesiones
     field: otroEspecifique
@@ -6870,7 +6870,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: otro_especifique
@@ -7351,7 +7351,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_enajenaciones
     field: otroEspecifique
@@ -7497,7 +7497,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_otro_adquisiciones
     field: especifiqueOtro
@@ -7655,7 +7655,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_otro_avaluos
     field: otroEspecifique
@@ -7813,7 +7813,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_otro_concesiones
     field: otroEspecifique
@@ -7971,7 +7971,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: niveles_responsabilidades_otro_enajecaciones
     field: otroEspecifique
@@ -8179,7 +8179,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: otorgamientos_concesiones
     field: datosGeneralesConcesiones
@@ -8226,7 +8226,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: datos_generales_conceciones
+      foreign_key_table: datos_generales_concesiones
       foreign_key_column: id
   - collection: otorgamientos_concesiones
     field: informacionPersonasBeneficiarias
@@ -8559,7 +8559,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: servidores_intervengan_procedimientos_contrataciones
     field: divider-zcmgvb
@@ -8710,6 +8710,7 @@ fields:
         persona servidora pública que intervenga en procedimientos de
         contratación pública
       options:
+        enableCreate: true
         enableSelect: false
         template: " {{primerApellido}} {{segundoApellido}}{{nombre}}"
       readonly: false
@@ -8756,6 +8757,7 @@ fields:
         cargo o comisión que ostenta la persona servidora pública al intervenir
         en actos públicos
       options:
+        enableCreate: true
         enableSelect: false
         template: >-
           {{nombreEntePublico}}{{nivelJerarquico}}{{nivelJerarquico}}{{denominacion}}
@@ -9313,7 +9315,7 @@ fields:
       is_generated: false
       generation_expression: null
       has_auto_increment: false
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
   - collection: tipos_adquisiciones_obras
     field: clave
@@ -9373,14 +9375,14 @@ fields:
       field: fk_id
       group: null
       hidden: true
-      interface: input
+      interface: select-dropdown-m2o
       note: null
       options: null
       readonly: false
       required: false
       sort: 7
       special:
-        - uuid
+        - m2o
       translations: null
       validation: null
       validation_message: null
@@ -9446,13 +9448,13 @@ relations:
       on_delete: SET NULL
   - collection: contrataciones_adquisiciones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: contrataciones_adquisiciones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9460,7 +9462,7 @@ relations:
     schema:
       table: contrataciones_adquisiciones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: contrataciones_adquisiciones_entepublico_foreign
       on_update: NO ACTION
@@ -9509,13 +9511,13 @@ relations:
       on_delete: SET NULL
   - collection: contrataciones_obras
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: contrataciones_obras
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9523,20 +9525,20 @@ relations:
     schema:
       table: contrataciones_obras
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: contrataciones_obras_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: contrataciones_publicas
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: contrataciones_publicas
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9544,7 +9546,7 @@ relations:
     schema:
       table: contrataciones_publicas
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: contrataciones_publicas_entepublico_foreign
       on_update: NO ACTION
@@ -9593,13 +9595,13 @@ relations:
       on_delete: SET NULL
   - collection: datos_contrataciones_publicas
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: datos_contrataciones_publicas
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9607,7 +9609,7 @@ relations:
     schema:
       table: datos_contrataciones_publicas
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: datos_contrataciones_publicas_entepublico_foreign
       on_update: NO ACTION
@@ -9635,13 +9637,13 @@ relations:
       on_delete: SET NULL
   - collection: datos_dictaminaciones_avaluos
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: datos_dictaminaciones_avaluos
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9649,20 +9651,20 @@ relations:
     schema:
       table: datos_dictaminaciones_avaluos
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: datos_dictaminaciones_avaluos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: datos_enajenaciones_bienes
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: datos_enajenaciones_bienes
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9670,20 +9672,20 @@ relations:
     schema:
       table: datos_enajenaciones_bienes
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: datos_enajenaciones_bienes_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: datos_generales
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: datos_generales
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9691,41 +9693,41 @@ relations:
     schema:
       table: datos_generales
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: datos_generales_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: datos_generales_conceciones
+  - collection: datos_generales_concesiones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
-      many_collection: datos_generales_conceciones
+      many_collection: datos_generales_concesiones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
       sort_field: null
     schema:
-      table: datos_generales_conceciones
+      table: datos_generales_concesiones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
-      constraint_name: datos_generales_conceciones_entepublico_foreign
+      constraint_name: datos_generales_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: datos_generales_obras
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: datos_generales_obras
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9733,7 +9735,7 @@ relations:
     schema:
       table: datos_generales_obras
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: datos_generales_obras_entepublico_foreign
       on_update: NO ACTION
@@ -9761,13 +9763,13 @@ relations:
       on_delete: SET NULL
   - collection: datos_otorgamientos_concesiones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: datos_otorgamientos_concesiones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9775,20 +9777,20 @@ relations:
     schema:
       table: datos_otorgamientos_concesiones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: datos_otorgamientos_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: datos_personas_beneficiarias
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: datos_personas_beneficiarias
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9796,20 +9798,20 @@ relations:
     schema:
       table: datos_personas_beneficiarias
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: datos_personas_beneficiarias_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: dictaminaciones_avaluos
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: dictaminaciones_avaluos
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9817,7 +9819,7 @@ relations:
     schema:
       table: dictaminaciones_avaluos
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: dictaminaciones_avaluos_entepublico_foreign
       on_update: NO ACTION
@@ -9866,13 +9868,13 @@ relations:
       on_delete: SET NULL
   - collection: directus_users
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: directus_users
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9880,7 +9882,7 @@ relations:
     schema:
       table: directus_users
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: directus_users_entepublico_foreign
       on_update: NO ACTION
@@ -9908,13 +9910,13 @@ relations:
       on_delete: SET NULL
   - collection: empleos_cargos_comisiones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: empleos_cargos_comisiones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9922,7 +9924,7 @@ relations:
     schema:
       table: empleos_cargos_comisiones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: empleos_cargos_comisiones_entepublico_foreign
       on_update: NO ACTION
@@ -9971,13 +9973,13 @@ relations:
       on_delete: SET NULL
   - collection: enajenaciones_bienes
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: enajenaciones_bienes
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -9985,17 +9987,17 @@ relations:
     schema:
       table: enajenaciones_bienes
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: enajenaciones_bienes_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: entes_publicos
+  - collection: ente_publico
     field: fk_ente_publico
     related_collection: directus_users
     meta:
       junction_field: null
-      many_collection: entes_publicos
+      many_collection: ente_publico
       many_field: fk_ente_publico
       one_allowed_collections: null
       one_collection: directus_users
@@ -10004,22 +10006,22 @@ relations:
       one_field: null
       sort_field: null
     schema:
-      table: entes_publicos
+      table: ente_publico
       column: fk_ente_publico
       foreign_key_table: directus_users
       foreign_key_column: id
-      constraint_name: entes_publicos_fk_ente_publico_foreign
+      constraint_name: ente_publico_fk_ente_publico_foreign
       on_update: NO ACTION
       on_delete: CASCADE
   - collection: niveles_jerarquicos
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_jerarquicos
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10027,20 +10029,20 @@ relations:
     schema:
       table: niveles_jerarquicos
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_jerarquicos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_avaluos
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_avaluos
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10048,20 +10050,20 @@ relations:
     schema:
       table: niveles_responsabilidades_avaluos
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_avaluos_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_concesiones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_concesiones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10069,20 +10071,20 @@ relations:
     schema:
       table: niveles_responsabilidades_concesiones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_contrataciones_adquisiciones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_contrataciones_adquisiciones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10090,20 +10092,20 @@ relations:
     schema:
       table: niveles_responsabilidades_contrataciones_adquisiciones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_contrataciones_ad__fcd6029_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: niveles_responsabilidades_enajenaciones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_enajenaciones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10111,7 +10113,7 @@ relations:
     schema:
       table: niveles_responsabilidades_enajenaciones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_enajenaciones_entepublico_foreign
       on_update: NO ACTION
@@ -10139,13 +10141,13 @@ relations:
       on_delete: SET NULL
   - collection: niveles_responsabilidades_otro_adquisiciones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_otro_adquisiciones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10153,7 +10155,7 @@ relations:
     schema:
       table: niveles_responsabilidades_otro_adquisiciones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_otro_adquisicion__5dfa7976_foreign
       on_update: NO ACTION
@@ -10181,13 +10183,13 @@ relations:
       on_delete: SET NULL
   - collection: niveles_responsabilidades_otro_avaluos
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_otro_avaluos
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10195,7 +10197,7 @@ relations:
     schema:
       table: niveles_responsabilidades_otro_avaluos
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_otro_avaluos_entepublico_foreign
       on_update: NO ACTION
@@ -10223,13 +10225,13 @@ relations:
       on_delete: SET NULL
   - collection: niveles_responsabilidades_otro_concesiones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_otro_concesiones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10237,7 +10239,7 @@ relations:
     schema:
       table: niveles_responsabilidades_otro_concesiones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_otro_concesiones_e__56c086_foreign
       on_update: NO ACTION
@@ -10265,13 +10267,13 @@ relations:
       on_delete: SET NULL
   - collection: niveles_responsabilidades_otro_enajecaciones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: niveles_responsabilidades_otro_enajecaciones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10279,7 +10281,7 @@ relations:
     schema:
       table: niveles_responsabilidades_otro_enajecaciones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: niveles_responsabilidades_otro_enajecacion__18768363_foreign
       on_update: NO ACTION
@@ -10307,13 +10309,13 @@ relations:
       on_delete: SET NULL
   - collection: otorgamientos_concesiones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: otorgamientos_concesiones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10321,20 +10323,20 @@ relations:
     schema:
       table: otorgamientos_concesiones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: otorgamientos_concesiones_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: otorgamientos_concesiones
     field: datosGeneralesConcesiones
-    related_collection: datos_generales_conceciones
+    related_collection: datos_generales_concesiones
     meta:
       junction_field: null
       many_collection: otorgamientos_concesiones
       many_field: datosGeneralesConcesiones
       one_allowed_collections: null
-      one_collection: datos_generales_conceciones
+      one_collection: datos_generales_concesiones
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10342,7 +10344,7 @@ relations:
     schema:
       table: otorgamientos_concesiones
       column: datosGeneralesConcesiones
-      foreign_key_table: datos_generales_conceciones
+      foreign_key_table: datos_generales_concesiones
       foreign_key_column: id
       constraint_name: otorgamientos_concesiones_datosgeneralesconcesiones_foreign
       on_update: NO ACTION
@@ -10412,13 +10414,13 @@ relations:
       on_delete: NO ACTION
   - collection: servidores_intervengan_procedimientos_contrataciones
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: servidores_intervengan_procedimientos_contrataciones
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10426,7 +10428,7 @@ relations:
     schema:
       table: servidores_intervengan_procedimientos_contrataciones
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: servidores_intervengan_procedimientos_cont__38b85108_foreign
       on_update: NO ACTION
@@ -10580,13 +10582,13 @@ relations:
       on_delete: SET NULL
   - collection: tipos_adquisiciones_obras
     field: entePublico
-    related_collection: entes_publicos
+    related_collection: ente_publico
     meta:
       junction_field: null
       many_collection: tipos_adquisiciones_obras
       many_field: entePublico
       one_allowed_collections: null
-      one_collection: entes_publicos
+      one_collection: ente_publico
       one_collection_field: null
       one_deselect_action: nullify
       one_field: null
@@ -10594,7 +10596,7 @@ relations:
     schema:
       table: tipos_adquisiciones_obras
       column: entePublico
-      foreign_key_table: entes_publicos
+      foreign_key_table: ente_publico
       foreign_key_column: id
       constraint_name: tipos_adquisiciones_obras_entepublico_foreign
       on_update: NO ACTION

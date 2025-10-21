@@ -38,58 +38,61 @@ const tiposActoJuridico = [
 const responsabilidades = [
   {
     id: 1,
-    pregunta: "Convocatoria a concurso o licitación, en su caso",
+    pregunta:
+      "convocatoria a concurso, licitación o excitativa a presentar la solicitud de autorización.",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 2,
-    pregunta: "Dictámenes u opiniones previos",
+    pregunta: "Dictámenes u opiniones previos.",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 3,
-    pregunta: "Visitas de verificación en campo para constatar el uso del bien o el servicio",
+    pregunta: "Visitas de verificación.",
     opciones: {
       elaborar: { disabled: true }, // N/A
       revisar: { disabled: true }, // N/A
       firmarAutorizar: { disabled: true }, // N/A
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
   {
     id: 4,
-    pregunta: "Evaluación del cumplimiento de los requisitos establecidos en el ordenamiento jurídico aplicable",
+    pregunta:
+      "Evaluación del cumplimiento de los requisitos para el otorgamiento de la concesión, licencia, autorización, permiso, o sus prórrogas.",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 5,
-    pregunta: "Determinación sobre el otorgamiento de la concesión, licencia, permiso, autorización y, en su caso, de la prórroga",
+    pregunta:
+      "Determinación sobre el otorgamiento de la concesión, licencia, autorización, permiso o sus prórrogas.",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: true }, // N/A
       supervisar: { disabled: true }, // N/A
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
   {
     id: 6,
@@ -100,17 +103,23 @@ const responsabilidades = [
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
 ];
 
-export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoConcesionesSectionProps) {
+export function OtorgamientoConcesionesSection({
+  form,
+  loading,
+}: OtorgamientoConcesionesSectionProps) {
   return (
     <div className="space-y-8">
       {/* TIPO DE ACTO JURÍDICO */}
       <div className="p-6 bg-purple-50/50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-700">
         <h4 className="text-sm font-semibold mb-4 text-purple-900 dark:text-purple-100">
-          Tipo de Acto Jurídico <span className="text-xs text-muted-foreground">(Esta sección se actualizará quincenalmente)</span>
+          Tipo de Acto Jurídico{" "}
+          <span className="text-xs text-muted-foreground">
+            (Esta sección se actualizará quincenalmente)
+          </span>
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {tiposActoJuridico.map((tipo) => (
@@ -138,12 +147,16 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
           Niveles de Responsabilidad
         </h4>
         <p className="text-sm text-muted-foreground mb-6">
-          Marque las actividades que realiza en cada uno de los siguientes objetos de responsabilidad:
+          Marque las actividades que realiza en cada uno de los siguientes
+          objetos de responsabilidad:
         </p>
 
         <div className="space-y-4">
           {responsabilidades.map((resp) => (
-            <div key={resp.id} className="p-4 rounded-lg border-2 border-primary/20 bg-card/50">
+            <div
+              key={resp.id}
+              className="p-4 rounded-lg border-2 border-primary/20 bg-card/50"
+            >
               <div className="mb-3">
                 <span className="inline-block bg-primary/10 text-primary px-2 py-1 rounded text-sm font-semibold mr-2">
                   {resp.id}
@@ -157,14 +170,22 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                   <Checkbox
                     id={`resp-concesion-${resp.id}-elaborar`}
                     disabled={loading || resp.opciones.elaborar.disabled}
-                    className={resp.opciones.elaborar.disabled ? "opacity-50" : ""}
+                    className={
+                      resp.opciones.elaborar.disabled ? "opacity-50" : ""
+                    }
                   />
                   <Label
                     htmlFor={`resp-concesion-${resp.id}-elaborar`}
-                    className={`text-sm font-normal ${resp.opciones.elaborar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
+                    className={`text-sm font-normal ${
+                      resp.opciones.elaborar.disabled
+                        ? "text-muted-foreground line-through"
+                        : "cursor-pointer"
+                    }`}
                   >
                     Elaborar (A)
-                    {resp.opciones.elaborar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
+                    {resp.opciones.elaborar.disabled && (
+                      <span className="ml-1 text-xs">(N/A)</span>
+                    )}
                   </Label>
                 </div>
 
@@ -173,14 +194,22 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                   <Checkbox
                     id={`resp-concesion-${resp.id}-revisar`}
                     disabled={loading || resp.opciones.revisar.disabled}
-                    className={resp.opciones.revisar.disabled ? "opacity-50" : ""}
+                    className={
+                      resp.opciones.revisar.disabled ? "opacity-50" : ""
+                    }
                   />
                   <Label
                     htmlFor={`resp-concesion-${resp.id}-revisar`}
-                    className={`text-sm font-normal ${resp.opciones.revisar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
+                    className={`text-sm font-normal ${
+                      resp.opciones.revisar.disabled
+                        ? "text-muted-foreground line-through"
+                        : "cursor-pointer"
+                    }`}
                   >
                     Revisar (B)
-                    {resp.opciones.revisar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
+                    {resp.opciones.revisar.disabled && (
+                      <span className="ml-1 text-xs">(N/A)</span>
+                    )}
                   </Label>
                 </div>
 
@@ -189,14 +218,22 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                   <Checkbox
                     id={`resp-concesion-${resp.id}-firmar`}
                     disabled={loading || resp.opciones.firmarAutorizar.disabled}
-                    className={resp.opciones.firmarAutorizar.disabled ? "opacity-50" : ""}
+                    className={
+                      resp.opciones.firmarAutorizar.disabled ? "opacity-50" : ""
+                    }
                   />
                   <Label
                     htmlFor={`resp-concesion-${resp.id}-firmar`}
-                    className={`text-sm font-normal ${resp.opciones.firmarAutorizar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
+                    className={`text-sm font-normal ${
+                      resp.opciones.firmarAutorizar.disabled
+                        ? "text-muted-foreground line-through"
+                        : "cursor-pointer"
+                    }`}
                   >
                     Firmar, Autorizar o Dictaminar (C)
-                    {resp.opciones.firmarAutorizar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
+                    {resp.opciones.firmarAutorizar.disabled && (
+                      <span className="ml-1 text-xs">(N/A)</span>
+                    )}
                   </Label>
                 </div>
 
@@ -205,14 +242,22 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                   <Checkbox
                     id={`resp-concesion-${resp.id}-supervisar`}
                     disabled={loading || resp.opciones.supervisar.disabled}
-                    className={resp.opciones.supervisar.disabled ? "opacity-50" : ""}
+                    className={
+                      resp.opciones.supervisar.disabled ? "opacity-50" : ""
+                    }
                   />
                   <Label
                     htmlFor={`resp-concesion-${resp.id}-supervisar`}
-                    className={`text-sm font-normal ${resp.opciones.supervisar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
+                    className={`text-sm font-normal ${
+                      resp.opciones.supervisar.disabled
+                        ? "text-muted-foreground line-through"
+                        : "cursor-pointer"
+                    }`}
                   >
                     Supervisar (D)
-                    {resp.opciones.supervisar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
+                    {resp.opciones.supervisar.disabled && (
+                      <span className="ml-1 text-xs">(N/A)</span>
+                    )}
                   </Label>
                 </div>
 
@@ -221,14 +266,22 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                   <Checkbox
                     id={`resp-concesion-${resp.id}-emitir`}
                     disabled={loading || resp.opciones.emitirSuscribir.disabled}
-                    className={resp.opciones.emitirSuscribir.disabled ? "opacity-50" : ""}
+                    className={
+                      resp.opciones.emitirSuscribir.disabled ? "opacity-50" : ""
+                    }
                   />
                   <Label
                     htmlFor={`resp-concesion-${resp.id}-emitir`}
-                    className={`text-sm font-normal ${resp.opciones.emitirSuscribir.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
+                    className={`text-sm font-normal ${
+                      resp.opciones.emitirSuscribir.disabled
+                        ? "text-muted-foreground line-through"
+                        : "cursor-pointer"
+                    }`}
                   >
                     Emitir o Suscribir (E)
-                    {resp.opciones.emitirSuscribir.disabled && <span className="ml-1 text-xs">(N/A)</span>}
+                    {resp.opciones.emitirSuscribir.disabled && (
+                      <span className="ml-1 text-xs">(N/A)</span>
+                    )}
                   </Label>
                 </div>
               </div>
@@ -244,7 +297,8 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
           Datos Generales de los Procedimientos
         </h4>
         <p className="text-xs text-blue-600 dark:text-blue-400 mb-6">
-          Esta sección se podrá actualizar quincenalmente agregando un nuevo procedimiento
+          Esta sección se podrá actualizar quincenalmente agregando un nuevo
+          procedimiento
         </p>
 
         <div className="space-y-6 p-6 rounded-lg border-2 border-primary/20 bg-card/50">
@@ -327,7 +381,8 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  Motivos y Fundamentos Legales <span className="text-red-500">*</span>
+                  Motivos y Fundamentos Legales{" "}
+                  <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -407,7 +462,11 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                 <FormLabel className="text-sm font-semibold">
                   Sector <span className="text-red-500">*</span>
                 </FormLabel>
-                <Select onValueChange={field.onChange} value={field.value} disabled={loading}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={loading}
+                >
                   <FormControl>
                     <SelectTrigger className="h-12">
                       <SelectValue placeholder="Seleccione el sector" />
@@ -431,7 +490,8 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Fecha de Inicio de Vigencia (DD-MM-AAAA) <span className="text-red-500">*</span>
+                    Fecha de Inicio de Vigencia (DD-MM-AAAA){" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
@@ -457,7 +517,8 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Fecha de Término de Vigencia (DD-MM-AAAA) <span className="text-red-500">*</span>
+                    Fecha de Término de Vigencia (DD-MM-AAAA){" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
@@ -535,7 +596,9 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
           <div className="p-4 bg-purple-50/50 dark:bg-purple-900/20 rounded-lg border border-purple-200">
             <h5 className="text-sm font-semibold mb-4 text-purple-900 dark:text-purple-100">
               Datos de la(s) Persona(s) Beneficiaria(s) Final(es)
-              <span className="text-xs font-normal text-muted-foreground ml-2">(Solo aplica a personas morales)</span>
+              <span className="text-xs font-normal text-muted-foreground ml-2">
+                (Solo aplica a personas morales)
+              </span>
             </h5>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -624,7 +687,10 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  ¿La persona servidora pública continúa participando en el otorgamiento de concesiones, licencias, permisos, autorizaciones y sus prórrogas? <span className="text-red-500">*</span>
+                  ¿La persona servidora pública continúa participando en el
+                  otorgamiento de concesiones, licencias, permisos,
+                  autorizaciones y sus prórrogas?{" "}
+                  <span className="text-red-500">*</span>
                 </FormLabel>
                 <p className="text-xs text-blue-600 dark:text-blue-400 mb-2">
                   (Esta sección se podrá actualizar quincenalmente)
@@ -634,10 +700,15 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                     <Checkbox
                       id="continua-concesion-si"
                       checked={field.value === true}
-                      onCheckedChange={(checked) => field.onChange(checked ? true : false)}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked ? true : false)
+                      }
                       disabled={loading}
                     />
-                    <Label htmlFor="continua-concesion-si" className="text-sm font-normal cursor-pointer">
+                    <Label
+                      htmlFor="continua-concesion-si"
+                      className="text-sm font-normal cursor-pointer"
+                    >
                       Sí
                     </Label>
                   </div>
@@ -645,10 +716,15 @@ export function OtorgamientoConcesionesSection({ form, loading }: OtorgamientoCo
                     <Checkbox
                       id="continua-concesion-no"
                       checked={field.value === false}
-                      onCheckedChange={(checked) => field.onChange(checked ? false : true)}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked ? false : true)
+                      }
                       disabled={loading}
                     />
-                    <Label htmlFor="continua-concesion-no" className="text-sm font-normal cursor-pointer">
+                    <Label
+                      htmlFor="continua-concesion-no"
+                      className="text-sm font-normal cursor-pointer"
+                    >
                       No
                     </Label>
                   </div>

@@ -31,7 +31,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -40,7 +42,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -49,7 +53,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -58,7 +64,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -67,7 +75,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -76,7 +86,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -85,7 +97,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -94,7 +108,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -103,7 +119,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -112,7 +130,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -121,7 +141,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -130,7 +152,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -139,7 +163,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -148,7 +174,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -157,7 +185,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -175,7 +205,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -213,7 +245,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -235,7 +269,9 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -244,7 +280,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -257,7 +295,9 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -270,7 +310,9 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -283,7 +325,15 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["id", "status", "name", "icon", "color", "options", "trigger"]
+      "fields": [
+        "id",
+        "status",
+        "name",
+        "icon",
+        "color",
+        "options",
+        "trigger"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -291,8 +341,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -300,17 +354,25 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
-      "collection": "datos_generales_conceciones",
+      "collection": "datos_generales_concesiones",
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -318,8 +380,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -327,8 +393,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -336,8 +406,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -345,8 +419,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -354,8 +432,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -363,8 +445,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -372,8 +458,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -381,8 +471,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -390,8 +484,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -399,8 +497,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -408,8 +510,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -417,8 +523,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -426,8 +536,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -435,8 +549,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -444,8 +562,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -453,8 +575,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -462,8 +588,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -472,7 +602,9 @@
       "permissions": {},
       "validation": {},
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -480,8 +612,12 @@
       "action": "create",
       "permissions": {},
       "validation": {},
-      "presets": null,
-      "fields": ["*"]
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -523,11 +659,16 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["segundoApellido", "nombre", "primerApellido", "sexo"]
+      "fields": [
+        "segundoApellido",
+        "nombre",
+        "primerApellido",
+        "sexo"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
-      "collection": "datos_generales_conceciones",
+      "collection": "datos_generales_concesiones",
       "action": "read",
       "permissions": {
         "_and": [
@@ -562,14 +703,17 @@
         "_and": [
           {
             "entePublico": {
-              "_eq": "$CURRENT_USER.entesPublico"
+              "_eq": "$CURRENT_USER.entePublico"
             }
           }
         ]
       },
       "validation": null,
       "presets": null,
-      "fields": ["clave", "valor"]
+      "fields": [
+        "clave",
+        "valor"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -627,7 +771,11 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["emision", "propuestas", "asignacion"]
+      "fields": [
+        "emision",
+        "propuestas",
+        "asignacion"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -1027,7 +1175,12 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["segundoApellido", "sexo", "nombre", "primerApellido"]
+      "fields": [
+        "segundoApellido",
+        "sexo",
+        "nombre",
+        "primerApellido"
+      ]
     },
     {
       "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
@@ -1062,7 +1215,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1071,7 +1226,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1080,7 +1237,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1089,7 +1248,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1098,7 +1259,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1107,7 +1270,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1116,7 +1281,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1125,7 +1292,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1134,7 +1303,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1143,7 +1314,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1152,7 +1325,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1161,7 +1336,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1170,7 +1347,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1179,7 +1358,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1188,7 +1369,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1206,7 +1389,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1244,7 +1429,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1266,7 +1453,9 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1275,7 +1464,9 @@
       "permissions": {},
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1288,7 +1479,9 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1301,7 +1494,9 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["*"]
+      "fields": [
+        "*"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1314,7 +1509,15 @@
       },
       "validation": null,
       "presets": null,
-      "fields": ["id", "status", "name", "icon", "color", "options", "trigger"]
+      "fields": [
+        "id",
+        "status",
+        "name",
+        "icon",
+        "color",
+        "options",
+        "trigger"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1340,11 +1543,16 @@
       "permissions": null,
       "validation": null,
       "presets": null,
-      "fields": ["segundoApellido", "sexo", "nombre", "primerApellido"]
+      "fields": [
+        "segundoApellido",
+        "sexo",
+        "nombre",
+        "primerApellido"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
-      "collection": "datos_generales_conceciones",
+      "collection": "datos_generales_concesiones",
       "action": "read",
       "permissions": null,
       "validation": null,
@@ -1385,7 +1593,10 @@
       "permissions": null,
       "validation": null,
       "presets": null,
-      "fields": ["valor", "clave"]
+      "fields": [
+        "valor",
+        "clave"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1394,7 +1605,11 @@
       "permissions": null,
       "validation": null,
       "presets": null,
-      "fields": ["propuestas", "emision", "asignacion"]
+      "fields": [
+        "propuestas",
+        "emision",
+        "asignacion"
+      ]
     },
     {
       "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
@@ -1643,6 +1858,2089 @@
       "fields": [
         "nivelesResponsabilidadesAvaluos",
         "datosDictaminacionesAvaluos"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_generales",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "empleos_cargos_comisiones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "empleos_cargos_comisiones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_jerarquicos",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_jerarquicos",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "contrataciones_publicas",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_publicas",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "tipos_adquisiciones_obras",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "tipos_adquisiciones_obras",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "contrataciones_adquisiciones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_adquisiciones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_contrataciones_publicas",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_contrataciones_publicas",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_contrataciones_adquisiciones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_contrataciones_adquisiciones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_adquisiciones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_adquisiciones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "contrataciones_obras",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_obras",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_generales_obras",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales_obras",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_personas_beneficiarias",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_personas_beneficiarias",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "otorgamientos_concesiones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "otorgamientos_concesiones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_generales_concesiones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales_concesiones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_otorgamientos_concesiones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_otorgamientos_concesiones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_concesiones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_concesiones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_concesiones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_concesiones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "enajenaciones_bienes",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "enajenaciones_bienes",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_enajecaciones",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_enajecaciones",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_enajenaciones_bienes",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_enajenaciones_bienes",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "dictaminaciones_avaluos",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "dictaminaciones_avaluos",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_avaluos",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_avaluos",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_dictaminaciones_avaluos",
+      "action": "delete",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_dictaminaciones_avaluos",
+      "action": "delete",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "ente_publico",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "id": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "id",
+        "nombre"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "ente_publico",
+      "action": "read",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_jerarquicos",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "contrataciones_publicas",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "tipos_adquisiciones_obras",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "contrataciones_adquisiciones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_contrataciones_publicas",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_contrataciones_adquisiciones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_contrataciones_adquisiciones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_contrataciones_adquisiciones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_adquisiciones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_adquisiciones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_adquisiciones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "contrataciones_obras",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_generales_obras",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_personas_beneficiarias",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "otorgamientos_concesiones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_generales_concesiones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_otorgamientos_concesiones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_concesiones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_concesiones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_concesiones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_concesiones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_concesiones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_concesiones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "enajenaciones_bienes",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_enajecaciones",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_enajecaciones",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_enajecaciones",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_enajenaciones_bienes",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "dictaminaciones_avaluos",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_avaluos",
+      "action": "create",
+      "permissions": {},
+      "validation": {},
+      "presets": {
+        "entePublico": "$CURRENT_USER.entePublico"
+      },
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_avaluos",
+      "action": "read",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "niveles_responsabilidades_otro_avaluos",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "8c4f7da6-863f-45aa-bf66-39ddfc805316",
+      "collection": "datos_dictaminaciones_avaluos",
+      "action": "update",
+      "permissions": {
+        "_and": [
+          {
+            "entePublico": {
+              "_eq": "$CURRENT_USER.entePublico"
+            }
+          }
+        ]
+      },
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "servidores_intervengan_procedimientos_contrataciones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "empleos_cargos_comisiones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "empleos_cargos_comisiones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_jerarquicos",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_jerarquicos",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_publicas",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_publicas",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "tipos_adquisiciones_obras",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "tipos_adquisiciones_obras",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_adquisiciones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_adquisiciones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_contrataciones_publicas",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_contrataciones_publicas",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_contrataciones_adquisiciones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_contrataciones_adquisiciones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_adquisiciones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_adquisiciones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_obras",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "contrataciones_obras",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales_obras",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales_obras",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_personas_beneficiarias",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_personas_beneficiarias",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "otorgamientos_concesiones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "otorgamientos_concesiones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales_concesiones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_generales_concesiones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_otorgamientos_concesiones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_otorgamientos_concesiones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidad_concesiones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_concesiones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_concesiones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_concesiones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_concesiones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "enajenaciones_bienes",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "enajenaciones_bienes",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_enajenaciones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_enajecaciones",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_enajecaciones",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_enajenaciones_bienes",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_enajenaciones_bienes",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "dictaminaciones_avaluos",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "dictaminaciones_avaluos",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_avaluos",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_avaluos",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "niveles_responsabilidades_otro_avaluos",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_dictaminaciones_avaluos",
+      "action": "create",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "role": "2bdb9f7c-d750-4365-a1a0-0438b94b185c",
+      "collection": "datos_dictaminaciones_avaluos",
+      "action": "update",
+      "permissions": null,
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
       ]
     }
   ]

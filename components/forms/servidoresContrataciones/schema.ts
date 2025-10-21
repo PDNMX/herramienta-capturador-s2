@@ -238,7 +238,7 @@ export const servidoresContratacionesSchema = z.object({
     // Niveles de responsabilidad
     responsabilidades: z.array(z.object({
       identificador: z.number(),
-      objetoResponsabilidad: z.string(),
+      objetoResponsabilidad: z.string().optional(),
       elaborar: z.boolean().optional(),
       revisar: z.boolean().optional(),
       firmarAutorizar: z.boolean().optional(),
@@ -257,7 +257,10 @@ export const servidoresContratacionesSchema = z.object({
     fechaInicioVigencia: z.string().optional(),
     fechaConclusionVigencia: z.string().optional(),
     monto: z.string().optional(),
-    hipervinculo: z.string().optional(),
+    hipervinculo: z.string()
+      .url({ message: "Debe ingresar una URL válida (ej: https://ejemplo.com)" })
+      .optional()
+      .or(z.literal("")),
 
     // Datos persona beneficiaria
     razonSocial: z.string().optional(),
@@ -273,7 +276,7 @@ export const servidoresContratacionesSchema = z.object({
     // Niveles de responsabilidad
     responsabilidades: z.array(z.object({
       identificador: z.number(),
-      objetoResponsabilidad: z.string(),
+      objetoResponsabilidad: z.string().optional(),
       elaborar: z.boolean().optional(),
       revisar: z.boolean().optional(),
       firmarAutorizar: z.boolean().optional(),
@@ -283,7 +286,7 @@ export const servidoresContratacionesSchema = z.object({
 
     // Datos generales del procedimiento
     numeroExpediente: z.string().optional(),
-    descripcion: z.string().optional(),
+    descripcion: z.string().min(1, { message: "La descripción es obligatoria." }),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 
@@ -295,7 +298,7 @@ export const servidoresContratacionesSchema = z.object({
     // Niveles de responsabilidad
     responsabilidades: z.array(z.object({
       identificador: z.number(),
-      objetoResponsabilidad: z.string(),
+      objetoResponsabilidad: z.string().optional(),
       elaborar: z.boolean().optional(),
       revisar: z.boolean().optional(),
       firmarAutorizar: z.boolean().optional(),
@@ -305,7 +308,7 @@ export const servidoresContratacionesSchema = z.object({
 
     // Datos generales del procedimiento
     numeroExpediente: z.string().optional(),
-    descripcion: z.string().optional(),
+    descripcion: z.string().min(1, { message: "La descripción es obligatoria." }),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 

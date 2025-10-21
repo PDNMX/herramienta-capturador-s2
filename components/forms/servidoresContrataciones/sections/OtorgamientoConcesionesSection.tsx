@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   FormControl,
   FormDescription,
@@ -20,6 +21,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Calendar, FileText } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface OtorgamientoConcesionesSectionProps {
   form: any;
@@ -111,6 +113,35 @@ export function OtorgamientoConcesionesSection({
   form,
   loading,
 }: OtorgamientoConcesionesSectionProps) {
+  const { toast } = useToast();
+
+  // Watch para detectar cambios en las fechas de vigencia
+  const watchFechaInicioVigencia = form.watch("otorgamientoConcesiones.0.fechaInicioVigencia");
+  const watchFechaConclusionVigencia = form.watch("otorgamientoConcesiones.0.fechaConclusionVigencia");
+
+  // Efecto para validar fechas de vigencia
+  useEffect(() => {
+    if (watchFechaInicioVigencia && watchFechaConclusionVigencia) {
+      const fechaInicio = new Date(watchFechaInicioVigencia);
+      const fechaConclusion = new Date(watchFechaConclusionVigencia);
+
+      if (fechaConclusion < fechaInicio) {
+        form.setError("otorgamientoConcesiones.0.fechaConclusionVigencia", {
+          type: "manual",
+          message: "La fecha de término de vigencia no puede ser menor a la fecha de inicio de vigencia.",
+        });
+
+        toast({
+          variant: "destructive",
+          title: "Error en fechas",
+          description: "La fecha de término de vigencia no puede ser menor a la fecha de inicio de vigencia.",
+        });
+      } else {
+        form.clearErrors("otorgamientoConcesiones.0.fechaConclusionVigencia");
+      }
+    }
+  }, [watchFechaInicioVigencia, watchFechaConclusionVigencia, form, toast]);
+
   return (
     <div className="space-y-8">
       {/* TIPO DE ACTO JURÍDICO */}
@@ -164,7 +195,36 @@ export function OtorgamientoConcesionesSection({
                 <span className="text-sm font-medium">{resp.pregunta}</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
+              {/* Para la pregunta 6, solo mostrar el campo de input */}
+              {resp.id === 6 ? (
+                <div className="ml-8">
+                  <FormField
+                    control={form.control}
+                    name={`otorgamientoConcesiones.0.responsabilidades.${resp.id - 1}.objetoResponsabilidad`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-semibold">
+                          Especifique el objeto de responsabilidad
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Ingrese el objeto de responsabilidad"
+                            {...field}
+                            value={field.value || ""}
+                            className="h-10"
+                          />
+                        </FormControl>
+                        <FormDescription className="text-xs text-muted-foreground">
+                          Describa el objeto de responsabilidad específico (opcional)
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
                 {/* Elaborar (A) */}
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -285,6 +345,7 @@ export function OtorgamientoConcesionesSection({
                   </Label>
                 </div>
               </div>
+              )}
             </div>
           ))}
         </div>

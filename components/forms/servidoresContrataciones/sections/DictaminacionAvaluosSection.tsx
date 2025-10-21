@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   FormControl,
   FormDescription,
@@ -20,6 +21,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Calendar, FileText } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DictaminacionAvaluosSectionProps {
   form: any;
@@ -34,20 +36,20 @@ const responsabilidades = [
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
-      firmarAutorizar: { disabled: true }, // N/A
-      supervisar: { disabled: true }, // N/A
-      emitirSuscribir: { disabled: false },
+      firmarAutorizar: { disabled: false },
+      supervisar: { disabled: false },
+      emitirSuscribir: { disabled: true }, // N/A - siempre deshabilitado
     }
   },
   {
     id: 2,
     pregunta: "Validación del avalúo",
     opciones: {
-      elaborar: { disabled: true }, // N/A
+      elaborar: { disabled: false },
       revisar: { disabled: false },
-      firmarAutorizar: { disabled: true }, // N/A
+      firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
-      emitirSuscribir: { disabled: false },
+      emitirSuscribir: { disabled: true }, // N/A - siempre deshabilitado
     }
   },
   {
@@ -57,8 +59,8 @@ const responsabilidades = [
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
-      supervisar: { disabled: true }, // N/A
-      emitirSuscribir: { disabled: true }, // N/A
+      supervisar: { disabled: false },
+      emitirSuscribir: { disabled: true }, // N/A - siempre deshabilitado
     }
   },
   {
@@ -75,6 +77,35 @@ const responsabilidades = [
 ];
 
 export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAvaluosSectionProps) {
+  const { toast } = useToast();
+
+  // Watch para detectar cambios en las fechas
+  const watchFechaElaboracion = form.watch("dictaminacionAvaluos.0.fechaInicio");
+  const watchFechaVigencia = form.watch("dictaminacionAvaluos.0.fechaConclusion");
+
+  // Efecto para validar fechas
+  useEffect(() => {
+    if (watchFechaElaboracion && watchFechaVigencia) {
+      const fechaElaboracion = new Date(watchFechaElaboracion);
+      const fechaVigencia = new Date(watchFechaVigencia);
+
+      if (fechaVigencia < fechaElaboracion) {
+        form.setError("dictaminacionAvaluos.0.fechaConclusion", {
+          type: "manual",
+          message: "La fecha de vigencia no puede ser menor a la fecha de elaboración.",
+        });
+
+        toast({
+          variant: "destructive",
+          title: "Error en fechas",
+          description: "La fecha de vigencia no puede ser menor a la fecha de elaboración.",
+        });
+      } else {
+        form.clearErrors("dictaminacionAvaluos.0.fechaConclusion");
+      }
+    }
+  }, [watchFechaElaboracion, watchFechaVigencia, form, toast]);
+
   return (
     <div className="space-y-8">
       {/* NIVELES DE RESPONSABILIDAD */}
@@ -97,7 +128,36 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
                 <span className="text-sm font-medium">{resp.pregunta}</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
+              {/* Para la pregunta 4 (Otro), solo mostrar el campo de input */}
+              {resp.id === 4 ? (
+                <div className="ml-8">
+                  <FormField
+                    control={form.control}
+                    name={`dictaminacionAvaluos.0.responsabilidades.${resp.id - 1}.objetoResponsabilidad`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-semibold">
+                          Especifique el objeto de responsabilidad
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Ingrese el objeto de responsabilidad"
+                            {...field}
+                            value={field.value || ""}
+                            className="h-10"
+                          />
+                        </FormControl>
+                        <FormDescription className="text-xs text-muted-foreground">
+                          Describa el objeto de responsabilidad específico (opcional)
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
                 {/* Elaborar (A) */}
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -178,6 +238,7 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
                   </Label>
                 </div>
               </div>
+              )}
             </div>
           ))}
         </div>
@@ -220,77 +281,26 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
             )}
           />
 
-          {/* Tipo de Avalúo */}
+          {/* Descripción */}
           <FormField
             control={form.control}
-            name="dictaminacionAvaluos.0.tipoAvaluo"
+            name="dictaminacionAvaluos.0.descripcion"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  Tipo de Avalúo <span className="text-red-500">*</span>
-                </FormLabel>
-                <Select onValueChange={field.onChange} value={field.value} disabled={loading}>
-                  <FormControl>
-                    <SelectTrigger className="h-12">
-                      <SelectValue placeholder="Seleccione el tipo" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="COMERCIAL">Comercial</SelectItem>
-                    <SelectItem value="FISCAL">Fiscal</SelectItem>
-                    <SelectItem value="CATASTRAL">Catastral</SelectItem>
-                    <SelectItem value="JUSTIPRECIACION_RENTAS">Justipreciación de Rentas</SelectItem>
-                    <SelectItem value="OTRO">Otro (Especifique)</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Objeto del Avalúo */}
-          <FormField
-            control={form.control}
-            name="dictaminacionAvaluos.0.objetoAvaluo"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold">
-                  Objeto del Avalúo <span className="text-red-500">*</span>
+                  Descripción <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
-                    placeholder="Descripción del bien o inmueble a valuar"
-                    {...field}
-                    value={field.value || ""}
-                    className="h-12"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Motivos y Fundamentos Legales */}
-          <FormField
-            control={form.control}
-            name="dictaminacionAvaluos.0.motivosFundamentosLegales"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold">
-                  Motivos y Fundamentos Legales <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Fundamentos legales aplicables"
+                    placeholder="Ingrese la descripción del procedimiento de dictaminación"
                     {...field}
                     value={field.value || ""}
                     className="h-12"
                   />
                 </FormControl>
                 <FormDescription className="text-xs text-muted-foreground">
-                  Artículos y leyes que fundamentan el avalúo
+                  Descripción detallada del procedimiento de dictaminación de avalúos
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -298,10 +308,10 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Fecha de Elaboración */}
+            {/* Fecha de Inicio (Fecha de Elaboración) */}
             <FormField
               control={form.control}
-              name="dictaminacionAvaluos.0.fechaElaboracion"
+              name="dictaminacionAvaluos.0.fechaInicio"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
@@ -324,10 +334,10 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
               )}
             />
 
-            {/* Fecha de Vigencia */}
+            {/* Fecha de Conclusión (Fecha de Vigencia) */}
             <FormField
               control={form.control}
-              name="dictaminacionAvaluos.0.fechaVigencia"
+              name="dictaminacionAvaluos.0.fechaConclusion"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
@@ -353,86 +363,6 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
               )}
             />
           </div>
-
-          {/* Valor del Avalúo */}
-          <FormField
-            control={form.control}
-            name="dictaminacionAvaluos.0.valorAvaluo"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold">
-                  Valor del Avalúo <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    placeholder="0.00"
-                    {...field}
-                    value={field.value || ""}
-                    className="h-12"
-                  />
-                </FormControl>
-                <FormDescription className="text-xs text-muted-foreground">
-                  Valor determinado en pesos mexicanos (MXN)
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Nombre del Perito */}
-          <FormField
-            control={form.control}
-            name="dictaminacionAvaluos.0.nombrePerito"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold">
-                  Nombre del Perito Valuador
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={loading}
-                    placeholder="Nombre completo del perito"
-                    {...field}
-                    value={field.value || ""}
-                    className="h-12"
-                  />
-                </FormControl>
-                <FormDescription className="text-xs text-muted-foreground">
-                  Nombre del perito que elaboró el avalúo (opcional)
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Hipervínculo */}
-          <FormField
-            control={form.control}
-            name="dictaminacionAvaluos.0.hipervinculo"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-semibold">
-                  Hipervínculo
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="url"
-                    disabled={loading}
-                    placeholder="https://ejemplo.gob.mx/documento"
-                    {...field}
-                    value={field.value || ""}
-                    className="h-12"
-                  />
-                </FormControl>
-                <FormDescription className="text-xs text-muted-foreground">
-                  URL del documento del avalúo (opcional)
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           {/* ¿Continúa Participando? */}
           <FormField

@@ -1,6 +1,7 @@
 // @ts-nocheck
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   FormControl,
   FormDescription,
@@ -20,6 +21,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Calendar, FileText } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EnajenacionBienesSectionProps {
   form: any;
@@ -119,6 +121,35 @@ const responsabilidades = [
 ];
 
 export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSectionProps) {
+  const { toast } = useToast();
+
+  // Watch para detectar cambios en las fechas
+  const watchFechaInicio = form.watch("enajenacionBienes.0.fechaInicio");
+  const watchFechaConclusion = form.watch("enajenacionBienes.0.fechaConclusion");
+
+  // Efecto para validar fechas
+  useEffect(() => {
+    if (watchFechaInicio && watchFechaConclusion) {
+      const fechaInicio = new Date(watchFechaInicio);
+      const fechaConclusion = new Date(watchFechaConclusion);
+
+      if (fechaConclusion < fechaInicio) {
+        form.setError("enajenacionBienes.0.fechaConclusion", {
+          type: "manual",
+          message: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+        });
+
+        toast({
+          variant: "destructive",
+          title: "Error en fechas",
+          description: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+        });
+      } else {
+        form.clearErrors("enajenacionBienes.0.fechaConclusion");
+      }
+    }
+  }, [watchFechaInicio, watchFechaConclusion, form, toast]);
+
   return (
     <div className="space-y-8">
       {/* NIVELES DE RESPONSABILIDAD */}
@@ -141,7 +172,36 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                 <span className="text-sm font-medium">{resp.pregunta}</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
+              {/* Para la pregunta 8 (Otro), solo mostrar el campo de input */}
+              {resp.id === 8 ? (
+                <div className="ml-8">
+                  <FormField
+                    control={form.control}
+                    name={`enajenacionBienes.0.responsabilidades.${resp.id - 1}.objetoResponsabilidad`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-sm font-semibold">
+                          Especifique el objeto de responsabilidad
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={loading}
+                            placeholder="Ingrese el objeto de responsabilidad"
+                            {...field}
+                            value={field.value || ""}
+                            className="h-10"
+                          />
+                        </FormControl>
+                        <FormDescription className="text-xs text-muted-foreground">
+                          Describa el objeto de responsabilidad específico (opcional)
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
                 {/* Elaborar (A) */}
                 <div className="flex items-center space-x-2">
                   <Checkbox
@@ -222,6 +282,7 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                   </Label>
                 </div>
               </div>
+              )}
             </div>
           ))}
         </div>
@@ -264,60 +325,31 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
             )}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Tipo de Procedimiento */}
-            <FormField
-              control={form.control}
-              name="enajenacionBienes.0.tipoProcedimiento"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">
-                    Tipo de Procedimiento <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={loading}>
-                    <FormControl>
-                      <SelectTrigger className="h-12">
-                        <SelectValue placeholder="Seleccione el tipo" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="LICITACION_PUBLICA_NACIONAL">Licitación Pública (Nacional)</SelectItem>
-                      <SelectItem value="LICITACION_PUBLICA_INTERNACIONAL">Licitación Pública (Internacional)</SelectItem>
-                      <SelectItem value="INVITACION_TRES_PERSONAS">Invitación a cuando menos tres personas</SelectItem>
-                      <SelectItem value="ADJUDICACION_DIRECTA">Adjudicación Directa</SelectItem>
-                      <SelectItem value="OTRO">Otro (Especifique)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Materia */}
-            <FormField
-              control={form.control}
-              name="enajenacionBienes.0.materia"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-semibold">
-                    Materia <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={loading}>
-                    <FormControl>
-                      <SelectTrigger className="h-12">
-                        <SelectValue placeholder="Seleccione la materia" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="BIENES_MUEBLES">Bienes Muebles</SelectItem>
-                      <SelectItem value="OTRO">Otro (Especifique)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+          {/* Descripción */}
+          <FormField
+            control={form.control}
+            name="enajenacionBienes.0.descripcion"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold">
+                  Descripción <span className="text-red-500">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={loading}
+                    placeholder="Ingrese la descripción del procedimiento"
+                    {...field}
+                    value={field.value || ""}
+                    className="h-12"
+                  />
+                </FormControl>
+                <FormDescription className="text-xs text-muted-foreground">
+                  Descripción detallada del procedimiento de enajenación
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Fecha de Inicio */}
@@ -374,92 +406,6 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                 </FormItem>
               )}
             />
-          </div>
-
-          {/* Datos de la Persona Beneficiaria */}
-          <div className="p-4 bg-green-50/50 dark:bg-green-900/20 rounded-lg border border-green-200">
-            <h5 className="text-sm font-semibold mb-4 text-green-900 dark:text-green-100">
-              Datos de la(s) Persona(s) Beneficiaria(s) Final(es)
-              <span className="text-xs font-normal text-muted-foreground ml-2">(Solo aplica a personas morales)</span>
-            </h5>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="enajenacionBienes.0.razonSocial"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Razón Social</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={loading}
-                        placeholder="Razón social de la empresa"
-                        {...field}
-                        value={field.value || ""}
-                        className="h-10"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="enajenacionBienes.0.nombreBeneficiario"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Nombre(s)</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={loading}
-                        placeholder="Nombre del beneficiario"
-                        {...field}
-                        value={field.value || ""}
-                        className="h-10"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="enajenacionBienes.0.primerApellidoBeneficiario"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Primer Apellido</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={loading}
-                        placeholder="Primer apellido"
-                        {...field}
-                        value={field.value || ""}
-                        className="h-10"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="enajenacionBienes.0.segundoApellidoBeneficiario"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">Segundo Apellido</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={loading}
-                        placeholder="Segundo apellido"
-                        {...field}
-                        value={field.value || ""}
-                        className="h-10"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
           </div>
 
           {/* ¿Continúa Participando? */}

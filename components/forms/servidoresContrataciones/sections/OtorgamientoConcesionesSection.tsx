@@ -41,7 +41,7 @@ const responsabilidades = [
   {
     id: 1,
     pregunta:
-      "convocatoria a concurso, licitación o excitativa a presentar la solicitud de autorización.",
+      "Convocatoria a concurso, licitación o excitativa a presentar la solicitud de autorización.",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
@@ -116,8 +116,12 @@ export function OtorgamientoConcesionesSection({
   const { toast } = useToast();
 
   // Watch para detectar cambios en las fechas de vigencia
-  const watchFechaInicioVigencia = form.watch("otorgamientoConcesiones.0.fechaInicioVigencia");
-  const watchFechaConclusionVigencia = form.watch("otorgamientoConcesiones.0.fechaConclusionVigencia");
+  const watchFechaInicioVigencia = form.watch(
+    "otorgamientoConcesiones.0.fechaInicioVigencia"
+  );
+  const watchFechaConclusionVigencia = form.watch(
+    "otorgamientoConcesiones.0.fechaConclusionVigencia"
+  );
 
   // Efecto para validar fechas de vigencia
   useEffect(() => {
@@ -128,13 +132,15 @@ export function OtorgamientoConcesionesSection({
       if (fechaConclusion < fechaInicio) {
         form.setError("otorgamientoConcesiones.0.fechaConclusionVigencia", {
           type: "manual",
-          message: "La fecha de término de vigencia no puede ser menor a la fecha de inicio de vigencia.",
+          message:
+            "La fecha de término de vigencia no puede ser menor a la fecha de inicio de vigencia.",
         });
 
         toast({
           variant: "destructive",
           title: "Error en fechas",
-          description: "La fecha de término de vigencia no puede ser menor a la fecha de inicio de vigencia.",
+          description:
+            "La fecha de término de vigencia no puede ser menor a la fecha de inicio de vigencia.",
         });
       } else {
         form.clearErrors("otorgamientoConcesiones.0.fechaConclusionVigencia");
@@ -200,7 +206,9 @@ export function OtorgamientoConcesionesSection({
                 <div className="ml-8">
                   <FormField
                     control={form.control}
-                    name={`otorgamientoConcesiones.0.responsabilidades.${resp.id - 1}.objetoResponsabilidad`}
+                    name={`otorgamientoConcesiones.0.responsabilidades.${
+                      resp.id - 1
+                    }.objetoResponsabilidad`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-semibold">
@@ -216,7 +224,8 @@ export function OtorgamientoConcesionesSection({
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-muted-foreground">
-                          Describa el objeto de responsabilidad específico (opcional)
+                          Describa el objeto de responsabilidad específico
+                          (opcional)
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -225,126 +234,174 @@ export function OtorgamientoConcesionesSection({
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
-                {/* Elaborar (A) */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`resp-concesion-${resp.id}-elaborar`}
-                    disabled={loading || resp.opciones.elaborar.disabled}
-                    className={
-                      resp.opciones.elaborar.disabled ? "opacity-50" : ""
-                    }
-                  />
-                  <Label
-                    htmlFor={`resp-concesion-${resp.id}-elaborar`}
-                    className={`text-sm font-normal ${
-                      resp.opciones.elaborar.disabled
-                        ? "text-muted-foreground line-through"
-                        : "cursor-pointer"
-                    }`}
-                  >
-                    Elaborar (A)
-                    {resp.opciones.elaborar.disabled && (
-                      <span className="ml-1 text-xs">(N/A)</span>
+                  {/* Elaborar (A) */}
+                  <FormField
+                    control={form.control}
+                    name={`otorgamientoConcesiones.0.responsabilidades.${resp.id - 1}.elaborar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-concesion-${resp.id}-elaborar`}
+                          disabled={loading || resp.opciones.elaborar.disabled}
+                          className={
+                            resp.opciones.elaborar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-concesion-${resp.id}-elaborar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.elaborar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Elaborar (A)
+                          {resp.opciones.elaborar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
                     )}
-                  </Label>
-                </div>
+                  />
 
-                {/* Revisar (B) */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`resp-concesion-${resp.id}-revisar`}
-                    disabled={loading || resp.opciones.revisar.disabled}
-                    className={
-                      resp.opciones.revisar.disabled ? "opacity-50" : ""
-                    }
-                  />
-                  <Label
-                    htmlFor={`resp-concesion-${resp.id}-revisar`}
-                    className={`text-sm font-normal ${
-                      resp.opciones.revisar.disabled
-                        ? "text-muted-foreground line-through"
-                        : "cursor-pointer"
-                    }`}
-                  >
-                    Revisar (B)
-                    {resp.opciones.revisar.disabled && (
-                      <span className="ml-1 text-xs">(N/A)</span>
+                  {/* Revisar (B) */}
+                  <FormField
+                    control={form.control}
+                    name={`otorgamientoConcesiones.0.responsabilidades.${resp.id - 1}.revisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-concesion-${resp.id}-revisar`}
+                          disabled={loading || resp.opciones.revisar.disabled}
+                          className={
+                            resp.opciones.revisar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-concesion-${resp.id}-revisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.revisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Revisar (B)
+                          {resp.opciones.revisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
                     )}
-                  </Label>
-                </div>
+                  />
 
-                {/* Firmar, Autorizar o Dictaminar (C) */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`resp-concesion-${resp.id}-firmar`}
-                    disabled={loading || resp.opciones.firmarAutorizar.disabled}
-                    className={
-                      resp.opciones.firmarAutorizar.disabled ? "opacity-50" : ""
-                    }
-                  />
-                  <Label
-                    htmlFor={`resp-concesion-${resp.id}-firmar`}
-                    className={`text-sm font-normal ${
-                      resp.opciones.firmarAutorizar.disabled
-                        ? "text-muted-foreground line-through"
-                        : "cursor-pointer"
-                    }`}
-                  >
-                    Firmar, Autorizar o Dictaminar (C)
-                    {resp.opciones.firmarAutorizar.disabled && (
-                      <span className="ml-1 text-xs">(N/A)</span>
+                  {/* Firmar, Autorizar o Dictaminar (C) */}
+                  <FormField
+                    control={form.control}
+                    name={`otorgamientoConcesiones.0.responsabilidades.${resp.id - 1}.firmarAutorizar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-concesion-${resp.id}-firmar`}
+                          disabled={
+                            loading || resp.opciones.firmarAutorizar.disabled
+                          }
+                          className={
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-concesion-${resp.id}-firmar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Firmar, Autorizar o Dictaminar (C)
+                          {resp.opciones.firmarAutorizar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
                     )}
-                  </Label>
-                </div>
+                  />
 
-                {/* Supervisar (D) */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`resp-concesion-${resp.id}-supervisar`}
-                    disabled={loading || resp.opciones.supervisar.disabled}
-                    className={
-                      resp.opciones.supervisar.disabled ? "opacity-50" : ""
-                    }
-                  />
-                  <Label
-                    htmlFor={`resp-concesion-${resp.id}-supervisar`}
-                    className={`text-sm font-normal ${
-                      resp.opciones.supervisar.disabled
-                        ? "text-muted-foreground line-through"
-                        : "cursor-pointer"
-                    }`}
-                  >
-                    Supervisar (D)
-                    {resp.opciones.supervisar.disabled && (
-                      <span className="ml-1 text-xs">(N/A)</span>
+                  {/* Supervisar (D) */}
+                  <FormField
+                    control={form.control}
+                    name={`otorgamientoConcesiones.0.responsabilidades.${resp.id - 1}.supervisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-concesion-${resp.id}-supervisar`}
+                          disabled={loading || resp.opciones.supervisar.disabled}
+                          className={
+                            resp.opciones.supervisar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-concesion-${resp.id}-supervisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.supervisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Supervisar (D)
+                          {resp.opciones.supervisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
                     )}
-                  </Label>
-                </div>
+                  />
 
-                {/* Emitir o Suscribir (E) */}
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`resp-concesion-${resp.id}-emitir`}
-                    disabled={loading || resp.opciones.emitirSuscribir.disabled}
-                    className={
-                      resp.opciones.emitirSuscribir.disabled ? "opacity-50" : ""
-                    }
-                  />
-                  <Label
-                    htmlFor={`resp-concesion-${resp.id}-emitir`}
-                    className={`text-sm font-normal ${
-                      resp.opciones.emitirSuscribir.disabled
-                        ? "text-muted-foreground line-through"
-                        : "cursor-pointer"
-                    }`}
-                  >
-                    Emitir o Suscribir (E)
-                    {resp.opciones.emitirSuscribir.disabled && (
-                      <span className="ml-1 text-xs">(N/A)</span>
+                  {/* Emitir o Suscribir (E) */}
+                  <FormField
+                    control={form.control}
+                    name={`otorgamientoConcesiones.0.responsabilidades.${resp.id - 1}.emitirSuscribir`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-concesion-${resp.id}-emitir`}
+                          disabled={
+                            loading || resp.opciones.emitirSuscribir.disabled
+                          }
+                          className={
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-concesion-${resp.id}-emitir`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Emitir o Suscribir (E)
+                          {resp.opciones.emitirSuscribir.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
                     )}
-                  </Label>
+                  />
                 </div>
-              </div>
               )}
             </div>
           ))}
@@ -355,7 +412,8 @@ export function OtorgamientoConcesionesSection({
       <div>
         <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
-          Datos Generales de los Procedimientos
+          Datos generales de los procedimientos de concesiones, licencias,
+          permisos, autorizaciones y sus prórrogas
         </h4>
         <p className="text-xs text-blue-600 dark:text-blue-400 mb-6">
           Esta sección se podrá actualizar quincenalmente agregando un nuevo
@@ -442,8 +500,8 @@ export function OtorgamientoConcesionesSection({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  Motivos y Fundamentos Legales{" "}
-                  <span className="text-red-500">*</span>
+                  Motivos o fundamentos legales aplicados para realizar el
+                  procedimiento <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -470,7 +528,8 @@ export function OtorgamientoConcesionesSection({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Nombre de la Persona Física
+                    Nombre de la persona física que solicita o se le otorga el
+                    acto jurídico
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -495,7 +554,8 @@ export function OtorgamientoConcesionesSection({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Razón Social de la Persona Moral
+                    Denominación o razón social de la persona moral que solicita
+                    o se le otorga el acto jurídico
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -521,7 +581,8 @@ export function OtorgamientoConcesionesSection({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  Sector <span className="text-red-500">*</span>
+                  Sector al cual se otorgó el acto jurídico{" "}
+                  <span className="text-red-500">*</span>
                 </FormLabel>
                 <Select
                   onValueChange={field.onChange}
@@ -633,7 +694,7 @@ export function OtorgamientoConcesionesSection({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  Hipervínculo
+                  Hipervínculo de la información del acto jurídico
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -748,8 +809,8 @@ export function OtorgamientoConcesionesSection({
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  ¿La persona servidora pública continúa participando en el
-                  otorgamiento de concesiones, licencias, permisos,
+                  ¿La persona servidora pública continúa participando en los
+                  procedimientos de concesiones, licencias, permisos,
                   autorizaciones y sus prórrogas?{" "}
                   <span className="text-red-500">*</span>
                 </FormLabel>

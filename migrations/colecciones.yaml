@@ -603,6 +603,30 @@ collections:
       versioning: false
     schema:
       name: otorgamientos_concesiones
+  - collection: prueba
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: prueba
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: prueba
   - collection: servidores_intervengan_procedimientos_contrataciones
     meta:
       accountability: all
@@ -5598,44 +5622,6 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
-  - collection: ente_publico
-    field: fk_ente_publico
-    type: uuid
-    meta:
-      collection: ente_publico
-      conditions: null
-      display: null
-      display_options: null
-      field: fk_ente_publico
-      group: null
-      hidden: true
-      interface: select-dropdown-m2o
-      note: null
-      options: null
-      readonly: false
-      required: false
-      sort: 7
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: full
-    schema:
-      name: fk_ente_publico
-      table: ente_publico
-      data_type: uuid
-      default_value: null
-      max_length: null
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: directus_users
-      foreign_key_column: id
   - collection: niveles_jerarquicos
     field: id
     type: integer
@@ -8321,6 +8307,160 @@ fields:
       has_auto_increment: false
       foreign_key_table: null
       foreign_key_column: null
+  - collection: prueba
+    field: id
+    type: integer
+    meta:
+      collection: prueba
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: prueba
+      data_type: integer
+      default_value: nextval('prueba_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: prueba
+    field: dato
+    type: string
+    meta:
+      collection: prueba
+      conditions: null
+      display: null
+      display_options: null
+      field: dato
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: dato
+      table: prueba
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: prueba
+    field: entePublico
+    type: integer
+    meta:
+      collection: prueba
+      conditions: null
+      display: null
+      display_options: null
+      field: entePublico
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: "{{nombre}}"
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: entePublico
+      table: prueba
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: ente_publico
+      foreign_key_column: id
+  - collection: prueba
+    field: otro_dato
+    type: string
+    meta:
+      collection: prueba
+      conditions: null
+      display: null
+      display_options: null
+      field: otro_dato
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: otro_dato
+      table: prueba
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
   - collection: servidores_intervengan_procedimientos_contrataciones
     field: id
     type: uuid
@@ -9992,27 +10132,6 @@ relations:
       constraint_name: enajenaciones_bienes_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
-  - collection: ente_publico
-    field: fk_ente_publico
-    related_collection: directus_users
-    meta:
-      junction_field: null
-      many_collection: ente_publico
-      many_field: fk_ente_publico
-      one_allowed_collections: null
-      one_collection: directus_users
-      one_collection_field: null
-      one_deselect_action: delete
-      one_field: null
-      sort_field: null
-    schema:
-      table: ente_publico
-      column: fk_ente_publico
-      foreign_key_table: directus_users
-      foreign_key_column: id
-      constraint_name: ente_publico_fk_ente_publico_foreign
-      on_update: NO ACTION
-      on_delete: CASCADE
   - collection: niveles_jerarquicos
     field: entePublico
     related_collection: ente_publico
@@ -10368,6 +10487,27 @@ relations:
       foreign_key_table: datos_personas_beneficiarias
       foreign_key_column: id
       constraint_name: otorgamientos_concesiones_informacionperso__24a64f62_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: prueba
+    field: entePublico
+    related_collection: ente_publico
+    meta:
+      junction_field: null
+      many_collection: prueba
+      many_field: entePublico
+      one_allowed_collections: null
+      one_collection: ente_publico
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: prueba
+      column: entePublico
+      foreign_key_table: ente_publico
+      foreign_key_column: id
+      constraint_name: prueba_entepublico_foreign
       on_update: NO ACTION
       on_delete: SET NULL
   - collection: servidores_intervengan_procedimientos_contrataciones

@@ -40,11 +40,13 @@ services:
       GRAPHQL_INTROSPECTION: 0
       CACHE_ENABLED: 0
       WEBSOCKETS_GRAPHQL_ENABLED: 0
-      CORS_CREDENTIALS: 1
-      CORS_ENABLED: 1
-      CORS_ORIGIN: "*"
+      CORS_CREDENTIALS: "true"
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: "true" #"http://localhost:3000" #"*"
       CORS_METHODS: "GET,POST,PATCH,DELETE,PUT,OPTIONS"
-      CORS_ALLOWED_HEADERS: "Content-Type,Authorization"
+      CORS_ALLOWED_HEADERS: "Content-Type,Authorization,X-Requested-With"
+      CORS_EXPOSED_HEADERS: "Content-Range"
+      CORS_MAX_AGE: "86400"
       EMAIL_FROM: ${EMAIL_FROM}
       EMAIL_TRANSPORT: ${EMAIL_TRANSPORT}
       EMAIL_SMTP_HOST: ${SMTP_HOST}

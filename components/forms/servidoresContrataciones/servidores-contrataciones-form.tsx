@@ -108,7 +108,10 @@ export const ServidoresContratacionesForm: React.FC<
   // Valores por defecto usando la función separada
   const defaultValues = useMemo(
     () =>
-      getServidoresContratacionesDefaults(initialData, session?.user?.entePublico),
+      getServidoresContratacionesDefaults(
+        initialData,
+        session?.user?.entePublico
+      ),
     [initialData, session?.user?.entePublico]
   );
 
@@ -331,7 +334,7 @@ export const ServidoresContratacionesForm: React.FC<
               </div>
               <h3 className="text-lg font-semibold text-primary">
                 5. Tipo de procedimiento en el que participa la persona
-                servidora pública
+                servidora pública *
               </h3>
             </div>
 
@@ -379,7 +382,9 @@ export const ServidoresContratacionesForm: React.FC<
                   <FileText className="h-5 w-5 text-primary" />
                 </div>
                 <h3 className="text-lg font-semibold text-primary">
-                  5.1 Participación en procedimientos de contratación pública
+                  5.1 Participación en procedimientos de contratación pública,
+                  de tramitación, atención y resolución para la adjudicación de
+                  un contrato
                 </h3>
               </div>
 
@@ -389,7 +394,8 @@ export const ServidoresContratacionesForm: React.FC<
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-sm font-semibold">
-                      Tipo de Contratación Pública <span className="text-red-500">*</span>
+                      Tipo de Contratación Pública{" "}
+                      <span className="text-red-500">*</span>
                     </FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -403,15 +409,18 @@ export const ServidoresContratacionesForm: React.FC<
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="CONTRATACION_ADQUISICIONES">
-                          Contratación de adquisiciones y arrendamientos de bienes muebles y servicios de cualquier naturaleza
+                          Contratación de adquisiciones y arrendamientos de
+                          bienes muebles y servicios de cualquier naturaleza
                         </SelectItem>
                         <SelectItem value="CONTRATACION_OBRA">
-                          Contratación de obra pública y los servicios relacionados con la misma
+                          Contratación de obra pública y los servicios
+                          relacionados con la misma
                         </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormDescription className="text-xs text-muted-foreground">
-                      Seleccione el tipo de contratación pública en el que participa
+                      Seleccione el tipo de contratación pública en el que
+                      participa
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -421,57 +430,59 @@ export const ServidoresContratacionesForm: React.FC<
           )}
 
           {/* Sección 5.1.1: Contratación de Adquisiciones (solo si tipoContratacion === CONTRATACION_ADQUISICIONES) */}
-          {tipoProcedimiento === "CONTRATACION_PUBLICA" && tipoContratacion === "CONTRATACION_ADQUISICIONES" && (
-            <Accordion type="multiple" className="w-full space-y-4">
-              <AccordionItem
-                value="contratacion-adquisiciones"
-                className="rounded-xl border-2 border-primary/20 overflow-hidden bg-card/95 backdrop-blur shadow-lg"
-              >
-                <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-primary/5 transition-colors">
-                  <div className="flex items-center w-full">
-                    <div className="bg-primary/10 rounded-lg p-2 mr-4">
-                      <ShoppingCart className="h-5 w-5 text-primary" />
+          {tipoProcedimiento === "CONTRATACION_PUBLICA" &&
+            tipoContratacion === "CONTRATACION_ADQUISICIONES" && (
+              <Accordion type="multiple" className="w-full space-y-4">
+                <AccordionItem
+                  value="contratacion-adquisiciones"
+                  className="rounded-xl border-2 border-primary/20 overflow-hidden bg-card/95 backdrop-blur shadow-lg"
+                >
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-primary/5 transition-colors">
+                    <div className="flex items-center w-full">
+                      <div className="bg-primary/10 rounded-lg p-2 mr-4">
+                        <ShoppingCart className="h-5 w-5 text-primary" />
+                      </div>
+                      <span className="text-left text-lg font-semibold text-primary">
+                        5.1.1 Contratación de adquisiciones y arrendamientos de
+                        bienes muebles y servicios de cualquier naturaleza *
+                      </span>
                     </div>
-                    <span className="text-left text-lg font-semibold text-primary">
-                      5.1.1 Participación en contrataciones de adquisiciones,
-                      arrendamientos y servicios
-                    </span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-6 pt-2">
-                  <ContratacionAdquisicionesSection
-                    form={form}
-                    loading={loading}
-                  />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          )}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-6 pt-2">
+                    <ContratacionAdquisicionesSection
+                      form={form}
+                      loading={loading}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            )}
 
           {/* Sección 5.1.2: Obras Públicas (solo si tipoContratacion === CONTRATACION_OBRA) */}
-          {tipoProcedimiento === "CONTRATACION_PUBLICA" && tipoContratacion === "CONTRATACION_OBRA" && (
-            <Accordion type="multiple" className="w-full space-y-4">
-              <AccordionItem
-                value="obras-publicas"
-                className="rounded-xl border-2 border-primary/20 overflow-hidden bg-card/95 backdrop-blur shadow-lg"
-              >
-                <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-primary/5 transition-colors">
-                  <div className="flex items-center w-full">
-                    <div className="bg-primary/10 rounded-lg p-2 mr-4">
-                      <Building className="h-5 w-5 text-primary" />
+          {tipoProcedimiento === "CONTRATACION_PUBLICA" &&
+            tipoContratacion === "CONTRATACION_OBRA" && (
+              <Accordion type="multiple" className="w-full space-y-4">
+                <AccordionItem
+                  value="obras-publicas"
+                  className="rounded-xl border-2 border-primary/20 overflow-hidden bg-card/95 backdrop-blur shadow-lg"
+                >
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-primary/5 transition-colors">
+                    <div className="flex items-center w-full">
+                      <div className="bg-primary/10 rounded-lg p-2 mr-4">
+                        <Building className="h-5 w-5 text-primary" />
+                      </div>
+                      <span className="text-left text-lg font-semibold text-primary">
+                        5.1.2 Participación en obras públicas y servicios
+                        relacionados con las mismas
+                      </span>
                     </div>
-                    <span className="text-left text-lg font-semibold text-primary">
-                      5.1.2 Participación en obras públicas y servicios
-                      relacionados con las mismas
-                    </span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-6 pt-2">
-                  <ObrasPublicasSection form={form} loading={loading} />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          )}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-6 pt-2">
+                    <ObrasPublicasSection form={form} loading={loading} />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            )}
 
           {tipoProcedimiento === "OTORGAMIENTO_CONCECIONES" && (
             <Accordion type="multiple" className="w-full space-y-4">
@@ -486,12 +497,16 @@ export const ServidoresContratacionesForm: React.FC<
                       <FileText className="h-5 w-5 text-primary" />
                     </div>
                     <span className="text-left text-lg font-semibold text-primary">
-                      5.2 Participación en el otorgamiento de concesiones, licencias, permisos, autorizaciones y sus prórrogas
+                      5.2 Participación en el otorgamiento de concesiones,
+                      licencias, permisos, autorizaciones y sus prórrogas *
                     </span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="px-6 pb-6 pt-2">
-                  <OtorgamientoConcesionesSection form={form} loading={loading} />
+                  <OtorgamientoConcesionesSection
+                    form={form}
+                    loading={loading}
+                  />
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -599,8 +614,80 @@ export const ServidoresContratacionesForm: React.FC<
               className="h-12 px-6"
               onClick={() => {
                 console.log("=== BOTÓN GUARDAR PRESIONADO ===");
-                console.log("Valores actuales del formulario:", form.getValues());
+                console.log(
+                  "Valores actuales del formulario:",
+                  form.getValues()
+                );
                 console.log("Errores de validación:", form.formState.errors);
+
+                // Log detallado de errores en contratacionAdquisiciones
+                const hasContratacionErrors = form.formState.errors.contratacionAdquisiciones;
+                console.log("¿Tiene errores en contratacionAdquisiciones?", !!hasContratacionErrors);
+
+                if (hasContratacionErrors) {
+                  console.log("❌ ERRORES EN CONTRATACION ADQUISICIONES:");
+                  console.log("Tipo:", typeof hasContratacionErrors);
+                  console.log("Es array:", Array.isArray(hasContratacionErrors));
+                  console.log("Contenido completo:", hasContratacionErrors);
+
+                  if (Array.isArray(hasContratacionErrors)) {
+                    hasContratacionErrors.forEach((err, idx) => {
+                      console.log(`  Contratación [${idx}]:`, err);
+                      if (err && typeof err === 'object') {
+                        console.log(`    Detalles del error [${idx}]:`, JSON.stringify(err, null, 2));
+                      }
+                    });
+                  }
+                } else {
+                  console.log("✅ NO hay errores en contratacionAdquisiciones");
+                }
+
+                // Log detallado de errores en obrasPublicas
+                const hasObrasErrors = form.formState.errors.obrasPublicas;
+                console.log("¿Tiene errores en obrasPublicas?", !!hasObrasErrors);
+
+                if (hasObrasErrors) {
+                  console.log("❌ ERRORES EN OBRAS PUBLICAS:");
+                  console.log("Tipo:", typeof hasObrasErrors);
+                  console.log("Es array:", Array.isArray(hasObrasErrors));
+                  console.log("Contenido completo:", hasObrasErrors);
+
+                  if (Array.isArray(hasObrasErrors)) {
+                    hasObrasErrors.forEach((err, idx) => {
+                      console.log(`  Obra [${idx}]:`, err);
+                      if (err && typeof err === 'object') {
+                        console.log(`    Detalles del error [${idx}]:`, JSON.stringify(err, null, 2));
+                      }
+                    });
+                  }
+                } else {
+                  console.log("✅ NO hay errores en obrasPublicas");
+                }
+
+                // SIEMPRE mostrar si hay errores en enajenacionBienes
+                const hasEnajenacionErrors = form.formState.errors.enajenacionBienes;
+                console.log("¿Tiene errores en enajenacionBienes?", !!hasEnajenacionErrors);
+
+                // Log detallado de errores en enajenacionBienes
+                if (hasEnajenacionErrors) {
+                  console.log("❌ ERRORES EN ENAJENACION BIENES:");
+                  console.log("Tipo:", typeof hasEnajenacionErrors);
+                  console.log("Es array:", Array.isArray(hasEnajenacionErrors));
+                  console.log("Contenido completo:", hasEnajenacionErrors);
+
+                  // Si es un array, mostrar cada error
+                  if (Array.isArray(hasEnajenacionErrors)) {
+                    hasEnajenacionErrors.forEach((err, idx) => {
+                      console.log(`  [${idx}]:`, err);
+                      if (err && typeof err === 'object') {
+                        console.log(`    Detalles del error [${idx}]:`, JSON.stringify(err, null, 2));
+                      }
+                    });
+                  }
+                } else {
+                  console.log("✅ NO hay errores en enajenacionBienes");
+                }
+
                 console.log("=================================");
               }}
             >

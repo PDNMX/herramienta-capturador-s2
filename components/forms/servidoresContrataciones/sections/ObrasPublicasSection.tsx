@@ -357,132 +357,172 @@ export function ObrasPublicasSection({
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
                   {/* Elaborar (A) */}
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`resp-obra-${resp.id}-elaborar`}
-                      disabled={loading || resp.opciones.elaborar.disabled}
-                      className={
-                        resp.opciones.elaborar.disabled ? "opacity-50" : ""
-                      }
-                    />
-                    <Label
-                      htmlFor={`resp-obra-${resp.id}-elaborar`}
-                      className={`text-sm font-normal ${
-                        resp.opciones.elaborar.disabled
-                          ? "text-muted-foreground line-through"
-                          : "cursor-pointer"
-                      }`}
-                    >
-                      Elaborar (A)
-                      {resp.opciones.elaborar.disabled && (
-                        <span className="ml-1 text-xs">(N/A)</span>
-                      )}
-                    </Label>
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name={`obrasPublicas.0.responsabilidades.${resp.id - 1}.elaborar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-obra-${resp.id}-elaborar`}
+                          disabled={loading || resp.opciones.elaborar.disabled}
+                          className={
+                            resp.opciones.elaborar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-obra-${resp.id}-elaborar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.elaborar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Elaborar (A)
+                          {resp.opciones.elaborar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
                   {/* Revisar (B) */}
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`resp-obra-${resp.id}-revisar`}
-                      disabled={loading || resp.opciones.revisar.disabled}
-                      className={
-                        resp.opciones.revisar.disabled ? "opacity-50" : ""
-                      }
-                    />
-                    <Label
-                      htmlFor={`resp-obra-${resp.id}-revisar`}
-                      className={`text-sm font-normal ${
-                        resp.opciones.revisar.disabled
-                          ? "text-muted-foreground line-through"
-                          : "cursor-pointer"
-                      }`}
-                    >
-                      Revisar (B)
-                      {resp.opciones.revisar.disabled && (
-                        <span className="ml-1 text-xs">(N/A)</span>
-                      )}
-                    </Label>
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name={`obrasPublicas.0.responsabilidades.${resp.id - 1}.revisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-obra-${resp.id}-revisar`}
+                          disabled={loading || resp.opciones.revisar.disabled}
+                          className={
+                            resp.opciones.revisar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-obra-${resp.id}-revisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.revisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Revisar (B)
+                          {resp.opciones.revisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
                   {/* Firmar, Autorizar o Dictaminar (C) */}
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`resp-obra-${resp.id}-firmar`}
-                      disabled={
-                        loading || resp.opciones.firmarAutorizar.disabled
-                      }
-                      className={
-                        resp.opciones.firmarAutorizar.disabled
-                          ? "opacity-50"
-                          : ""
-                      }
-                    />
-                    <Label
-                      htmlFor={`resp-obra-${resp.id}-firmar`}
-                      className={`text-sm font-normal ${
-                        resp.opciones.firmarAutorizar.disabled
-                          ? "text-muted-foreground line-through"
-                          : "cursor-pointer"
-                      }`}
-                    >
-                      Firmar, Autorizar o Dictaminar (C)
-                      {resp.opciones.firmarAutorizar.disabled && (
-                        <span className="ml-1 text-xs">(N/A)</span>
-                      )}
-                    </Label>
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name={`obrasPublicas.0.responsabilidades.${resp.id - 1}.firmarAutorizar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-obra-${resp.id}-firmar`}
+                          disabled={
+                            loading || resp.opciones.firmarAutorizar.disabled
+                          }
+                          className={
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-obra-${resp.id}-firmar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Firmar, Autorizar o Dictaminar (C)
+                          {resp.opciones.firmarAutorizar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
                   {/* Supervisar (D) */}
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`resp-obra-${resp.id}-supervisar`}
-                      disabled={loading || resp.opciones.supervisar.disabled}
-                      className={
-                        resp.opciones.supervisar.disabled ? "opacity-50" : ""
-                      }
-                    />
-                    <Label
-                      htmlFor={`resp-obra-${resp.id}-supervisar`}
-                      className={`text-sm font-normal ${
-                        resp.opciones.supervisar.disabled
-                          ? "text-muted-foreground line-through"
-                          : "cursor-pointer"
-                      }`}
-                    >
-                      Supervisar (D)
-                      {resp.opciones.supervisar.disabled && (
-                        <span className="ml-1 text-xs">(N/A)</span>
-                      )}
-                    </Label>
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name={`obrasPublicas.0.responsabilidades.${resp.id - 1}.supervisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-obra-${resp.id}-supervisar`}
+                          disabled={loading || resp.opciones.supervisar.disabled}
+                          className={
+                            resp.opciones.supervisar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-obra-${resp.id}-supervisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.supervisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Supervisar (D)
+                          {resp.opciones.supervisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
                   {/* Emitir o Suscribir (E) */}
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`resp-obra-${resp.id}-emitir`}
-                      disabled={
-                        loading || resp.opciones.emitirSuscribir.disabled
-                      }
-                      className={
-                        resp.opciones.emitirSuscribir.disabled
-                          ? "opacity-50"
-                          : ""
-                      }
-                    />
-                    <Label
-                      htmlFor={`resp-obra-${resp.id}-emitir`}
-                      className={`text-sm font-normal ${
-                        resp.opciones.emitirSuscribir.disabled
-                          ? "text-muted-foreground line-through"
-                          : "cursor-pointer"
-                      }`}
-                    >
-                      Emitir o Suscribir (E)
-                      {resp.opciones.emitirSuscribir.disabled && (
-                        <span className="ml-1 text-xs">(N/A)</span>
-                      )}
-                    </Label>
-                  </div>
+                  <FormField
+                    control={form.control}
+                    name={`obrasPublicas.0.responsabilidades.${resp.id - 1}.emitirSuscribir`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-obra-${resp.id}-emitir`}
+                          disabled={
+                            loading || resp.opciones.emitirSuscribir.disabled
+                          }
+                          className={
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-obra-${resp.id}-emitir`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Emitir o Suscribir (E)
+                          {resp.opciones.emitirSuscribir.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
                 </div>
               )}
             </div>

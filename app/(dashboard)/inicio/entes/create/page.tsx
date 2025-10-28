@@ -38,13 +38,13 @@ export default function Page({ params }) {
             withToken(
               session?.access_token,
               readItems(
-                "servidores_intervengan_en_procedimientos_de_contrataciones",
+                "servidores_intervengan_procedimientos_contrataciones",
                 {
                   limit: 1,
                   fields: ["*", "datosGenerales.*"],
                   filter: {
                     id: {
-                      _eq: j,
+                      _eq: faltaId,
                     },
                   },
                 }

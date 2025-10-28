@@ -244,6 +244,11 @@ export function EmpleoCargoComisionSection({ form, loading }: EmpleoCargoComisio
               onValueChange={(value) => {
                 field.onChange(value);
                 setShowNivelJerarquicoOtro(value === "OTRO");
+
+                // Si NO es "OTRO", limpiar el campo nivelJerarquicoOtro
+                if (value !== "OTRO") {
+                  form.setValue("empleoCargoComision.nivelJerarquicoOtro", "");
+                }
               }}
               value={field.value}
               disabled={loading}

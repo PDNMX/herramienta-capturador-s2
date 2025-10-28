@@ -131,7 +131,7 @@ export const servidoresContratacionesSchema = z.object({
       "PARTICIPANTE_JUNTA",
       "OTRO"
     ])).optional(),
-    tipoAreaOtro: z.string().min(1, { message: "Debe especificar el tipo de área." }).optional(),
+    tipoAreaOtro: z.string().optional().or(z.literal("")),
 
     // Niveles de responsabilidad para cada objeto
     responsabilidades: z.array(z.object({
@@ -152,15 +152,15 @@ export const servidoresContratacionesSchema = z.object({
       "INVITACION_TRES_PERSONAS",
       "ADJUDICACION_DIRECTA",
       "OTRO"
-    ]).optional(),
-    tipoProcedimientoOtro: z.string().min(1, { message: "Debe especificar el tipo de procedimiento." }).optional(),
+    ]).optional().or(z.literal("")),
+    tipoProcedimientoOtro: z.string().optional().or(z.literal("")),
     materia: z.enum([
       "ARRENDAMIENTO",
       "ADQUISICION",
       "SERVICIOS",
       "OTRO"
-    ]).optional(),
-    materiaOtro: z.string().min(1, { message: "Debe especificar la materia." }).optional(),
+    ]).optional().or(z.literal("")),
+    materiaOtro: z.string().optional().or(z.literal("")),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 
@@ -170,7 +170,7 @@ export const servidoresContratacionesSchema = z.object({
     primerApellidoBeneficiario: z.string().optional(),
     segundoApellidoBeneficiario: z.string().optional(),
 
-    continuaParticipando: z.boolean().optional(),
+    continuaParticipando: z.boolean().optional().or(z.literal(false)),
   })).optional(),
 
   // 5.1.2 Obras públicas*
@@ -185,7 +185,7 @@ export const servidoresContratacionesSchema = z.object({
       "PARTICIPANTE_JUNTA",
       "OTRO"
     ])).optional(),
-    tipoAreaOtro: z.string().min(1, { message: "Debe especificar el tipo de área." }).optional(),
+    tipoAreaOtro: z.string().optional().or(z.literal("")),
 
     // Niveles de responsabilidad
     responsabilidades: z.array(z.object({
@@ -206,14 +206,14 @@ export const servidoresContratacionesSchema = z.object({
       "INVITACION_TRES_PERSONAS",
       "ADJUDICACION_DIRECTA",
       "OTRO"
-    ]).optional(),
-    tipoProcedimientoOtro: z.string().min(1, { message: "Debe especificar el tipo de procedimiento." }).optional(),
+    ]).optional().or(z.literal("")),
+    tipoProcedimientoOtro: z.string().optional().or(z.literal("")),
     materia: z.enum([
       "OBRA_PUBLICA",
       "SERVICIOS_RELACIONADOS",
       "OTRO"
-    ]).optional(),
-    materiaOtro: z.string().min(1, { message: "Debe especificar la materia." }).optional(),
+    ]).optional().or(z.literal("")),
+    materiaOtro: z.string().optional().or(z.literal("")),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 
@@ -223,7 +223,7 @@ export const servidoresContratacionesSchema = z.object({
     primerApellidoBeneficiario: z.string().optional(),
     segundoApellidoBeneficiario: z.string().optional(),
 
-    continuaParticipando: z.boolean().optional(),
+    continuaParticipando: z.boolean().optional().or(z.literal(false)),
   })).optional(),
 
   // 5.2 Otorgamiento de concesiones*
@@ -253,7 +253,7 @@ export const servidoresContratacionesSchema = z.object({
     motivosFundamentos: z.string().optional(),
     nombrePersonaFisica: z.string().optional(),
     razonSocialPersonaMoral: z.string().optional(),
-    sector: z.enum(["PUBLICO", "PRIVADO"]).optional(),
+    sector: z.enum(["PUBLICO", "PRIVADO"]).optional().or(z.literal("")),
     fechaInicioVigencia: z.string().optional(),
     fechaConclusionVigencia: z.string().optional(),
     monto: z.string().optional(),
@@ -268,7 +268,7 @@ export const servidoresContratacionesSchema = z.object({
     primerApellidoBeneficiario: z.string().optional(),
     segundoApellidoBeneficiario: z.string().optional(),
 
-    continuaParticipando: z.boolean().optional(),
+    continuaParticipando: z.boolean().optional().or(z.literal(false)),
   })).optional(),
 
   // 5.3 Enajenación de bienes*
@@ -286,11 +286,11 @@ export const servidoresContratacionesSchema = z.object({
 
     // Datos generales del procedimiento
     numeroExpediente: z.string().optional(),
-    descripcion: z.string().min(1, { message: "La descripción es obligatoria." }),
+    descripcion: z.string().optional(),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 
-    continuaParticipando: z.boolean().optional(),
+    continuaParticipando: z.boolean().optional().or(z.literal(false)),
   })).optional(),
 
   // 5.4 Dictaminación de avalúos*
@@ -308,11 +308,11 @@ export const servidoresContratacionesSchema = z.object({
 
     // Datos generales del procedimiento
     numeroExpediente: z.string().optional(),
-    descripcion: z.string().min(1, { message: "La descripción es obligatoria." }),
+    descripcion: z.string().optional(),
     fechaInicio: z.string().optional(),
     fechaConclusion: z.string().optional(),
 
-    continuaParticipando: z.boolean().optional(),
+    continuaParticipando: z.boolean().optional().or(z.literal(false)),
   })).optional(),
 
   // Campo 6: Observaciones

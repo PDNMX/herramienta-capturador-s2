@@ -63,7 +63,7 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [ambito, setAmbito] = useState(
-    initialData ? initialData.ambitoGobierno : "",
+    initialData ? initialData.ambitoGobierno : ""
   );
   const [municipiosData, setMunicipiosData] = useState([]);
   const { session } = useCurrentSession();
@@ -91,7 +91,7 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
       entidad: session?.user?.entePublico || 0,
       municipio: initialData?.municipio ?? "", // Define como cadena vacía o null
     }),
-    [initialData, session?.user?.entePublico],
+    [initialData, session?.user?.entePublico]
   );
 
   const form = useForm<EnteFormValues>({
@@ -132,8 +132,8 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                     _eq: session?.user?.entePublico,
                   },
                 },
-              }),
-            ),
+              })
+            )
           );
           //const data = await response.json();
           //console.log(response);
@@ -165,15 +165,12 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
         await directus.request(
           withToken(
             session?.access_token,
-            updateItem("entes", initialData.id, data),
-          ),
+            updateItem("entes", initialData.id, data)
+          )
         );
       } else {
         await directus.request(
-          withToken(
-            session?.access_token, 
-            createItem("entes", data)
-          ),
+          withToken(session?.access_token, createItem("entes", data))
         );
       }
       router.refresh();
@@ -236,7 +233,8 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
       <FormProvider {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 w-full">
+          className="space-y-8 w-full"
+        >
           <div className="md:grid md:grid-cols-1 gap-8">
             <FormField
               control={form.control}
@@ -270,12 +268,13 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                     disabled={loading}
                     onValueChange={(value) => {
                       handleAmbitoChange(
-                        value as "Estatal" | "Federal" | "Municipal",
+                        value as "Estatal" | "Federal" | "Municipal"
                       );
                       field.onChange(value);
                     }}
                     defaultValue={field.value}
-                    value={field.value ?? ""}>
+                    value={field.value ?? ""}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue
@@ -306,7 +305,8 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                     disabled={loading}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    value={field.value ?? ""}>
+                    value={field.value ?? ""}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecciona un poder" />
@@ -334,9 +334,10 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                 <FormItem
                   className={clsx(
                     "flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm",
-                    { disabled: loading },
+                    { disabled: loading }
                   )}
-                  data-tooltip="Habilitará solo el sistema S3">
+                  data-tooltip="Habilitará solo el sistema S3"
+                >
                   <div className="space-y-0.5">
                     <FormLabel>Órgano Interno de Control</FormLabel>
                     <FormDescription>
@@ -371,9 +372,10 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                 <FormItem
                   className={clsx(
                     "flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm",
-                    { disabled: loading || form.watch("controlOIC") },
+                    { disabled: loading || form.watch("controlOIC") }
                   )}
-                  data-tooltip="Deshabilita la opción de Órgano Interno de Control">
+                  data-tooltip="Deshabilita la opción de Órgano Interno de Control"
+                >
                   <div className="space-y-0.5">
                     <FormLabel>Tribunal de Justicia Administrativa</FormLabel>
                     <FormDescription>
@@ -406,9 +408,10 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                 <FormItem
                   className={clsx(
                     "items-center justify-between rounded-lg border p-3 shadow-sm",
-                    { disabled: loading || form.watch("controlOIC") },
+                    { disabled: loading || form.watch("controlOIC") }
                   )}
-                  data-tooltip="Deshabilitado si Órgano Interno de Control está activado">
+                  data-tooltip="Deshabilitado si Órgano Interno de Control está activado"
+                >
                   <div className="space-y-0.5">
                     <FormLabel>Sistema 1</FormLabel>
                     <FormDescription>
@@ -434,9 +437,10 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                 <FormItem
                   className={clsx(
                     "items-center justify-between rounded-lg border p-3 shadow-sm",
-                    { disabled: loading || form.watch("controlOIC") },
+                    { disabled: loading || form.watch("controlOIC") }
                   )}
-                  data-tooltip="Deshabilitado si Órgano Interno de Control está activado">
+                  data-tooltip="Deshabilitado si Órgano Interno de Control está activado"
+                >
                   <div className="space-y-0.5">
                     <FormLabel>Sistema 2</FormLabel>
                     <FormDescription>
@@ -467,9 +471,10 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                         loading ||
                         (!form.watch("controlOIC") &&
                           !form.watch("controlTribunal")),
-                    },
+                    }
                   )}
-                  data-tooltip="Disponible si se activa Órgano Interno de Control o Tribunal de Justicia Administrativa">
+                  data-tooltip="Disponible si se activa Órgano Interno de Control o Tribunal de Justicia Administrativa"
+                >
                   <div className="space-y-0.5">
                     <FormLabel>Sistema 3</FormLabel>
                     <FormDescription>
@@ -500,9 +505,10 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                 <FormItem
                   className={clsx(
                     "items-center justify-between rounded-lg border p-3 shadow-sm",
-                    { disabled: loading || form.watch("controlOIC") },
+                    { disabled: loading || form.watch("controlOIC") }
                   )}
-                  data-tooltip="Deshabilitado si Órgano Interno de Control está activado">
+                  data-tooltip="Deshabilitado si Órgano Interno de Control está activado"
+                >
                   <div className="space-y-0.5">
                     <FormLabel>Sistema 6</FormLabel>
                     <FormDescription>
@@ -554,12 +560,13 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                     disabled={loading || ambito !== "Municipal"}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                    value={field.value ?? ""}>
+                    value={field.value ?? ""}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecciona un municipio">
                           {municipiosData.find(
-                            (m) => m.id_municipio === field.value,
+                            (m) => m.id_municipio === field.value
                           )?.nombre || ""}
                         </SelectValue>
                       </SelectTrigger>
@@ -570,7 +577,8 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                       {municipiosData.map((municipio) => (
                         <SelectItem
                           key={municipio.id_municipio}
-                          value={municipio.id_municipio}>
+                          value={municipio.id_municipio}
+                        >
                           {municipio.nombre}
                         </SelectItem>
                       ))}

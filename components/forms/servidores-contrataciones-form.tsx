@@ -416,7 +416,7 @@ export const ServidoresContratacionesForm: React.FC<
                   </Select>
                   <FormDescription>
                     Seleccione el tipo de procedimiento en el que participa la
-                    persona servidora pública
+                    persona servidora pública *
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

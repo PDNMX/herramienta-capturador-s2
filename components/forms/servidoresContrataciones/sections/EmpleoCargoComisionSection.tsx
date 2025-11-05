@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Briefcase, Building, MapPin } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface EmpleoCargoComisionSectionProps {
   form: any;
@@ -75,6 +75,12 @@ const nivelesJerarquicos = [
 
 export function EmpleoCargoComisionSection({ form, loading }: EmpleoCargoComisionSectionProps) {
   const [showNivelJerarquicoOtro, setShowNivelJerarquicoOtro] = useState(false);
+
+  // Sincronizar el estado local con el valor del formulario cuando se carga
+  useEffect(() => {
+    const nivelJerarquico = form.watch("empleoCargoComision.nivelJerarquico");
+    setShowNivelJerarquicoOtro(nivelJerarquico === "OTRO");
+  }, [form.watch("empleoCargoComision.nivelJerarquico")]);
 
   return (
     <div className="space-y-6">

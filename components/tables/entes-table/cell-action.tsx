@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useState, useEffect } from "react";
-import directus from "@/lib/directus"; // Importa directus
+import { directus } from "@/services/directus";
 import { useToast } from "@/components/ui/use-toast";
-import { deleteItem, withToken } from "@directus/sdk"; // Importa deleteItem
+import { deleteItem } from "@directus/sdk";
 import Link from "next/link";
 
 export const CellAction = ({ data, session }: any) => {
@@ -25,27 +25,28 @@ export const CellAction = ({ data, session }: any) => {
     if (localStorage.getItem("deleted") === "true") {
       toast({
         variant: "default",
-        title: "Ente público eliminado exitosamente",
+        title: "Registro eliminado exitosamente",
       });
-      localStorage.removeItem("deleted"); // Elimina el estado después de mostrar el toast
+      localStorage.removeItem("deleted");
     }
   }, []);
 
   const onConfirm = async () => {
     try {
       setLoading(true);
-      if (data && session) {
-        await directus.request(
-          withToken(session?.access_token, deleteItem("entes", data.id)),
+      if (data && session?.access_token) {
+        const api = directus(session.access_token);
+        await api.request(
+          deleteItem("servidores_intervengan_procedimientos_contrataciones", data.id)
         );
-        localStorage.setItem("deleted", "true"); // Almacena el estado
+        localStorage.setItem("deleted", "true");
         window.location.reload();
       }
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
+        title: "Error al eliminar",
+        description: "Hubo un problema al eliminar el registro.",
       });
     } finally {
       setLoading(false);

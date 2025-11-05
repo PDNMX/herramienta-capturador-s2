@@ -2,118 +2,82 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
-import { User } from "@/constants/data";
-import { CheckCircle, XCircle } from "lucide-react";
 
-export const createColumns = (visibilityMap, session): ColumnDef<User>[] => [
+export const createColumns = (session): ColumnDef<any>[] => [
   {
-    accessorKey: "nombre",
-    header: () => <div className="text-left">Nombre</div>, // Header aligned to the left
-    cell: ({ row }) => <div className="text-left">{row.original.nombre}</div>, // Cell content aligned to the left
-    size: 450,
-    enableSorting: true,
-  },
-  visibilityMap.ambitoGobierno && {
-    accessorKey: "ambitoGobierno",
-    header: () => <div className="text-center whitespace-nowrap">Ámbito Gobierno</div>,
-    cell: ({ row }) => (
-      <div className="text-center whitespace-nowrap">
-        {row.original.ambitoGobierno}
-      </div>
-    ),
-    size: 130,
-    enableSorting: true,
-  },
-  visibilityMap.poderGobierno && {
-    accessorKey: "poderGobierno",
-    header: () => <div className="text-center whitespace-nowrap">Poder Gobierno</div>,
-    cell: ({ row }) => (
-      <div className="text-center whitespace-nowrap">
-        {row.original.poderGobierno}
-      </div>
-    ),
-    size: 130,
-    enableSorting: true,
-  },
-  visibilityMap.sistema1 && {
-    accessorKey: "sistema1",
-    header: () => <div className="text-center">S1</div>,
-    cell: ({ row }) => (
-      <div className="flex justify-center items-center h-full">
-        {row.original.sistema1 ? (
-          <CheckCircle className="text-green-500" />
-        ) : (
-          <XCircle className="text-red-500" />
-        )}
-      </div>
-    ),
-    size: 25,
-    enableSorting: true,
-    sortingFn: (rowA, rowB, columnId) => {
-      const a = rowA.original[columnId] ? 1 : 0;
-      const b = rowB.original[columnId] ? 1 : 0;
-      return a - b;
+    accessorKey: "fecha",
+    header: () => <div className="text-left">Fecha</div>,
+    cell: ({ row }) => {
+      const fecha = row.original.fecha;
+      if (!fecha) return <div className="text-left">-</div>;
+      const formattedDate = new Date(fecha).toLocaleDateString('es-MX', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+      return <div className="text-left">{formattedDate}</div>;
     },
-  },
-  visibilityMap.sistema2 && {
-    accessorKey: "sistema2",
-    header: () => <div className="text-center">S2</div>,
-    cell: ({ row }) => (
-      <div className="flex justify-center items-center h-full">
-        {row.original.sistema2 ? (
-          <CheckCircle className="text-green-500" />
-        ) : (
-          <XCircle className="text-red-500" />
-        )}
-      </div>
-    ),
-    size: 25,
+    size: 120,
     enableSorting: true,
-    sortingFn: (rowA, rowB, columnId) => {
-      const a = rowA.original[columnId] ? 1 : 0;
-      const b = rowB.original[columnId] ? 1 : 0;
-      return a - b;
-    },
   },
-  visibilityMap.sistema3 && {
-    accessorKey: "sistema3",
-    header: () => <div className="text-center">S3</div>,
+  {
+    accessorKey: "ejercicio",
+    header: () => <div className="text-center">Ejercicio</div>,
     cell: ({ row }) => (
-      <div className="flex justify-center items-center h-full">
-        {row.original.sistema3 ? (
-          <CheckCircle className="text-green-500" />
-        ) : (
-          <XCircle className="text-red-500" />
-        )}
-      </div>
+      <div className="text-center">{row.original.ejercicio || '-'}</div>
     ),
-    size: 25,
+    size: 100,
     enableSorting: true,
-    sortingFn: (rowA, rowB, columnId) => {
-      const a = rowA.original[columnId] ? 1 : 0;
-      const b = rowB.original[columnId] ? 1 : 0;
-      return a - b;
-    },
   },
-  visibilityMap.sistema6 && {
-    accessorKey: "sistema6",
-    header: () => <div className="text-center">S6</div>,
+  {
+    id: "nombre",
+    accessorFn: (row) => row.datosGenerales?.nombre,
+    header: () => <div className="text-left">Nombre(s)</div>,
     cell: ({ row }) => (
-      <div className="flex justify-center items-center h-full">
-        {row.original.sistema6 ? (
-          <CheckCircle className="text-green-500" />
-        ) : (
-          <XCircle className="text-red-500" />
-        )}
-      </div>
+      <div className="text-left">{row.original.datosGenerales?.nombre || '-'}</div>
     ),
-    size: 25,
+    size: 200,
     enableSorting: true,
-    sortingFn: (rowA, rowB, columnId) => {
-      const a = rowA.original[columnId] ? 1 : 0;
-      const b = rowB.original[columnId] ? 1 : 0;
-      return a - b;
-    },
+  },
+  {
+    id: "primerApellido",
+    accessorFn: (row) => row.datosGenerales?.primerApellido,
+    header: () => <div className="text-left">Primer Apellido</div>,
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.datosGenerales?.primerApellido || '-'}</div>
+    ),
+    size: 200,
+    enableSorting: true,
+  },
+  {
+    id: "segundoApellido",
+    accessorFn: (row) => row.datosGenerales?.segundoApellido,
+    header: () => <div className="text-left">Segundo Apellido</div>,
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.datosGenerales?.segundoApellido || '-'}</div>
+    ),
+    size: 200,
+    enableSorting: true,
+  },
+  {
+    id: "entidadFederativa",
+    accessorFn: (row) => row.empleoCargoComision?.entidadFederativa,
+    header: () => <div className="text-left">Entidad Federativa</div>,
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.empleoCargoComision?.entidadFederativa || '-'}</div>
+    ),
+    size: 180,
+    enableSorting: true,
+  },
+  {
+    id: "siglasEntePublico",
+    accessorFn: (row) => row.empleoCargoComision?.siglasEntePublico,
+    header: () => <div className="text-left">Siglas Ente Público</div>,
+    cell: ({ row }) => (
+      <div className="text-left">{row.original.empleoCargoComision?.siglasEntePublico || '-'}</div>
+    ),
+    size: 180,
+    enableSorting: true,
   },
   {
     id: "actions",
@@ -122,4 +86,4 @@ export const createColumns = (visibilityMap, session): ColumnDef<User>[] => [
     size: 25,
     enableSorting: false,
   },
-].filter(Boolean);
+];

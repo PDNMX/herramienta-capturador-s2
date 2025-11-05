@@ -1,19 +1,36 @@
-import directus from "@/lib/directus";
-import { createItem, updateItem, withToken } from "@directus/sdk";
+import { directus } from "@/services/directus";
+import { createItem, updateItem, deleteItem, readItems } from "@directus/sdk";
 import { ServidoresContratacionesFormValues } from "./schema";
 
 // Helper function para verificar si una sección de contratación tiene datos significativos
 function tieneContenidoSignificativo(item: any): boolean {
   if (!item) return false;
 
-  // Verificar si tiene datos en campos clave (además de los defaults vacíos)
+  // Campos de contrataciones/obras
   const tieneTipoArea = item.tipoArea && item.tipoArea.length > 0;
   const tieneNumeroExpediente = item.numeroExpediente && item.numeroExpediente.trim() !== "";
   const tieneTipoProcedimiento = item.tipoProcedimiento && item.tipoProcedimiento !== "";
   const tieneMateria = item.materia && item.materia !== "";
   const tieneMonto = item.monto && item.monto.trim() !== "";
-  const tieneFechas = (item.fechaInicio && item.fechaInicio !== "") || (item.fechaConclusion && item.fechaConclusion !== "");
-  const tieneBeneficiario = (item.nombreBeneficiario && item.nombreBeneficiario.trim() !== "") || (item.razonSocial && item.razonSocial.trim() !== "");
+  const tieneFechas = (item.fechaInicio && item.fechaInicio !== "") ||
+                      (item.fechaConclusion && item.fechaConclusion !== "") ||
+                      (item.fechaInicioVigencia && item.fechaInicioVigencia !== "") ||
+                      (item.fechaConclusionVigencia && item.fechaConclusionVigencia !== "");
+  const tieneBeneficiario = (item.nombreBeneficiario && item.nombreBeneficiario.trim() !== "") ||
+                            (item.razonSocial && item.razonSocial.trim() !== "") ||
+                            (item.nombrePersonaFisica && item.nombrePersonaFisica.trim() !== "") ||
+                            (item.razonSocialPersonaMoral && item.razonSocialPersonaMoral.trim() !== "");
+
+  // Campos específicos de concesiones
+  const tieneTipoActoJuridico = item.tipoActoJuridico && item.tipoActoJuridico.length > 0;
+  const tieneDenominacion = item.denominacion && item.denominacion.trim() !== "";
+  const tieneObjeto = item.objeto && item.objeto.trim() !== "";
+  const tieneMotivos = item.motivosFundamentos && item.motivosFundamentos.trim() !== "";
+  const tieneSector = item.sector && item.sector !== "";
+  const tieneHipervinculo = item.hipervinculo && item.hipervinculo.trim() !== "";
+
+  // Campos de enajenación/avalúos
+  const tieneDescripcion = item.descripcion && item.descripcion.trim() !== "";
 
   // Verificar si tiene al menos una responsabilidad marcada
   let tieneResponsabilidades = false;
@@ -26,7 +43,120 @@ function tieneContenidoSignificativo(item: any): boolean {
   // Considera que tiene contenido significativo si tiene al menos uno de estos
   return tieneTipoArea || tieneNumeroExpediente || tieneTipoProcedimiento ||
          tieneMateria || tieneMonto || tieneFechas || tieneBeneficiario ||
-         tieneResponsabilidades;
+         tieneResponsabilidades || tieneTipoActoJuridico || tieneDenominacion ||
+         tieneObjeto || tieneMotivos || tieneSector || tieneHipervinculo || tieneDescripcion;
+}
+
+// Helper function para eliminar registros relacionados cuando se actualiza
+async function eliminarRegistrosViejos(
+  api: any,
+  initialData: any,
+  tipo: 'contrataciones' | 'obras' | 'concesiones' | 'enajenaciones' | 'avaluos'
+) {
+  try {
+    if (tipo === 'contrataciones' && initialData?.contratacionesAdquisiciones && Array.isArray(initialData.contratacionesAdquisiciones)) {
+      console.log(`   Eliminando ${initialData.contratacionesAdquisiciones.length} contrataciones viejas...`);
+      for (const contratacion of initialData.contratacionesAdquisiciones) {
+        if (contratacion.id) {
+          // Eliminar vínculos en tipos_adquisiciones_obras
+          const vinculos = await api.request(
+            readItems("tipos_adquisiciones_obras", {
+              filter: { contratacionAdquisicion: { _eq: contratacion.id } }
+            })
+          );
+          for (const vinculo of vinculos) {
+            await api.request(deleteItem("tipos_adquisiciones_obras", vinculo.id));
+          }
+
+          // Eliminar datos relacionados
+          if (contratacion.datosContratacionPublica?.id) {
+            await api.request(deleteItem("datos_contrataciones_publicas", contratacion.datosContratacionPublica.id));
+          }
+          if (contratacion.nivelResponsabilidadContratacion?.id) {
+            await api.request(deleteItem("niveles_responsabilidades_adquisiciones", contratacion.nivelResponsabilidadContratacion.id));
+          }
+          if (contratacion.informacionPersonasBeneficiarias?.id) {
+            await api.request(deleteItem("datos_personas_beneficiarias", contratacion.informacionPersonasBeneficiarias.id));
+          }
+
+          // Eliminar la contratación principal
+          await api.request(deleteItem("datos_procedimientos_adquisiciones", contratacion.id));
+        }
+      }
+    }
+
+    if (tipo === 'obras' && initialData?.obrasPublicas && Array.isArray(initialData.obrasPublicas)) {
+      console.log(`   Eliminando ${initialData.obrasPublicas.length} obras viejas...`);
+      for (const obra of initialData.obrasPublicas) {
+        if (obra.id) {
+          // Eliminar vínculos en tipos_adquisiciones_obras
+          const vinculos = await api.request(
+            readItems("tipos_adquisiciones_obras", {
+              filter: { contratacionObra: { _eq: obra.id } }
+            })
+          );
+          for (const vinculo of vinculos) {
+            await api.request(deleteItem("tipos_adquisiciones_obras", vinculo.id));
+          }
+
+          // Eliminar datos relacionados
+          if (obra.datosGeneralesObra?.id) {
+            await api.request(deleteItem("datos_generales_obras", obra.datosGeneralesObra.id));
+          }
+          if (obra.nivelResponsabilidadObra?.id) {
+            await api.request(deleteItem("niveles_responsabilidades_obras", obra.nivelResponsabilidadObra.id));
+          }
+          if (obra.informacionPersonasBeneficiarias?.id) {
+            await api.request(deleteItem("datos_personas_beneficiarias", obra.informacionPersonasBeneficiarias.id));
+          }
+
+          // Eliminar la obra principal
+          await api.request(deleteItem("datos_procedimientos_obras", obra.id));
+        }
+      }
+    }
+
+    if (tipo === 'concesiones' && initialData?.otorgamientoConcesion && typeof initialData.otorgamientoConcesion === 'object' && initialData.otorgamientoConcesion.id) {
+      console.log(`   Eliminando concesión vieja ID: ${initialData.otorgamientoConcesion.id}...`);
+      if (initialData.otorgamientoConcesion.datosGeneralesConcesiones?.id) {
+        await api.request(deleteItem("datos_generales_concesiones", initialData.otorgamientoConcesion.datosGeneralesConcesiones.id));
+      }
+      if (initialData.otorgamientoConcesion.nivelResponsabilidadConcesiones?.id) {
+        await api.request(deleteItem("niveles_responsabilidades_concesiones", initialData.otorgamientoConcesion.nivelResponsabilidadConcesiones.id));
+      }
+      if (initialData.otorgamientoConcesion.informacionPersonasBeneficiarias?.id) {
+        await api.request(deleteItem("datos_personas_beneficiarias", initialData.otorgamientoConcesion.informacionPersonasBeneficiarias.id));
+      }
+      await api.request(deleteItem("otorgamiento_concesiones", initialData.otorgamientoConcesion.id));
+    }
+
+    if (tipo === 'enajenaciones' && initialData?.enajenacionBien && typeof initialData.enajenacionBien === 'object' && initialData.enajenacionBien.id) {
+      console.log(`   Eliminando enajenación vieja ID: ${initialData.enajenacionBien.id}...`);
+      if (initialData.enajenacionBien.datosEnajenacionesBienes?.id) {
+        await api.request(deleteItem("datos_enajenaciones_bienes", initialData.enajenacionBien.datosEnajenacionesBienes.id));
+      }
+      if (initialData.enajenacionBien.nivelesResponsabilidadesEnajenaciones?.id) {
+        await api.request(deleteItem("niveles_responsabilidades_enajenaciones", initialData.enajenacionBien.nivelesResponsabilidadesEnajenaciones.id));
+      }
+      await api.request(deleteItem("enajenaciones_bienes", initialData.enajenacionBien.id));
+    }
+
+    if (tipo === 'avaluos' && initialData?.avaluosJustipreciacion && typeof initialData.avaluosJustipreciacion === 'object' && initialData.avaluosJustipreciacion.id) {
+      console.log(`   Eliminando avalúo viejo ID: ${initialData.avaluosJustipreciacion.id}...`);
+      if (initialData.avaluosJustipreciacion.datosDictaminacionesAvaluos?.id) {
+        await api.request(deleteItem("datos_dictaminaciones_avaluos", initialData.avaluosJustipreciacion.datosDictaminacionesAvaluos.id));
+      }
+      if (initialData.avaluosJustipreciacion.nivelesResponsabilidadesAvaluos?.id) {
+        await api.request(deleteItem("niveles_responsabilidades_avaluos", initialData.avaluosJustipreciacion.nivelesResponsabilidadesAvaluos.id));
+      }
+      await api.request(deleteItem("dictaminaciones_avaluos", initialData.avaluosJustipreciacion.id));
+    }
+
+    console.log(`   ✓ Registros viejos eliminados`);
+  } catch (error: any) {
+    console.warn(`   ⚠ Advertencia al eliminar registros viejos:`, error.message);
+    // No lanzar error, solo advertencia - algunos registros pueden no existir
+  }
 }
 
 export async function saveServidorContratacion(
@@ -50,12 +180,11 @@ export async function saveServidorContratacion(
     throw new Error("No se proporcionó token de acceso. Verifica que la sesión esté activa.");
   }
 
-  const api = directus;
+  const api = directus(accessToken);
 
-  // 1. Crear registro de datos_generales si existe
+  // 1. Crear o actualizar registro de datos_generales si existe
   let datosGeneralesId: number | null = null;
   if (data.datosGenerales) {
-    console.log("4. Creando datos_generales...");
     const datosGeneralesData = {
       nombre: data.datosGenerales.nombre,
       primerApellido: data.datosGenerales.primerApellido,
@@ -67,23 +196,35 @@ export async function saveServidorContratacion(
     };
 
     try {
-      const datosGeneralesResult = await api.request(
-        withToken(accessToken, createItem("datos_generales", datosGeneralesData))
-      );
-      datosGeneralesId = (datosGeneralesResult as any).id;
-      console.log("   ✓ datos_generales creado con ID:", datosGeneralesId);
+      if (initialData?.datosGenerales && typeof initialData.datosGenerales === 'object' && initialData.datosGenerales.id) {
+        // Actualizar registro existente
+        console.log("4. Actualizando datos_generales existente, ID:", initialData.datosGenerales.id);
+        await api.request(
+          updateItem("datos_generales", initialData.datosGenerales.id, datosGeneralesData)
+        );
+        datosGeneralesId = initialData.datosGenerales.id;
+        console.log("   ✓ datos_generales actualizado");
+      } else {
+        // Crear nuevo registro
+        console.log("4. Creando nuevo datos_generales...");
+        const datosGeneralesResult = await api.request(
+          createItem("datos_generales", datosGeneralesData)
+        );
+        datosGeneralesId = (datosGeneralesResult as any).id;
+        console.log("   ✓ datos_generales creado con ID:", datosGeneralesId);
+      }
     } catch (error: any) {
-      console.error("   ✗ Error al crear datos_generales:", error);
-      throw new Error(`Error al crear datos generales: ${error.message || error}`);
+      console.error("   ✗ Error al crear/actualizar datos_generales:", error);
+      throw new Error(`Error al guardar datos generales: ${error.message || error}`);
     }
   }
 
-  // 2. Crear registro de empleos_cargos_comisiones si existe
+  // 2. Crear o actualizar registro de empleos_cargos_comisiones si existe
   let empleoCargoComisionId: number | null = null;
   if (data.empleoCargoComision) {
-    console.log("5. Creando empleos_cargos_comisiones...");
+    console.log("5. Procesando empleos_cargos_comisiones...");
 
-    // 2.1 Primero, crear registro de nivel jerárquico
+    // 2.1 Primero, crear o actualizar registro de nivel jerárquico
     let nivelJerarquicoId: number | null = null;
 
     // Mapear valores del formulario a los valores de la BD
@@ -108,20 +249,32 @@ export async function saveServidorContratacion(
       entePublico: data.entePublico,
     };
 
-    console.log("   5.1 Creando nivel_jerarquico:", nivelJerarquicoData);
-
     try {
-      const nivelJerarquicoResult = await api.request(
-        withToken(accessToken, createItem("niveles_jerarquicos", nivelJerarquicoData))
-      );
-      nivelJerarquicoId = (nivelJerarquicoResult as any).id;
-      console.log("   ✓ nivel_jerarquico creado con ID:", nivelJerarquicoId);
+      if (initialData?.empleoCargoComision && typeof initialData.empleoCargoComision === 'object' &&
+          initialData.empleoCargoComision.nivelJerarquico && typeof initialData.empleoCargoComision.nivelJerarquico === 'object' &&
+          initialData.empleoCargoComision.nivelJerarquico.id) {
+        // Actualizar nivel jerárquico existente
+        console.log("   5.1 Actualizando nivel_jerarquico existente, ID:", initialData.empleoCargoComision.nivelJerarquico.id);
+        await api.request(
+          updateItem("niveles_jerarquicos", initialData.empleoCargoComision.nivelJerarquico.id, nivelJerarquicoData)
+        );
+        nivelJerarquicoId = initialData.empleoCargoComision.nivelJerarquico.id;
+        console.log("   ✓ nivel_jerarquico actualizado");
+      } else {
+        // Crear nuevo nivel jerárquico
+        console.log("   5.1 Creando nuevo nivel_jerarquico:", nivelJerarquicoData);
+        const nivelJerarquicoResult = await api.request(
+          createItem("niveles_jerarquicos", nivelJerarquicoData)
+        );
+        nivelJerarquicoId = (nivelJerarquicoResult as any).id;
+        console.log("   ✓ nivel_jerarquico creado con ID:", nivelJerarquicoId);
+      }
     } catch (error: any) {
-      console.error("   ✗ Error al crear nivel_jerarquico:", error);
-      throw new Error(`Error al crear nivel jerárquico: ${error.message || error}`);
+      console.error("   ✗ Error al crear/actualizar nivel_jerarquico:", error);
+      throw new Error(`Error al guardar nivel jerárquico: ${error.message || error}`);
     }
 
-    // 2.2 Ahora crear el empleo con el ID del nivel jerárquico
+    // 2.2 Ahora crear o actualizar el empleo con el ID del nivel jerárquico
     const empleoData = {
       entidadFederativa: data.empleoCargoComision.entidadFederativa,
       nivelOrdenGobierno: data.empleoCargoComision.nivelOrdenGobierno,
@@ -133,23 +286,40 @@ export async function saveServidorContratacion(
       areaAdscripcion: data.empleoCargoComision.areaAdscripcion,
       entePublico: data.entePublico,
     };
-    console.log("   5.2 Datos de empleo a enviar:", JSON.stringify(empleoData, null, 2));
+    console.log("   5.2 Datos de empleo a procesar:", JSON.stringify(empleoData, null, 2));
 
     try {
-      const empleoResult = await api.request(
-        withToken(accessToken, createItem("empleos_cargos_comisiones", empleoData))
-      );
-      empleoCargoComisionId = (empleoResult as any).id;
-      console.log("   ✓ empleos_cargos_comisiones creado con ID:", empleoCargoComisionId);
+      if (initialData?.empleoCargoComision && typeof initialData.empleoCargoComision === 'object' && initialData.empleoCargoComision.id) {
+        // Actualizar empleo existente
+        console.log("   5.2 Actualizando empleos_cargos_comisiones existente, ID:", initialData.empleoCargoComision.id);
+        await api.request(
+          updateItem("empleos_cargos_comisiones", initialData.empleoCargoComision.id, empleoData)
+        );
+        empleoCargoComisionId = initialData.empleoCargoComision.id;
+        console.log("   ✓ empleos_cargos_comisiones actualizado");
+      } else {
+        // Crear nuevo empleo
+        console.log("   5.2 Creando nuevo empleos_cargos_comisiones...");
+        const empleoResult = await api.request(
+          createItem("empleos_cargos_comisiones", empleoData)
+        );
+        empleoCargoComisionId = (empleoResult as any).id;
+        console.log("   ✓ empleos_cargos_comisiones creado con ID:", empleoCargoComisionId);
+      }
     } catch (error: any) {
-      console.error("   ✗ Error al crear empleos_cargos_comisiones:", error);
-      throw new Error(`Error al crear empleo: ${error.message || error}`);
+      console.error("   ✗ Error al crear/actualizar empleos_cargos_comisiones:", error);
+      throw new Error(`Error al guardar empleo: ${error.message || error}`);
     }
   }
 
   // 3. Procesar contrataciones de adquisiciones
   const contratacionesAdquisicionesIds: number[] = [];
   if (data.contratacionAdquisiciones && data.contratacionAdquisiciones.length > 0) {
+    // Si estamos actualizando, primero eliminar las contrataciones viejas
+    if (initialData) {
+      await eliminarRegistrosViejos(api, initialData, 'contrataciones');
+    }
+
     // Filtrar solo las contrataciones que tienen contenido significativo
     const contratacionesConDatos = data.contratacionAdquisiciones.filter(tieneContenidoSignificativo);
 
@@ -166,7 +336,7 @@ export async function saveServidorContratacion(
         };
 
         const beneficiarioResult = await api.request(
-          withToken(accessToken, createItem("datos_personas_beneficiarias", beneficiarioData))
+          createItem("datos_personas_beneficiarias", beneficiarioData)
         );
         personaBeneficiariaId = (beneficiarioResult as any).id;
       }
@@ -214,7 +384,7 @@ export async function saveServidorContratacion(
         console.log("   3.2 Datos de niveles_responsabilidades_contrataciones_adquisiciones:", nivelesRespData);
 
         const nivelesRespResult = await api.request(
-          withToken(accessToken, createItem("niveles_responsabilidades_contrataciones_adquisiciones", nivelesRespData))
+          createItem("niveles_responsabilidades_contrataciones_adquisiciones", nivelesRespData)
         );
         nivelesRespId = (nivelesRespResult as any).id;
       }
@@ -229,7 +399,7 @@ export async function saveServidorContratacion(
       };
 
       const contratacionResult = await api.request(
-        withToken(accessToken, createItem("contrataciones_adquisiciones", contratacionAdqData))
+        createItem("contrataciones_adquisiciones", contratacionAdqData)
       );
       contratacionesAdquisicionesIds.push((contratacionResult as any).id);
 
@@ -247,7 +417,7 @@ export async function saveServidorContratacion(
         };
 
         await api.request(
-          withToken(accessToken, createItem("datos_contrataciones_publicas", datosContratacionData))
+          createItem("datos_contrataciones_publicas", datosContratacionData)
         );
       }
     }
@@ -256,6 +426,11 @@ export async function saveServidorContratacion(
   // 4. Procesar obras públicas
   const obrasPublicasIds: number[] = [];
   if (data.obrasPublicas && data.obrasPublicas.length > 0) {
+    // Si estamos actualizando, primero eliminar las obras viejas
+    if (initialData) {
+      await eliminarRegistrosViejos(api, initialData, 'obras');
+    }
+
     // Filtrar solo las obras que tienen contenido significativo
     const obrasConDatos = data.obrasPublicas.filter(tieneContenidoSignificativo);
 
@@ -272,7 +447,7 @@ export async function saveServidorContratacion(
         };
 
         const beneficiarioResult = await api.request(
-          withToken(accessToken, createItem("datos_personas_beneficiarias", beneficiarioData))
+          createItem("datos_personas_beneficiarias", beneficiarioData)
         );
         personaBeneficiariaId = (beneficiarioResult as any).id;
       }
@@ -312,7 +487,7 @@ export async function saveServidorContratacion(
         console.log("   4.2 Datos de niveles_responsabilidades_contrataciones_adquisiciones (obras):", nivelesRespData);
 
         const nivelesRespResult = await api.request(
-          withToken(accessToken, createItem("niveles_responsabilidades_contrataciones_adquisiciones", nivelesRespData))
+          createItem("niveles_responsabilidades_contrataciones_adquisiciones", nivelesRespData)
         );
         nivelesRespId = (nivelesRespResult as any).id;
       }
@@ -327,7 +502,7 @@ export async function saveServidorContratacion(
       };
 
       const obraResult = await api.request(
-        withToken(accessToken, createItem("contrataciones_obras", obraData))
+        createItem("contrataciones_obras", obraData)
       );
       obrasPublicasIds.push((obraResult as any).id);
 
@@ -344,7 +519,7 @@ export async function saveServidorContratacion(
         };
 
         await api.request(
-          withToken(accessToken, createItem("datos_generales_obras", datosObraData))
+          createItem("datos_generales_obras", datosObraData)
         );
       }
     }
@@ -353,6 +528,11 @@ export async function saveServidorContratacion(
   // 5. Procesar dictaminación de avalúos
   let avaluosJustipreciacionId: number | null = null;
   if (data.dictaminacionAvaluos && data.dictaminacionAvaluos.length > 0) {
+    // Si estamos actualizando, primero eliminar los avalúos viejos
+    if (initialData) {
+      await eliminarRegistrosViejos(api, initialData, 'avaluos');
+    }
+
     // Filtrar solo los avalúos que tienen contenido significativo
     const avaluosConDatos = data.dictaminacionAvaluos.filter(tieneContenidoSignificativo);
 
@@ -369,13 +549,16 @@ export async function saveServidorContratacion(
     };
 
     const datosAvaluosResult = await api.request(
-      withToken(accessToken, createItem("datos_dictaminaciones_avaluos", datosAvaluosData))
+      createItem("datos_dictaminaciones_avaluos", datosAvaluosData)
     );
     const datosAvaluosId = (datosAvaluosResult as any).id;
 
     // 3.2 Crear niveles_responsabilidades_avaluos si hay responsabilidades
     let nivelesRespAvaluosId: number | null = null;
     if (avaluo.responsabilidades && avaluo.responsabilidades.length > 0) {
+      console.log("=== GUARDANDO AVALÚOS RESPONSABILIDADES ===");
+      console.log("Responsabilidades recibidas:", JSON.stringify(avaluo.responsabilidades, null, 2));
+
       // Transformar responsabilidades a formato JSON esperado por la BD
       const responsabilidadesMap: any = {};
       avaluo.responsabilidades.forEach((resp: any) => {
@@ -389,16 +572,25 @@ export async function saveServidorContratacion(
         };
       });
 
+      console.log("Mapa de responsabilidades:", JSON.stringify(responsabilidadesMap, null, 2));
+
+      // CORREGIDO: Usar las claves correctas según mapAvaluosResponsabilidades
+      // 1: Elaboración del avalúo -> elaboración_del_avalúo
+      // 2: Validación del avalúo -> validación_del_avalúo
+      // 3: Dictaminación del avalúo -> dictaminación_del_avalúo
+      // 4: (vacío) -> otro (campo genérico)
       const nivelesRespData = {
         entePublico: data.entePublico,
-        autorizaciones: responsabilidadesMap.autorizaciones || null,
-        analisis: responsabilidadesMap.analisis || null,
-        modificaciones: responsabilidadesMap.modificaciones || null,
-        presentacion: responsabilidadesMap.presentacion || null,
+        elaboración_del_avalúo: responsabilidadesMap["elaboración_del_avalúo"] || null,
+        validación_del_avalúo: responsabilidadesMap["validación_del_avalúo"] || null,
+        dictaminación_del_avalúo: responsabilidadesMap["dictaminación_del_avalúo"] || null,
+        otro: responsabilidadesMap[""] || null, // Campo 4 sin texto
       };
 
+      console.log("Objeto nivelesRespData a guardar:", JSON.stringify(nivelesRespData, null, 2));
+
       const nivelesRespResult = await api.request(
-        withToken(accessToken, createItem("niveles_responsabilidades_avaluos", nivelesRespData))
+        createItem("niveles_responsabilidades_avaluos", nivelesRespData)
       );
       nivelesRespAvaluosId = (nivelesRespResult as any).id;
     }
@@ -412,7 +604,7 @@ export async function saveServidorContratacion(
     };
 
     const dictaminacionResult = await api.request(
-      withToken(accessToken, createItem("dictaminaciones_avaluos", dictaminacionData))
+      createItem("dictaminaciones_avaluos", dictaminacionData)
     );
     avaluosJustipreciacionId = (dictaminacionResult as any).id;
     }
@@ -421,6 +613,11 @@ export async function saveServidorContratacion(
   // 6. Procesar enajenación de bienes
   let enajenacionBienId: number | null = null;
   if (data.enajenacionBienes && data.enajenacionBienes.length > 0) {
+    // Si estamos actualizando, primero eliminar las enajenaciones viejas
+    if (initialData) {
+      await eliminarRegistrosViejos(api, initialData, 'enajenaciones');
+    }
+
     // Filtrar solo las enajenaciones que tienen contenido significativo
     const enajenacionesConDatos = data.enajenacionBienes.filter(tieneContenidoSignificativo);
 
@@ -437,7 +634,7 @@ export async function saveServidorContratacion(
     };
 
     const datosEnajenacionResult = await api.request(
-      withToken(accessToken, createItem("datos_enajenaciones_bienes", datosEnajenacionData))
+      createItem("datos_enajenaciones_bienes", datosEnajenacionData)
     );
     const datosEnajenacionId = (datosEnajenacionResult as any).id;
 
@@ -463,23 +660,23 @@ export async function saveServidorContratacion(
         }
       });
 
-      // Mapeo según EnajenacionBienesSection.tsx líneas 32-121
-      // 1: Elaboración del avalúo
-      // 2: Autorizaciones o dictámenes previos
-      // 3: Justificación para excepción
-      // 4: Convocatoria, invitación
-      // 5: Evaluación de proposiciones
-      // 6: Adjudicación
-      // 7: Formalización
+      // Mapeo según EnajenacionBienesSection.tsx (actualizado)
+      // 1: Autorizaciones o dictámenes previos
+      // 2: Análisis o autorización para donación, permuta o dación en pago
+      // 3: Modificaciones a las bases
+      // 4: Presentación y apertura de ofertas
+      // 5: Evaluación de ofertas
+      // 6: Adjudicación de los bienes muebles
+      // 7: Formalización del contrato
       // 8: Otro (Especifique)
 
       const nivelesRespData = {
         entePublico: data.entePublico,
-        autorizaciones: responsabilidadesMap[2] || null,   // 2: Autorizaciones o dictámenes previos
-        analisis: responsabilidadesMap[1] || null,         // 1: Elaboración del avalúo (análisis)
-        modificaciones: responsabilidadesMap[4] || null,   // 4: Convocatoria (modificaciones a bases)
-        presentacion: responsabilidadesMap[4] || null,     // 4: Convocatoria (presentación)
-        evaluacion: responsabilidadesMap[5] || null,       // 5: Evaluación de proposiciones
+        autorizaciones: responsabilidadesMap[1] || null,   // 1: Autorizaciones o dictámenes previos
+        analisis: responsabilidadesMap[2] || null,         // 2: Análisis o autorización para donación
+        modificaciones: responsabilidadesMap[3] || null,   // 3: Modificaciones a las bases
+        presentacion: responsabilidadesMap[4] || null,     // 4: Presentación y apertura de ofertas
+        evaluacion: responsabilidadesMap[5] || null,       // 5: Evaluación de ofertas
         adjudicacion: responsabilidadesMap[6] || null,     // 6: Adjudicación
         formalizacoin: responsabilidadesMap[7] || null,    // 7: Formalización (NOTA: typo en BD)
       };
@@ -487,7 +684,7 @@ export async function saveServidorContratacion(
       console.log("   6.2 Datos de niveles_responsabilidades_enajenaciones:", nivelesRespData);
 
       const nivelesRespResult = await api.request(
-        withToken(accessToken, createItem("niveles_responsabilidades_enajenaciones", nivelesRespData))
+        createItem("niveles_responsabilidades_enajenaciones", nivelesRespData)
       );
       nivelesRespEnajenacionId = (nivelesRespResult as any).id;
     }
@@ -501,7 +698,7 @@ export async function saveServidorContratacion(
     };
 
     const enajenacionResult = await api.request(
-      withToken(accessToken, createItem("enajenaciones_bienes", enajenacionData))
+      createItem("enajenaciones_bienes", enajenacionData)
     );
     enajenacionBienId = (enajenacionResult as any).id;
     }
@@ -510,11 +707,21 @@ export async function saveServidorContratacion(
   // 7. Procesar otorgamiento de concesiones
   let otorgamientoConcesionId: number | null = null;
   if (data.otorgamientoConcesiones && data.otorgamientoConcesiones.length > 0) {
+    console.log("=== GUARDANDO CONCESIONES ===");
+    console.log("Datos completos de otorgamientoConcesiones:", JSON.stringify(data.otorgamientoConcesiones, null, 2));
+
+    // Si estamos actualizando, primero eliminar las concesiones viejas
+    if (initialData) {
+      await eliminarRegistrosViejos(api, initialData, 'concesiones');
+    }
+
     // Filtrar solo las concesiones que tienen contenido significativo
     const concesionesConDatos = data.otorgamientoConcesiones.filter(tieneContenidoSignificativo);
+    console.log("Concesiones con datos después del filtro:", concesionesConDatos.length);
 
     if (concesionesConDatos.length > 0) {
       const concesion = concesionesConDatos[0];
+      console.log("Datos de la concesión a guardar:", JSON.stringify(concesion, null, 2));
 
     // 5.1 Crear datos_generales_concesiones (antes datos_otorgamientos_concesiones)
     const datosConcesionData = {
@@ -524,7 +731,10 @@ export async function saveServidorContratacion(
       fundamento: concesion.motivosFundamentos || null,
       nombrePersonaFisica: concesion.nombrePersonaFisica || null,
       denominacionPersonaMoral: concesion.razonSocialPersonaMoral || null,
-      sectorActoJuridico: concesion.sector ? JSON.stringify([concesion.sector]) : null,
+      sectorActoJuridico: concesion.tipoActoJuridico && concesion.tipoActoJuridico.length > 0
+        ? JSON.stringify(concesion.tipoActoJuridico)
+        : null,
+      sector: concesion.sector || null, // Sector (Público/Privado)
       fechaInicioVigencia: concesion.fechaInicioVigencia || null,
       fechaConclusionVigencia: concesion.fechaConclusionVigencia || null,
       urlActoJuridico: concesion.hipervinculo || null,
@@ -532,10 +742,14 @@ export async function saveServidorContratacion(
       entePublico: data.entePublico,
     };
 
+    console.log("Objeto datosConcesionData a guardar en BD:", JSON.stringify(datosConcesionData, null, 2));
+
     const datosConcesionResult = await api.request(
-      withToken(accessToken, createItem("datos_generales_concesiones", datosConcesionData))
+      createItem("datos_generales_concesiones", datosConcesionData)
     );
     const datosConcesionId = (datosConcesionResult as any).id;
+    console.log("✓ datos_generales_concesiones creado con ID:", datosConcesionId);
+    console.log("Resultado completo:", JSON.stringify(datosConcesionResult, null, 2));
 
     // 5.2 Crear datos_personas_beneficiarias si existe
     let personaBeneficiariaId: number | null = null;
@@ -549,7 +763,7 @@ export async function saveServidorContratacion(
       };
 
       const beneficiarioResult = await api.request(
-        withToken(accessToken, createItem("datos_personas_beneficiarias", beneficiarioData))
+        createItem("datos_personas_beneficiarias", beneficiarioData)
       );
       personaBeneficiariaId = (beneficiarioResult as any).id;
     }
@@ -590,12 +804,13 @@ export async function saveServidorContratacion(
         visitas: responsabilidadesMap[3] || null,          // ID 3: Visitas
         evaluacion: responsabilidadesMap[4] || null,       // ID 4: Evaluación
         determinacion: responsabilidadesMap[5] || null,    // ID 5: Determinación
+        otro: responsabilidadesMap[6] || null,             // ID 6: Otro (Especifique)
       };
 
       console.log("   7.3 Datos de niveles_responsabilidades_concesiones:", nivelesRespData);
 
       const nivelesRespResult = await api.request(
-        withToken(accessToken, createItem("niveles_responsabilidades_concesiones", nivelesRespData))
+        createItem("niveles_responsabilidades_concesiones", nivelesRespData)
       );
       nivelesRespConcesionId = (nivelesRespResult as any).id;
     }
@@ -611,7 +826,7 @@ export async function saveServidorContratacion(
     };
 
     const otorgamientoResult = await api.request(
-      withToken(accessToken, createItem("otorgamientos_concesiones", otorgamientoData))
+      createItem("otorgamientos_concesiones", otorgamientoData)
     );
     otorgamientoConcesionId = (otorgamientoResult as any).id;
     }
@@ -644,13 +859,10 @@ export async function saveServidorContratacion(
       console.log("   Actualizando registro existente ID:", initialData.id);
       servidorId = initialData.id;
       await api.request(
-        withToken(
-          accessToken,
-          updateItem(
-            "servidores_intervengan_procedimientos_contrataciones",
-            initialData.id,
-            mainData
-          )
+        updateItem(
+          "servidores_intervengan_procedimientos_contrataciones",
+          initialData.id,
+          mainData
         )
       );
       console.log("   ✓ Registro actualizado");
@@ -658,12 +870,9 @@ export async function saveServidorContratacion(
       // Crear nuevo registro
       console.log("   Creando nuevo registro en servidores_intervengan_procedimientos_contrataciones...");
       const servidorResult = await api.request(
-        withToken(
-          accessToken,
-          createItem(
-            "servidores_intervengan_procedimientos_contrataciones",
-            mainData
-          )
+        createItem(
+          "servidores_intervengan_procedimientos_contrataciones",
+          mainData
         )
       );
       servidorId = (servidorResult as any).id;
@@ -684,15 +893,12 @@ export async function saveServidorContratacion(
   for (const contratacionId of contratacionesAdquisicionesIds) {
     try {
       await api.request(
-        withToken(
-          accessToken,
-          createItem("tipos_adquisiciones_obras", {
-            contratacionAdquisicion: contratacionId,
-            entePublico: data.entePublico,
-            clave: "CONTRATACION_ADQUISICION",
-            fk_id: servidorId,
-          })
-        )
+        createItem("tipos_adquisiciones_obras", {
+          contratacionAdquisicion: contratacionId,
+          entePublico: data.entePublico,
+          clave: "CONTRATACION_ADQUISICION",
+          fk_id: servidorId,
+        })
       );
       console.log("   ✓ Vínculo de contratación creado:", contratacionId);
     } catch (error: any) {
@@ -704,15 +910,12 @@ export async function saveServidorContratacion(
   for (const obraId of obrasPublicasIds) {
     try {
       await api.request(
-        withToken(
-          accessToken,
-          createItem("tipos_adquisiciones_obras", {
-            contratacionObra: obraId,
-            entePublico: data.entePublico,
-            clave: "CONTRATACION_OBRA",
-            fk_id: servidorId,
-          })
-        )
+        createItem("tipos_adquisiciones_obras", {
+          contratacionObra: obraId,
+          entePublico: data.entePublico,
+          clave: "CONTRATACION_OBRA",
+          fk_id: servidorId,
+        })
       );
       console.log("   ✓ Vínculo de obra creado:", obraId);
     } catch (error: any) {

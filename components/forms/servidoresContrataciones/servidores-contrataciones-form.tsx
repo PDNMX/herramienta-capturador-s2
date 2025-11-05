@@ -94,6 +94,10 @@ export const ServidoresContratacionesForm: React.FC<
   const [loading, setLoading] = useState(false);
   const { session } = useCurrentSession();
 
+  console.log("🚀 COMPONENTE RENDERIZADO");
+  console.log("InitialData recibido:", initialData);
+  console.log("Modo:", initialData ? "EDICIÓN" : "CREACIÓN");
+
   const title = initialData
     ? "Actualizar servidor público en procedimientos de contrataciones"
     : "Sistema de los servidores públicos que intervengan en procedimientos de contrataciones públicas";
@@ -126,12 +130,14 @@ export const ServidoresContratacionesForm: React.FC<
   // Establecer los datos cuando carga el componente
   useEffect(() => {
     if (initialData) {
-      // Cargar campos principales
-      for (const key in initialData) {
-        if (servidoresContratacionesSchema.shape.hasOwnProperty(key)) {
-          form.setValue(key, initialData[key]);
-        }
-      }
+      // Resetear el formulario con los nuevos valores usando la función de defaults
+      const newDefaultValues = getServidoresContratacionesDefaults(
+        initialData,
+        session?.user?.entePublico
+      );
+      console.log("=== RESETEANDO FORMULARIO CON DATOS ===");
+      console.log("Default values calculados:", newDefaultValues);
+      form.reset(newDefaultValues);
     } else {
       // Si es nuevo registro, establecer el entePublico del usuario
       if (session && session.user?.entePublico) {
@@ -146,6 +152,8 @@ export const ServidoresContratacionesForm: React.FC<
     console.log("Objeto completo:", data);
     console.log("JSON formateado:");
     console.log(JSON.stringify(data, null, 2));
+    console.log("InitialData:", initialData);
+    console.log("Modo:", initialData ? "ACTUALIZAR" : "CREAR");
     console.log("========================================");
 
     try {
@@ -162,11 +170,11 @@ export const ServidoresContratacionesForm: React.FC<
         description: toastMessage,
       });
     } catch (error: any) {
-      console.error(error);
+      console.error("ERROR AL GUARDAR:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Error al intentar guardar el registro",
+        description: error.message || "Error al intentar guardar el registro",
       });
     } finally {
       setLoading(false);
@@ -612,83 +620,24 @@ export const ServidoresContratacionesForm: React.FC<
               disabled={loading}
               type="submit"
               className="h-12 px-6"
-              onClick={() => {
-                console.log("=== BOTÓN GUARDAR PRESIONADO ===");
-                console.log(
-                  "Valores actuales del formulario:",
-                  form.getValues()
-                );
-                console.log("Errores de validación:", form.formState.errors);
+              onClick={(e) => {
+                console.log("🔵 BOTÓN CLICKEADO - Evento disparado");
+                console.log("Estado loading:", loading);
+                console.log("Tipo de botón:", e.currentTarget.type);
 
-                // Log detallado de errores en contratacionAdquisiciones
-                const hasContratacionErrors = form.formState.errors.contratacionAdquisiciones;
-                console.log("¿Tiene errores en contratacionAdquisiciones?", !!hasContratacionErrors);
+                // Obtener errores de validación
+                const errors = form.formState.errors;
+                const hasErrors = Object.keys(errors).length > 0;
 
-                if (hasContratacionErrors) {
-                  console.log("❌ ERRORES EN CONTRATACION ADQUISICIONES:");
-                  console.log("Tipo:", typeof hasContratacionErrors);
-                  console.log("Es array:", Array.isArray(hasContratacionErrors));
-                  console.log("Contenido completo:", hasContratacionErrors);
-
-                  if (Array.isArray(hasContratacionErrors)) {
-                    hasContratacionErrors.forEach((err, idx) => {
-                      console.log(`  Contratación [${idx}]:`, err);
-                      if (err && typeof err === 'object') {
-                        console.log(`    Detalles del error [${idx}]:`, JSON.stringify(err, null, 2));
-                      }
-                    });
-                  }
+                console.log("¿Tiene errores?", hasErrors);
+                if (hasErrors) {
+                  console.log("❌ ERRORES DE VALIDACIÓN:");
+                  console.log(JSON.stringify(errors, null, 2));
                 } else {
-                  console.log("✅ NO hay errores en contratacionAdquisiciones");
+                  console.log("✅ Sin errores de validación - El formulario debería enviarse");
                 }
 
-                // Log detallado de errores en obrasPublicas
-                const hasObrasErrors = form.formState.errors.obrasPublicas;
-                console.log("¿Tiene errores en obrasPublicas?", !!hasObrasErrors);
-
-                if (hasObrasErrors) {
-                  console.log("❌ ERRORES EN OBRAS PUBLICAS:");
-                  console.log("Tipo:", typeof hasObrasErrors);
-                  console.log("Es array:", Array.isArray(hasObrasErrors));
-                  console.log("Contenido completo:", hasObrasErrors);
-
-                  if (Array.isArray(hasObrasErrors)) {
-                    hasObrasErrors.forEach((err, idx) => {
-                      console.log(`  Obra [${idx}]:`, err);
-                      if (err && typeof err === 'object') {
-                        console.log(`    Detalles del error [${idx}]:`, JSON.stringify(err, null, 2));
-                      }
-                    });
-                  }
-                } else {
-                  console.log("✅ NO hay errores en obrasPublicas");
-                }
-
-                // SIEMPRE mostrar si hay errores en enajenacionBienes
-                const hasEnajenacionErrors = form.formState.errors.enajenacionBienes;
-                console.log("¿Tiene errores en enajenacionBienes?", !!hasEnajenacionErrors);
-
-                // Log detallado de errores en enajenacionBienes
-                if (hasEnajenacionErrors) {
-                  console.log("❌ ERRORES EN ENAJENACION BIENES:");
-                  console.log("Tipo:", typeof hasEnajenacionErrors);
-                  console.log("Es array:", Array.isArray(hasEnajenacionErrors));
-                  console.log("Contenido completo:", hasEnajenacionErrors);
-
-                  // Si es un array, mostrar cada error
-                  if (Array.isArray(hasEnajenacionErrors)) {
-                    hasEnajenacionErrors.forEach((err, idx) => {
-                      console.log(`  [${idx}]:`, err);
-                      if (err && typeof err === 'object') {
-                        console.log(`    Detalles del error [${idx}]:`, JSON.stringify(err, null, 2));
-                      }
-                    });
-                  }
-                } else {
-                  console.log("✅ NO hay errores en enajenacionBienes");
-                }
-
-                console.log("=================================");
+                console.log("Valores del formulario:", form.getValues());
               }}
             >
               {action}

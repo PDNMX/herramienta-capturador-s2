@@ -32,80 +32,82 @@ interface EnajenacionBienesSectionProps {
 const responsabilidades = [
   {
     id: 1,
-    pregunta: "Elaboración del avalúo para determinar el valor de los bienes muebles",
+    pregunta:
+      "Autorizaciones o dictámenes previos para llevar a cabo determinado procedimiento de enajenación de bienes muebles",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 2,
-    pregunta: "Autorizaciones o dictámenes previos para llevar a cabo determinado procedimiento de enajenación de bienes muebles",
+    pregunta:
+      "Análisis o autorización para llevar a cabo la donación, permuta o dación en pago",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 3,
-    pregunta: "Justificación para excepción a la licitación pública",
+    pregunta: "Modificaciones a las bases",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 4,
-    pregunta: "Convocatoria, invitación o solicitud de cotización y, en su caso, bases del concurso y modificaciones",
+    pregunta: "Presentación y apertura de ofertas",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 5,
-    pregunta: "Evaluación de proposiciones",
+    pregunta: "Evaluación de ofertas",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 6,
-    pregunta: "Adjudicación",
+    pregunta: "Adjudicación de los bienes muebles",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: true }, // N/A
       supervisar: { disabled: true }, // N/A
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
   {
     id: 7,
-    pregunta: "Formalización",
+    pregunta: "Formalización del contrato",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: true }, // N/A
       supervisar: { disabled: true }, // N/A
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
   {
     id: 8,
@@ -116,16 +118,21 @@ const responsabilidades = [
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
 ];
 
-export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSectionProps) {
+export function EnajenacionBienesSection({
+  form,
+  loading,
+}: EnajenacionBienesSectionProps) {
   const { toast } = useToast();
 
   // Watch para detectar cambios en las fechas
   const watchFechaInicio = form.watch("enajenacionBienes.0.fechaInicio");
-  const watchFechaConclusion = form.watch("enajenacionBienes.0.fechaConclusion");
+  const watchFechaConclusion = form.watch(
+    "enajenacionBienes.0.fechaConclusion"
+  );
 
   // Efecto para validar fechas
   useEffect(() => {
@@ -136,13 +143,15 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
       if (fechaConclusion < fechaInicio) {
         form.setError("enajenacionBienes.0.fechaConclusion", {
           type: "manual",
-          message: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+          message:
+            "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
         });
 
         toast({
           variant: "destructive",
           title: "Error en fechas",
-          description: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+          description:
+            "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
         });
       } else {
         form.clearErrors("enajenacionBienes.0.fechaConclusion");
@@ -159,12 +168,16 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
           Niveles de Responsabilidad
         </h4>
         <p className="text-sm text-muted-foreground mb-6">
-          Marque las actividades que realiza en cada uno de los siguientes objetos de responsabilidad:
+          Marque las actividades que realiza en cada uno de los siguientes
+          objetos de responsabilidad:
         </p>
 
         <div className="space-y-4">
           {responsabilidades.map((resp) => (
-            <div key={resp.id} className="p-4 rounded-lg border-2 border-primary/20 bg-card/50">
+            <div
+              key={resp.id}
+              className="p-4 rounded-lg border-2 border-primary/20 bg-card/50"
+            >
               <div className="mb-3">
                 <span className="inline-block bg-primary/10 text-primary px-2 py-1 rounded text-sm font-semibold mr-2">
                   {resp.id}
@@ -177,7 +190,9 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                 <div className="ml-8">
                   <FormField
                     control={form.control}
-                    name={`enajenacionBienes.0.responsabilidades.${resp.id - 1}.objetoResponsabilidad`}
+                    name={`enajenacionBienes.0.responsabilidades.${
+                      resp.id - 1
+                    }.objetoResponsabilidad`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-semibold">
@@ -193,7 +208,8 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-muted-foreground">
-                          Describa el objeto de responsabilidad específico (opcional)
+                          Describa el objeto de responsabilidad específico
+                          (opcional)
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -202,126 +218,188 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
-                {/* Elaborar (A) */}
-                <FormField
-                  control={form.control}
-                  name={`enajenacionBienes.0.responsabilidades.${resp.id - 1}.elaborar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-enajenacion-${resp.id}-elaborar`}
-                        disabled={loading || resp.opciones.elaborar.disabled}
-                        className={resp.opciones.elaborar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-enajenacion-${resp.id}-elaborar`}
-                        className={`text-sm font-normal ${resp.opciones.elaborar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Elaborar (A)
-                        {resp.opciones.elaborar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Elaborar (A) */}
+                  <FormField
+                    control={form.control}
+                    name={`enajenacionBienes.0.responsabilidades.${
+                      resp.id - 1
+                    }.elaborar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-enajenacion-${resp.id}-elaborar`}
+                          disabled={loading || resp.opciones.elaborar.disabled}
+                          className={
+                            resp.opciones.elaborar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-enajenacion-${resp.id}-elaborar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.elaborar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Elaborar (A)
+                          {resp.opciones.elaborar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Revisar (B) */}
-                <FormField
-                  control={form.control}
-                  name={`enajenacionBienes.0.responsabilidades.${resp.id - 1}.revisar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-enajenacion-${resp.id}-revisar`}
-                        disabled={loading || resp.opciones.revisar.disabled}
-                        className={resp.opciones.revisar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-enajenacion-${resp.id}-revisar`}
-                        className={`text-sm font-normal ${resp.opciones.revisar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Revisar (B)
-                        {resp.opciones.revisar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Revisar (B) */}
+                  <FormField
+                    control={form.control}
+                    name={`enajenacionBienes.0.responsabilidades.${
+                      resp.id - 1
+                    }.revisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-enajenacion-${resp.id}-revisar`}
+                          disabled={loading || resp.opciones.revisar.disabled}
+                          className={
+                            resp.opciones.revisar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-enajenacion-${resp.id}-revisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.revisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Revisar (B)
+                          {resp.opciones.revisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Firmar, Autorizar o Dictaminar (C) */}
-                <FormField
-                  control={form.control}
-                  name={`enajenacionBienes.0.responsabilidades.${resp.id - 1}.firmarAutorizar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-enajenacion-${resp.id}-firmar`}
-                        disabled={loading || resp.opciones.firmarAutorizar.disabled}
-                        className={resp.opciones.firmarAutorizar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-enajenacion-${resp.id}-firmar`}
-                        className={`text-sm font-normal ${resp.opciones.firmarAutorizar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Firmar, Autorizar o Dictaminar (C)
-                        {resp.opciones.firmarAutorizar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Firmar, Autorizar o Dictaminar (C) */}
+                  <FormField
+                    control={form.control}
+                    name={`enajenacionBienes.0.responsabilidades.${
+                      resp.id - 1
+                    }.firmarAutorizar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-enajenacion-${resp.id}-firmar`}
+                          disabled={
+                            loading || resp.opciones.firmarAutorizar.disabled
+                          }
+                          className={
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-enajenacion-${resp.id}-firmar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Firmar, Autorizar o Dictaminar (C)
+                          {resp.opciones.firmarAutorizar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Supervisar (D) */}
-                <FormField
-                  control={form.control}
-                  name={`enajenacionBienes.0.responsabilidades.${resp.id - 1}.supervisar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-enajenacion-${resp.id}-supervisar`}
-                        disabled={loading || resp.opciones.supervisar.disabled}
-                        className={resp.opciones.supervisar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-enajenacion-${resp.id}-supervisar`}
-                        className={`text-sm font-normal ${resp.opciones.supervisar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Supervisar (D)
-                        {resp.opciones.supervisar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Supervisar (D) */}
+                  <FormField
+                    control={form.control}
+                    name={`enajenacionBienes.0.responsabilidades.${
+                      resp.id - 1
+                    }.supervisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-enajenacion-${resp.id}-supervisar`}
+                          disabled={
+                            loading || resp.opciones.supervisar.disabled
+                          }
+                          className={
+                            resp.opciones.supervisar.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-enajenacion-${resp.id}-supervisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.supervisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Supervisar (D)
+                          {resp.opciones.supervisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Emitir o Suscribir (E) */}
-                <FormField
-                  control={form.control}
-                  name={`enajenacionBienes.0.responsabilidades.${resp.id - 1}.emitirSuscribir`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-enajenacion-${resp.id}-emitir`}
-                        disabled={loading || resp.opciones.emitirSuscribir.disabled}
-                        className={resp.opciones.emitirSuscribir.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-enajenacion-${resp.id}-emitir`}
-                        className={`text-sm font-normal ${resp.opciones.emitirSuscribir.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Emitir o Suscribir (E)
-                        {resp.opciones.emitirSuscribir.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
-              </div>
+                  {/* Emitir o Suscribir (E) */}
+                  <FormField
+                    control={form.control}
+                    name={`enajenacionBienes.0.responsabilidades.${
+                      resp.id - 1
+                    }.emitirSuscribir`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-enajenacion-${resp.id}-emitir`}
+                          disabled={
+                            loading || resp.opciones.emitirSuscribir.disabled
+                          }
+                          className={
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-enajenacion-${resp.id}-emitir`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Emitir o Suscribir (E)
+                          {resp.opciones.emitirSuscribir.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
+                </div>
               )}
             </div>
           ))}
@@ -332,10 +410,11 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
       <div>
         <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <FileText className="h-5 w-5 text-primary" />
-          Datos Generales de los Procedimientos
+          Datos Generales del Procedimiento en la Enajenación de Bienes Muebles
         </h4>
         <p className="text-xs text-blue-600 dark:text-blue-400 mb-6">
-          Esta sección se podrá actualizar quincenalmente agregando un nuevo procedimiento
+          Esta sección se podrá actualizar quincenalmente agregando un nuevo
+          procedimiento
         </p>
 
         <div className="space-y-6 p-6 rounded-lg border-2 border-primary/20 bg-card/50">
@@ -346,7 +425,8 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  Número de Expediente <span className="text-red-500">*</span>
+                  Número de Expediente, Folio o Nomenclatura{" "}
+                  <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -399,7 +479,8 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Fecha de Inicio del Procedimiento (DD-MM-AAAA) <span className="text-red-500">*</span>
+                    Fecha de Inicio del Procedimiento (DD-MM-AAAA){" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
@@ -455,7 +536,9 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  ¿La persona servidora pública continúa participando en la enajenación de bienes muebles? <span className="text-red-500">*</span>
+                  ¿La persona servidora pública continúa participando en la
+                  enajenación de bienes muebles?{" "}
+                  <span className="text-red-500">*</span>
                 </FormLabel>
                 <p className="text-xs text-blue-600 dark:text-blue-400 mb-2">
                   (Esta sección se podrá actualizar quincenalmente)
@@ -465,10 +548,15 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                     <Checkbox
                       id="continua-enajenacion-si"
                       checked={field.value === true}
-                      onCheckedChange={(checked) => field.onChange(checked ? true : false)}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked ? true : false)
+                      }
                       disabled={loading}
                     />
-                    <Label htmlFor="continua-enajenacion-si" className="text-sm font-normal cursor-pointer">
+                    <Label
+                      htmlFor="continua-enajenacion-si"
+                      className="text-sm font-normal cursor-pointer"
+                    >
                       Sí
                     </Label>
                   </div>
@@ -476,10 +564,15 @@ export function EnajenacionBienesSection({ form, loading }: EnajenacionBienesSec
                     <Checkbox
                       id="continua-enajenacion-no"
                       checked={field.value === false}
-                      onCheckedChange={(checked) => field.onChange(checked ? false : true)}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked ? false : true)
+                      }
                       disabled={loading}
                     />
-                    <Label htmlFor="continua-enajenacion-no" className="text-sm font-normal cursor-pointer">
+                    <Label
+                      htmlFor="continua-enajenacion-no"
+                      className="text-sm font-normal cursor-pointer"
+                    >
                       No
                     </Label>
                   </div>

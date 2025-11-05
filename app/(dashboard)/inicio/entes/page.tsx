@@ -3,42 +3,54 @@
 
 import BreadCrumb from "@/components/breadcrumb";
 import { EntesTable } from "@/components/tables/entes-table/table";
-import directus from "@/lib/directus";
-import { readItems, withToken } from "@directus/sdk";
+import { directus } from "@/services/directus";
+import { readItems } from "@directus/sdk";
 import { useEffect, useState } from "react";
 import { useCurrentSession } from "@/hooks/useCurrentSession";
 import { signOut } from "next-auth/react";
 
-const breadcrumbItems = [{ title: "Entes Públicos", link: "/inicio/entes" }];
+const breadcrumbItems = [{ title: "Registros", link: "/inicio/entes" }];
 
 export default function Page() {
   const { session, status } = useCurrentSession();
-  const [entes, setEntes] = useState([]);
+  const [registros, setRegistros] = useState([]);
   console.log(session)
 
   useEffect(() => {
     if (session?.forceLogout) {
       signOut({ callbackUrl: "/" });
-    } else if (status === "authenticated") {
+    } else if (status === "authenticated" && session?.access_token) {
       async function fetchData() {
         try {
-          const result = await directus.request(
-            withToken(
-              session?.access_token,
-              readItems("entes_publicos", {
-                sort: ["nombre"],
-                limit: "-1",
-                fields: ["*"],
-                filter: {
-                  id: {
-                    _eq: session?.user?.entePublico,
-                  },
+          const api = directus(session.access_token);
+          const result = await api.request(
+            readItems("servidores_intervengan_procedimientos_contrataciones", {
+              sort: ["-fecha"],
+              limit: -1,
+              fields: [
+                "id",
+                "fecha",
+                "ejercicio",
+                "datosGenerales.*",
+                "empleoCargoComision.*",
+              ],
+              filter: {
+                entePublico: {
+                  _eq: session?.user?.entePublico,
                 },
-              }),
-            ),
+              },
+              deep: {
+                datosGenerales: {
+                  _filter: {}
+                },
+                empleoCargoComision: {
+                  _filter: {}
+                }
+              }
+            })
           );
 
-          setEntes(result);
+          setRegistros(result);
         } catch (error) {
           console.error("Error al cargar los datos:", error);
         }
@@ -51,7 +63,7 @@ export default function Page() {
   return (
     <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <BreadCrumb items={breadcrumbItems} />
-      <EntesTable data={entes} />
+      <EntesTable data={registros} />
     </div>
   );
 }

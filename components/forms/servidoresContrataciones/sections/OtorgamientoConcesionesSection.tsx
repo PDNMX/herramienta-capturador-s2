@@ -158,23 +158,43 @@ export function OtorgamientoConcesionesSection({
             (Esta sección se actualizará quincenalmente)
           </span>
         </h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {tiposActoJuridico.map((tipo) => (
-            <div key={tipo.value} className="flex items-start space-x-2">
-              <Checkbox
-                id={`tipo-acto-${tipo.value}`}
-                disabled={loading}
-                className="mt-1"
-              />
-              <Label
-                htmlFor={`tipo-acto-${tipo.value}`}
-                className="text-sm font-normal cursor-pointer leading-tight"
-              >
-                {tipo.label}
-              </Label>
-            </div>
-          ))}
-        </div>
+        <FormField
+          control={form.control}
+          name="otorgamientoConcesiones.0.tipoActoJuridico"
+          render={({ field }) => (
+            <FormItem>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {tiposActoJuridico.map((tipo) => (
+                  <div key={tipo.value} className="flex items-start space-x-2">
+                    <Checkbox
+                      id={`tipo-acto-${tipo.value}`}
+                      disabled={loading}
+                      className="mt-1"
+                      checked={field.value?.includes(tipo.value) || false}
+                      onCheckedChange={(checked) => {
+                        const currentValues = field.value || [];
+                        if (checked) {
+                          field.onChange([...currentValues, tipo.value]);
+                        } else {
+                          field.onChange(
+                            currentValues.filter((v: string) => v !== tipo.value)
+                          );
+                        }
+                      }}
+                    />
+                    <Label
+                      htmlFor={`tipo-acto-${tipo.value}`}
+                      className="text-sm font-normal cursor-pointer leading-tight"
+                    >
+                      {tipo.label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
 
       {/* NIVELES DE RESPONSABILIDAD */}
@@ -496,7 +516,7 @@ export function OtorgamientoConcesionesSection({
           {/* Motivos y Fundamentos Legales */}
           <FormField
             control={form.control}
-            name="otorgamientoConcesiones.0.motivosFundamentosLegales"
+            name="otorgamientoConcesiones.0.motivosFundamentos"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
@@ -635,7 +655,7 @@ export function OtorgamientoConcesionesSection({
             {/* Fecha de Término de Vigencia */}
             <FormField
               control={form.control}
-              name="otorgamientoConcesiones.0.fechaTerminoVigencia"
+              name="otorgamientoConcesiones.0.fechaConclusionVigencia"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">

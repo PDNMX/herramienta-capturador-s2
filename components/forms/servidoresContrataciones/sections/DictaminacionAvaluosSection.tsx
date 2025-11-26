@@ -143,6 +143,7 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
                           <Input
                             disabled={loading}
                             placeholder="Ingrese el objeto de responsabilidad"
+                            maxLength={50}
                             {...field}
                             value={field.value || ""}
                             className="h-10"
@@ -308,6 +309,7 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
                   <Input
                     disabled={loading}
                     placeholder="Ej: EXP-AVAL-2024-001"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -334,6 +336,7 @@ export function DictaminacionAvaluosSection({ form, loading }: DictaminacionAval
                   <Input
                     disabled={loading}
                     placeholder="Ingrese la descripción del procedimiento de dictaminación"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"

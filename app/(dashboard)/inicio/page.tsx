@@ -134,7 +134,8 @@ export default function Page() {
               <span>👋</span> Bienvenido, {session?.user?.name || "Usuario"}
             </CardTitle>
             <CardDescription className="text-base">
-              Herramienta de captura y gestión de sanciones administrativas
+              Herramienta de captura para registros de servidores públicos que
+              intervienen en procedimientos de contrataciones públicas.
             </CardDescription>
           </CardHeader>
         </Card>

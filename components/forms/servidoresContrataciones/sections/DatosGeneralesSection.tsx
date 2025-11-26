@@ -75,6 +75,7 @@ export function DatosGeneralesSection({ form, loading }: DatosGeneralesSectionPr
                   <Input
                     disabled={loading}
                     placeholder="Ingrese el nombre(s)"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12 pl-10"
@@ -104,6 +105,7 @@ export function DatosGeneralesSection({ form, loading }: DatosGeneralesSectionPr
                   <Input
                     disabled={loading}
                     placeholder="Ingrese el primer apellido"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12 pl-10"
@@ -133,6 +135,7 @@ export function DatosGeneralesSection({ form, loading }: DatosGeneralesSectionPr
                   <Input
                     disabled={loading}
                     placeholder="Ingrese el segundo apellido"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12 pl-10"

@@ -354,6 +354,7 @@ export const DirectorioForm: React.FC<DirectorioFormProps> = ({
                         <Input
                           disabled={loading}
                           placeholder="Puesto"
+                          maxLength={50}
                           {...field}
                         />
                       </FormControl>
@@ -377,6 +378,7 @@ export const DirectorioForm: React.FC<DirectorioFormProps> = ({
                         <Input
                           disabled={loading}
                           placeholder="Nombre"
+                          maxLength={50}
                           {...field}
                         />
                       </FormControl>
@@ -450,6 +452,7 @@ export const DirectorioForm: React.FC<DirectorioFormProps> = ({
                       <Input
                         disabled={loading}
                         placeholder="Dirección"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                       />

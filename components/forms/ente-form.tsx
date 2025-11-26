@@ -249,6 +249,7 @@ export const EnteForm: React.FC<EnteFormProps> = ({ initialData }) => {
                       disabled={loading}
                       placeholder="Nombre del Ente Público"
                       value={field.value || ""}
+                      maxLength={50}
                       {...field}
                     />
                   </FormControl>

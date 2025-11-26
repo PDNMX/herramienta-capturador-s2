@@ -238,6 +238,7 @@ export function OtorgamientoConcesionesSection({
                           <Input
                             disabled={loading}
                             placeholder="Ingrese el objeto de responsabilidad"
+                            maxLength={50}
                             {...field}
                             value={field.value || ""}
                             className="h-10"
@@ -454,6 +455,7 @@ export function OtorgamientoConcesionesSection({
                   <Input
                     disabled={loading}
                     placeholder="Ej: EXP-CONC-2024-001"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -480,6 +482,7 @@ export function OtorgamientoConcesionesSection({
                   <Input
                     disabled={loading}
                     placeholder="Denominación de la concesión, licencia, permiso o autorización"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -503,6 +506,7 @@ export function OtorgamientoConcesionesSection({
                   <Input
                     disabled={loading}
                     placeholder="Objeto de la concesión, licencia, permiso o autorización"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -527,6 +531,7 @@ export function OtorgamientoConcesionesSection({
                   <Input
                     disabled={loading}
                     placeholder="Fundamentos legales aplicables"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -555,6 +560,7 @@ export function OtorgamientoConcesionesSection({
                     <Input
                       disabled={loading}
                       placeholder="Nombre completo de la persona física"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -581,6 +587,7 @@ export function OtorgamientoConcesionesSection({
                     <Input
                       disabled={loading}
                       placeholder="Razón social de la empresa"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -754,6 +761,7 @@ export function OtorgamientoConcesionesSection({
                       <Input
                         disabled={loading}
                         placeholder="Razón social de la empresa"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -773,6 +781,7 @@ export function OtorgamientoConcesionesSection({
                       <Input
                         disabled={loading}
                         placeholder="Nombre del beneficiario"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -792,6 +801,7 @@ export function OtorgamientoConcesionesSection({
                       <Input
                         disabled={loading}
                         placeholder="Primer apellido"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -811,6 +821,7 @@ export function OtorgamientoConcesionesSection({
                       <Input
                         disabled={loading}
                         placeholder="Segundo apellido"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"

@@ -18,9 +18,10 @@ function mapNivelJerarquicoFromDB(claveBD: string): string | undefined {
 }
 
 // Mapear responsabilidades de avalúos desde BD al formato del formulario
-function mapAvaluosResponsabilidades(nivelesResp: any): any[] {
+function mapAvaluosResponsabilidades(nivelesResp: any, otroEspecifiqueData: any): any[] {
   console.log("=== mapAvaluosResponsabilidades ===");
-  console.log("Datos recibidos:", nivelesResp);
+  console.log("Datos niveles recibidos:", nivelesResp);
+  console.log("Datos otro recibidos:", otroEspecifiqueData);
 
   if (!nivelesResp || typeof nivelesResp !== 'object') {
     console.log("No hay datos de responsabilidades, usando defaults");
@@ -64,51 +65,55 @@ function mapAvaluosResponsabilidades(nivelesResp: any): any[] {
     ];
   }
 
-  // El handler guarda en campos con las claves correctas:
-  // "elaboración_del_avalúo", "validación_del_avalúo", "dictaminación_del_avalúo", "otro"
-
-  const getValoresFromJSON = (campo: any) => {
-    if (!campo || typeof campo !== 'object') {
-      return {
-        elaborar: false,
-        revisar: false,
-        firmarAutorizar: false,
-        supervisar: false,
-        emitirSuscribir: false
-      };
+  // Convertir array de letras ["A", "B", "C"] a booleanos
+  const arrayToBoolean = (arr: string[] | null): any => {
+    if (!arr || !Array.isArray(arr)) {
+      return { elaborar: false, revisar: false, firmarAutorizar: false, supervisar: false, emitirSuscribir: false };
     }
-    // Si es un objeto JSON, asegurar que tenga todas las propiedades
     return {
-      elaborar: campo.elaborar || false,
-      revisar: campo.revisar || false,
-      firmarAutorizar: campo.firmarAutorizar || false,
-      supervisar: campo.supervisar || false,
-      emitirSuscribir: campo.emitirSuscribir || false
+      elaborar: arr.includes("A"),
+      revisar: arr.includes("B"),
+      firmarAutorizar: arr.includes("C"),
+      supervisar: arr.includes("D"),
+      emitirSuscribir: arr.includes("E"),
     };
   };
 
   console.log("Campos disponibles en nivelesResp:", Object.keys(nivelesResp));
 
+  // Extraer el texto del campo "otro" desde la relación otroEspecifique
+  let otroTexto = "";
+  let otroResponsabilidad = null;
+
+  if (otroEspecifiqueData && Array.isArray(otroEspecifiqueData) && otroEspecifiqueData.length > 0) {
+    // Tomar el primer registro de la relación
+    const otroItem = otroEspecifiqueData[0];
+    otroTexto = otroItem.otroEspecifique || "";
+    otroResponsabilidad = otroItem.responsabilidad;
+    console.log("Texto del 'Otro' desde relación:", otroTexto);
+    console.log("Responsabilidad del 'Otro':", otroResponsabilidad);
+  }
+
   const result = [
     {
       identificador: 1,
       objetoResponsabilidad: "Elaboración del avalúo",
-      ...getValoresFromJSON(nivelesResp.elaboración_del_avalúo),
+      ...arrayToBoolean(nivelesResp.propuestas),
     },
     {
       identificador: 2,
       objetoResponsabilidad: "Validación del avalúo",
-      ...getValoresFromJSON(nivelesResp.validación_del_avalúo),
+      ...arrayToBoolean(nivelesResp.asignacion),
     },
     {
       identificador: 3,
       objetoResponsabilidad: "Dictaminación del avalúo",
-      ...getValoresFromJSON(nivelesResp.dictaminación_del_avalúo),
+      ...arrayToBoolean(nivelesResp.emision),
     },
     {
       identificador: 4,
-      objetoResponsabilidad: "",
-      ...getValoresFromJSON(nivelesResp.otro),
+      objetoResponsabilidad: otroTexto,
+      ...arrayToBoolean(otroResponsabilidad),
     },
   ];
 
@@ -698,7 +703,8 @@ export function getServidoresContratacionesDefaults(
     dictaminacionAvaluos: initialData?.avaluosJustipreciacion && typeof initialData.avaluosJustipreciacion === 'object'
       ? [{
           responsabilidades: mapAvaluosResponsabilidades(
-            initialData.avaluosJustipreciacion.nivelesResponsabilidadesAvaluos
+            initialData.avaluosJustipreciacion.nivelesResponsabilidadesAvaluos,
+            initialData.avaluosJustipreciacion.nivelesResponsabilidadesAvaluos?.otroEspecifique
           ),
           numeroExpediente: initialData.avaluosJustipreciacion.datosDictaminacionesAvaluos?.numeroExpedienteFolio || "",
           descripcion: initialData.avaluosJustipreciacion.datosDictaminacionesAvaluos?.descripcion || "",

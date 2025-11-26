@@ -202,6 +202,7 @@ export function EnajenacionBienesSection({
                           <Input
                             disabled={loading}
                             placeholder="Ingrese el objeto de responsabilidad"
+                            maxLength={50}
                             {...field}
                             value={field.value || ""}
                             className="h-10"
@@ -432,6 +433,7 @@ export function EnajenacionBienesSection({
                   <Input
                     disabled={loading}
                     placeholder="Ej: EXP-ENAJ-2024-001"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -458,6 +460,7 @@ export function EnajenacionBienesSection({
                   <Input
                     disabled={loading}
                     placeholder="Ingrese la descripción del procedimiento"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"

@@ -323,6 +323,7 @@ export const FaltasGravesPMForm: React.FC<FaltasGravesPMFormProps> = ({
                       <Input
                         disabled={loading}
                         placeholder="Ej: EXP-2025-001"
+                        maxLength={50}
                         {...field}
                       />
                     </FormControl>

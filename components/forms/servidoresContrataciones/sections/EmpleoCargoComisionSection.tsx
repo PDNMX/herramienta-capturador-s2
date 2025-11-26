@@ -192,6 +192,7 @@ export function EmpleoCargoComisionSection({ form, loading }: EmpleoCargoComisio
                   <Input
                     disabled={loading}
                     placeholder="Ingrese el nombre del ente público"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12 pl-10"
@@ -221,6 +222,7 @@ export function EmpleoCargoComisionSection({ form, loading }: EmpleoCargoComisio
                   <Input
                     disabled={loading}
                     placeholder="Ej: SESNA, INAI, etc."
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12 pl-10 uppercase"
@@ -294,6 +296,7 @@ export function EmpleoCargoComisionSection({ form, loading }: EmpleoCargoComisio
                 <Input
                   disabled={loading}
                   placeholder="Especifique el nivel jerárquico"
+                  maxLength={50}
                   {...field}
                   value={field.value || ""}
                   className="h-12"
@@ -324,6 +327,7 @@ export function EmpleoCargoComisionSection({ form, loading }: EmpleoCargoComisio
                   <Input
                     disabled={loading}
                     placeholder="Ej: Director General, Subdirector, etc."
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12 pl-10"
@@ -353,6 +357,7 @@ export function EmpleoCargoComisionSection({ form, loading }: EmpleoCargoComisio
                   <Input
                     disabled={loading}
                     placeholder="Ej: Dirección de Tecnologías, etc."
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12 pl-10"

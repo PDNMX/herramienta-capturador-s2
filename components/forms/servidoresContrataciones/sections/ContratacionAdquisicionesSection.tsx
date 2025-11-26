@@ -34,9 +34,15 @@ const tiposArea = [
   { value: "AREA_SUPERVISORA", label: "Área Supervisora" },
   { value: "AREA_CONTRATANTE", label: "Área Contratante" },
   { value: "AREA_TECNICA", label: "Área Técnica" },
-  { value: "INTEGRANTE_COMITE", label: "Integrante del Comité de Adquisiciones" },
+  {
+    value: "INTEGRANTE_COMITE",
+    label: "Integrante del Comité de Adquisiciones, arrendamientos y servicios",
+  },
   { value: "ORGANO_REVISION", label: "Órgano de Revisión" },
-  { value: "PARTICIPANTE_JUNTA", label: "Participante en Junta de Aclaraciones" },
+  {
+    value: "PARTICIPANTE_JUNTA",
+    label: "Participante en Junta de Aclaraciones",
+  },
   { value: "OTRO", label: "Otro (Especifique)" },
 ];
 
@@ -44,14 +50,15 @@ const tiposArea = [
 const responsabilidades = [
   {
     id: 1,
-    pregunta: "Autorizaciones o dictámenes previos para llevar a cabo determinado procedimiento de contratación",
+    pregunta:
+      "Autorizaciones o dictámenes previos para llevar a cabo determinado procedimiento de contratación",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 2,
@@ -62,18 +69,19 @@ const responsabilidades = [
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 3,
-    pregunta: "Convocatoria, invitación o solicitud de cotización y, en su caso, bases del concurso y modificaciones",
+    pregunta:
+      "Convocatoria, invitación o solicitud de cotización y, en su caso, bases del concurso y modificaciones",
     opciones: {
       elaborar: { disabled: false },
       revisar: { disabled: false },
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 4,
@@ -84,7 +92,7 @@ const responsabilidades = [
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: true }, // N/A
-    }
+    },
   },
   {
     id: 5,
@@ -95,7 +103,7 @@ const responsabilidades = [
       firmarAutorizar: { disabled: true }, // N/A
       supervisar: { disabled: true }, // N/A
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
   {
     id: 6,
@@ -106,7 +114,7 @@ const responsabilidades = [
       firmarAutorizar: { disabled: true }, // N/A
       supervisar: { disabled: true }, // N/A
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
   {
     id: 7,
@@ -117,25 +125,36 @@ const responsabilidades = [
       firmarAutorizar: { disabled: false },
       supervisar: { disabled: false },
       emitirSuscribir: { disabled: false },
-    }
+    },
   },
 ];
 
-export function ContratacionAdquisicionesSection({ form, loading }: ContratacionAdquisicionesSectionProps) {
+export function ContratacionAdquisicionesSection({
+  form,
+  loading,
+}: ContratacionAdquisicionesSectionProps) {
   const { toast } = useToast();
 
   // Estado para manejar la visibilidad de campos condicionales
   const [mostrarTipoAreaOtro, setMostrarTipoAreaOtro] = useState(false);
-  const [mostrarTipoProcedimientoOtro, setMostrarTipoProcedimientoOtro] = useState(false);
+  const [mostrarTipoProcedimientoOtro, setMostrarTipoProcedimientoOtro] =
+    useState(false);
   const [mostrarMateriaOtro, setMostrarMateriaOtro] = useState(false);
-  const [mostrarResponsabilidad7Input, setMostrarResponsabilidad7Input] = useState(false);
+  const [mostrarResponsabilidad7Input, setMostrarResponsabilidad7Input] =
+    useState(false);
 
   // Watch para detectar cambios en los selects y checkboxes
   const watchTipoArea = form.watch("contratacionAdquisiciones.0.tipoArea");
-  const watchTipoProcedimiento = form.watch("contratacionAdquisiciones.0.tipoProcedimiento");
+  const watchTipoProcedimiento = form.watch(
+    "contratacionAdquisiciones.0.tipoProcedimiento"
+  );
   const watchMateria = form.watch("contratacionAdquisiciones.0.materia");
-  const watchFechaInicio = form.watch("contratacionAdquisiciones.0.fechaInicio");
-  const watchFechaConclusion = form.watch("contratacionAdquisiciones.0.fechaConclusion");
+  const watchFechaInicio = form.watch(
+    "contratacionAdquisiciones.0.fechaInicio"
+  );
+  const watchFechaConclusion = form.watch(
+    "contratacionAdquisiciones.0.fechaConclusion"
+  );
 
   // Efecto para mostrar/ocultar campo "Otro" en Tipo de Área
   useEffect(() => {
@@ -171,13 +190,15 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
       if (fechaConclusion < fechaInicio) {
         form.setError("contratacionAdquisiciones.0.fechaConclusion", {
           type: "manual",
-          message: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+          message:
+            "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
         });
 
         toast({
           variant: "destructive",
           title: "Error en fechas",
-          description: "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
+          description:
+            "La fecha de conclusión no puede ser menor a la fecha de inicio del procedimiento.",
         });
       } else {
         form.clearErrors("contratacionAdquisiciones.0.fechaConclusion");
@@ -190,7 +211,10 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
       {/* TIPO DE ÁREA */}
       <div className="p-6 bg-blue-50/50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
         <h4 className="text-sm font-semibold mb-4 text-blue-900 dark:text-blue-100">
-          Tipo de Área <span className="text-xs text-muted-foreground">(Esta sección se podrá actualizar quincenalmente)</span>
+          Tipo de Área{" "}
+          <span className="text-xs text-muted-foreground">
+            (Esta sección se podrá actualizar quincenalmente)
+          </span>
         </h4>
         <FormField
           control={form.control}
@@ -221,7 +245,9 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                                   field.onChange([...currentValue, tipo.value]);
                                 } else {
                                   field.onChange(
-                                    currentValue.filter((value) => value !== tipo.value)
+                                    currentValue.filter(
+                                      (value) => value !== tipo.value
+                                    )
                                   );
                                 }
                               }}
@@ -253,12 +279,14 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Especifique el Tipo de Área <span className="text-red-500">*</span>
+                    Especifique el Tipo de Área{" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
                       placeholder="Ingrese el tipo de área"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -279,12 +307,16 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
           Niveles de Responsabilidad
         </h4>
         <p className="text-sm text-muted-foreground mb-6">
-          Marque las actividades que realiza en cada uno de los siguientes objetos de responsabilidad:
+          Marque las actividades que realiza en cada uno de los siguientes
+          objetos de responsabilidad:
         </p>
 
         <div className="space-y-4">
           {responsabilidades.map((resp) => (
-            <div key={resp.id} className="p-4 rounded-lg border-2 border-primary/20 bg-card/50">
+            <div
+              key={resp.id}
+              className="p-4 rounded-lg border-2 border-primary/20 bg-card/50"
+            >
               <div className="mb-3">
                 <span className="inline-block bg-primary/10 text-primary px-2 py-1 rounded text-sm font-semibold mr-2">
                   {resp.id}
@@ -297,7 +329,9 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                 <div className="ml-8">
                   <FormField
                     control={form.control}
-                    name={`contratacionAdquisiciones.0.responsabilidades.${resp.id - 1}.objetoResponsabilidad`}
+                    name={`contratacionAdquisiciones.0.responsabilidades.${
+                      resp.id - 1
+                    }.objetoResponsabilidad`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-semibold">
@@ -307,13 +341,15 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                           <Input
                             disabled={loading}
                             placeholder="Ingrese el objeto de responsabilidad"
+                            maxLength={50}
                             {...field}
                             value={field.value || ""}
                             className="h-10"
                           />
                         </FormControl>
                         <FormDescription className="text-xs text-muted-foreground">
-                          Describa el objeto de responsabilidad específico (opcional)
+                          Describa el objeto de responsabilidad específico
+                          (opcional)
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -322,126 +358,188 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-3 ml-8">
-                {/* Elaborar (A) */}
-                <FormField
-                  control={form.control}
-                  name={`contratacionAdquisiciones.0.responsabilidades.${resp.id - 1}.elaborar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-${resp.id}-elaborar`}
-                        disabled={loading || resp.opciones.elaborar.disabled}
-                        className={resp.opciones.elaborar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-${resp.id}-elaborar`}
-                        className={`text-sm font-normal ${resp.opciones.elaborar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Elaborar (A)
-                        {resp.opciones.elaborar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Elaborar (A) */}
+                  <FormField
+                    control={form.control}
+                    name={`contratacionAdquisiciones.0.responsabilidades.${
+                      resp.id - 1
+                    }.elaborar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-${resp.id}-elaborar`}
+                          disabled={loading || resp.opciones.elaborar.disabled}
+                          className={
+                            resp.opciones.elaborar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-${resp.id}-elaborar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.elaborar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Elaborar (A)
+                          {resp.opciones.elaborar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Revisar (B) */}
-                <FormField
-                  control={form.control}
-                  name={`contratacionAdquisiciones.0.responsabilidades.${resp.id - 1}.revisar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-${resp.id}-revisar`}
-                        disabled={loading || resp.opciones.revisar.disabled}
-                        className={resp.opciones.revisar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-${resp.id}-revisar`}
-                        className={`text-sm font-normal ${resp.opciones.revisar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Revisar (B)
-                        {resp.opciones.revisar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Revisar (B) */}
+                  <FormField
+                    control={form.control}
+                    name={`contratacionAdquisiciones.0.responsabilidades.${
+                      resp.id - 1
+                    }.revisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-${resp.id}-revisar`}
+                          disabled={loading || resp.opciones.revisar.disabled}
+                          className={
+                            resp.opciones.revisar.disabled ? "opacity-50" : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-${resp.id}-revisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.revisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Revisar (B)
+                          {resp.opciones.revisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Firmar, Autorizar o Dictaminar (C) */}
-                <FormField
-                  control={form.control}
-                  name={`contratacionAdquisiciones.0.responsabilidades.${resp.id - 1}.firmarAutorizar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-${resp.id}-firmar`}
-                        disabled={loading || resp.opciones.firmarAutorizar.disabled}
-                        className={resp.opciones.firmarAutorizar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-${resp.id}-firmar`}
-                        className={`text-sm font-normal ${resp.opciones.firmarAutorizar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Firmar, Autorizar o Dictaminar (C)
-                        {resp.opciones.firmarAutorizar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Firmar, Autorizar o Dictaminar (C) */}
+                  <FormField
+                    control={form.control}
+                    name={`contratacionAdquisiciones.0.responsabilidades.${
+                      resp.id - 1
+                    }.firmarAutorizar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-${resp.id}-firmar`}
+                          disabled={
+                            loading || resp.opciones.firmarAutorizar.disabled
+                          }
+                          className={
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-${resp.id}-firmar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.firmarAutorizar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Firmar, Autorizar o Dictaminar (C)
+                          {resp.opciones.firmarAutorizar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Supervisar (D) */}
-                <FormField
-                  control={form.control}
-                  name={`contratacionAdquisiciones.0.responsabilidades.${resp.id - 1}.supervisar`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-${resp.id}-supervisar`}
-                        disabled={loading || resp.opciones.supervisar.disabled}
-                        className={resp.opciones.supervisar.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-${resp.id}-supervisar`}
-                        className={`text-sm font-normal ${resp.opciones.supervisar.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Supervisar (D)
-                        {resp.opciones.supervisar.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
+                  {/* Supervisar (D) */}
+                  <FormField
+                    control={form.control}
+                    name={`contratacionAdquisiciones.0.responsabilidades.${
+                      resp.id - 1
+                    }.supervisar`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-${resp.id}-supervisar`}
+                          disabled={
+                            loading || resp.opciones.supervisar.disabled
+                          }
+                          className={
+                            resp.opciones.supervisar.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-${resp.id}-supervisar`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.supervisar.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Supervisar (D)
+                          {resp.opciones.supervisar.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
 
-                {/* Emitir o Suscribir (E) */}
-                <FormField
-                  control={form.control}
-                  name={`contratacionAdquisiciones.0.responsabilidades.${resp.id - 1}.emitirSuscribir`}
-                  render={({ field }) => (
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`resp-${resp.id}-emitir`}
-                        disabled={loading || resp.opciones.emitirSuscribir.disabled}
-                        className={resp.opciones.emitirSuscribir.disabled ? "opacity-50" : ""}
-                        checked={field.value === true}
-                        onCheckedChange={field.onChange}
-                      />
-                      <Label
-                        htmlFor={`resp-${resp.id}-emitir`}
-                        className={`text-sm font-normal ${resp.opciones.emitirSuscribir.disabled ? "text-muted-foreground line-through" : "cursor-pointer"}`}
-                      >
-                        Emitir o Suscribir (E)
-                        {resp.opciones.emitirSuscribir.disabled && <span className="ml-1 text-xs">(N/A)</span>}
-                      </Label>
-                    </div>
-                  )}
-                />
-              </div>
+                  {/* Emitir o Suscribir (E) */}
+                  <FormField
+                    control={form.control}
+                    name={`contratacionAdquisiciones.0.responsabilidades.${
+                      resp.id - 1
+                    }.emitirSuscribir`}
+                    render={({ field }) => (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`resp-${resp.id}-emitir`}
+                          disabled={
+                            loading || resp.opciones.emitirSuscribir.disabled
+                          }
+                          className={
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "opacity-50"
+                              : ""
+                          }
+                          checked={field.value === true}
+                          onCheckedChange={field.onChange}
+                        />
+                        <Label
+                          htmlFor={`resp-${resp.id}-emitir`}
+                          className={`text-sm font-normal ${
+                            resp.opciones.emitirSuscribir.disabled
+                              ? "text-muted-foreground line-through"
+                              : "cursor-pointer"
+                          }`}
+                        >
+                          Emitir o Suscribir (E)
+                          {resp.opciones.emitirSuscribir.disabled && (
+                            <span className="ml-1 text-xs">(N/A)</span>
+                          )}
+                        </Label>
+                      </div>
+                    )}
+                  />
+                </div>
               )}
             </div>
           ))}
@@ -455,7 +553,8 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
           Datos Generales de los Procedimientos de Contrataciones Públicas
         </h4>
         <p className="text-xs text-blue-600 dark:text-blue-400 mb-6">
-          Esta sección se podrá actualizar quincenalmente agregando un nuevo procedimiento
+          Esta sección se podrá actualizar quincenalmente agregando un nuevo
+          procedimiento
         </p>
 
         <div className="space-y-6 p-6 rounded-lg border-2 border-primary/20 bg-card/50">
@@ -466,12 +565,13 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  Número de Expediente, Folio o Nomenclatura <span className="text-red-500">*</span>
+                  Número de Expediente <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
                     placeholder="Ej: EXP-2024-001"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -493,19 +593,32 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Tipo de Procedimiento <span className="text-red-500">*</span>
+                    Tipo de Procedimiento{" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={loading}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={loading}
+                  >
                     <FormControl>
                       <SelectTrigger className="h-12">
                         <SelectValue placeholder="Seleccione el tipo" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="LICITACION_PUBLICA_NACIONAL">Licitación Pública (Nacional)</SelectItem>
-                      <SelectItem value="LICITACION_PUBLICA_INTERNACIONAL">Licitación Pública (Internacional)</SelectItem>
-                      <SelectItem value="INVITACION_TRES_PERSONAS">Invitación a cuando menos tres personas</SelectItem>
-                      <SelectItem value="ADJUDICACION_DIRECTA">Adjudicación Directa</SelectItem>
+                      <SelectItem value="LICITACION_PUBLICA_NACIONAL">
+                        Licitación Pública (Nacional)
+                      </SelectItem>
+                      <SelectItem value="LICITACION_PUBLICA_INTERNACIONAL">
+                        Licitación Pública (Internacional)
+                      </SelectItem>
+                      <SelectItem value="INVITACION_TRES_PERSONAS">
+                        Invitación a cuando menos tres personas
+                      </SelectItem>
+                      <SelectItem value="ADJUDICACION_DIRECTA">
+                        Adjudicación Directa
+                      </SelectItem>
                       <SelectItem value="OTRO">Otro (Especifique)</SelectItem>
                     </SelectContent>
                   </Select>
@@ -523,14 +636,20 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                   <FormLabel className="text-sm font-semibold">
                     Materia <span className="text-red-500">*</span>
                   </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value} disabled={loading}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={loading}
+                  >
                     <FormControl>
                       <SelectTrigger className="h-12">
                         <SelectValue placeholder="Seleccione la materia" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="ARRENDAMIENTO">Arrendamiento</SelectItem>
+                      <SelectItem value="ARRENDAMIENTO">
+                        Arrendamiento
+                      </SelectItem>
                       <SelectItem value="ADQUISICION">Adquisición</SelectItem>
                       <SelectItem value="SERVICIOS">Servicios</SelectItem>
                       <SelectItem value="OTRO">Otro (Especifique)</SelectItem>
@@ -550,12 +669,14 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Especifique el Tipo de Procedimiento <span className="text-red-500">*</span>
+                    Especifique el Tipo de Procedimiento{" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
                       placeholder="Ingrese el tipo de procedimiento"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -575,12 +696,14 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Especifique la Materia <span className="text-red-500">*</span>
+                    Especifique la Materia{" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
                       placeholder="Ingrese la materia"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -600,7 +723,8 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-semibold">
-                    Fecha de Inicio del Procedimiento (DD-MM-AAAA) <span className="text-red-500">*</span>
+                    Fecha de Inicio del Procedimiento (DD-MM-AAAA){" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
@@ -653,7 +777,9 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
           <div className="p-4 bg-blue-50/50 dark:bg-blue-900/20 rounded-lg border border-blue-200">
             <h5 className="text-sm font-semibold mb-4 text-blue-900 dark:text-blue-100">
               Datos de la(s) Persona(s) Beneficiaria(s) Final(es)
-              <span className="text-xs font-normal text-muted-foreground ml-2">(Solo aplica a personas morales)</span>
+              <span className="text-xs font-normal text-muted-foreground ml-2">
+                (Solo aplica a personas morales)
+              </span>
             </h5>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -667,6 +793,7 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                       <Input
                         disabled={loading}
                         placeholder="Razón social de la empresa"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -686,6 +813,7 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                       <Input
                         disabled={loading}
                         placeholder="Nombre del beneficiario"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -705,6 +833,7 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                       <Input
                         disabled={loading}
                         placeholder="Primer apellido"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -724,6 +853,7 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                       <Input
                         disabled={loading}
                         placeholder="Segundo apellido"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -742,7 +872,10 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-semibold">
-                  ¿La persona servidora pública continúa participando en los procedimientos de contratación de adquisiciones y arrendamientos de bienes muebles y servicios de cualquier naturaleza? <span className="text-red-500">*</span>
+                  ¿La persona servidora pública continúa participando en los
+                  procedimientos de contratación de adquisiciones y
+                  arrendamientos de bienes muebles y servicios de cualquier
+                  naturaleza? <span className="text-red-500">*</span>
                 </FormLabel>
                 <p className="text-xs text-blue-600 dark:text-blue-400 mb-2">
                   (Esta sección se podrá actualizar quincenalmente)
@@ -752,10 +885,15 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                     <Checkbox
                       id="continua-si"
                       checked={field.value === true}
-                      onCheckedChange={(checked) => field.onChange(checked ? true : false)}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked ? true : false)
+                      }
                       disabled={loading}
                     />
-                    <Label htmlFor="continua-si" className="text-sm font-normal cursor-pointer">
+                    <Label
+                      htmlFor="continua-si"
+                      className="text-sm font-normal cursor-pointer"
+                    >
                       Sí
                     </Label>
                   </div>
@@ -763,10 +901,15 @@ export function ContratacionAdquisicionesSection({ form, loading }: Contratacion
                     <Checkbox
                       id="continua-no"
                       checked={field.value === false}
-                      onCheckedChange={(checked) => field.onChange(checked ? false : true)}
+                      onCheckedChange={(checked) =>
+                        field.onChange(checked ? false : true)
+                      }
                       disabled={loading}
                     />
-                    <Label htmlFor="continua-no" className="text-sm font-normal cursor-pointer">
+                    <Label
+                      htmlFor="continua-no"
+                      className="text-sm font-normal cursor-pointer"
+                    >
                       No
                     </Label>
                   </div>

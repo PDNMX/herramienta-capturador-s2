@@ -286,6 +286,7 @@ export function ObrasPublicasSection({
                     <Input
                       disabled={loading}
                       placeholder="Ingrese el tipo de área"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -340,6 +341,7 @@ export function ObrasPublicasSection({
                           <Input
                             disabled={loading}
                             placeholder="Ingrese el objeto de responsabilidad"
+                            maxLength={50}
                             {...field}
                             value={field.value || ""}
                             className="h-10"
@@ -556,6 +558,7 @@ export function ObrasPublicasSection({
                   <Input
                     disabled={loading}
                     placeholder="Ej: EXP-OBRA-2024-001"
+                    maxLength={50}
                     {...field}
                     value={field.value || ""}
                     className="h-12"
@@ -659,6 +662,7 @@ export function ObrasPublicasSection({
                     <Input
                       disabled={loading}
                       placeholder="Ingrese el tipo de procedimiento"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -685,6 +689,7 @@ export function ObrasPublicasSection({
                     <Input
                       disabled={loading}
                       placeholder="Ingrese la materia"
+                      maxLength={50}
                       {...field}
                       value={field.value || ""}
                       className="h-12"
@@ -774,6 +779,7 @@ export function ObrasPublicasSection({
                       <Input
                         disabled={loading}
                         placeholder="Razón social de la empresa"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -793,6 +799,7 @@ export function ObrasPublicasSection({
                       <Input
                         disabled={loading}
                         placeholder="Nombre del beneficiario"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -812,6 +819,7 @@ export function ObrasPublicasSection({
                       <Input
                         disabled={loading}
                         placeholder="Primer apellido"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"
@@ -831,6 +839,7 @@ export function ObrasPublicasSection({
                       <Input
                         disabled={loading}
                         placeholder="Segundo apellido"
+                        maxLength={50}
                         {...field}
                         value={field.value || ""}
                         className="h-10"

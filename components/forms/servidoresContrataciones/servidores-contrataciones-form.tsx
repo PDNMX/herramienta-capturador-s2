@@ -161,24 +161,64 @@ export const ServidoresContratacionesForm: React.FC<
 
       await saveServidorContratacion(data, initialData, session?.access_token);
 
-      router.refresh();
-      router.push(`/inicio/entes`);
+      // Primero mostrar el toast de éxito
       toast({
         variant: "default",
         className: "bg-green-600",
         title: "Éxito",
-        description: toastMessage,
+        description: "¡Registro guardado exitosamente!",
       });
+
+      // Esperar un momento para que el usuario vea el toast antes de redirigir
+      setTimeout(() => {
+        router.refresh();
+        router.push(`/inicio/entes`);
+      }, 1500); // Esperar 1.5 segundos antes de redirigir
     } catch (error: any) {
       console.error("ERROR AL GUARDAR:", error);
+      console.error("Tipo de error:", typeof error);
+      console.error("Error completo (JSON):", JSON.stringify(error, null, 2));
+
+      // Extraer el mensaje de error de manera más robusta
+      let errorDescription = "Error al intentar guardar el registro";
+
+      if (error.message) {
+        errorDescription = error.message;
+      } else if (error.errors && Array.isArray(error.errors) && error.errors.length > 0) {
+        errorDescription = error.errors[0].message || JSON.stringify(error.errors[0]);
+      } else if (typeof error === 'string') {
+        errorDescription = error;
+      }
+
+      // Agregar información adicional si es un error de autenticación
+      if (errorDescription.includes("401") || errorDescription.includes("No autorizado")) {
+        errorDescription += "\n\nSugerencias:\n• Verifica que tu sesión esté activa\n• Asegúrate de que todos los campos obligatorios estén completos\n• Los campos de texto no deben contener solo espacios";
+      }
+
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error.message || "Error al intentar guardar el registro",
+        title: "Error al guardar",
+        description: errorDescription,
+        duration: 8000, // Mostrar por más tiempo para errores largos
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  // Manejador de errores de validación (cuando el formulario está incompleto)
+  const onInvalid = (errors: any) => {
+    console.log("=== ERRORES DE VALIDACIÓN ===");
+    console.log("Errores:", errors);
+    console.log("========================================");
+
+    // Mostrar toast con mensaje generalizado
+    toast({
+      variant: "destructive",
+      title: "Formulario incompleto",
+      description: "Por favor, complete todos los campos obligatorios antes de guardar el registro. Revise las secciones marcadas en rojo.",
+      duration: 6000,
+    });
   };
 
   return (
@@ -190,7 +230,7 @@ export const ServidoresContratacionesForm: React.FC<
 
       <FormProvider {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit, onInvalid)}
           className="space-y-8 w-full"
         >
           {/* Campo oculto para entePublico */}

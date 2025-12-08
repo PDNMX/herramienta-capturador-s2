@@ -9,11 +9,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, MoreHorizontal, Ban } from "lucide-react";
 import { useState, useEffect } from "react";
 import { directus } from "@/services/directus";
 import { useToast } from "@/components/ui/use-toast";
-import { deleteItem } from "@directus/sdk";
+import { updateItem } from "@directus/sdk";
 import Link from "next/link";
 
 export const CellAction = ({ data, session }: any) => {
@@ -22,12 +22,12 @@ export const CellAction = ({ data, session }: any) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (localStorage.getItem("deleted") === "true") {
+    if (localStorage.getItem("deactivated") === "true") {
       toast({
         variant: "default",
-        title: "Registro eliminado exitosamente",
+        title: "Registro desactivado exitosamente",
       });
-      localStorage.removeItem("deleted");
+      localStorage.removeItem("deactivated");
     }
   }, []);
 
@@ -37,16 +37,18 @@ export const CellAction = ({ data, session }: any) => {
       if (data && session?.access_token) {
         const api = directus(session.access_token);
         await api.request(
-          deleteItem("servidores_intervengan_procedimientos_contrataciones", data.id)
+          updateItem("servidores_intervengan_procedimientos_contrataciones", data.id, {
+            esta_activo: false
+          })
         );
-        localStorage.setItem("deleted", "true");
+        localStorage.setItem("deactivated", "true");
         window.location.reload();
       }
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Error al eliminar",
-        description: "Hubo un problema al eliminar el registro.",
+        title: "Error al desactivar",
+        description: "Hubo un problema al desactivar el registro.",
       });
     } finally {
       setLoading(false);
@@ -61,6 +63,8 @@ export const CellAction = ({ data, session }: any) => {
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
         loading={loading}
+        title="¿Desactivar registro?"
+        description="El registro será desactivado y dejará de aparecer en las consultas activas."
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -80,7 +84,7 @@ export const CellAction = ({ data, session }: any) => {
           <DropdownMenuItem
             onClick={() => setOpen(true)}
             className="cursor-pointer">
-            <Trash className="mr-2 h-4 w-4" /> Eliminar
+            <Ban className="mr-2 h-4 w-4" /> Desactivar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

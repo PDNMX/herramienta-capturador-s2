@@ -38,6 +38,9 @@ export default function Page() {
                 entePublico: {
                   _eq: session?.user?.entePublico,
                 },
+                esta_activo: {
+                  _eq: true,
+                },
               },
               deep: {
                 datosGenerales: {

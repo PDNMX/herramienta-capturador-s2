@@ -8,13 +8,13 @@ export const navItems: NavItem[] = [
     label: "Inicio",
   },
   {
-    title: "Faltas Graves Personas Morales",
+    title: "Servidores Públicos que Participan en Contrataciones Públcas",
     href: "/inicio/entes",
     icon: "users",
     label: "entes",
   },
   {
-    title: "Directorio",
+    title: "Directorio de Entes Públicos",
     href: "/inicio/directorio",
     icon: "notebook",
     label: "directorio",

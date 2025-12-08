@@ -4,8 +4,8 @@
 import { useEffect, useState } from "react";
 import { useCurrentSession } from "@/hooks/useCurrentSession";
 import { signOut } from "next-auth/react";
-import directus from "@/lib/directus";
-import { readItems, withToken } from "@directus/sdk";
+import { directus } from "@/services/directus";
+import { readItems } from "@directus/sdk";
 import {
   Card,
   CardContent,
@@ -35,23 +35,56 @@ export default function Page() {
     } else if (status === "authenticated") {
       async function fetchData() {
         try {
-          // Aquí conectarías con tu colección de Directus para el S3
-          // Por ahora uso datos de ejemplo
-          const mockData = {
-            faltasGravesServidores: 45,
-            faltasNoGravesServidores: 128,
-            faltasGravesPersonasMorales: 23,
-            faltasGravesPersonasFisicas: 67,
-          };
+          // Obtener el total de registros de servidores de contrataciones desde Directus
+          // Endpoint: http://localhost:8055/items/servidores_intervengan_procedimientos_contrataciones
+          const api = directus(session?.access_token || "");
 
-          const total = Object.values(mockData).reduce(
-            (acc, val) => acc + val,
-            0
+          console.log("=== DASHBOARD - Consultando registros ===");
+          console.log(
+            "Usuario autenticado:",
+            session?.user?.name || "Desconocido"
           );
+
+          // El cliente está autenticado con el token de acceso de la sesión
+          const servidoresResult = await api.request(
+            readItems("servidores_intervengan_procedimientos_contrataciones", {
+              fields: ["id"], // Solo traer IDs para optimizar
+              limit: -1, // Sin límite para obtener todos los registros
+            })
+          );
+
+          console.log("Respuesta de Directus:", servidoresResult);
+          console.log("Tipo de respuesta:", typeof servidoresResult);
+          console.log("Es array?:", Array.isArray(servidoresResult));
+
+          // Contar los registros
+          let totalRegistros = 0;
+          if (Array.isArray(servidoresResult)) {
+            totalRegistros = servidoresResult.length;
+          } else if (servidoresResult && typeof servidoresResult === "object") {
+            // Si viene envuelto en un objeto con data
+            totalRegistros = (servidoresResult as any).length || 0;
+          }
+
+          console.log("=== RESULTADO ===");
+          console.log(
+            "Endpoint:",
+            "http://localhost:8055/items/servidores_intervengan_procedimientos_contrataciones"
+          );
+          console.log("Total de registros encontrados:", totalRegistros);
+
+          // Por ahora usamos datos de ejemplo para las tarjetas individuales
+          // En el futuro estos también pueden venir de Directus
+          const mockData = {
+            faltasGravesServidores: Math.floor(totalRegistros * 0.17), // 17% del total
+            faltasNoGravesServidores: Math.floor(totalRegistros * 0.49), // 49% del total
+            faltasGravesPersonasMorales: Math.floor(totalRegistros * 0.09), // 9% del total
+            faltasGravesPersonasFisicas: Math.floor(totalRegistros * 0.25), // 25% del total
+          };
 
           setData({
             ...mockData,
-            totalFaltas: total,
+            totalFaltas: totalRegistros,
             ultimaActualizacion: new Date().toLocaleDateString("es-MX"),
           });
 
@@ -59,6 +92,16 @@ export default function Page() {
           setTimeout(() => setIsLoaded(true), 100);
         } catch (error) {
           console.error("Error al cargar los datos:", error);
+
+          // En caso de error, usar datos por defecto
+          setData({
+            faltasGravesServidores: 0,
+            faltasNoGravesServidores: 0,
+            faltasGravesPersonasMorales: 0,
+            faltasGravesPersonasFisicas: 0,
+            totalFaltas: 0,
+            ultimaActualizacion: new Date().toLocaleDateString("es-MX"),
+          });
         }
       }
 
@@ -69,7 +112,7 @@ export default function Page() {
   const categoryCards = [
     {
       title: "Faltas Administrativas Graves",
-      subtitle: "Servidores Públicos",
+      subtitle: "Total de registros por ente público",
       value: data.faltasGravesServidores,
       icon: AlertCircle,
       color: "from-red-500 to-red-600",
@@ -80,7 +123,7 @@ export default function Page() {
     },
     {
       title: "Faltas Administrativas No Graves",
-      subtitle: "Servidores Públicos",
+      subtitle: "Total de registros por ente público",
       value: data.faltasNoGravesServidores,
       icon: Users,
       color: "from-amber-500 to-amber-600",
@@ -151,7 +194,7 @@ export default function Page() {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
-                    Total de Sanciones Registradas
+                    Total de Registros
                   </p>
                   <div className="text-6xl font-bold bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
                     {data.totalFaltas}
@@ -239,7 +282,9 @@ export default function Page() {
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-muted-foreground">Categoría</span>
                       <span className={`font-semibold ${category.textColor}`}>
-                        {index < 2 ? "Servidores Públicos" : "Particulares"}
+                        {index < 2
+                          ? "Total de registros por ente público"
+                          : "Particulares"}
                       </span>
                     </div>
                   </div>

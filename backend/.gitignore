@@ -1,0 +1,16 @@
+# Backend .gitignore
+
+# Environment files
+.env
+.env.local
+
+# Database
+*.db
+*.sqlite
+
+# Docker volumes
+postgres/
+
+# Logs
+*.log
+logs/

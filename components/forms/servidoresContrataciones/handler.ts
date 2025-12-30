@@ -1233,6 +1233,10 @@ export async function saveServidorContratacion(
       // Actualizar registro existente
       console.log("   Actualizando registro existente ID:", initialData.id);
       servidorId = initialData.id;
+
+      // Actualizar date_updated al editar con la fecha actual
+      mainData.date_updated = new Date().toISOString();
+
       await api.request(
         updateItem(
           "servidores_intervengan_procedimientos_contrataciones",
@@ -1246,6 +1250,10 @@ export async function saveServidorContratacion(
       console.log(
         "   Creando nuevo registro en servidores_intervengan_procedimientos_contrataciones..."
       );
+
+      // Establecer date_updated al crear nuevo registro (misma fecha que date_created)
+      mainData.date_updated = new Date().toISOString();
+
       const servidorResult = await api.request(
         createItem(
           "servidores_intervengan_procedimientos_contrataciones",

@@ -2,6 +2,7 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { CellAction } from "./cell-action";
+import { Badge } from "@/components/ui/badge";
 
 export const createColumns = (session): ColumnDef<any>[] => [
   {
@@ -76,6 +77,41 @@ export const createColumns = (session): ColumnDef<any>[] => [
     cell: ({ row }) => (
       <div className="text-left">{row.original.empleoCargoComision?.siglasEntePublico || '-'}</div>
     ),
+    size: 180,
+    enableSorting: true,
+  },
+  {
+    id: "vigencia",
+    accessorKey: "date_updated",
+    header: () => <div className="text-center">Vigencia</div>,
+    cell: ({ row }) => {
+      const dateUpdated = row.original.date_updated;
+
+      if (!dateUpdated) {
+        return (
+          <div className="flex justify-center">
+            <Badge variant="destructive">
+              Actualización requerida
+            </Badge>
+          </div>
+        );
+      }
+
+      const today = new Date();
+      const updatedDate = new Date(dateUpdated);
+      const diffTime = Math.abs(today.getTime() - updatedDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      const isExpired = diffDays >= 15;
+
+      return (
+        <div className="flex justify-center">
+          <Badge variant={isExpired ? "destructive" : "success"}>
+            {isExpired ? "Actualización requerida" : "Vigente"}
+          </Badge>
+        </div>
+      );
+    },
     size: 180,
     enableSorting: true,
   },

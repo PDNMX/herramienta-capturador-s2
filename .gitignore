@@ -6,9 +6,6 @@
 .env.*.local
 *.env
 
-# Claude
-.claude/
-
 # OS files
 .DS_Store
 Thumbs.db

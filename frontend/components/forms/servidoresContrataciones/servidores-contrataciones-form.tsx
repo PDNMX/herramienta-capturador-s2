@@ -253,6 +253,23 @@ export const ServidoresContratacionesForm: React.FC<
             )}
           />
 
+          {/* Alerta cuando el usuario no tiene ente público asignado */}
+          {(!session?.user?.entePublico || session.user.entePublico === 0) && (
+            <div className="flex items-center gap-3 p-4 bg-red-50/50 dark:bg-red-900/20 rounded-xl border border-red-200/50 dark:border-red-700/30 shadow-sm">
+              <div className="bg-red-100 dark:bg-red-800/30 rounded-lg p-2">
+                <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+              </div>
+              <div>
+                <p className="text-sm text-red-800 dark:text-red-200 font-semibold">
+                  Tu cuenta no tiene un ente público asignado
+                </p>
+                <p className="text-xs text-red-700 dark:text-red-300 mt-1">
+                  Contacta al administrador del sistema para que asigne un ente público a tu cuenta antes de poder crear registros.
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Nota de campos obligatorios */}
           <div className="flex items-center gap-3 p-4 bg-amber-50/50 dark:bg-amber-900/20 rounded-xl border border-amber-200/50 dark:border-amber-700/30 shadow-sm">
             <div className="bg-amber-100 dark:bg-amber-800/30 rounded-lg p-2">

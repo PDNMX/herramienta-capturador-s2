@@ -86,11 +86,11 @@ docker compose up -d
 
 ### 3. Acceder a la aplicación
 
-| Servicio | URL | Descripción |
-|----------|-----|-------------|
-| Frontend | http://localhost:3000 | Aplicación web |
-| Backend | http://localhost:8055 | Directus Admin |
-| PostgreSQL | localhost:5433 | Base de datos |
+| Servicio   | URL                   | Descripción    |
+| ---------- | --------------------- | -------------- |
+| Frontend   | http://localhost:3000 | Aplicación web |
+| Backend    | http://localhost:8055 | Directus Admin |
+| PostgreSQL | localhost:5433        | Base de datos  |
 
 ## Comandos Útiles
 
@@ -155,11 +155,13 @@ npm run dev
 ## Tecnologías
 
 ### Backend
+
 - **Directus**: 10.13.4 (Headless CMS)
 - **PostgreSQL**: 14-alpine (Base de datos)
 - **Docker**: Contenedorización
 
 ### Frontend
+
 - **Next.js**: 14.2.25 (Framework React)
 - **React**: 18.3.1
 - **TypeScript**: 5.5.2
@@ -209,11 +211,13 @@ frontend/
 ### Los contenedores no inician
 
 1. Verifica que Docker esté corriendo:
+
    ```bash
    docker info
    ```
 
 2. Revisa los logs:
+
    ```bash
    docker compose logs -f
    ```
@@ -237,6 +241,7 @@ frontend/
 ### Error de conexión a la base de datos
 
 1. Verifica que PostgreSQL esté corriendo:
+
    ```bash
    docker compose ps db
    ```
@@ -253,6 +258,7 @@ El error `getaddrinfo ENOTFOUND smtp.example.com` es normal si no has configurad
 ### Reconstruir desde cero
 
 Si necesitas empezar de cero:
+
 ```bash
 docker compose down -v
 docker compose build --no-cache
@@ -265,5 +271,4 @@ MIT License - Ver el archivo `LICENSE` para más detalles.
 
 ## Documentación Adicional
 
-- **CLAUDE.md**: Guía para asistentes de IA
 - **especificación-técnica-s2.yaml**: Especificación OpenAPI

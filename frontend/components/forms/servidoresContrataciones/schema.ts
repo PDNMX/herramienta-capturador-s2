@@ -15,6 +15,8 @@ export const servidoresContratacionesSchema = z.object({
   // Campos generales
   entePublico: z.number({
     required_error: "Ente público es requerido.",
+  }).refine((val) => val > 0, {
+    message: "Tu cuenta de usuario no tiene un ente público asignado. Contacta al administrador del sistema.",
   }),
 
   // Campo 1: Fecha*

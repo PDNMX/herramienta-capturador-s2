@@ -130,21 +130,21 @@ async function eliminarRegistrosViejos(
       for (const contratacion of initialData.contratacionesAdquisiciones) {
         if (contratacion.id) {
           // Eliminar vínculos en tipos_adquisiciones_obras
-          const vinculos = await api.request(
-            readItems("tipos_adquisiciones_obras", {
+          const vinculos: any[] = await (api as any).request(
+            (readItems as any)("tipos_adquisiciones_obras", {
               filter: { contratacionAdquisicion: { _eq: contratacion.id } },
             })
           );
           for (const vinculo of vinculos) {
-            await api.request(
-              deleteItem("tipos_adquisiciones_obras", vinculo.id)
+            await (api as any).request(
+              (deleteItem as any)("tipos_adquisiciones_obras", vinculo.id)
             );
           }
 
           // Eliminar datos relacionados
           if (contratacion.datosContratacionPublica?.id) {
             await api.request(
-              deleteItem(
+              (deleteItem as any)(
                 "datos_contrataciones_publicas",
                 contratacion.datosContratacionPublica.id
               )
@@ -152,7 +152,7 @@ async function eliminarRegistrosViejos(
           }
           if (contratacion.nivelResponsabilidadContratacion?.id) {
             await api.request(
-              deleteItem(
+              (deleteItem as any)(
                 "niveles_responsabilidades_adquisiciones",
                 contratacion.nivelResponsabilidadContratacion.id
               )
@@ -160,7 +160,7 @@ async function eliminarRegistrosViejos(
           }
           if (contratacion.informacionPersonasBeneficiarias?.id) {
             await api.request(
-              deleteItem(
+              (deleteItem as any)(
                 "datos_personas_beneficiarias",
                 contratacion.informacionPersonasBeneficiarias.id
               )
@@ -169,7 +169,7 @@ async function eliminarRegistrosViejos(
 
           // Eliminar la contratación principal
           await api.request(
-            deleteItem("datos_procedimientos_adquisiciones", contratacion.id)
+            (deleteItem as any)("datos_procedimientos_adquisiciones", contratacion.id)
           );
         }
       }
@@ -186,26 +186,26 @@ async function eliminarRegistrosViejos(
       for (const obra of initialData.obrasPublicas) {
         if (obra.id) {
           // Eliminar vínculos en tipos_adquisiciones_obras
-          const vinculos = await api.request(
-            readItems("tipos_adquisiciones_obras", {
+          const vinculos: any[] = await (api as any).request(
+            (readItems as any)("tipos_adquisiciones_obras", {
               filter: { contratacionObra: { _eq: obra.id } },
             })
           );
           for (const vinculo of vinculos) {
-            await api.request(
-              deleteItem("tipos_adquisiciones_obras", vinculo.id)
+            await (api as any).request(
+              (deleteItem as any)("tipos_adquisiciones_obras", vinculo.id)
             );
           }
 
           // Eliminar datos relacionados
           if (obra.datosGeneralesObra?.id) {
             await api.request(
-              deleteItem("datos_generales_obras", obra.datosGeneralesObra.id)
+              (deleteItem as any)("datos_generales_obras", obra.datosGeneralesObra.id)
             );
           }
           if (obra.nivelResponsabilidadObra?.id) {
             await api.request(
-              deleteItem(
+              (deleteItem as any)(
                 "niveles_responsabilidades_obras",
                 obra.nivelResponsabilidadObra.id
               )
@@ -213,7 +213,7 @@ async function eliminarRegistrosViejos(
           }
           if (obra.informacionPersonasBeneficiarias?.id) {
             await api.request(
-              deleteItem(
+              (deleteItem as any)(
                 "datos_personas_beneficiarias",
                 obra.informacionPersonasBeneficiarias.id
               )
@@ -221,7 +221,7 @@ async function eliminarRegistrosViejos(
           }
 
           // Eliminar la obra principal
-          await api.request(deleteItem("datos_procedimientos_obras", obra.id));
+          await api.request((deleteItem as any)("datos_procedimientos_obras", obra.id));
         }
       }
     }
@@ -237,7 +237,7 @@ async function eliminarRegistrosViejos(
       );
       if (initialData.otorgamientoConcesion.datosGeneralesConcesiones?.id) {
         await api.request(
-          deleteItem(
+          (deleteItem as any)(
             "datos_generales_concesiones",
             initialData.otorgamientoConcesion.datosGeneralesConcesiones.id
           )
@@ -247,7 +247,7 @@ async function eliminarRegistrosViejos(
         initialData.otorgamientoConcesion.nivelResponsabilidadConcesiones?.id
       ) {
         await api.request(
-          deleteItem(
+          (deleteItem as any)(
             "niveles_responsabilidades_concesiones",
             initialData.otorgamientoConcesion.nivelResponsabilidadConcesiones.id
           )
@@ -257,7 +257,7 @@ async function eliminarRegistrosViejos(
         initialData.otorgamientoConcesion.informacionPersonasBeneficiarias?.id
       ) {
         await api.request(
-          deleteItem(
+          (deleteItem as any)(
             "datos_personas_beneficiarias",
             initialData.otorgamientoConcesion.informacionPersonasBeneficiarias
               .id
@@ -265,7 +265,7 @@ async function eliminarRegistrosViejos(
         );
       }
       await api.request(
-        deleteItem(
+        (deleteItem as any)(
           "otorgamiento_concesiones",
           initialData.otorgamientoConcesion.id
         )
@@ -283,7 +283,7 @@ async function eliminarRegistrosViejos(
       );
       if (initialData.enajenacionBien.datosEnajenacionesBienes?.id) {
         await api.request(
-          deleteItem(
+          (deleteItem as any)(
             "datos_enajenaciones_bienes",
             initialData.enajenacionBien.datosEnajenacionesBienes.id
           )
@@ -293,14 +293,14 @@ async function eliminarRegistrosViejos(
         initialData.enajenacionBien.nivelesResponsabilidadesEnajenaciones?.id
       ) {
         await api.request(
-          deleteItem(
+          (deleteItem as any)(
             "niveles_responsabilidades_enajenaciones",
             initialData.enajenacionBien.nivelesResponsabilidadesEnajenaciones.id
           )
         );
       }
       await api.request(
-        deleteItem("enajenaciones_bienes", initialData.enajenacionBien.id)
+        (deleteItem as any)("enajenaciones_bienes", initialData.enajenacionBien.id)
       );
     }
 
@@ -315,7 +315,7 @@ async function eliminarRegistrosViejos(
       );
       if (initialData.avaluosJustipreciacion.datosDictaminacionesAvaluos?.id) {
         await api.request(
-          deleteItem(
+          (deleteItem as any)(
             "datos_dictaminaciones_avaluos",
             initialData.avaluosJustipreciacion.datosDictaminacionesAvaluos.id
           )
@@ -325,7 +325,7 @@ async function eliminarRegistrosViejos(
         initialData.avaluosJustipreciacion.nivelesResponsabilidadesAvaluos?.id
       ) {
         await api.request(
-          deleteItem(
+          (deleteItem as any)(
             "niveles_responsabilidades_avaluos",
             initialData.avaluosJustipreciacion.nivelesResponsabilidadesAvaluos
               .id
@@ -333,7 +333,7 @@ async function eliminarRegistrosViejos(
         );
       }
       await api.request(
-        deleteItem(
+        (deleteItem as any)(
           "dictaminaciones_avaluos",
           initialData.avaluosJustipreciacion.id
         )

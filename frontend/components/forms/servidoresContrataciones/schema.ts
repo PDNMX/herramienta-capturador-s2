@@ -432,7 +432,7 @@ export const servidoresContratacionesSchema = z.object({
                                    data.contratacionAdquisiciones.length > 0 &&
                                    data.contratacionAdquisiciones.some(item =>
                                      item.numeroExpediente ||
-                                     item.tipoArea.length > 0 ||
+                                     (item.tipoArea && item.tipoArea.length > 0) ||
                                      item.responsabilidades?.some(r => r.elaborar || r.revisar || r.firmarAutorizar || r.supervisar || r.emitirSuscribir)
                                    );
         return tieneAdquisiciones;
@@ -443,7 +443,7 @@ export const servidoresContratacionesSchema = z.object({
                           data.obrasPublicas.length > 0 &&
                           data.obrasPublicas.some(item =>
                             item.numeroExpediente ||
-                            item.tipoArea.length > 0 ||
+                            (item.tipoArea && item.tipoArea.length > 0) ||
                             item.responsabilidades?.some(r => r.elaborar || r.revisar || r.firmarAutorizar || r.supervisar || r.emitirSuscribir)
                           );
         return tieneObras;
@@ -457,7 +457,7 @@ export const servidoresContratacionesSchema = z.object({
                                data.otorgamientoConcesiones.some(item =>
                                  item.numeroExpediente ||
                                  item.denominacion ||
-                                 item.tipoActoJuridico.length > 0 ||
+                                 (item.tipoActoJuridico && item.tipoActoJuridico.length > 0) ||
                                  item.responsabilidades?.some(r => r.elaborar || r.revisar || r.firmarAutorizar || r.supervisar || r.emitirSuscribir)
                                );
       return tieneConcesiones;

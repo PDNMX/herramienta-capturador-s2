@@ -1,0 +1,107 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost:8055}
+        NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL:-http://localhost:3000}
+        NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-Sistema 2 - PDN}
+        NEXT_PUBLIC_APP_VER: ${NEXT_PUBLIC_APP_VER:-2.0}
+        NEXT_PUBLIC_APP_INFO: ${NEXT_PUBLIC_APP_INFO:-Servidores Públicos en Contrataciones}
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    environment:
+      # Public URL for browser requests
+      NEXT_PUBLIC_BACKEND_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost:8055}
+      NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL:-http://localhost:3000}
+      NEXT_PUBLIC_APP_NAME: ${NEXT_PUBLIC_APP_NAME:-Sistema 2 - PDN}
+      NEXT_PUBLIC_APP_VER: ${NEXT_PUBLIC_APP_VER:-2.0}
+      NEXT_PUBLIC_APP_INFO: ${NEXT_PUBLIC_APP_INFO:-Servidores Públicos en Contrataciones}
+      # Internal URL for server-side requests (inside Docker network)
+      BACKEND_URL_INTERNAL: http://api:8055
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NEXT_TELEMETRY_DISABLED: 1
+    networks:
+      - s2-network
+
+  api:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend/migrations:/directus/migrations
+      - ./backend/templates:/directus/templates
+    command: >
+      sh -c "node cli.js bootstrap &&
+            node cli.js schema apply --yes /directus/migrations/colecciones.yaml &&
+            sh /directus/init-modificaciones-db.sh &&
+            pm2-runtime start ecosystem.config.cjs"
+    restart: always
+    ports:
+      - 8055:8055
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD}
+      PUBLIC_URL: ${NEXT_PUBLIC_BACKEND_URL:-http://localhost:8055}
+      DB_CLIENT: "postgres"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_DATABASE: ${DATABASE_NAME:-directus}
+      DB_USER: ${DATABASE_USERNAME:-postgres}
+      DB_PASSWORD: ${DATABASE_PASSWORD}
+      DB_VERSION: "14"
+      DB_CONNECTION_STRING: "postgres://${DATABASE_USERNAME:-postgres}:${DATABASE_PASSWORD}@db:5432/${DATABASE_NAME:-directus}?sslmode=disable&client_encoding=UTF8"
+      WEBSOCKETS_ENABLED: 0
+      TELEMETRY: 0
+      GRAPHQL_INTROSPECTION: 0
+      CACHE_ENABLED: 0
+      WEBSOCKETS_GRAPHQL_ENABLED: 0
+      CORS_CREDENTIALS: "true"
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: "true"
+      CORS_METHODS: "GET,POST,PATCH,DELETE,PUT,OPTIONS"
+      CORS_ALLOWED_HEADERS: "Content-Type,Authorization,X-Requested-With"
+      CORS_EXPOSED_HEADERS: "Content-Range"
+      CORS_MAX_AGE: "86400"
+      EMAIL_FROM: ${EMAIL_FROM:-noreply@example.com}
+      EMAIL_TRANSPORT: ${EMAIL_TRANSPORT:-smtp}
+      EMAIL_SMTP_HOST: ${SMTP_HOST:-smtp.example.com}
+      EMAIL_SMTP_PORT: ${SMTP_PORT:-587}
+      EMAIL_SMTP_USER: ${SMTP_USER:-}
+      EMAIL_SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SECRET: ${DIRECTUS_SECRET}
+    networks:
+      - s2-network
+
+  db:
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-directus}
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME:-postgres} -d ${DATABASE_NAME:-directus}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - s2-network
+
+networks:
+  s2-network:
+    driver: bridge
+
+volumes:
+  postgres: {}
